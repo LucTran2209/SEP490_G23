@@ -28,7 +28,8 @@ namespace BE.Infrastructure.Common
 
         // Interface Repository
         public IUserRepository userRepository;
-        public IUserRepository UserRepository => userRepository = new UserRepository(context);     
+        public IUserRepository UserRepository => userRepository = new UserRepository(context);
+     
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
