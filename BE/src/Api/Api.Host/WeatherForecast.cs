@@ -1,4 +1,4 @@
-namespace Api.Host
+namespace BE.Api
 {
     public class WeatherForecast
     {
