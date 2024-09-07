@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE.Domain", "codes\BE.Domain\BE.Domain.csproj", "{5FB617AB-4468-40EB-85B9-E772334C938D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BE.Domain", "codes\BE.Domain\BE.Domain.csproj", "{5FB617AB-4468-40EB-85B9-E772334C938D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "tests\UnitTest\UnitTest.csproj", "{0701EEF0-C52C-47F4-8038-4D402668A511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "tests\UnitTest\UnitTest.csproj", "{0701EEF0-C52C-47F4-8038-4D402668A511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE.Infrastructure", "codes\BE.Infrastructure\BE.Infrastructure.csproj", "{8658E27F-33C2-48B5-8E48-1AED7EB52471}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BE.Infrastructure", "codes\BE.Infrastructure\BE.Infrastructure.csproj", "{8658E27F-33C2-48B5-8E48-1AED7EB52471}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE.Persistence", "codes\BE.Persistence\BE.Persistence.csproj", "{D3A5D651-E903-4FFD-BD76-E0A15AA9A6AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BE.Persistence", "codes\BE.Persistence\BE.Persistence.csproj", "{D3A5D651-E903-4FFD-BD76-E0A15AA9A6AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE.Application", "codes\BE.Application\BE.Application.csproj", "{1FE67CE8-61F0-4FEB-9590-515EDA3BF7A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BE.Application", "codes\BE.Application\BE.Application.csproj", "{1FE67CE8-61F0-4FEB-9590-515EDA3BF7A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE.Api", "codes\BE.Api\BE.Api.csproj", "{1D1B52A4-DC44-4A52-B78A-DAF4EE668D27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BE.Api", "codes\BE.Api\BE.Api.csproj", "{1D1B52A4-DC44-4A52-B78A-DAF4EE668D27}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntergrationTest", "tests\IntergrationTest\IntergrationTest.csproj", "{F37AABF3-0B70-4EF4-AACB-5A1C40C797E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{1D1B52A4-DC44-4A52-B78A-DAF4EE668D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D1B52A4-DC44-4A52-B78A-DAF4EE668D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D1B52A4-DC44-4A52-B78A-DAF4EE668D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F37AABF3-0B70-4EF4-AACB-5A1C40C797E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F37AABF3-0B70-4EF4-AACB-5A1C40C797E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F37AABF3-0B70-4EF4-AACB-5A1C40C797E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F37AABF3-0B70-4EF4-AACB-5A1C40C797E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
