@@ -1,5 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@import 'theme.less';
+//myself
+@import "app/styles/base/index";
+@import"app/styles/vendors/index";
+@import "app/styles/themes/light-theme";
+
+//custom ng-zoro theme light mode | dark mode
+body {
+    &.ant-dark{
+        @import "app/styles/themes/dark-theme";
+    }
+}
