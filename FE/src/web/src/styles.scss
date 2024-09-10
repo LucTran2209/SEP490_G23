@@ -1,0 +1,12 @@
+//myself
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import "app/styles/base/index";
+@import"app/styles/vendors/index";
+@import "app/styles/themes/light-theme";
+
+//custom ng-zoro theme light mode | dark mode
+body {
+    &.ant-dark{
+        @import "app/styles/themes/dark-theme";
+    }
+}
