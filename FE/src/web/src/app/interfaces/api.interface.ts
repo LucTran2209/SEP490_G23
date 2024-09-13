@@ -14,4 +14,4 @@ export interface BaseResponseApi<T> {
   }
   
 
-  export type ApiType = 'common' | 'auth' | 'admin' | 'student' | 'staff';
+  export type ApiType = 'common' | 'auth' | 'admin' | 'hra' | 'cra';

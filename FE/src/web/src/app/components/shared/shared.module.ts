@@ -9,14 +9,13 @@ import en from '@angular/common/locales/en';
 import { ButtonComponent } from '../core/button/button.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AnonymousComponent } from '../anonymous/anonymous.component';
-import { LoginComponent } from '../pages/auth/login/login.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { ForgotPasswordComponent } from '../pages/auth/forgot-password/forgot-password.component';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzResultModule } from 'ng-zorro-antd/result'
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -26,14 +25,13 @@ const ANTD_MODULES = [
   NzInputModule,
   NzInputNumberModule,
   NzCheckboxModule,
-  NzAlertModule
+  NzAlertModule,
+  NzResultModule
 ]
 
 const SHARED_MODULES = [
   ButtonComponent,
   AnonymousComponent,
-  LoginComponent, 
-  ForgotPasswordComponent
 ]
 
 @NgModule({
@@ -43,7 +41,7 @@ const SHARED_MODULES = [
 
   ],
   exports: [
-    CommonModule, ...ANTD_MODULES,...SHARED_MODULES ],
+    CommonModule, FormsModule, ReactiveFormsModule, ...ANTD_MODULES,...SHARED_MODULES ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
   ]

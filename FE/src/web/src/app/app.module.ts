@@ -14,11 +14,13 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
-import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { authFeature } from './features/auth/state/auth.feature';
+import { AuthEffect } from './features/auth/state/auth.effects';
+import { userFeature } from './features/users/state/user.feature';
+import { UserEffects } from './features/users/state/user.effects';
 
 registerLocaleData(en);
 
@@ -31,7 +33,9 @@ registerLocaleData(en);
     IconsProviderModule,
     FormsModule,
     StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
+    StoreModule.forFeature(authFeature),
+    StoreModule.forFeature(userFeature),
+    EffectsModule.forRoot([AuthEffect, UserEffects]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,
@@ -40,8 +44,7 @@ registerLocaleData(en);
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(),
-    { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
