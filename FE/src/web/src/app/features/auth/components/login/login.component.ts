@@ -10,11 +10,11 @@ export class LoginComponent {
   constructor(private fb: NonNullableFormBuilder) {}
 
   validateForm: FormGroup<{
-    phone: FormControl<string>;
+    email: FormControl<string>;
     password: FormControl<string>;
     remember: FormControl<boolean>;
   }> = this.fb.group({
-    phone: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
     remember: [true]
   });

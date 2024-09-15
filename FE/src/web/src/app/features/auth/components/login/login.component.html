@@ -7,10 +7,10 @@
         </div>
         <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
             <nz-form-item>
-                <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="phone" class="text-start">Phone</nz-form-label>
-                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="The input is not valid Phone!">
-                    <nz-input-group nzPrefixIcon="phone">
-                        <input nz-input formControlName="phone" id="phone" placeholder="(+84) 032-7033-756"/>
+                <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="email" class="text-start">Email</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="The input is not valid Email!">
+                    <nz-input-group nzPrefixIcon="email">
+                        <input nz-input formControlName="email" id="email" placeholder="(+84) 032-7033-756"/>
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
@@ -29,7 +29,7 @@
                     </label>
                 </div>
                 <div nz-col [nzSpan]="12">
-                    <a class="login-form-forgot" routerLink="/">Forgot password</a>
+                    <a class="login-form-forgot" routerLink="/auth/forgot-password">Forgot password</a>
                 </div>
             </div>
             <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>

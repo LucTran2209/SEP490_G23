@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class ForgotPasswordComponent implements OnInit{
 
   forgotPasswordForm = this.formbuilder.group({
-    phone: ['', [Validators.required]]
+    email: ['', [Validators.required]]
   })
 
 

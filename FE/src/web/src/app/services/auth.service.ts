@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
-import { ILoginRequest } from '../interfaces/account.interface';
+import { IForgotPassword, ILoginRequest } from '../interfaces/account.interface';
 import { AuthSlug } from '../configs/api.configs';
-import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, map, Observable, tap } from 'rxjs';
 import { getCookie, replaceCookie } from '../utils/cookie.helper';
-import { STRING, USER_ROLE } from '../utils/constant';
+import { LocalStorageKey, STRING, USER_ROLE } from '../utils/constant';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FeatureAppState } from '../store/featureApp.state';
 import { RouteData } from '../configs/anonymous.config';
 import { selectDataUser, selectRole } from '../features/users/state/user.feature';
+import { jwtDecode } from 'jwt-decode';
+import { UserProfileService } from './user-profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,17 +29,14 @@ export class AuthService {
   isLoggedIn$: Observable<boolean> = this.isLoggedSubject.asObservable();
   routerLinkRedirectURL$: Observable<string> = this.routerLinkRedirectURLSubject.asObservable();
 
-  //test
-  role$: Observable<string> = this.store.select(selectRole);
 
-  //test
   constructor(
     private httpClient: AppHttpClientService,
     private router: Router,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private userProfileService : UserProfileService
   ) { 
 
-    this.store.select(selectDataUser).subscribe((d) => console.log(d));
   }
 
 
@@ -53,10 +52,13 @@ export class AuthService {
   checkUserLogin$(route: ActivatedRouteSnapshot, url: any): Observable<boolean>{
     //check isLoggedIn$ && data user 
     const data = route.data as RouteData;
-    return combineLatest([this.isLoggedIn$, this.role$]).pipe(
-      map(([isAuthenticated, userRole]) => {
+    //  const user = this.userProfileService.currentUser ?? 
+    const user = {role: 'admin'};  //fixed: cứng admin test
+    console.log('line 56:',user);
+    return this.isLoggedIn$.pipe(
+      map(isAuthenticated => {
         if (isAuthenticated) {
-          if (data.expectedRole && !data.expectedRole.includes(userRole)) {
+          if (data.expectedRole && !data.expectedRole.includes(user.role)) {
             // Redirect to login or error page if role does not match
             this.router.navigate(['/auth/login']);
             return false;
@@ -66,10 +68,35 @@ export class AuthService {
           // Redirect to login page if not authenticated
           this.router.navigate(['/auth/login']);
           return false;
-        }
+        } 
       })
-    );
+    )
   }
+
+
+/**
+ * 
+ * @param token 
+ * @returns 
+ */
+  decodedTokenToGiveInfo(token: string): any{
+    let decoded  = jwtDecode(token);
+    console.log(decoded);
+    return decoded;
+  }
+
+  /**
+   * 
+   * @param token 
+   */
+  isTokenExpired(token: string): boolean{
+    const expiry = jwtDecode(token).exp;
+    if(expiry){
+      return (Math.floor((new Date()).getTime() / 1000)) >= expiry;
+    }
+    return false;
+  }
+
 
   /**
    * 
@@ -81,20 +108,23 @@ export class AuthService {
     //test api
     return this.httpClient.post<any>(this.BASE_URL + '/login',
       { username: 'emilys', password: 'emilyspass', expiresInMins: 2 }
+    ).pipe(
+      map(response => {
+        const {token, refreshToken} = response;
+        const decodedToken = this.decodedTokenToGiveInfo(token);
+        return {token, refreshToken, decodedToken};
+      })
     );
     //test api
   }
-
-
-
 
 
   logout() {
 
   }
 
-  forgotPassWord() {
-
+  forgotPassWord(data: IForgotPassword): Observable<any> {
+    return this.httpClient.post<any>(AuthSlug.ForgotPassWord.api, data);
   }
 
   // startSession({ accessToken, refreshToken, user }: any): void {
@@ -111,11 +141,13 @@ export class AuthService {
 
 
   //test
-  startSession({ token, refreshToken }: any): void {
+  startSession({ token, refreshToken,decodedToken }: any): void {
     replaceCookie(STRING.ACCESS_TOKEN, token, null);
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null);
 
     this.isLoggedSubject.next(true);
+
+    this.redirectToPageAfter();
   }
 
 

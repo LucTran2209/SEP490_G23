@@ -19,11 +19,11 @@ export class LoginOtherComponent implements OnInit {
   ) { }
 
   validateForm: FormGroup<{
-    username: FormControl<string>;
+    email: FormControl<string>;
     password: FormControl<string>;
     remember: FormControl<boolean>;
   }> = this.fb.group({
-    username: ['', [Validators.required]],
+    email: ['', [Validators.required]],
     password: ['', [Validators.required]],
     remember: [true]
   });
@@ -33,12 +33,12 @@ export class LoginOtherComponent implements OnInit {
 
   }
 
-  /**method: get username
+  /**method: get email
    * paramerter: no parameter
    * puporse: take email from instance validateForm
    */
-  get username(): FormControl<string> {
-    return this.validateForm.get('username') as FormControl;
+  get email(): FormControl<string> {
+    return this.validateForm.get('email') as FormControl;
   }
 
   /**method: get passowrd
@@ -52,7 +52,7 @@ export class LoginOtherComponent implements OnInit {
   submitForm(): void {
     if (this.validateForm.valid) {
       let data: ILoginRequest = {
-        username: this.username.value, password: this.password.value
+        email: this.email.value, password: this.password.value
       }
       this.store.dispatch(login({data}))
       this.authService.routerLinkRedirectURLSubject.next('admin');

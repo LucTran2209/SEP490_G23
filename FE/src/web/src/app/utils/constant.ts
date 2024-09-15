@@ -17,6 +17,12 @@ export enum STRING {
     FAILED = 'failed',
   }
   
+  export enum ErrorMessages {
+    INVALID_TOKEN = 'invalid_token',
+    TOKEN_EXPIRED = 'token_expired',
+    REFRESH_TOKEN_EXPIRED = 'refresh_token_expired'
+  }
+
 
   export enum USER_ROLE {
     ADMIN = 'admin',

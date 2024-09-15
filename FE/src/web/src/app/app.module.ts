@@ -21,7 +21,8 @@ import { authFeature } from './features/auth/state/auth.feature';
 import { AuthEffect } from './features/auth/state/auth.effects';
 import { userFeature } from './features/users/state/user.feature';
 import { UserEffects } from './features/users/state/user.effects';
-
+import { metaReducers } from './store';
+import { HydrationEffects } from './store/hydration/hydration.effects';
 registerLocaleData(en);
 
 @NgModule({
@@ -32,10 +33,12 @@ registerLocaleData(en);
     AppRoutingModule,
     IconsProviderModule,
     FormsModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature(authFeature),
-    StoreModule.forFeature(userFeature),
-    EffectsModule.forRoot([AuthEffect, UserEffects]),
+    // StoreModule.forFeature(userFeature),
+    EffectsModule.forRoot([HydrationEffects, AuthEffect,
+      //  UserEffects
+    ]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,
