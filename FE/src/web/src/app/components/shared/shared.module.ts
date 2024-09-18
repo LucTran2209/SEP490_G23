@@ -19,6 +19,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { BreadcrumbComponent } from '../core/breadcrumb/breadcrumb.component';
 
 registerLocaleData(en);
 
@@ -40,6 +41,7 @@ const ANTD_MODULES = [
 const SHARED_MODULES = [
   ButtonComponent,
   AnonymousComponent,
+  BreadcrumbComponent,
 ]
 
 @NgModule({

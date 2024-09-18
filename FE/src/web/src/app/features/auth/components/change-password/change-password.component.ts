@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { matchValidator } from '../../../../utils/form-validators';
+import { IChangePassword, ResultService } from '../../../../interfaces/account.interface';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-change-password',
@@ -12,7 +14,9 @@ export class ChangePasswordComponent implements OnInit {
   newPswVisible = false;
   confirmVisible = false;
   password?: string;
-  constructor(private fb: NonNullableFormBuilder) {}
+  resultMessage: string | null = null;
+  datas: any;  // To store the `datas` from the API response
+  constructor(private fb: NonNullableFormBuilder, private authService : AuthService) {}
 
   changePswForm: FormGroup<{
     currentPsw: FormControl<string>;
@@ -30,7 +34,22 @@ export class ChangePasswordComponent implements OnInit {
 
   submitForm(): void {
     if (this.changePswForm.valid) {
-      console.log('submit', this.changePswForm.value);
+      const formValue = this.changePswForm.value;
+      const payload: IChangePassword = {
+        currentPassword: formValue.currentPsw as string,
+        newPassword: formValue.newPsw as string
+      };
+      this.authService.changepassword(payload).subscribe(
+        (response: ResultService) => {
+          this.resultMessage = `Status: ${response.statusCode}, Message: ${response.message}`;
+        },
+        (error) => {
+          // Handle error response
+          console.error('Error changing password', error);
+          this.resultMessage = 'An error occurred. Please try again.';
+        }
+      )
+
     } else {
       Object.values(this.changePswForm.controls).forEach(control => {
         if (control.invalid) {
