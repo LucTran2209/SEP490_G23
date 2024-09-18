@@ -9,6 +9,6 @@ namespace BE.Domain.Entities.Roles
         public Guid Id { get; set; }
         public string RoleName { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public ICollection<UserRole>? UserRoles { get; set; }
+        public virtual ICollection<UserRole>? UserRoles { get; set; }
     }
 }

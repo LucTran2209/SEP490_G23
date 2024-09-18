@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using BE.Domain.Entities.ActivityLogs;
+using BE.Domain.Entities.Rentals;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +14,13 @@ namespace BE.Persistence.Common
         internal const string Users = nameof(Users);
         internal const string Roles = nameof(Roles);
         internal const string UserRoles = nameof(UserRoles);
-        internal const string RefreshTokens = nameof(RefreshTokens);
-
-        // Table Business
-        internal const string Products = nameof(Products);
-
-        internal static string Buildings = nameof(Buildings);
-        internal static string Rooms = nameof(Rooms);
-        
+        internal const string Groups = nameof(Groups);
+        internal const string UserGroups = nameof(UserGroups);
+        internal const string Rentals = nameof(Rentals);
+        internal const string RentalRequests = nameof(RentalRequests);
+        internal const string ActivityLogs = nameof(ActivityLogs);
+        internal const string Categories = nameof(Categories);
+        internal const string FieldCategories = nameof(FieldCategories);
+        internal const string Products = nameof(Products);       
     }
 }
