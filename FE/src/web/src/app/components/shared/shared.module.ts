@@ -15,7 +15,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzResultModule } from 'ng-zorro-antd/result'
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -26,7 +30,11 @@ const ANTD_MODULES = [
   NzInputNumberModule,
   NzCheckboxModule,
   NzAlertModule,
-  NzResultModule
+  NzResultModule,
+  NzIconModule,
+  NzMenuModule,
+  NzBadgeModule,
+  NzAvatarModule,
 ]
 
 const SHARED_MODULES = [

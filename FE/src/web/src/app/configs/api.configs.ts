@@ -13,6 +13,11 @@ export const AuthSlug = {
         label: 'forgot passowrd',
         title: 'forgot password | MOERRA',
         api: 'forgot password'  
+    },
+    ChangePassWord: {
+        label: 'change passowrd',
+        title: 'change password | MOERRA',
+        api: 'change password'  
     }
 }
 

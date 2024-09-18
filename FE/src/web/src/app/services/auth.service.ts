@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
-import { ILoginRequest } from '../interfaces/account.interface';
+import { IChangePassword, ILoginRequest } from '../interfaces/account.interface';
 import { AuthSlug } from '../configs/api.configs';
 import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
 import { getCookie, replaceCookie } from '../utils/cookie.helper';
@@ -126,5 +126,8 @@ export class AuthService {
     })
   }
   //test
+  changepassword(data: any){
+    return this.httpClient.post(AuthSlug.ChangePassWord.api, data);
+  }
 
 }

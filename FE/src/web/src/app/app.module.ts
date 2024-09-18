@@ -21,11 +21,12 @@ import { authFeature } from './features/auth/state/auth.feature';
 import { AuthEffect } from './features/auth/state/auth.effects';
 import { userFeature } from './features/users/state/user.feature';
 import { UserEffects } from './features/users/state/user.effects';
+import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LayoutDashboardComponent],
   imports: [
     SharedModule,
     BrowserModule,
