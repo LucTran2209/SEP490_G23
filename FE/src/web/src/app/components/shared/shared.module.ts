@@ -6,7 +6,6 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { ButtonComponent } from '../core/button/button.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AnonymousComponent } from '../anonymous/anonymous.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -16,6 +15,13 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzResultModule } from 'ng-zorro-antd/result'
+import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { environment } from '../../../environments/environment.development';
+import { GoogleSigninComponent } from '../google-signin/google-signin.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NumberOnlyDirective } from '../../directives/number-only.directive';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { LoadingComponent } from '../core/loading/loading.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -26,12 +32,16 @@ const ANTD_MODULES = [
   NzInputNumberModule,
   NzCheckboxModule,
   NzAlertModule,
-  NzResultModule
+  NzResultModule,
+  NzIconModule,
+  NzSpinModule
 ]
 
 const SHARED_MODULES = [
-  ButtonComponent,
   AnonymousComponent,
+  GoogleSigninComponent,
+  NumberOnlyDirective,
+  LoadingComponent
 ]
 
 @NgModule({
@@ -44,6 +54,23 @@ const SHARED_MODULES = [
     CommonModule, FormsModule, ReactiveFormsModule, ...ANTD_MODULES,...SHARED_MODULES ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              environment.googleID
+            )
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
   ]
   
 

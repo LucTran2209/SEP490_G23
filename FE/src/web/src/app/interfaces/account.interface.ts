@@ -1,13 +1,26 @@
 import { USER_ROLE } from "../utils/constant";
 
 export interface ILoginRequest {
-    email: string;
+    username: string;
     password: string;
   }
 
 
+  export interface ILoginResponse {
+    accessToken: string
+  }
+
+  export interface IExternalLoginRequest{
+    credential: string
+}
+
+
   export interface IForgotPassword{
-    
+    email: string
+  }
+
+  export interface IForgotPasswordResponse {
+    optcode: string
   }
 
   export interface IAccount {

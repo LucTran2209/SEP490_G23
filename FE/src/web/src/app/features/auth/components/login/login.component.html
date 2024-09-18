@@ -1,38 +1,49 @@
-<div class="login_wrapper container-fluid min-h-screen">
-    <section class="container_login_form absolute bg-white p-3 rounded-md  w-72 sm:w-[500px]">
-        <div class="text-center">
-            <div class="image_logo">
-                <img src="assets/images/logo.png" alt="logo_image.png" srcset="" class="w-full" />
-            </div>
-        </div>
-        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-            <nz-form-item>
-                <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="email" class="text-start">Email</nz-form-label>
-                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="The input is not valid Email!">
-                    <nz-input-group nzPrefixIcon="email">
-                        <input nz-input formControlName="email" id="email" placeholder="(+84) 032-7033-756"/>
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="password" class="text-start">Password</nz-form-label>
-                <nz-form-control nzErrorTip="Please input your Password!">
-                    <nz-input-group nzPrefixIcon="lock">
-                        <input type="password" nz-input formControlName="password" placeholder="Password" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <div nz-row class="login-form-margin">
-                <div nz-col [nzSpan]="12">
-                    <label nz-checkbox formControlName="remember">
-                        <span>Remember me</span>
-                    </label>
-                </div>
-                <div nz-col [nzSpan]="12">
-                    <a class="login-form-forgot" routerLink="/auth/forgot-password">Forgot password</a>
+  {{(isProcessLoading$ | async)}}
+  <div class="login_wrapper container-fluid min-h-screen">
+        <section class="container_login_form absolute bg-white p-3 rounded-md  w-72 sm:w-[500px]">
+            <div class="text-center">
+                <div class="image_logo">
+                    <img src="assets/images/logo.png" alt="logo_image.png" srcset="" class="w-full" />
                 </div>
             </div>
-            <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-        </form>
-    </section>
-</div>
+            <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="username"
+                        class="text-start">Tên người dùng</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="The input is not valid Username!">
+                        <nz-input-group>
+                            <input nz-input formControlName="username" id="username" placeholder="example@gmail.com" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="password"
+                        class="text-start">Mật Khẩu</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input your Password!">
+                        <nz-input-group nzPrefixIcon="lock">
+                            <input type="password" nz-input formControlName="password" placeholder="Password"
+                                name="password" autocomplete="on" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <div nz-row class="login-form-margin">
+                    <div nz-col [nzSpan]="12">
+                        <label nz-checkbox formControlName="remember">
+                            <span>Ghi nhớ</span>
+                        </label>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                        <a class="login-form-forgot" routerLink="/auth/forgot-password">Quên mật khẩu </a>
+                    </div>
+                </div>
+                <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" [nzLoading]="(isProcessLoading$ | async) === 'loading'">Đăng nhập</button>
+                
+            </form>
+            <p class="text-center font-semibold text-lg">or</p>
+            <app-google-signin
+            (loginWithGoogle)="googleSignin($event)"
+            ></app-google-signin>
+    
+        </section>
+    
+    </div>

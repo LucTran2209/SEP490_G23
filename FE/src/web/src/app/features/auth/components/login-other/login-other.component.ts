@@ -5,6 +5,9 @@ import { ILoginRequest } from '../../../../interfaces/account.interface';
 import { login } from '../../state/auth.actions';
 import { AuthService } from '../../../../services/auth.service';
 import { FeatureAppState } from '../../../../store/featureApp.state';
+import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { Observable } from 'rxjs';
+import { LoadingService } from '../../../../services/loading.service';
 
 @Component({
   selector: 'app-login-other',
@@ -12,18 +15,24 @@ import { FeatureAppState } from '../../../../store/featureApp.state';
   styleUrl: './login-other.component.scss'
 })
 export class LoginOtherComponent implements OnInit {
+  isProcessLoading$?: Observable<StatusProcess>;
+
   constructor(
     private fb: NonNullableFormBuilder,
     private store: Store<FeatureAppState>,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private loadingService: LoadingService
+  ) { 
+
+    this.isProcessLoading$ = this.loadingService.status$;
+  }
 
   validateForm: FormGroup<{
-    email: FormControl<string>;
+    username: FormControl<string>;
     password: FormControl<string>;
     remember: FormControl<boolean>;
   }> = this.fb.group({
-    email: ['', [Validators.required]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required]],
     remember: [true]
   });
@@ -33,12 +42,12 @@ export class LoginOtherComponent implements OnInit {
 
   }
 
-  /**method: get email
+  /**method: get username
    * paramerter: no parameter
-   * puporse: take email from instance validateForm
+   * puporse: take username from instance validateForm
    */
-  get email(): FormControl<string> {
-    return this.validateForm.get('email') as FormControl;
+  get username(): FormControl<string> {
+    return this.validateForm.get('username') as FormControl;
   }
 
   /**method: get passowrd
@@ -52,7 +61,7 @@ export class LoginOtherComponent implements OnInit {
   submitForm(): void {
     if (this.validateForm.valid) {
       let data: ILoginRequest = {
-        email: this.email.value, password: this.password.value
+        username: this.username.value, password: this.password.value
       }
       this.store.dispatch(login({data}))
       this.authService.routerLinkRedirectURLSubject.next('admin');

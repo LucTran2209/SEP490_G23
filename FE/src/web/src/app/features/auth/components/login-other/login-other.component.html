@@ -7,10 +7,10 @@
         </div>
         <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
             <nz-form-item>
-                <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="email" class="text-start">email</nz-form-label>
-                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="The input is not valid Email!">
+                <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="username" class="text-start">username</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="The input is not valid Username!">
                     <nz-input-group>
-                        <input nz-input formControlName="email" id="email" placeholder="email"/>
+                        <input nz-input formControlName="username" id="username" placeholder="username"/>
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
