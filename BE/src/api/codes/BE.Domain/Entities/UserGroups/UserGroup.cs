@@ -5,7 +5,7 @@ using BE.Domain.Entities.Users;
 namespace BE.Domain.Entities.UserGroups
 {
     public class UserGroup : EntityAuditBase
-    {
+    {  
         public Guid UserId { get; set; }
         public Guid GroupId { get; set; }
         public bool IsAdminGroup {  get; set; }

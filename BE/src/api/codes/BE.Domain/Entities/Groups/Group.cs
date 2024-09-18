@@ -11,6 +11,6 @@ namespace BE.Domain.Entities.Groups
         public string Description {  get; set; } = null!;
         public string Rule { get; set; } = null!;
         public string AvatarGroup { get; set; } = null!;
-        public ICollection<UserGroup>? UserGroups { get; set; }
+        public virtual ICollection<UserGroup>? UserGroups { get; set; }
     }
 }
