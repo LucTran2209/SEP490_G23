@@ -1,6 +1,7 @@
 ﻿using BE.Domain.Abstractions;
 using BE.Domain.Abstractions.IEntities;
 using BE.Domain.Entities.Categories;
+using BE.Domain.Entities.Rentals;
 
 namespace BE.Domain.Entities.Products
 {
@@ -14,6 +15,7 @@ namespace BE.Domain.Entities.Products
         public int Quantity { get; set; }
         public string Images { get; set; } = null!;
         public Guid CategoryId { get; set; }
+        public virtual Rental? Rental { get; set; }
         public virtual Category? Category { get; set; }
     }
 }

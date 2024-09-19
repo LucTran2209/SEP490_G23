@@ -25,6 +25,5 @@ namespace BE.Domain.Entities.Users
         public virtual ICollection<UserRole>? UserRoles { get; set; }
         public virtual ICollection<UserGroup>? UserGroups { get; set; }
         public virtual ICollection<Rental>? Rentals { get; set; }
-        public virtual ICollection<RentalRequest>? RentalRequests { get; set; }
     }
 }
