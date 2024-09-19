@@ -16,5 +16,10 @@
 	  <ProjectReference Include="..\BE.Infrastructure\BE.Infrastructure.csproj" />
 	  <ProjectReference Include="..\BE.Persistence\BE.Persistence.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Services\Roles\Validators\" />
+	  <Folder Include="Services\Roles\RoleServiceOutputDto\" />
+	  <Folder Include="Services\Roles\RolerServiceInputDto\" />
+	</ItemGroup>
 
 </Project>
