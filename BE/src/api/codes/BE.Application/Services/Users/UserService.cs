@@ -1,16 +1,14 @@
 ﻿using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
-using BE.Application.Extensions;
 using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BE.Application.Services.Users
 {
-    public class UserService : BaseService, IUserService
+	public class UserService : BaseService, IUserService
     {
         private readonly IValidator<CreateUserInputDto> createUserValidator;
 
