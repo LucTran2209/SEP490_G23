@@ -24,18 +24,31 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<User> GetAll()
         {
-            var query = context.Users.AsQueryable();
+            var query = context.Users.ToList();
+            return (IQueryable<User>)query;
+        }
+
+        public async Task<List<User>> GetAllUser()
+        {
+            var query = await context.Users.ToListAsync();
             return query;
+        }
+
+        public User GetByName(string username)
+        {
+            var n = context.Users.SingleOrDefault(u => u.UserName == username);
+            return n;
         }
 
         public async void Insert(User entity)
         {
             await context.Users.AddAsync(entity);
         }
- 
-        public void Update(User entity)
+
+        public async void Update(User entity)
         {
             context.Users.Update(entity);
         }
+
     }
 }

@@ -1,11 +1,9 @@
 ﻿using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
-using BE.Application.Extensions;
 using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BE.Application.Services.Users
@@ -33,13 +31,40 @@ namespace BE.Application.Services.Users
             };
         }
 
-        public async Task<ResultService> GetListUserAsync(GetListUserInputDto inputDto)
+        public async Task<ResultService> FindUserAsync(FindUserInputDto inputDto)
         {
-           
+            var r = unitOfWork.UserRepository.GetByName(inputDto.UserName);
+
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "Success",
+                Datas = r
+            };
+        }
+
+        public async Task<ResultService> GetListUserAsync(GetListUserInputDto inputDto)
+        {
+            var r = unitOfWork.UserRepository.GetAllUser();
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.OK.ToString(),
+                Message = "Success",
+                Datas = r
+            };
+        }
+
+        public async Task<ResultService> UpadteUserAsync(UpadteUserInputDto inputDto)
+        {
+            var r = unitOfWork.UserRepository.GetByName(inputDto.UserName);
+            r = inputDto.updateuser();
+            unitOfWork.UserRepository.Update(r);
+            await unitOfWork.SaveChangesAsync();
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.OK.ToString(),
+                Message = "Success",
+
             };
         }
     }

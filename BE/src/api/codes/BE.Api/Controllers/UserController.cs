@@ -37,5 +37,11 @@ namespace BE.Api.Controllers
             var output = await userService.GetListUserAsync(inputDto);
             return Ok(output);
         }
+        [HttpGet("FindByUserName")]
+        public async Task<IActionResult> GetUserByUserNameAsync([FromQuery] FindUserInputDto inputDto)
+        {
+            var output = await userService.FindUserAsync(inputDto);
+            return Ok(output);
+        }
     }
 }
