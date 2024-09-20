@@ -22,6 +22,15 @@ namespace BE.Infrastructure.Repositories
             return user;
         }
 
+        public async Task<User> FirstOrDefaultAsync(string userName, string password)
+        {
+            var user = await context.Users.Include(u => u.UserRoles)
+                                            .ThenInclude(ur => ur.Role)
+                                            .FirstOrDefaultAsync(x => x.UserName == userName && x.Password == password);
+            
+            return user;
+        }
+
         public IQueryable<User> GetAll()
         {
             var query = context.Users.AsQueryable();
@@ -32,7 +41,7 @@ namespace BE.Infrastructure.Repositories
         {
             await context.Users.AddAsync(entity);
         }
- 
+
         public void Update(User entity)
         {
             context.Users.Update(entity);
