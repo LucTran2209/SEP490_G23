@@ -5,6 +5,7 @@ import { LoginOtherComponent } from './features/auth/components/login-other/logi
 import { authGuard } from './guards/auth.guard';
 import { USER_ROLE } from './utils/constant';
 import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
+import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
 
 
 const routes: Routes = [
