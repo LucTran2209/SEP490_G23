@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
-import { IExternalLoginRequest, IForgotPassword, IForgotPasswordResponse, ILoginRequest, ILoginResponse } from '../interfaces/account.interface';
+import { IExternalLoginRequest, IForgotPassword, IForgotPasswordResponse, ILoginRequest, ILoginResponse, IRegisterRequest } from '../interfaces/account.interface';
 import { AuthSlug } from '../configs/api.configs';
 import { BehaviorSubject, combineLatest, debounceTime, map, Observable, of, tap } from 'rxjs';
 import { getCookie, removeAllCookies, removeCookie, replaceCookie } from '../utils/cookie.helper';
@@ -177,8 +177,8 @@ export class AuthService {
     return this.httpClient.post<BaseResponseApi<any>>(AuthSlug.ResetPassWord.api);
   }
 
-  register(){
-
+  register(data: IRegisterRequest): Observable<BaseResponseApi<IRegisterRequest>>{
+    return this.httpClient.post<BaseResponseApi<IRegisterRequest>>(AuthSlug.Register.api, data);
   }
   
   renewToken(): Observable<BaseResponseApi<string>> {

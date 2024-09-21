@@ -1,6 +1,7 @@
 module.exports = {
   content: ['./src/**/*.html', './src/**/*.ts'],
   theme: {
+   
     screens: {
       sm: '576px',
       md: '768px',
@@ -9,6 +10,12 @@ module.exports = {
       xxl: '1600px',
     },
     extend: {
+      backgroundImage: {
+        'bg-2': "url('../src/assets/images/bg-2.png')",
+        'bg-reset-psw': "url('../src/assets/images/reset-psw.png')",
+        'bg-4': "url('../src/assets/images/bg-4.png')",
+        'bg-for-rent': "url('../src/assets/images/for-rent.png')",
+      },
       spacing: {
         '9/16': '56.25%',
       },

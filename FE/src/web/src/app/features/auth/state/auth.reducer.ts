@@ -8,6 +8,8 @@ const initialState: AuthState = {
     dataUser: [],
     isAuthenticated: false,
     message: null,
+    errorRegister: null,
+    messageRegister: null,
     status: 'idle',
     isRecoveringPassword: false,
     isRecoveredPassword: false
@@ -27,5 +29,8 @@ export const authReducer = createReducer(
     on(AuthActions.checkOtpCode, (state, action) => ({ ...state, status: 'loading' as StatusProcess })),
     on(AuthActions.checkOtpCode, (state, action) => ({ ...state, isRecoveringPassword: true, status: 'loaded' as StatusProcess })),
     on(AuthActions.checkOtpCode, (state, action) => ({ ...state, isRecoveredPassword: true, isRecoveringPassword: false, status: 'error' as StatusProcess })),
+    on(AuthActions.register, (state, action) => ({ ...state, status: 'loading' as StatusProcess })),
+    on(AuthActions.register_success, (state, action) => ({ ...state, messageRegister: action.message, status: 'loaded' as StatusProcess })),
+    on(AuthActions.register_failure, (state, action) => ({ ...state, errorRegister: action.error, status: 'error' as StatusProcess }))
 
 )

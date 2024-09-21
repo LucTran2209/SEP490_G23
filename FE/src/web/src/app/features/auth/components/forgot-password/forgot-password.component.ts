@@ -3,7 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { map, Observable, range, takeWhile, timeout, timer } from 'rxjs';
 import { countDownTimer } from '../../../../utils/anonymous.helper';
 import { ItimeClock } from '../../../../interfaces/anonymous.interface';
-import { IForgotPassword } from '../../../../interfaces/account.interface';
 
 @Component({
   selector: 'app-forgot-password',

@@ -1,6 +1,6 @@
 import { HttpEventType, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs';
-import { mapApiResponse } from '../utils/transform.helper';
+// import { mapApiResponse } from '../utils/transform.helper';
 export const responseInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
@@ -16,7 +16,7 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
             ...rest
           };
 
-          modifiedBody = mapApiResponse(modifiedBody);
+          // modifiedBody = mapApiResponse(modifiedBody);
 
           return event.clone({
             body: modifiedBody

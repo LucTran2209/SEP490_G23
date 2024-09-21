@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { LoadingService } from '../../../services/loading.service';
-import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-loading',
@@ -14,20 +12,12 @@ export class LoadingComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    // private _loading: LoadingService
 
   ) { }
 
  
   ngOnInit(): void {
-    // this.listenToLoading();
   }
 
-  // listenToLoading(): void {
-  //   this._loading.loadingSub
-  //     .pipe(delay(2000))
-  //     .subscribe((loading) => {
-  //       this.isProcessLoading = loading;
-  //     });
-  // }
+
 }

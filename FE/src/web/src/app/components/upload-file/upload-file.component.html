@@ -1,0 +1,11 @@
+<nz-upload class="avatar-uploader"  
+nzName="avatar" [className]="" [nzListType]="'picture-card'" [nzShowUploadList]="false"
+[nzAccept]="typeFileAccept"
+[nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
+@if (!imageBase64) {
+<span class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></span>
+<div class="ant-upload-text">Tải lên</div>
+} @else {
+<img [src]="imageBase64" style="width: 100%" />
+}
+</nz-upload>

@@ -6,11 +6,13 @@ import { LoginOtherComponent } from './components/login-other/login-other.compon
 import { AuthSlug } from '../../configs/api.configs';
 import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AuthLayoutComponent } from '../../components/layout/auth-layout/auth-layout.component';
+import { imageResolver } from '../../resolvers/image.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    pathMatch:'prefix',
+    pathMatch: 'prefix',
     redirectTo: 'login',
   },
   {
@@ -24,21 +26,29 @@ const routes: Routes = [
     title: AuthSlug.LoginOther.title
   },
   {
-    path: 'forgot-password',
-    component: ForgotPasswordComponent,
-    title: AuthSlug.ForgotPassWord.title
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    title: AuthSlug.Register.title
-  },
-  {
-    path: 'reset-password',
-    component: ResetPasswordComponent,
-    title: AuthSlug.ResetPassWord.title
-  },
-
+    path: '',
+    component: AuthLayoutComponent,
+    resolve: {
+      imageResolve: imageResolver
+    },
+    children: [
+      {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
+        title: AuthSlug.ForgotPassWord.title
+      },
+      {
+        path: 'reset-password',
+        component: ResetPasswordComponent,
+        title: AuthSlug.ResetPassWord.title
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+        title: AuthSlug.Register.title,
+      }
+    ]
+  }
 ];
 
 @NgModule({

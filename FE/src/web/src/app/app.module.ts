@@ -24,10 +24,11 @@ import { HydrationEffects } from './store/hydration/hydration.effects';
 import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
+import { AuthLayoutComponent } from './components/layout/auth-layout/auth-layout.component';
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AuthLayoutComponent],
   imports: [
     SharedModule,
     BrowserModule,

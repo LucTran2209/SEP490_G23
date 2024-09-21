@@ -16,7 +16,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
+        
         const { status } = error;
         if (status === 500) return this.handleApiError(req, next, error);
         if (status === 400) return this.handleBadRequest(req, next, error);
@@ -37,10 +37,14 @@ export class httpErrorInterceptor implements HttpInterceptor {
   }
 
   protected handleApiError(request: HttpRequest<any>, next: HttpHandler, error: HttpErrorResponse) {
+    const {} = error
+    console.log('>>> http-error interceptor: ',error);
+    this.message.create('error', 'Đã xảy ra lỗi nội bộ. Vui lòng thử lại sau.');
     return throwError(() => error);
   }
 
   protected handleBadRequest(request: HttpRequest<any>, next: HttpHandler, error: HttpErrorResponse) {
+  
     return throwError(() => error);
   }
 

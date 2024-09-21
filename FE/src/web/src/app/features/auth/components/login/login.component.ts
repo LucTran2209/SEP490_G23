@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 import { login, login_external } from '../../state/auth.actions';
 import { delay, Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
-import { selectStatus } from '../../state/auth.feature';
 import { LoadingService } from '../../../../services/loading.service';
 
 @Component({

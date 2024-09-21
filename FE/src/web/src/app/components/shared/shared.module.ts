@@ -22,6 +22,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { LoadingComponent } from '../core/loading/loading.component';
+import { SvgIconComponent } from '../core/svg-icon/svg-icon.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { SelectItemComponent } from '../core/select-item/select-item.component';
+import { UploadFileComponent } from '../upload-file/upload-file.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -34,14 +41,21 @@ const ANTD_MODULES = [
   NzAlertModule,
   NzResultModule,
   NzIconModule,
-  NzSpinModule
+  NzSpinModule,
+  NzRadioModule,
+  NzDatePickerModule,
+  NzUploadModule,
+  NzSelectModule
 ]
 
 const SHARED_MODULES = [
   AnonymousComponent,
   GoogleSigninComponent,
   NumberOnlyDirective,
-  LoadingComponent
+  LoadingComponent,
+  SvgIconComponent,
+  SelectItemComponent,
+  UploadFileComponent
 ]
 
 @NgModule({
