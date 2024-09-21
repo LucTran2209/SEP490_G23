@@ -1,6 +1,7 @@
 import { USER_ROLE } from "../utils/constant";
 
 export interface ILoginRequest {
+<<<<<<< HEAD
   username: string;
   password: string;
 }
@@ -49,4 +50,17 @@ export interface IAccount {
   isActive?: boolean;
   slug?: string;
   avatar?: string;
+=======
+    username: string;
+    password: string;
+}
+export interface IChangePassword {
+  currentPassword: string;
+  newPassword: string;
+}
+export interface ResultService {
+  statusCode: number;
+  message: string;
+  datas?: {};
+>>>>>>> dev/fe/user-management/list-user
 }

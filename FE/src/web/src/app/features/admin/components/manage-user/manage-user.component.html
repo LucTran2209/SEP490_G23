@@ -1,1 +1,128 @@
-<p>manage-user works!</p>
+<div class="bg-light container">
+  <div class="row flex-nowrap">
+    <div class="col py-3 m-3">
+      <div class="card mt">
+        <h1 class="text-3xl">Danh sách người dùng</h1>
+        <div class="flex justify-between mt-5">
+          <div class="search-bar w-25 ms-0">
+            <form class="search-form d-flex align-items-center">
+              <input
+                class="form-control w-96"
+                type="text"
+                name="query"
+                placeholder="Tìm kiếm người dùng..."
+                title="Enter search keyword"
+                [(ngModel)]="searchText"
+                (keyup.enter)="onSearch()"
+              />
+              <button type="submit" title="Search">
+                <span
+                  class="text-xl"
+                  nz-icon
+                  nzType="search"
+                  nzTheme="outline"
+                ></span>
+              </button>
+            </form>
+          </div>
+          <button class="btn btn-outline-primary btn-add">
+            <span
+              class="text-2xl"
+              nz-icon
+              nzType="user-add"
+              nzTheme="outline"
+            ></span>
+          </button>
+        </div>
+
+        <table class="mt-2">
+          <thead class="table-primary">
+            <tr class="th-product">
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">No.</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Tên Người Dùng</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Email</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Địa Chỉ</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Số Điện Thoại</span>
+              </th>
+              <th class="p-3 text-secondary text-uppercase">
+                <span class="name">Trạng Thái</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Hoạt Động</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="tr-product">
+              <td>
+                <span class="name text-secondary p-3 text-center">
+                  <!-- {{
+                    i + 1 | number : "2.0"
+                  }} -->
+                  01
+                </span>
+              </td>
+              <td>
+                <div class="flex justify-center">
+                  <img
+                    class="rounded-full w-16 h-16"
+                    src="https://cdn-icons-png.flaticon.com/512/1458/1458201.png"
+                    alt="image-product"
+                  />
+                  <span class="name text-secondary p-3 mt-3">
+                    Nguyen Van A
+                  </span>
+                </div>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  a123&#64;gmail.com
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  Hà Nội
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  0123445667
+                </span>
+              </td>
+              <td class="p-3 flex justify-center">
+                <!-- @if(item.quantity > 0){
+                  <p class="active">Active</p>
+                  }@else{
+                  <p class="inactive">Inactive</p>
+                  } -->
+                <p class="active">Active</p>
+              </td>
+              <td>
+                <div class="flex flex-wrap justify-center p-3">
+                  <a class="text-red-600"
+                    ><span
+                      class="text-lg name"
+                      nz-icon
+                      nzType="delete"
+                      nzTheme="outline"
+                      (click)="showDeleteConfirm()"
+                    ></span
+                  ></a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

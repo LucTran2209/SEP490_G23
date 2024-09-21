@@ -63,6 +63,7 @@ export const AuthSlug = {
     ForgotPassWord: {
         label: 'forgot password',
         title: 'forgot password | MOERRA',
+<<<<<<< HEAD
         api: 'api/user/forgotpassword'
     } as ForgotPasswordAction,
     ResetPassWord: {
@@ -85,4 +86,46 @@ export const AuthSlug = {
         api: 'renew-token'
     } as RenewTokenAction
 };
+=======
+        api: 'forgot password'  
+    },
+    ChangePassWord: {
+        label: 'change passowrd',
+        title: 'change password | MOERRA',
+        api: 'change password'  
+    }
+}
+export const UserSlug = {
+    AddUser: {
+        label: 'Add User',
+        title: 'Add User | MOERRA',
+        api: 'AddUser'  
+    },
+    ListUser: {
+        label: 'List User',
+        title: 'List User | MOERRA',
+        api: 'list user'
+    },
+    FilterUser: {
+        label: 'Filter User',
+        title: 'Filter User| MOERRA',
+        api: 'FilterUser'
+    },
+    GetUser: {
+        label: 'Get User',
+        title: 'Get User | MOERRA',
+        api: 'GetUser'  
+    },
+    UpdateUser: {
+        label: 'Update User',
+        title: 'Update User | MOERRA',
+        api: 'Update User'  
+    },
+    ActiveUser: {
+        label: 'Active User',
+        title: 'Active User | MOERRA',
+        api: 'ActiveUser'  
+    }
+}
+>>>>>>> dev/fe/user-management/list-user
 

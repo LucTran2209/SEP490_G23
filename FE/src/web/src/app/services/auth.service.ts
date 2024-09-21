@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
+<<<<<<< HEAD
 import { IExternalLoginRequest, IForgotPassword, IForgotPasswordResponse, ILoginRequest, ILoginResponse, IRegisterRequest } from '../interfaces/account.interface';
+=======
+import { IChangePassword, ILoginRequest, ResultService } from '../interfaces/account.interface';
+>>>>>>> dev/fe/user-management/list-user
 import { AuthSlug } from '../configs/api.configs';
 import { BehaviorSubject, combineLatest, debounceTime, map, Observable, of, tap } from 'rxjs';
 import { getCookie, removeAllCookies, removeCookie, replaceCookie } from '../utils/cookie.helper';
@@ -149,6 +153,12 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
   }
   //test
+  // changepassword(data: IChangePassword): Observable<ResultService>{
+  //   return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});
+  // }
+  changepassword(data: IChangePassword){
+    return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});
+  }
 
 
   /**

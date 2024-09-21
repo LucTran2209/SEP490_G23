@@ -1,0 +1,67 @@
+<nz-layout class="main-layout">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <img class="logo" src="assets/images/logo.png" alt="" />
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item>
+        <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
+        <span>DashBoard</span>
+      </li>
+      <li nz-menu-item>
+        <span nz-icon nzType="user" nzTheme="outline"></span>
+        <span>User</span>
+      </li>
+      <li nz-menu-item>
+        <span nz-icon nzType="apartment" nzTheme="outline"></span>
+        <span>Role</span>
+      </li>
+      <li nz-menu-item>
+        <span nz-icon nzType="team" nzTheme="outline"></span>
+        <span>Group</span>
+      </li>
+      <!-- <li nz-submenu nzTitle="User" nzIcon="user">
+        <ul>
+          <li nz-menu-item>List User</li>
+          <li nz-menu-item>Bill</li>
+          <li nz-menu-item>Alex</li>
+        </ul>
+      </li> -->
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="flex justify-between">
+      <span
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></span>
+      <div>
+        <nz-badge [nzCount]="5">
+          <span
+            class="noffication"
+            nz-icon
+            nzType="bell"
+            nzTheme="outline"
+          ></span>
+        </nz-badge>
+        <nz-avatar
+          nzGap="4"
+          nzText="N"
+          nzSize="large"
+          style="
+            vertical-align: middle;
+            background-color: green;
+            margin-left: 40px;
+          "
+        ></nz-avatar>
+      </div>
+    </nz-header>
+    <nz-content>
+      <!-- <nz-breadcrumb>
+        <nz-breadcrumb-item>User</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+      </nz-breadcrumb> -->
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
