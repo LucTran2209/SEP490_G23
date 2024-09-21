@@ -1,0 +1,195 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzMaskClosable]="true"
+  [nzWidth]="'800px'"
+>
+  <ng-container *nzModalContent>
+    <form
+      #userForm="ngForm"
+      class="font-mono"
+      nz-form
+      (ngSubmit)="submitForm()"
+      novalidate
+    >
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="userName" nzRequired>
+          <span>Tên Người Dùng</span>
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng điền tên người dùng!"
+        >
+          <input
+            nz-input
+            id="userName"
+            name="userName"
+            [(ngModel)]="user.userName"
+            #userName="ngModel"
+            required
+          />
+          <div *ngIf="userName.invalid && userName.touched" class="error">
+            Tên người dùng là bắt buộc
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fullName" nzRequired>
+          <span>Họ và Tên</span>
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng điền họ và tên!"
+        >
+          <input
+            nz-input
+            id="fullName"
+            name="fullName"
+            [(ngModel)]="user.fullName"
+            #fullName="ngModel"
+            required
+          />
+          <div *ngIf="fullName.invalid && fullName.touched" class="error">
+            Họ và tên là bắt buộc
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="email" nzRequired
+          >E-mail</nz-form-label
+        >
+        <nz-form-control [nzSpan]="14" nzErrorTip="Vui lòng điền email!">
+          <input
+            nz-input
+            name="email"
+            type="email"
+            id="email"
+            [(ngModel)]="user.email"
+            #email="ngModel"
+            required
+            email
+          />
+          <div *ngIf="email.invalid && email.touched" class="error">
+            Vui lòng nhập email hợp lệ
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired
+          >Số Điện Thoại</nz-form-label
+        >
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng điền số điện thoại!"
+        >
+          <input
+            name="phoneNumber"
+            id="phoneNumber"
+            nz-input
+            [(ngModel)]="user.phoneNumber"
+            #phoneNumber="ngModel"
+            required
+            pattern="^[0-9]*$"
+          />
+          <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
+            Số điện thoại không hợp lệ
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address" nzRequired>
+          <span>Địa Chỉ</span>
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng điền địa chỉ!"
+        >
+          <input
+            nz-input
+            id="address"
+            name="address"
+            [(ngModel)]="user.address"
+            #address="ngModel"
+            required
+          />
+          <div *ngIf="address.invalid && address.touched" class="error">
+            Địa chỉ là bắt buộc
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="gender" nzRequired>
+          <span>Giới Tính</span>
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng chọn giới tính!"
+        >
+          <nz-radio-group
+            id="gender"
+            name="gender"
+            [(ngModel)]="user.gender"
+            #gender="ngModel"
+            required
+          >
+            <label nz-radio [nzValue]="true">Nam</label>
+            <label nz-radio [nzValue]="false">Nữ</label>
+          </nz-radio-group>
+          <div *ngIf="gender.invalid && gender.touched" class="error">
+            Vui lòng chọn giới tính
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="dateOfBirth" nzRequired>
+          <span>Ngày Sinh</span>
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng điền ngày sinh!"
+        >
+          <nz-date-picker
+            id="dateOfBirth"
+            name="dateOfBirth"
+            [(ngModel)]="user.dateOfBirth"
+            #dateOfBirth="ngModel"
+            required
+          ></nz-date-picker>
+          <div *ngIf="dateOfBirth.invalid && dateOfBirth.touched" class="error">
+            Ngày sinh là bắt buộc
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary" [disabled]="userForm.invalid">
+            Lưu
+          </button>
+          <nz-alert
+            class="mt-4"
+            *ngIf="showAlert"
+            [nzType]="alertMessage.includes('invalid') ? 'error' : 'success'"
+            [nzMessage]="alertMessage"
+            nzShowIcon
+          >
+          </nz-alert>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

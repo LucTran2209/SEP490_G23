@@ -40,14 +40,14 @@ export class ChangePasswordComponent implements OnInit {
         newPassword: formValue.newPsw as string
       };
       this.authService.changepassword(payload).subscribe(
-        (response: ResultService) => {
-          this.resultMessage = `Status: ${response.statusCode}, Message: ${response.message}`;
-        },
-        (error) => {
-          // Handle error response
-          console.error('Error changing password', error);
-          this.resultMessage = 'An error occurred. Please try again.';
-        }
+        // (response: ResultService) => {
+        //   this.resultMessage = `Status: ${response.statusCode}, Message: ${response.message}`;
+        // },
+        // (error) => {
+        //   // Handle error response
+        //   console.error('Error changing password', error);
+        //   this.resultMessage = 'An error occurred. Please try again.';
+        // }
       )
 
     } else {
