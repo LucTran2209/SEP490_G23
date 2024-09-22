@@ -1,4 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { UserInputDto } from '../../../../interfaces/user.interface';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -8,7 +10,7 @@ import { Component, Input, OnDestroy, OnInit, signal, TemplateRef, ViewChild } f
 export class ProfileComponent implements OnInit{
   isVisible : boolean = false;
   title: string = '';
-
+  constructor(private userService: UserService) {}
   ngOnInit() {
     this.title = 'Chỉnh sửa thông tin của Nguyễn Văn A';
   }
@@ -17,6 +19,10 @@ export class ProfileComponent implements OnInit{
   }
   handleCloseModal(){
     this.isVisible = false;
+  }
+  saveUser(user: UserInputDto){
+    this.userService.updateProfile(user).subscribe(() => {
+    });
   }
 
 }

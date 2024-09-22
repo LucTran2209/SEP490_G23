@@ -3,7 +3,7 @@ import { AppHttpClientService } from './app-http-client.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UserSlug } from '../configs/api.configs';
-import { ListUserOutputDto, UserResultService } from '../interfaces/user.interface';
+import { ActiveUserInputDto, ListUserOutputDto, UserInputDto, UserResultService } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,18 +31,18 @@ export class UserService {
     return this.httpClient.get<UserResultService>(UserSlug.ListUser.api);
   }
   searchUser(): Observable<UserResultService>{
-    return this.httpClient.get<UserResultService>(UserSlug.ListUser.api);
+    return this.httpClient.get<UserResultService>(UserSlug.FilterUser.api);
   }
   viewProfile(userName: string){
     return this.httpClient.get(UserSlug.GetUser.api + userName);
   }
-  updateProfile(data : ListUserOutputDto){
-    return this.httpClient.put(UserSlug.UpdateUser.api, { updateUserInputDto: data});
+  updateProfile(data : UserInputDto){
+    return this.httpClient.post(UserSlug.UpdateUser.api, { updateProfileInputDto: data});
   }
-  addUser(data : ListUserOutputDto){
-    return this.httpClient.post(UserSlug.AddUser.api, { addUserInputDto: data});
+  addUser(data : UserInputDto){
+    return this.httpClient.put(UserSlug.AddUser.api, { addNewUserInputDto: data});
   }
-  activeUser(data : ListUserOutputDto){
-    return this.httpClient.post(UserSlug.ActiveUser.api, {activeUserDto : data})
+  activeUser(data : ActiveUserInputDto){
+    return this.httpClient.post(UserSlug.ActiveUser.api, {activeUserInputDto : data})
   }
 }
