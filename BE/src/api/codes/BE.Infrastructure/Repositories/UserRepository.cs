@@ -1,4 +1,5 @@
-﻿using BE.Domain.Entities.Users;
+﻿using BE.Domain.Entities.Roles;
+using BE.Domain.Entities.Users;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +23,11 @@ namespace BE.Infrastructure.Repositories
             return user;
         }
 
-        public async Task<User> FirstOrDefaultAsync(string userName, string password)
+        public async Task<User> FirstOrDefaultAsync(string userName)
         {
             var user = await context.Users.Include(u => u.UserRoles)
                                             .ThenInclude(ur => ur.Role)
-                                            .FirstOrDefaultAsync(x => x.UserName == userName && x.Password == password);
+                                            .FirstOrDefaultAsync(x => x.UserName == userName);
             
             return user;
         }

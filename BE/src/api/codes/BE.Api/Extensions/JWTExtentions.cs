@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using BE.Application.DependencyInjections;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace BE.Api.Extensions
     {
         public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtOption>(configuration.GetSection("JWT"));
 
             services.AddAuthentication(options =>
             {
@@ -16,7 +18,7 @@ namespace BE.Api.Extensions
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.SaveToken = true;        
+                options.SaveToken = true;
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
