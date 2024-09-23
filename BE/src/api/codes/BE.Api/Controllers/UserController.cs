@@ -55,8 +55,8 @@ namespace BE.Api.Controllers
             var output = await userService.UpadteUserAsync(inputDto);
             return Created(output.StatusCode, output);
         }
-        [HttpPost("fillteruser")]
-        public async Task<IActionResult> fillteruser([FromBody] FilterUserInputDto inputDto)
+        [HttpGet("fillteruser")]
+        public async Task<IActionResult> fillteruser([FromQuery] FilterUserInputDto inputDto)
         {
             var output = await userService.FillterUser(inputDto);
             return Created(output.StatusCode, output);
