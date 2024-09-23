@@ -1,4 +1,5 @@
-﻿using BE.Domain.Entities.Users;
+﻿using BE.Domain.Entities.Roles;
+using BE.Domain.Entities.Users;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,15 @@ namespace BE.Infrastructure.Repositories
             return user;
         }
 
+        public async Task<User> FirstOrDefaultAsync(string userName)
+        {
+            var user = await context.Users.Include(u => u.UserRoles)
+                                            .ThenInclude(ur => ur.Role)
+                                            .FirstOrDefaultAsync(x => x.UserName == userName);
+            
+            return user;
+        }
+
         public IQueryable<User> GetAll()
         {
             var query = context.Users.AsQueryable();
@@ -32,7 +42,7 @@ namespace BE.Infrastructure.Repositories
         {
             await context.Users.AddAsync(entity);
         }
- 
+
         public void Update(User entity)
         {
             context.Users.Update(entity);

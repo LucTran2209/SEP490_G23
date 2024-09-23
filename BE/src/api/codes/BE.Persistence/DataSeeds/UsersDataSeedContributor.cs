@@ -20,6 +20,19 @@ public class UsersDataSeedContributor : IDataSeedContributor
         {
             user = new User()
             {
+                Id = Guid.NewGuid(),
+                FullName = "Admin",
+                UserName = "Admin",
+                Password = "password",
+                Email = email,
+                PhoneNumber = "1234567890",
+                Address = "Ha Noi",
+                Gender = true,
+                DateOfBirth = DateTime.Now,
+                Introduction = string.Empty,
+                AvatarPersonal = string.Empty,
+                IsActive = true,
+                RefreshToken = "12212"
 
             };
 

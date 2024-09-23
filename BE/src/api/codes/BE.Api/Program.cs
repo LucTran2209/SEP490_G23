@@ -29,6 +29,7 @@ namespace BE.Api
 
             builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
+            // CORS
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -38,6 +39,9 @@ namespace BE.Api
                            .AllowAnyHeader();
                 });
             });
+
+            // JWT
+            builder.Services.AddJwtConfiguration(builder.Configuration);
 
             var app = builder.Build();
 
