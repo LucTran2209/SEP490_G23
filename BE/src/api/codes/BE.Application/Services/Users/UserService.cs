@@ -33,6 +33,7 @@ namespace BE.Application.Services.Users
         public async Task<ResultService> CreateAsync(CreateUserInputDto inputDto)
         {
             await createUserValidator.ValidateAndThrowAsync(inputDto);
+
             var user = inputDto.ToEntity();
             user.Id = new Guid();
             unitOfWork.UserRepository.Insert(user);
