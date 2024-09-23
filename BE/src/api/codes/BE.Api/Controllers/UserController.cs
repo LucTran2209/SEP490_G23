@@ -37,17 +37,11 @@ namespace BE.Api.Controllers
             var output = await userService.GetListUserAsync();
             return Ok(output);
         }
-        [HttpGet("filteruser")]
-        public async Task<IActionResult> FillterUser([FromBody] FilterUserInputDto inputDto)
-        {
-            var output = await userService.FillterUser(inputDto);
-            return Created(output.StatusCode, output);
-        }
         [HttpGet("viewprofile")]
         public async Task<IActionResult> GetUserByUserNameAsync([FromQuery] FindUserInputDto inputDto)
         {
             var output = await userService.FindUserAsync(inputDto);
-            return Ok(output);
+            return Created(output.StatusCode, output);
         }
         [HttpPut("activeuser")]
         public async Task<IActionResult> AcitiveUser([FromBody] ActiveUserInputDto inputDto)
@@ -61,6 +55,11 @@ namespace BE.Api.Controllers
             var output = await userService.UpadteUserAsync(inputDto);
             return Created(output.StatusCode, output);
         }
-
+        [HttpPost("fillteruser")]
+        public async Task<IActionResult> fillteruser([FromBody] FilterUserInputDto inputDto)
+        {
+            var output = await userService.FillterUser(inputDto);
+            return Created(output.StatusCode, output);
+        }
     }
 }
