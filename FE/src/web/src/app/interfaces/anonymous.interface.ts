@@ -13,6 +13,13 @@ export interface IDummy {
   export interface SELECTBUTTON {
     label: string, 
     value: string
-}
+
+  }
+
+  export interface ItimeClock {
+    hours?: string,
+    minutes?: string,
+    seconds?: string
+  }
 
 export type StatusProcess = 'idle' | 'loading' | 'loaded' | 'error';

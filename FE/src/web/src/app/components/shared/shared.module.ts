@@ -27,6 +27,21 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzResultModule } from 'ng-zorro-antd/result'
+import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { environment } from '../../../environments/environment.development';
+import { GoogleSigninComponent } from '../google-signin/google-signin.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NumberOnlyDirective } from '../../directives/number-only.directive';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { LoadingComponent } from '../core/loading/loading.component';
+import { SvgIconComponent } from '../core/svg-icon/svg-icon.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { SelectItemComponent } from '../core/select-item/select-item.component';
+import { UploadFileComponent } from '../upload-file/upload-file.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -48,13 +63,23 @@ const ANTD_MODULES = [
   NzSelectModule,
   NzRadioModule,
   NzDatePickerModule,
+  NzSpinModule,
+  NzRadioModule,
+  NzDatePickerModule,
+  NzUploadModule,
+  NzSelectModule
 ]
 
 const SHARED_MODULES = [
-  ButtonComponent,
   AnonymousComponent,
   BreadcrumbComponent,
   FormUserComponent,
+  GoogleSigninComponent,
+  NumberOnlyDirective,
+  LoadingComponent,
+  SvgIconComponent,
+  SelectItemComponent,
+  UploadFileComponent
 ]
 
 @NgModule({
@@ -67,6 +92,23 @@ const SHARED_MODULES = [
     CommonModule, FormsModule, ReactiveFormsModule, ...ANTD_MODULES,...SHARED_MODULES ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              environment.googleID
+            )
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
   ]
   
 

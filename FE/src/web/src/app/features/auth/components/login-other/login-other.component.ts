@@ -5,6 +5,9 @@ import { ILoginRequest } from '../../../../interfaces/account.interface';
 import { login } from '../../state/auth.actions';
 import { AuthService } from '../../../../services/auth.service';
 import { FeatureAppState } from '../../../../store/featureApp.state';
+import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { Observable } from 'rxjs';
+import { LoadingService } from '../../../../services/loading.service';
 
 @Component({
   selector: 'app-login-other',
@@ -12,11 +15,17 @@ import { FeatureAppState } from '../../../../store/featureApp.state';
   styleUrl: './login-other.component.scss'
 })
 export class LoginOtherComponent implements OnInit {
+  isProcessLoading$?: Observable<StatusProcess>;
+
   constructor(
     private fb: NonNullableFormBuilder,
     private store: Store<FeatureAppState>,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private loadingService: LoadingService
+  ) { 
+
+    this.isProcessLoading$ = this.loadingService.status$;
+  }
 
   validateForm: FormGroup<{
     username: FormControl<string>;
@@ -35,7 +44,7 @@ export class LoginOtherComponent implements OnInit {
 
   /**method: get username
    * paramerter: no parameter
-   * puporse: take email from instance validateForm
+   * puporse: take username from instance validateForm
    */
   get username(): FormControl<string> {
     return this.validateForm.get('username') as FormControl;

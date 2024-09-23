@@ -5,11 +5,15 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { LoginOtherComponent } from './components/login-other/login-other.component';
 import { AuthSlug } from '../../configs/api.configs';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AuthLayoutComponent } from '../../components/layout/auth-layout/auth-layout.component';
+import { imageResolver } from '../../resolvers/image.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    pathMatch:'prefix',
+    pathMatch: 'prefix',
     redirectTo: 'login',
   },
   {
@@ -32,7 +36,29 @@ const routes: Routes = [
     component: ChangePasswordComponent,
     title: AuthSlug.ChangePassWord.title
   },
-
+    path: '',
+    component: AuthLayoutComponent,
+    resolve: {
+      imageResolve: imageResolver
+    },
+    children: [
+      {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
+        title: AuthSlug.ForgotPassWord.title
+      },
+      {
+        path: 'reset-password',
+        component: ResetPasswordComponent,
+        title: AuthSlug.ResetPassWord.title
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+        title: AuthSlug.Register.title,
+      }
+    ]
+  }
 ];
 
 @NgModule({
