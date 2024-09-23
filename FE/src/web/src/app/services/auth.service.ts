@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
-import { IExternalLoginRequest, IForgotPassword, IForgotPasswordResponse, ILoginRequest, ILoginResponse, IRegisterRequest } from '../interfaces/account.interface';
+import { IExternalLoginRequest, IForgotPassword, IForgotPasswordResponse, ILoginRequest, ILoginResponse, IRegisterRequest, IChangePassword, ResultService } from '../interfaces/account.interface';
 import { AuthSlug } from '../configs/api.configs';
 import { BehaviorSubject, combineLatest, debounceTime, map, Observable, of, tap } from 'rxjs';
 import { getCookie, removeAllCookies, removeCookie, replaceCookie } from '../utils/cookie.helper';
@@ -186,7 +186,12 @@ export class AuthService {
       refreshToken: getCookie(STRING.REFRESH_TOKEN)
     })
   }
-
-
+  //test
+  // changepassword(data: IChangePassword): Observable<ResultService>{
+  //   return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});
+  // }
+  changepassword(data: IChangePassword){
+    return this.httpClient.post(AuthSlug.ChangePassword.api, data);
+  }
 
 }
