@@ -33,13 +33,15 @@ const routes: Routes = [
         component: RegisterComponent,
         title: AuthSlug.Register.title,
       },
-      {
-        path: 'change-password',
-        component: ChangePasswordComponent,
-        title: AuthSlug.ChangePassword.title
-      },
+      
     ]
-  }
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent,
+    title: AuthSlug.ChangePassword.title
+  },
+
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
