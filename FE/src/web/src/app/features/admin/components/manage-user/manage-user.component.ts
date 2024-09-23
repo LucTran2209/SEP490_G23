@@ -21,12 +21,12 @@ export class ManageUserComponent implements OnInit {
   }
   loadUsers(){
     this.userService.listUser().subscribe((res: UserResultService) =>{
-      this.userList = res.datas;
+      this.userList = res.datas.list;
     });
   }
   onSearch() {
     this.userService.searchUser().subscribe((res: UserResultService) =>{
-      this.userList = res.datas;
+      this.userList = res.datas.list;
     }); 
   }
   showInviteUser(){
@@ -41,20 +41,18 @@ export class ManageUserComponent implements OnInit {
     });
   }
   showDeleteConfirm(userName: string): void {
-    this.userActive.userName = userName;
-    this.userActive.isActive = false;
     this.modal.confirm({
       nzTitle: 'Ngừng Hoạt Động',
       nzContent: '<b style="color: red;">Bạn chắc chắn muốn người dùng này ngừng hoạt động không?</b>',
       nzOkText: 'Yes',
       nzOkType: 'primary',
       nzOkDanger: true,
-      nzOnOk: () => {
+      nzOnOk: () =>
+      {
         this.userActive.userName = userName;
         this.userActive.isActive = true;
         this.userService.activeUser(this.userActive).subscribe(() =>{
           this.loadUsers();
-          console.log('Ok')
         });
       },
       nzCancelText: 'No',
