@@ -1,6 +1,5 @@
 ﻿using BE.Domain.Abstractions;
 using BE.Domain.Abstractions.IEntities;
-using BE.Domain.Entities.RentalRequests;
 using BE.Domain.Entities.Rentals;
 using BE.Domain.Entities.UserGroups;
 using BE.Domain.Entities.UserRoles;

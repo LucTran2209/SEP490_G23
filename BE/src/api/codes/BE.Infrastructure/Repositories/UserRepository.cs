@@ -24,8 +24,8 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<User> GetAll()
         {
-            var query = context.Users.ToList();
-            return (IQueryable<User>)query;
+            var query = context.Users.AsQueryable();
+            return query;
         }
 
         public async Task<List<User>> GetAllUser()

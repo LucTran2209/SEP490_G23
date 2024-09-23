@@ -24,24 +24,43 @@ namespace BE.Api.Controllers
         //    return Ok(res);
         //}
 
-        [HttpPost]
+        [HttpPost("addnewuser")]
         public async Task<IActionResult> InsertAsync([FromBody] CreateUserInputDto inputDto)
         {
             var output = await userService.CreateAsync(inputDto);
             return Created(output.StatusCode, output);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetListAsync([FromQuery] GetListUserInputDto inputDto)
+        [HttpGet("listuser")]
+        public async Task<IActionResult> GetListAsync()
         {
-            var output = await userService.GetListUserAsync(inputDto);
+            var output = await userService.GetListUserAsync();
             return Ok(output);
         }
-        [HttpGet("FindByUserName")]
+        [HttpGet("filteruser")]
+        public async Task<IActionResult> FillterUser([FromBody] FilterUserInputDto inputDto)
+        {
+            var output = await userService.FillterUser(inputDto);
+            return Created(output.StatusCode, output);
+        }
+        [HttpGet("viewprofile")]
         public async Task<IActionResult> GetUserByUserNameAsync([FromQuery] FindUserInputDto inputDto)
         {
             var output = await userService.FindUserAsync(inputDto);
             return Ok(output);
         }
+        [HttpPut("activeuser")]
+        public async Task<IActionResult> AcitiveUser([FromBody] ActiveUserInputDto inputDto)
+        {
+            var output = await userService.ActiveUser(inputDto);
+            return Created(output.StatusCode, output);
+        }
+        [HttpPut("updateprofile")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpadteUserInputDto inputDto)
+        {
+            var output = await userService.UpadteUserAsync(inputDto);
+            return Created(output.StatusCode, output);
+        }
+
     }
 }
