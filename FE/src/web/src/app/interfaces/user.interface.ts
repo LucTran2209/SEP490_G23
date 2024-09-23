@@ -1,17 +1,17 @@
 // Interface for each user in the datas array
 export interface ListUserOutputDto {
-    userName: string;
-    fullName: string;
-    email: string;
-    phoneNumber: string;
-    address: string;
-    gender: boolean;  // Assuming gender is stored as boolean
-    dateOfBirth: string;
-    isActive: boolean;
+  fullName: string;
+  userName: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  gender: boolean;  // Assuming gender is stored as boolean
+  dateOfBirth: string;
+  isActive: boolean;
   }
   export interface UserInputDto {
-    userName: string;
     fullName: string;
+    userName: string;
     email: string;
     phoneNumber: string;
     address: string;
@@ -25,7 +25,14 @@ export interface ListUserOutputDto {
   
   // Interface for the service response
   export interface UserResultService {
-    statusCode: number;
+    statusCode: string;
     message: string;
-    datas: ListUserOutputDto[];  // Array of list users
+    datas: {
+      list: ListUserOutputDto[];
+    };  // Array of list users
+  }
+  export interface ProfileResultService {
+    statusCode: string;
+    message: string;
+    datas: UserInputDto; 
   }

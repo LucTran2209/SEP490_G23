@@ -102,22 +102,22 @@ export const UserSlug = {
     AddUser: {
         label: 'Add User',
         title: 'Add User | MOERRA',
-        api: 'AddUser'  
+        api: 'api/User/addnewuser'  
     },
     ListUser: {
         label: 'List User',
         title: 'List User | MOERRA',
-        api: 'list user'
+        api: 'api/User/Listuser'
     },
     FilterUser: {
         label: 'Filter User',
         title: 'Filter User| MOERRA',
-        api: 'FilterUser'
+        api: 'api/User/Filteruser'
     },
     GetUser: {
-        label: 'Get User',
-        title: 'Get User | MOERRA',
-        api: 'GetUser'  
+        label: 'View Profile',
+        title: 'View Profile | MOERRA',
+        api: 'api/user/viewprofile?UserName='  
     },
     UpdateUser: {
         label: 'Update User',
