@@ -19,16 +19,21 @@ import en from '@angular/common/locales/en';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { authFeature } from './features/auth/state/auth.feature';
 import { AuthEffect } from './features/auth/state/auth.effects';
+import { userFeature } from './features/users/state/user.feature';
+import { UserEffects } from './features/users/state/user.effects';
+import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
+import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
 import { metaReducers } from './store';
 import { HydrationEffects } from './store/hydration/hydration.effects';
 import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { AuthLayoutComponent } from './components/layout/auth-layout/auth-layout.component';
+
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent, AuthLayoutComponent],
+  declarations: [AppComponent, AuthLayoutComponent, LayoutDashboardComponent, LayoutUserComponent],
   imports: [
     SharedModule,
     BrowserModule,

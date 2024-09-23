@@ -6,29 +6,37 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+import { BreadcrumbComponent } from '../core/breadcrumb/breadcrumb.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AnonymousComponent } from '../anonymous/anonymous.component';
+import { FormUserComponent } from '../core/form/form-user/form-user.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzResultModule } from 'ng-zorro-antd/result'
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { environment } from '../../../environments/environment.development';
 import { GoogleSigninComponent } from '../google-signin/google-signin.component';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { LoadingComponent } from '../core/loading/loading.component';
 import { SvgIconComponent } from '../core/svg-icon/svg-icon.component';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { SelectItemComponent } from '../core/select-item/select-item.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
+
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -41,15 +49,23 @@ const ANTD_MODULES = [
   NzAlertModule,
   NzResultModule,
   NzIconModule,
+  NzMenuModule,
+  NzBadgeModule,
+  NzAvatarModule,
+  NzTableModule,
+  NzPopoverModule,
+  NzModalModule,
+  NzDatePickerModule,
   NzSpinModule,
   NzRadioModule,
-  NzDatePickerModule,
   NzUploadModule,
   NzSelectModule
 ]
 
 const SHARED_MODULES = [
   AnonymousComponent,
+  BreadcrumbComponent,
+  FormUserComponent,
   GoogleSigninComponent,
   NumberOnlyDirective,
   LoadingComponent,
@@ -61,8 +77,10 @@ const SHARED_MODULES = [
 @NgModule({
   declarations: [...SHARED_MODULES],
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,...ANTD_MODULES
-
+    CommonModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    ...ANTD_MODULES
   ],
   exports: [
     CommonModule, FormsModule, ReactiveFormsModule, ...ANTD_MODULES,...SHARED_MODULES ],

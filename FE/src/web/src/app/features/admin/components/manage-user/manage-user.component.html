@@ -1,1 +1,138 @@
-<p>manage-user works!</p>
+<div class="bg-light container">
+  <div class="row flex-nowrap">
+    <div class="col py-3 m-3">
+      <div class="card mt">
+        <h1 class="text-3xl">Danh sách người dùng</h1>
+        <div class="flex justify-between mt-5">
+          <div class="search-bar w-25 ms-0">
+            <form class="search-form d-flex align-items-center">
+              <input
+                class="form-control w-96"
+                type="text"
+                name="query"
+                placeholder="Tìm kiếm người dùng..."
+                title="Enter search keyword"
+                [(ngModel)]="searchText"
+                (keyup.enter)="onSearch()"
+              />
+              <button type="submit" title="Search">
+                <span
+                  class="text-xl"
+                  nz-icon
+                  nzType="search"
+                  nzTheme="outline"
+                ></span>
+              </button>
+            </form>
+          </div>
+          <button
+            class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          >
+            <span
+              class="text-2xl"
+              nz-icon
+              nzType="user-add"
+              nzTheme="outline"
+              (click)="showInviteUser()"
+            ></span>
+          </button>
+        </div>
+        <app-form-user
+          [isVisible]="isVisible"
+          [title]="title"
+          [user]="userInformation"
+          (closeModal)="handleCloseModal()"
+        ></app-form-user>
+        <table class="mt-2">
+          <thead class="table-primary">
+            <tr class="th-product">
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">No.</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Tên Người Dùng</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Email</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Địa Chỉ</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Số Điện Thoại</span>
+              </th>
+              <th class="p-3 text-secondary text-uppercase">
+                <span class="name">Trạng Thái</span>
+              </th>
+              <th class="p-3 m-1 text-secondary text-uppercase">
+                <span class="name">Hoạt Động</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of userList; let i = index" class="tr-product">
+              <td>
+                <span class="name text-secondary p-3 text-center">
+                  {{ i + 1 | number : "2.0" }}
+                  <!-- 01 -->
+                </span>
+              </td>
+              <td>
+                <div class="flex justify-center">
+                  <img
+                    class="rounded-full w-16 h-16"
+                    src="https://cdn-icons-png.flaticon.com/512/1458/1458201.png"
+                    alt="image-product"
+                  />
+                  <span class="name text-secondary p-3 mt-3">
+                    <!-- Nguyen Van A -->
+                    {{ user.fullName }}
+                  </span>
+                </div>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  <!-- a123&#64;gmail.com -->
+                  {{ user.email }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  <!-- Hà Nội -->
+                  {{ user.address }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  <!-- 0123445667 -->
+                  {{ user.phoneNumber }}
+                </span>
+              </td>
+              <td class="p-3 flex justify-center">
+                @if(user.isActive){
+                <p class="active">Hoạt đông</p>
+                }@else{
+                <p class="inactive">Không hoạt động</p>
+                }
+                <!-- <p class="active">Active</p> -->
+              </td>
+              <td>
+                <div class="flex flex-wrap justify-center p-3">
+                  <a class="text-red-600">
+                    <span
+                      class="text-lg name"
+                      nz-icon
+                      nzType="stop"
+                      nzTheme="outline"
+                      (click)="showDeleteConfirm(user.userName)"
+                    ></span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
