@@ -13,30 +13,6 @@ import { imageResolver } from '../../resolvers/image.resolver';
 const routes: Routes = [
   {
     path: '',
-    pathMatch: 'prefix',
-    redirectTo: 'login',
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    title: AuthSlug.Login.title
-  },
-  {
-    path: 'login-other',
-    component: LoginOtherComponent,
-    title: AuthSlug.LoginOther.title
-  },
-  {
-    path: 'forgot-password',
-    component: ForgotPasswordComponent,
-    title: AuthSlug.ForgotPassWord.title
-  },
-  {
-    path: 'change-password',
-    component: ChangePasswordComponent,
-    title: AuthSlug.ChangePassWord.title
-  },
-    path: '',
     component: AuthLayoutComponent,
     resolve: {
       imageResolve: imageResolver
@@ -56,11 +32,15 @@ const routes: Routes = [
         path: 'register',
         component: RegisterComponent,
         title: AuthSlug.Register.title,
-      }
+      },
+      {
+        path: 'change-password',
+        component: ChangePasswordComponent,
+        title: AuthSlug.ChangePassword.title
+      },
     ]
   }
 ];
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
