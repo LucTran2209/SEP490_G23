@@ -1,10 +1,5 @@
 ﻿namespace BE.Application.Services.Users.UserServiceOutputDto
 {
-    public class GetListUserOutputDto
-    {
-        public List<GetUserOutputDto>? list { get; set; } = new List<GetUserOutputDto>();
-
-    }
     public class GetUserOutputDto
     {
         public string FullName { get; set; } = null!;
