@@ -46,53 +46,20 @@ namespace BE.Application.Services.Users
             findUser.DateOfBirth = user.DateOfBirth;
             return findUser;
         }
-        public static GetListUserOutputDto GetListUser(this List<User> user)
+        public static GetUserOutputDto GetListUser(this User user)
         {
-            var listUser = new GetListUserOutputDto();
-
-            foreach (var item in user)
+            var Users = new GetUserOutputDto
             {
-                var Users = new GetUserOutputDto
-                {
-                    FullName = item.FullName,
-                    Gender = item.Gender,
-                    UserName = item.UserName,
-                    Email = item.Email,
-                    PhoneNumber = item.PhoneNumber,
-                    Address = item.Address,
-                    DateOfBirth = item.DateOfBirth,
-                    IsActive = item.IsActive
-                };
-
-                // Thêm đối tượng Users vào danh sách bên trong GetListUserOutputDto
-                listUser.list.Add(Users);
-            }
-
-            return listUser;
-        }
-        public static FillterUserOutputDto GetFillterListUser(this List<User> user)
-        {
-            var listUser = new FillterUserOutputDto();
-
-            foreach (var item in user)
-            {
-                var Users = new GetUserOutputDto
-                {
-                    FullName = item.FullName,
-                    Gender = item.Gender,
-                    UserName = item.UserName,
-                    Email = item.Email,
-                    PhoneNumber = item.PhoneNumber,
-                    Address = item.Address,
-                    DateOfBirth = item.DateOfBirth,
-                    IsActive = item.IsActive
-                };
-
-                // Thêm đối tượng Users vào danh sách bên trong GetListUserOutputDto
-                listUser.ListFillter.Add(Users);
-            }
-
-            return listUser;
+                FullName = user.FullName,
+                Gender = user.Gender,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                DateOfBirth = user.DateOfBirth,
+                IsActive = user.IsActive
+            };
+            return Users;
         }
 
     }

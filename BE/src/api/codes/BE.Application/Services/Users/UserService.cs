@@ -1,9 +1,11 @@
 ﻿using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
+using BE.Application.Extensions;
 using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BE.Application.Services.Users
@@ -44,46 +46,6 @@ namespace BE.Application.Services.Users
             };
         }
 
-        public async Task<ResultService> FillterUser(FilterUserInputDto inputDto)
-        {
-            var user = unitOfWork.UserRepository.GetAll().ToList();
-            var query = user.AsQueryable();
-
-            if (!string.IsNullOrEmpty(inputDto.FullName))
-            {
-                query = query.Where(u => u.FullName.Contains(inputDto.FullName));
-            }
-            if (!string.IsNullOrEmpty(inputDto.Email))
-            {
-                query = query.Where(u => u.Email.Contains(inputDto.Email));
-            }
-
-            if (!string.IsNullOrEmpty(inputDto.Address))
-            {
-                query = query.Where(u => u.Address.Contains(inputDto.Address));
-            }
-            if (inputDto.DateOfBirth != null)
-            {
-                query = query.Where(u => u.DateOfBirth.Equals(inputDto.DateOfBirth));
-            }
-
-            if (inputDto.Gender != null)
-            {
-                query = query.Where(u => u.Gender.Equals(inputDto.Gender));
-            }
-
-            var data = query.ToList();
-
-            var result = UserExtention.GetFillterListUser(data);
-
-            return new ResultService
-            {
-                StatusCode = HttpStatusCode.OK.ToString(),
-                Message = "Success",
-                Datas = result
-            };
-        }
-
         public async Task<ResultService> FindUserAsync(FindUserInputDto inputDto)
         {
             var r = unitOfWork.UserRepository.GetByName(inputDto.UserName);
@@ -96,15 +58,33 @@ namespace BE.Application.Services.Users
             };
         }
 
-        public async Task<ResultService> GetListUserAsync()
+        public async Task<ResultService> GetListUserAsync(GetListUserInputDto inputDto)
         {
-            var r = unitOfWork.UserRepository.GetAll().ToList();
-            var data = UserExtention.GetListUser(r);
+            var r = unitOfWork.UserRepository.GetAll();
+
+            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.Search));
+            query = r.Filter(inputDto.Email, e => e.Email.Contains(inputDto.Email));
+            query = r.Filter(inputDto.PhoneNumber, p => p.PhoneNumber.Contains(inputDto.PhoneNumber));
+            query = r.Filter(inputDto.Address, ad => ad.Address.Contains(inputDto.Address));
+            if (inputDto.Gender != "")
+            {
+                query = r.Filter(inputDto.Gender, g => g.Gender == (inputDto.Gender.ToString().ToLower() == "male" ? true : false));
+            }
+            if (inputDto.DateOfBirth != null)
+            {
+                query = r.Filter(inputDto.DateOfBirth.ToString(), dob => dob.DateOfBirth.Date == inputDto.DateOfBirth.Value.Date);
+            }
+
+            var res = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
+                                    .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
+                                    .ToPageList(inputDto)
+                                    .ToPageResult(await query.CountAsync(), inputDto, u => UserExtention.GetListUser(u));
+
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "Success",
-                Datas = data
+                Datas = res
             };
         }
 

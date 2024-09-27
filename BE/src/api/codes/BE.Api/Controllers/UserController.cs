@@ -17,13 +17,6 @@ namespace BE.Api.Controllers
             this.userService = userService;
         }
 
-        //[HttpGet("GetAll")]
-        //public async Task<IActionResult> GetAll([FromQuery] UserPageListRequest request)
-        //{
-        //    var res = await userService.Send(request);
-        //    return Ok(res);
-        //}
-
         [HttpPost("addnewuser")]
         public async Task<IActionResult> InsertAsync([FromBody] CreateUserInputDto inputDto)
         {
@@ -32,9 +25,9 @@ namespace BE.Api.Controllers
         }
 
         [HttpGet("listuser")]
-        public async Task<IActionResult> GetListAsync()
+        public async Task<IActionResult> GetListAsync([FromQuery] GetListUserInputDto inputDto)
         {
-            var output = await userService.GetListUserAsync();
+            var output = await userService.GetListUserAsync(inputDto);
             return Ok(output);
         }
         [HttpGet("viewprofile")]
@@ -55,11 +48,6 @@ namespace BE.Api.Controllers
             var output = await userService.UpadteUserAsync(inputDto);
             return Created(output.StatusCode, output);
         }
-        [HttpGet("fillteruser")]
-        public async Task<IActionResult> fillteruser([FromQuery] FilterUserInputDto inputDto)
-        {
-            var output = await userService.FillterUser(inputDto);
-            return Created(output.StatusCode, output);
-        }
+
     }
 }
