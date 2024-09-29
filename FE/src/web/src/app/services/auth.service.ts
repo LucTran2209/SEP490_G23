@@ -7,6 +7,7 @@ import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { RouteData } from '../configs/anonymous.config';
 import { AuthSlug } from '../configs/api.configs';
 import {
+  IChangePassword,
   IExternalLoginRequest,
   IForgotPassword,
   ILoginRequest,
@@ -212,5 +213,12 @@ export class AuthService {
     return this.httpClient.post(AuthSlug.RenewToken.api, {
       refreshToken: getCookie(STRING.REFRESH_TOKEN),
     });
+  }
+  //test
+  // changepassword(data: IChangePassword): Observable<ResultService>{
+  //   return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});
+  // }
+  changepassword(data: IChangePassword) {
+    return this.httpClient.post(AuthSlug.ChangePassword.api, data);
   }
 }

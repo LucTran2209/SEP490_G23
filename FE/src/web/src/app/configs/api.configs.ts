@@ -37,6 +37,11 @@ interface RenewTokenAction {
     label: 'renew token';
     api: 'renew-token';
 }
+interface ChangePassWordAction {
+    label: 'change passowrd',
+    title: 'change password | MOERRA',
+    api: 'api/user/changepassword'  
+}
 
 // Combine individual action types into a union type for AuthSlug
 type AuthSlugActions =
@@ -46,7 +51,8 @@ type AuthSlugActions =
     | RegisterAction
     | LogoutAction
     | ResetPassowrdAction
-    | RenewTokenAction;
+    | RenewTokenAction
+    | ChangePassWordAction;
 
 // Define AuthSlug as an object with specific actions
 export const AuthSlug = {
@@ -83,6 +89,77 @@ export const AuthSlug = {
     RenewToken: {
         label: 'renew token',
         api: 'renew-token'
-    } as RenewTokenAction
+    } as RenewTokenAction,
+    ChangePassword: {
+        label: 'change passowrd',
+        title: 'change password | MOERRA',
+        api: 'api/user/changepassword'
+    } as ChangePassWordAction
 };
+    
 
+export const UserSlug = {
+    AddUser: {
+        label: 'Add User',
+        title: 'Add User | MOERRA',
+        api: 'api/User/addnewuser'  
+    },
+    ListUser: {
+        label: 'List User',
+        title: 'List User | MOERRA',
+        api: 'api/User/Listuser'
+    },
+    FilterUser: {
+        label: 'Filter User',
+        title: 'Filter User| MOERRA',
+        api: 'api/User/Filteruser'
+    },
+    GetUser: {
+        label: 'View Profile',
+        title: 'View Profile | MOERRA',
+        api: 'api/user/viewprofile?UserName='  
+    },
+    UpdateUser: {
+        label: 'Update User',
+        title: 'Update User | MOERRA',
+        api: 'Update User'  
+    },
+    ActiveUser: {
+        label: 'Active User',
+        title: 'Active User | MOERRA',
+        api: 'ActiveUser'  
+    }
+}
+
+export const PostSlug = {
+    AddPost: {
+        label: 'Add Post',
+        title: 'Add Post | MOERRA',
+        api: 'api/Post/addnewpost'  
+    },
+    ListPost: {
+        label: 'List Post',
+        title: 'List Post | MOERRA',
+        api: 'api/Post/Listpost'
+    },
+    FilterPost: {
+        label: 'Filter Post',
+        title: 'Filter Post| MOERRA',
+        api: 'api/Post/Filterpost'
+    },
+    GetPost: {
+        label: 'View Post',
+        title: 'View Post | MOERRA',
+        api: 'api/Post/?postId ='  
+    },
+    UpdatePost: {
+        label: 'Update Post',
+        title: 'Update Post | MOERRA',
+        api: 'Update Post'  
+    },
+    ActivePost: {
+        label: 'Active Post',
+        title: 'Active Post | MOERRA',
+        api: 'ActivePost'  
+    }
+}
