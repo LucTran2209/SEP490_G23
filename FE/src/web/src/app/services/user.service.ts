@@ -57,8 +57,8 @@ export class UserService {
   }
   //test
   listUser(): Observable<UserResultService>{
-    return this.httpClient.get<UserResultService>(UserSlug.ListUser.api);
-    // return of(this.useList);
+    // return this.httpClient.get<UserResultService>(UserSlug.ListUser.api);
+    return of(this.useList);
   }
   searchUser(): Observable<UserResultService>{
     return this.httpClient.get<UserResultService>(UserSlug.FilterUser.api);

@@ -131,3 +131,35 @@ export const UserSlug = {
     }
 }
 
+export const PostSlug = {
+    AddPost: {
+        label: 'Add Post',
+        title: 'Add Post | MOERRA',
+        api: 'api/Post/addnewpost'  
+    },
+    ListPost: {
+        label: 'List Post',
+        title: 'List Post | MOERRA',
+        api: 'api/Post/Listpost'
+    },
+    FilterPost: {
+        label: 'Filter Post',
+        title: 'Filter Post| MOERRA',
+        api: 'api/Post/Filterpost'
+    },
+    GetPost: {
+        label: 'View Post',
+        title: 'View Post | MOERRA',
+        api: 'api/Post/?postId ='  
+    },
+    UpdatePost: {
+        label: 'Update Post',
+        title: 'Update Post | MOERRA',
+        api: 'Update Post'  
+    },
+    ActivePost: {
+        label: 'Active Post',
+        title: 'Active Post | MOERRA',
+        api: 'ActivePost'  
+    }
+}

@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './layout-user.component.scss'
 })
 export class LayoutUserComponent {
-  isCollapsed: boolean = false;
-  user: any = [];
+
+  onAvatarClick(): void {
+    console.log('Avatar clicked!');
+  }
+
+
 }

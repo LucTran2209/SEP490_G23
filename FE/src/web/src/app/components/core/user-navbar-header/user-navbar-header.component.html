@@ -1,0 +1,31 @@
+<!-- <nz-layout> -->
+<nz-header class="flex justify-between bg-white">
+  <img class="logo h-20 w-36" src="assets/images/logo.png" alt="main-logo" />
+  <div>
+    <nz-input-group
+      class="w-96 rounded-full bg-gray-200"
+      [nzSuffix]="suffixIconSearch"
+    >
+      <input
+        class="p-1 bg-gray-200"
+        type="text"
+        nz-input
+        placeholder="Bạn cần thuê sản phẩm gì?"
+      />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span class="pe-1.5 text-lg" nz-icon nzType="search"></span>
+    </ng-template>
+  </div>
+  <div>
+    <nz-avatar
+      nzGap="4"
+      nzText="N"
+      nzSize="large"
+      style="vertical-align: middle; background-color: green; margin-left: 40px"
+      (click)="onAvatarClick()"
+    ></nz-avatar>
+  </div>
+</nz-header>
+<!-- </nz-layout> -->
+<app-nav-menu (getClassName)="handlegetClassName($event)"></app-nav-menu>
