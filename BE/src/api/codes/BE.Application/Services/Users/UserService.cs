@@ -63,18 +63,12 @@ namespace BE.Application.Services.Users
         {
             var r = unitOfWork.UserRepository.GetAll();
 
-            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.Search));
-            query = r.Filter(inputDto.Email, e => e.Email.Contains(inputDto.Email));
-            query = r.Filter(inputDto.PhoneNumber, p => p.PhoneNumber.Contains(inputDto.PhoneNumber));
-            query = r.Filter(inputDto.Address, ad => ad.Address.Contains(inputDto.Address));
-            if (inputDto.Gender != "")
-            {
-                query = r.Filter(inputDto.Gender, g => g.Gender == (inputDto.Gender.ToString().ToLower() == "male" ? true : false));
-            }
-            if (inputDto.DateOfBirth != null)
-            {
-                query = r.Filter(inputDto.DateOfBirth.ToString(), dob => dob.DateOfBirth.Date == inputDto.DateOfBirth.Value.Date);
-            }
+            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.Search))
+                        .Filter(inputDto.Email, e => e.Email.Contains(inputDto.Email))
+                        .Filter(inputDto.PhoneNumber, p => p.PhoneNumber.Contains(inputDto.PhoneNumber))
+                        .Filter(inputDto.Address, ad => ad.Address.Contains(inputDto.Address))
+                        .Filter(inputDto.Gender, g => g.Gender == (inputDto.Gender.ToString().ToLower() == "male" ? true : false))
+                        .Filter(inputDto.DateOfBirth.ToString(), dob => dob.DateOfBirth.Date == inputDto.DateOfBirth.Value.Date);
 
             var res = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                                     .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
