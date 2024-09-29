@@ -1,43 +1,43 @@
-import { USER_ROLE } from "../utils/constant";
+import { USER_ROLE } from '../utils/constant';
 
 export interface ILoginRequest {
   username: string;
   password: string;
 }
 
-
 export interface ILoginResponse {
-  accessToken: string
+  accessToken: string;
 }
 
 export interface IExternalLoginRequest {
-  credential: string
+  credential: string;
 }
-
 
 export interface IForgotPassword {
-  email: string
+  email: string;
 }
 
-export interface IForgotPasswordResponse {
-  optcode: string
+export interface IOtpCodeResponse {
+  optcode: string;
 }
 
 export interface IRegisterTabCommon {
-  fullname: string,
-  phonenumber?: string,
-  address?: string,
-  gender: boolean,
-  dateofbirth: Date,
-  introduction?: string,
+  fullname: string;
+  phonenumber?: string;
+  address?: string;
+  gender: boolean;
+  dateofbirth: Date;
+  introduction?: string;
 }
 export interface IRegisterTabAuth {
-  username: string,
-  password: string,
-  email: string,
+  username: string;
+  password: string;
+  email: string;
 }
 
-export interface IRegisterRequest extends IRegisterTabCommon, IRegisterTabAuth {}
+export interface IRegisterRequest
+  extends IRegisterTabCommon,
+    IRegisterTabAuth {}
 
 export interface IAccount {
   _id: string;
