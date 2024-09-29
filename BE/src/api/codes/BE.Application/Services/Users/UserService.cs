@@ -4,6 +4,7 @@ using BE.Application.Common.Results;
 using BE.Application.Extensions;
 using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
+using BE.Domain.Entities.Users;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -25,8 +26,11 @@ namespace BE.Application.Services.Users
 
             var user = inputDto.ToEntity();
             user.Id = new Guid();
+
             unitOfWork.UserRepository.Insert(user);
+
             await unitOfWork.SaveChangesAsync();
+
             return new ResultService
             {
                 StatusCode = HttpStatusCode.Created.ToString(),
@@ -34,14 +38,11 @@ namespace BE.Application.Services.Users
             };
         }
 
-        public async Task<ResultService> GetListUserAsync(GetListUserInputDto inputDto)
+        public async Task UpdateRefeshToken(User user)
         {
-           
-            return new ResultService
-            {
-                StatusCode = HttpStatusCode.OK.ToString(),
-                Message = "Success",
-            };
+            unitOfWork.UserRepository.Update(user);
+
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

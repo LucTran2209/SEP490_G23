@@ -16,7 +16,7 @@ namespace BE.Api.Controllers
             this.authenticationService = authenticationService;
         }
 
-        [HttpPost]
+        [HttpPost("loginbyusernamepassword")]
         public async Task<IActionResult> LoginByUserNamePassword(LoginByUserNamePasswordInputDto inputDto)
         {
             var result =  await authenticationService.LoginByUserNamePasswordAsync(inputDto);

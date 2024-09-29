@@ -1,5 +1,6 @@
 ﻿using BE.Application.Common.Results;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
+using BE.Domain.Entities.Users;
 
 namespace BE.Application.Abstractions.ServiceInterfaces
 {
@@ -11,5 +12,6 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> ChangePasswordAsync(ChangePasswordInputDto inputDto);
         Task<ResultService> LogoutAsync();
         Task<ResultService> RegisterAsync(RegisterInputDto inputDto);
+        public string GenerateToken(User user);
     }
 }

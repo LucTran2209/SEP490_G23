@@ -3,6 +3,7 @@ using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.DependencyInjections;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
+using BE.Application.Services.Authentication.AuthenServiceOutputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using BE.Domain.Entities.Users;
 using FluentValidation;
@@ -11,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace BE.Application.Services.Authentication
@@ -20,14 +22,16 @@ namespace BE.Application.Services.Authentication
 
         private readonly IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator;
         private readonly JwtOption jwtOption;
+        private readonly IUserService userService;
 
         public AuthenService(IUnitOfWork unitOfWork,
                              IOptions<JwtOption> jwtOption,
+                             IUserService userService,
                              IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork)
         {
             this.loginByUserNamePasswordValidator = loginByUserNamePasswordValidator;
             this.jwtOption = jwtOption.Value;
-
+            this.userService = userService;
         }
 
         public Task<ResultService> ChangePasswordAsync(ChangePasswordInputDto inputDto)
@@ -60,15 +64,20 @@ namespace BE.Application.Services.Authentication
                 };
             }
 
-            string accessToken = GenerateToken(user);
+            LoginByUserNamePasswordOutputDto res = new LoginByUserNamePasswordOutputDto()
+            {
+                AccessToken = GenerateToken(user),
+                RefreshToken = GenerateRefreshToken(),
+            };
 
-            SetCookie(accessToken);
+
+            //SetCookie(accessToken);
 
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "",
-                Datas = accessToken
+                Datas = res
             };
         }
 
@@ -87,13 +96,15 @@ namespace BE.Application.Services.Authentication
             throw new NotImplementedException();
         }
 
-        private string GenerateToken(User user)
+        public string GenerateToken(User user)
         {
 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim("email", user.Email),
+                new Claim("name", user.UserName)
             };
 
             if (user.UserRoles?.Count > 0)
@@ -111,11 +122,21 @@ namespace BE.Application.Services.Authentication
             var token = new JwtSecurityToken(
                 issuer: jwtOption.ValidIssuer,
                 audience: jwtOption.ValidAudience,
-                authClaims,
-                expires: DateTime.Now.AddMinutes(15),
+                claims: authClaims,
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
-
+﻿
 using BE.Api.Extensions;
 using BE.Api.Middlewares;
 using BE.Application.DependencyInjections;
+using BE.Domain.Abstractions.IEntities;
 using BE.Persistence.DependencyInjections;
 using BE.Persistence.Extensions;
 
@@ -19,7 +20,35 @@ namespace BE.Api
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                // Thêm cấu hình cho Bearer token
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\""
+                });
+
+                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+            {
+                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                { 
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                    {
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+            });
+
 
             // # DI PersistenceService
             builder.Services.AddPersistenceServices(builder.Configuration);
@@ -28,6 +57,10 @@ namespace BE.Api
             builder.Services.AddApplicationServices();
 
             builder.Services.AddScoped<ExceptionHandlingMiddleware>();
+
+            // Current User
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddSingleton<IUser, CurrentUser>();
 
             // CORS
             builder.Services.AddCors(options =>
