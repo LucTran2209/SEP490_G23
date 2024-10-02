@@ -36,6 +36,14 @@ import { SvgIconComponent } from '../core/svg-icon/svg-icon.component';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { SelectItemComponent } from '../core/select-item/select-item.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
+import { NavbarHeadearComponent } from '../core/navbar-headear/navbar-headear.component';
+import { UserNavbarHeaderComponent } from '../core/user-navbar-header/user-navbar-header.component';
+import { NavMenuComponent } from '../core/nav-menu/nav-menu.component';
+import { ProductCardComponent } from '../core/product-card/product-card.component';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { FooterComponent } from '../core/footer/footer.component';
+import { ChatComponent } from '../core/chat/chat.component';
 
 registerLocaleData(en);
 
@@ -59,7 +67,10 @@ const ANTD_MODULES = [
   NzSpinModule,
   NzRadioModule,
   NzUploadModule,
-  NzSelectModule
+  NzSelectModule,
+  NzCardModule,
+  NzSkeletonModule,
+
 ]
 
 const SHARED_MODULES = [
@@ -71,7 +82,14 @@ const SHARED_MODULES = [
   LoadingComponent,
   SvgIconComponent,
   SelectItemComponent,
-  UploadFileComponent
+  UploadFileComponent,
+  NavbarHeadearComponent,
+  UserNavbarHeaderComponent,
+  NavMenuComponent,
+  ProductCardComponent,
+  FooterComponent,
+  ChatComponent,
+
 ]
 
 @NgModule({

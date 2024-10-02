@@ -7,6 +7,15 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class LayoutDashboardComponent {
-  user: any = {};
-  isCollapsed: boolean = false;
+  isSidebarCollapsed: boolean = false; 
+  notificationCount: number = 5; 
+
+  onToggleSidebar(collapsed: boolean): void {
+    this.isSidebarCollapsed = collapsed;
+    console.log('Sidebar status: ', this.isSidebarCollapsed ? 'Collapsed' : 'Expanded');
+  }
+
+  onAvatarClick(): void {
+    console.log('Avatar clicked!');
+  }
 }

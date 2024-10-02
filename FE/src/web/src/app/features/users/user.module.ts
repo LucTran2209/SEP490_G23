@@ -9,11 +9,15 @@ import { UserEffects } from './state/user.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SharedModule } from '../../components/shared/shared.module';
+import { HomePageComponent } from './components/home-page/home-page.component';
+// import { PostDetailComponent } from './components/post-detail/post-detail.component';
 
 @NgModule({
   declarations: [
     AnonymousV2Component,
     ProfileComponent,
+    HomePageComponent,
+    // PostDetailComponent,
   ],
   imports: [
     CommonModule,
