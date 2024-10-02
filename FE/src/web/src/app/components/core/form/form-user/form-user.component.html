@@ -1,0 +1,121 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzMaskClosable]="true"
+  [nzWidth]="'800px'"
+>
+  <ng-container *nzModalContent>
+    <form
+      [formGroup]="userForm"
+      class="font-mono"
+      nz-form
+      (ngSubmit)="submitForm()"
+      novalidate
+    >
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="userName" nzRequired>
+          Tên Người Dùng:
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng nhập tên người dùng!"
+        >
+          <input nz-input formControlName="userName" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fullName" nzRequired>
+          Họ và Tên:
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng nhập họ và tên!"
+        >
+          <input nz-input formControlName="fullName" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email" nzRequired>
+          E-mail:
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng nhập email hợp lệ!"
+        >
+          <input nz-input formControlName="email" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>
+          Số Điện Thoại:
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng nhập số điện thoại!"
+        >
+          <input nz-input formControlName="phoneNumber" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address" nzRequired>
+          Địa Chỉ:
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng nhập địa chỉ!"
+        >
+          <input nz-input formControlName="address" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="gender" nzRequired>
+          Giới Tính:
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-radio-group formControlName="gender">
+            <label nz-radio nzValue="true">Nam</label>
+            <label nz-radio nzValue="false">Nữ</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="dateOfBirth" nzRequired>
+          Ngày Sinh:
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-date-picker
+            formControlName="dateOfBirth"
+            [nzFormat]="dateFormat"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item nz-row>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary">Lưu</button>
+          <nz-alert
+            class="mt-4"
+            *ngIf="showAlert"
+            [nzType]="alertMessage.includes('invalid') ? 'error' : 'success'"
+            [nzMessage]="alertMessage"
+            nzShowIcon
+          >
+          </nz-alert>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
