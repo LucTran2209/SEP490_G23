@@ -3,6 +3,9 @@
 @import "app/styles/base/index";
 @import"app/styles/vendors/index";
 @import "app/styles/themes/light-theme";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 //custom ng-zoro theme light mode | dark mode
 body {

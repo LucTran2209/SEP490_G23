@@ -11,25 +11,26 @@ using System.Security.Claims;
 
 namespace BE.Infrastructure.Common
 {
-    public class UnitOfWork : IUnitOfWork , IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext context;
-        private readonly ClaimsPrincipal claimsPrincipal;
         private IDbContextTransaction? _currentTransaction;
+        private readonly IUser _user;
         public IDbContextTransaction? GetCurrentTransaction()
         {
             return _currentTransaction;
         }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, IUser user)
         {
-            this.context = context;          
+            this.context = context;
+            this._user = user;
         }
 
         // Interface Repository
         public IUserRepository userRepository;
         public IUserRepository UserRepository => userRepository = new UserRepository(context);
-     
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
@@ -100,9 +101,11 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking<Guid> hasTrace)
                         {
-                            hasTrace.CreatedBy = new Guid(); //this.claimsPrincipal.GetUserId();
-                            hasTrace.CreatedByName = "Admin"; //this.claimsPrincipal.GetUserName();
+                            hasTrace.CreatedBy = _user.Id ?? Guid.Empty; //this.claimsPrincipal.GetUserId();
+                            hasTrace.CreatedByName = _user.UserName; //this.claimsPrincipal.GetUserName();
                         }
+
+
 
                         break;
                     case EntityState.Modified:
@@ -113,8 +116,8 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking<Guid> trace)
                         {
-                            trace.ModifiedBy = new Guid(); //claimsPrincipal.GetUserId();
-                            trace.ModifiedByName = "Admin"; // claimsPrincipal.GetUserName();
+                            trace.ModifiedBy = _user.Id ?? Guid.Empty; //claimsPrincipal.GetUserId();
+                            trace.ModifiedByName = _user.UserName; // claimsPrincipal.GetUserName();
                         }
 
                         break;
@@ -134,6 +137,6 @@ namespace BE.Infrastructure.Common
         }
 
         public async void Dispose() => await context.DisposeAsync();
-        
+
     }
 }

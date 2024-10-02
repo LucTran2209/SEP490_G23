@@ -31,11 +31,5 @@ namespace BE.Api.Controllers
             return Created(output.StatusCode, output);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetListAsync([FromQuery] GetListUserInputDto inputDto)
-        {
-            var output = await userService.GetListUserAsync(inputDto);
-            return Ok(output);
-        }
     }
 }

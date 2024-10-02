@@ -12,7 +12,6 @@ export interface ResultService {
   statusCode: number;
   message: string;
   datas?: {};
-
 }
 
 export interface ILoginResponse {

@@ -229,4 +229,11 @@ export class AuthService {
   changepassword(data: IChangePassword) {
     return this.httpClient.post(AuthSlug.ChangePassword.api, data);
   }
+  //test
+  // changepassword(data: IChangePassword): Observable<ResultService>{
+  //   return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});
+  // }
+  changepassword(data: IChangePassword) {
+    return this.httpClient.post(AuthSlug.ChangePassword.api, data);
+  }
 }
