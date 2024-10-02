@@ -7,25 +7,34 @@ import { LayoutDashboardComponent } from './components/core/layout-dashboard/lay
 import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
 import { HomePageComponent } from './features/users/components/home-page/home-page.component';
 
-
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/test' },
-  { path: 'test', component: AnonymousComponent },
+  { path: 'test', component: HomePageComponent },
   { path: 'error', component: AnonymousComponent },
   { path: 'home', component: HomePageComponent },
   {
-    path: 'admin', 
+    path: 'admin',
     // canActivate: [authGuard],
     component: LayoutDashboardComponent,
-    data: {expectedRole: USER_ROLE.ADMIN},
-    loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule)
+    data: { expectedRole: USER_ROLE.ADMIN },
+    loadChildren: () =>
+      import('./features/admin/admin.module').then((m) => m.AdminModule),
   },
-  { path: 'user', component: LayoutUserComponent, loadChildren: () => import('./features/users/user.module').then(m => m.UserModule)},
-  { path: 'auth', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule) },
+  {
+    path: 'user',
+    component: LayoutUserComponent,
+    loadChildren: () =>
+      import('./features/users/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./features/auth/auth.module').then((m) => m.AuthModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
