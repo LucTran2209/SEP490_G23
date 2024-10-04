@@ -92,12 +92,13 @@ export class LoginComponent implements OnInit {
    * @description HTTP requests for login external
    */
   processAuthState() {
-    let googleRequest: IExternalLoginRequest = {
-      credential: ''
-    }
+  
     this.externalAuthService.authState.subscribe((user) => {
-      googleRequest.credential = user.idToken;
-      console.log('>>> line 72:', googleRequest);
+      // console.log('line 99:',user.idToken);
+      const googleRequest: IExternalLoginRequest = {
+        credential: user.idToken || ''
+      }
+      // console.log('>>> line 72:', googleRequest);
       this.store.dispatch(login_external({ data: googleRequest }))
     });
   }
