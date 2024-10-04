@@ -30,6 +30,7 @@ export enum STRING {
   export enum USER_ROLE {
     ADMIN = 'admin',
     USER = 'user',
+    LESSOR = 'Lessor'
   }
   
   export const LocalStorageKey = {

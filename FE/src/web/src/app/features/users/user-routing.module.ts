@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AnonymousV2Component } from './components/anonymous-v2/anonymous-v2.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
-// import { PostDetailComponent } from './components/post-detail/post-detail.component';
+import { PostDetailComponent } from './components/post-detail/post-detail.component';
 
 
 const routes: Routes = [
@@ -15,10 +15,10 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent
   },
-  // {
-  //   path: 'detail',
-  //   component: PostDetailComponent
-  // }
+  {
+    path: 'product-detail',
+    component: PostDetailComponent
+  }
   
 ];
 
