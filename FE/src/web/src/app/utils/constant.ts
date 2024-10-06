@@ -30,7 +30,9 @@ export const BASE_AVATAR_IMG =
 
 export enum USER_ROLE {
   ADMIN = 'admin',
-  USER = 'user',
+  LESSOR = 'lessor',
+  LESSEE = 'lessee',
+  MODERATOR = 'moderator',
 }
 
 export const LocalStorageKey = {

@@ -1,0 +1,46 @@
+<form nz-form>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired
+      >́Giấy phép đăng ký kinh doanh</nz-form-label
+    >
+    <nz-form-control [nzSpan]="24" class="relative">
+      <nz-upload
+        [nzHeaders]="{ authorization: 'authorization-text' }"
+        (nzChange)="handleChange($event)"
+      >
+        <button nz-button>
+          <span nz-icon nzType="upload"></span>
+          Tải giấy tờ
+        </button>
+      </nz-upload>
+      <div
+        class="absolute bg-gray-100 px-2 py-1 rounded-full top-0 right-0"
+        nzTooltipTitle="giấy tờ dc tải gồm 3 loại giấy tờ"
+        nzTooltipPlacement="bottomRight"
+        nz-button
+        nz-tooltip
+      >
+        <span nz-icon nzType="question" nzTheme="outline"></span>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired
+      >Địa chỉ đăng ký kinh doanh</nz-form-label
+    >
+    <!-- <nz-form-control [nzSpan]="24">
+      <input nz-input formControlName="mobile" placeholder="mobile" />
+    </nz-form-control> -->
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>́Mã số thuê</nz-form-label>
+    <nz-form-control [nzSpan]="24">
+      <input
+        nz-input
+        formControlName="email"
+        placeholder="00000000000000"
+        type="text"
+      />
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -12,7 +12,6 @@ export interface ResultService {
   statusCode: number;
   message: string;
   datas?: {};
-
 }
 
 export interface ILoginResponse {
@@ -25,6 +24,12 @@ export interface IExternalLoginRequest {
 
 export interface IForgotPassword {
   email: string;
+}
+
+export interface IResetPassword {
+  email: string;
+  currentPassword: string;
+  newPassword: string;
 }
 
 export interface IOtpCodeResponse {

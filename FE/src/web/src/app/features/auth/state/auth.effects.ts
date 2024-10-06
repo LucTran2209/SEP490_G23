@@ -1,28 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as AuthActions from './auth.actions';
-import {
-  catchError,
-  defer,
-  delay,
-  map,
-  mergeMap,
-  of,
-  pipe,
-  switchMap,
-  tap,
-  throwError,
-  timeout,
-} from 'rxjs';
-import { StorageService } from '../../../services/storage.service';
-import { LocalStorageKey, STRING } from '../../../utils/constant';
-import { encodeBase64 } from '../../../utils/anonymous.helper';
-import { LoadingService } from '../../../services/loading.service';
+import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { LoadingService } from '../../../services/loading.service';
+import { StorageService } from '../../../services/storage.service';
+import { encodeBase64 } from '../../../utils/anonymous.helper';
+import { STRING } from '../../../utils/constant';
 import { replaceCookie } from '../../../utils/cookie.helper';
+import * as AuthActions from './auth.actions';
 
 @Injectable()
 export class AuthEffect {
@@ -124,6 +112,7 @@ export class AuthEffect {
   checkOtpSendtoEmail$ = createEffect(() =>
     this.action$.pipe(
       ofType(AuthActions.checkOtpCode),
+      tap(() => this.loadingSerivce.setLoading()),
       switchMap(({ otpCode }) =>
         this.authService.checkOtpCode(otpCode).pipe(
           map((isValid) => {
@@ -135,14 +124,39 @@ export class AuthEffect {
           }),
           catchError((err) =>
             of(
-              AuthActions.checkOtpCode_failure({
-                error: 'Mã xác nhận không hợp lệ vui lòng thử lại',
+              AuthActions.resetPassword_failure({
+                error: 'Xác nhận mật khẩu mới thất bại',
               })
             )
           )
         )
       )
     )
+  );
+
+  resetPassword$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.resetPassword),
+        tap(() => this.loadingSerivce.setLoading()),
+        switchMap(({ data }) =>
+          this.authService.resetPassword(data).pipe(
+            map((res) => {
+              return AuthActions.resetPassword_success();
+            }),
+            catchError((err) =>
+              of(
+                AuthActions.checkOtpCode_failure({
+                  error: 'Mã xác nhận không hợp lệ vui lòng thử lại',
+                })
+              )
+            )
+          )
+        )
+      ),
+    {
+      dispatch: true,
+    }
   );
 
   loginSuccess$ = createEffect(
@@ -188,6 +202,22 @@ export class AuthEffect {
     { dispatch: false }
   );
 
+  resetPassword_success$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.resetPassword_success),
+        tap(() => {
+          this.loadingSerivce.setOtherLoading('loaded');
+          this.messageNZ.create(
+            'success',
+            'Vui lòng đăng nhập lại vào hệ thống'
+          );
+          this.router.navigate(['auth/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
   register_success$ = createEffect(
     () =>
       this.action$.pipe(
@@ -212,7 +242,8 @@ export class AuthEffect {
           AuthActions.login_external_failure,
           AuthActions.forgotPassword_failure,
           AuthActions.checkOtpCode_failure,
-          AuthActions.register_failure
+          AuthActions.register_failure,
+          AuthActions.resetPassword_failure
         ),
         tap((action) => {
           this.loadingSerivce.setOtherLoading('error');

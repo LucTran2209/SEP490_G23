@@ -26,7 +26,10 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import {
+  GoogleLoginProvider,
+  SocialAuthServiceConfig,
+} from '@abacritt/angularx-social-login';
 import { environment } from '../../../environments/environment.development';
 import { GoogleSigninComponent } from '../google-signin/google-signin.component';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
@@ -44,10 +47,13 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { FooterComponent } from '../core/footer/footer.component';
 import { ChatComponent } from '../core/chat/chat.component';
-
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzStepsModule,
+  NzToolTipModule,
   NzLayoutModule,
   NzButtonModule,
   NzFormModule,
@@ -70,8 +76,7 @@ const ANTD_MODULES = [
   NzSelectModule,
   NzCardModule,
   NzSkeletonModule,
-
-]
+];
 
 const SHARED_MODULES = [
   AnonymousComponent,
@@ -89,19 +94,18 @@ const SHARED_MODULES = [
   ProductCardComponent,
   FooterComponent,
   ChatComponent,
-
-]
+];
 
 @NgModule({
   declarations: [...SHARED_MODULES],
-  imports: [
-    CommonModule,
-    FormsModule, 
-    ReactiveFormsModule,
-    ...ANTD_MODULES
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ...ANTD_MODULES],
   exports: [
-    CommonModule, FormsModule, ReactiveFormsModule, ...ANTD_MODULES,...SHARED_MODULES ],
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ...ANTD_MODULES,
+    ...SHARED_MODULES,
+  ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
     {
@@ -111,18 +115,14 @@ const SHARED_MODULES = [
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              environment.googleID
-            )
+            provider: new GoogleLoginProvider(environment.googleID),
           },
         ],
         onError: (err) => {
           console.error(err);
-        }
+        },
       } as SocialAuthServiceConfig,
-    }
-  ]
-  
-
+    },
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

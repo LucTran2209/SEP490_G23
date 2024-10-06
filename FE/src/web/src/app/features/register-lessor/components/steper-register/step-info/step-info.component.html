@@ -1,0 +1,29 @@
+<form nz-form>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>́Tên chủ cho thuê</nz-form-label>
+    <nz-form-control [nzSpan]="24" nzValidatingTip="Validating...">
+      <input
+        nz-input
+        formControlName="userName"
+        placeholder="async validate try to write JasonWood"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>Số điện thoại</nz-form-label>
+    <nz-form-control [nzSpan]="24">
+      <input nz-input formControlName="mobile" placeholder="mobile" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>E-mail</nz-form-label>
+    <nz-form-control [nzSpan]="24">
+      <input
+        nz-input
+        formControlName="email"
+        placeholder="email"
+        type="email"
+      />
+    </nz-form-control>
+  </nz-form-item>
+</form>

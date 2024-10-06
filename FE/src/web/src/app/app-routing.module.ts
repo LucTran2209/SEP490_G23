@@ -6,10 +6,11 @@ import { USER_ROLE } from './utils/constant';
 import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
 import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
 import { HomePageComponent } from './features/users/components/home-page/home-page.component';
+import { IMPORT_STATE } from '@ngrx/store-devtools/src/actions';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/test' },
-  { path: 'test', component: HomePageComponent },
+  { path: 'test', component: AnonymousComponent },
   { path: 'error', component: AnonymousComponent },
   { path: 'home', component: HomePageComponent },
   {
@@ -30,6 +31,13 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () =>
       import('./features/auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
+    path: 'portal',
+    loadChildren: () =>
+      import('./features/register-lessor/register-lessor.module').then(
+        (m) => m.RegisterLessorModule
+      ),
   },
 ];
 

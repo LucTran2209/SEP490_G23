@@ -5,6 +5,7 @@ import {
   ILoginRequest,
   IOtpCodeResponse,
   IRegisterRequest,
+  IResetPassword,
 } from '../../../interfaces/account.interface';
 
 export const LOGIN_INIT = '[Auth] login init';
@@ -18,6 +19,10 @@ export const FORGOT_PASSWORD = '[Auth] forgot passwork init';
 export const FORGOT_PASSWORD_SUCCESS = '[Auth] forgot password success';
 export const FORGOT_PASSWORD_FAILURE = '[Auth] forgot passwork failure';
 
+export const RESET_PASSWORD = '[Auth] reset passwork init';
+export const RESET_PASSWORD_SUCCESS = '[Auth] reset password success';
+export const RESET_PASSWORD_FAILURE = '[Auth] reset passwork failure';
+
 export const CHECK_OTPCODE_SEND_TO_EMAIL = '[Auth] check optcode init';
 export const CHECK_OTPCODE_SEND_TO_EMAIL_SUCCESS =
   '[Auth] check optcode success';
@@ -27,6 +32,8 @@ export const CHECK_OTPCODE_SEND_TO_EMAIL_FAILURE =
 export const REGISTER_INIT = '[Auth] register init';
 export const REGISTER_SUCCESS = '[Auth] register success';
 export const REGISTER_FAILURE = '[Auth] register failure';
+
+export const LOGOUT = '[Auth] logout';
 
 export const login = createAction(LOGIN_INIT, props<{ data: ILoginRequest }>());
 export const login_success = createAction(
@@ -64,6 +71,16 @@ export const forgotPassword_failure = createAction(
   props<{ error: string }>()
 );
 
+export const resetPassword = createAction(
+  RESET_PASSWORD,
+  props<{ data: IResetPassword }>()
+);
+export const resetPassword_success = createAction(RESET_PASSWORD_SUCCESS);
+export const resetPassword_failure = createAction(
+  RESET_PASSWORD_FAILURE,
+  props<{ error: string }>()
+);
+
 export const checkOtpCode = createAction(
   CHECK_OTPCODE_SEND_TO_EMAIL,
   props<{ otpCode: string }>()
@@ -88,3 +105,4 @@ export const register_failure = createAction(
   REGISTER_FAILURE,
   props<{ error: string }>()
 );
+export const logout = createAction(LOGOUT);
