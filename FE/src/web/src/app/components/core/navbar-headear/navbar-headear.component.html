@@ -1,0 +1,35 @@
+<nz-layout>
+  <nz-header class="flex justify-between bg-white">
+    <div class="flex justify-between">
+      <img class="logo m-1 ms-0" src="assets/images/logo.png" alt="main-logo" />
+      <span
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="handleToggleSidebar()"
+      ></span>
+    </div>
+    <div>
+      <nz-badge [nzCount]="notificationCount">
+        <span
+          class="noffication text-lg"
+          nz-icon
+          nzType="bell"
+          nzTheme="outline"
+        ></span>
+      </nz-badge>
+      <nz-avatar
+        nzGap="4"
+        nzText="N"
+        nzSize="large"
+        style="
+          vertical-align: middle;
+          background-color: green;
+          margin-left: 40px;
+        "
+        (click)="onAvatarClick()"
+      ></nz-avatar>
+      
+    </div>
+  </nz-header>
+</nz-layout>

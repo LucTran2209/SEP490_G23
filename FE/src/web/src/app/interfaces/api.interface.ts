@@ -1,17 +1,23 @@
-export interface BaseResponseApi<T> {
-    code: number;
-    data: T;
-    message: string;
-    success: boolean;
-    errors: string;
-  }
-  
-  export interface BaseResponseRecords<T> {
-    pageIndex: number;
-    pageSize: number;
-    totalCount: number;
-    items: T[];
-  }
-  
+import { Province } from './province.interface';
 
-  export type ApiType = 'common' | 'auth' | 'admin' | 'student' | 'staff';
+export interface BaseResponseApi<T> {
+  statusCode: number;
+  data: T;
+  message: string;
+}
+
+export interface BaseResponseRecords<T> {
+  pageIndex: number;
+  pageSize: number;
+  totalCount: number;
+  items: T[];
+}
+
+export interface BaseResponseAddressApi {
+  error: number;
+  error_text: string;
+  data_name: string;
+  data: Province[] | [];
+}
+
+export type ApiType = 'common' | 'auth' | 'admin' | 'hra' | 'cra';

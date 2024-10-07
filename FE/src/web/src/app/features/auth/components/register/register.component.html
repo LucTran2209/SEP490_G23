@@ -1,0 +1,113 @@
+<div class="pt-5">
+    <h2 class="font-bold text-4xl">Tạo tài khoản</h2>
+    <p class="text-sm text-gray-300">Thực sự đã có tài khoảng <a class="hover:text-blue-600"
+            [routerLink]="[ '/auth/login']">đăng nhập</a></p>
+</div>
+<ng-container *ngIf="flag_process === 'OK_TAB1'; then forminfocommon; else forminfoauth"></ng-container>
+
+
+<ng-template #forminfocommon>
+    <form nz-form [formGroup]="forminfocommongroup" (ngSubmit)="submitTab1()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="fullname" class="text-start">Tên đầy
+                đủ</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Nhập đầy đủ tên người dùng không hợp lệ!">
+                <nz-input-group>
+                    <input type="text" placeholder="Nguyen Van A" formControlName="fullname" nz-input />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="phonenumber" class="text-start">Số điện
+                thoại</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Nhập số điện thoại không hợp lệ!">
+                <nz-input-group>
+                    <input type="text" placeholder="(+84) 0327033756" formControlName="phonenumber" nz-input />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="gender" class="text-start">Giới
+                tính</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+                <nz-radio-group formControlName="gender" nzName="gender">
+                    <label nz-radio [nzValue]="true" >Nam</label>
+                    <label nz-radio [nzValue]="false">Nữ</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <div class="grid grid-cols-3 gap-3">
+            <nz-form-item>
+                <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="address" class="text-start">Địa
+                    chỉ</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                    <app-select-item placeholder="Lựa chọn địa chỉ" (selectItem)="handleselectAddress($event)"
+                        [data]="selectAddress"></app-select-item>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="col-span-2">
+                <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="dateofbirth" class="text-start">Ngày
+                    sinh</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Chọn ngày sinh không hợp lệ!">
+                    <nz-date-picker [nzSize]="'large'" formControlName="dateofbirth" [nzFormat]="dateFormat"
+                        class="w-full"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <nz-form-item class="col-span-2">
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="introduction" class="text-start">Giới thiệu một
+                chút:</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+                <textarea nz-input placeholder="Controlled autosize" formControlName="introduction"
+                    [nzAutosize]="{ minRows: 5, maxRows: 5 }"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <div>
+            <button
+                class="p-2 border-1 shadow-lg rounded-sm transition ease-in-out delay-0 hover:translate-x-4 hover:bg-slate-300  cursor-pointer">
+                Tiếp theo
+                <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
+            </button>
+        </div>
+    </form>
+</ng-template>
+<ng-template #forminfoauth>
+    <form nz-form [formGroup]="forminfoauthgroup" (ngSubmit)="submitTabFinall()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="email" class="text-start">Email</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Nhập email không hợp lệ!">
+                <nz-input-group>
+                    <input type="email" placeholder="nguyenvana@gmail.com" formControlName="email" nz-input />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="username" class="text-start">Tên người
+                dùng</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Nhập tên người dùng không hợp lệ!">
+                <nz-input-group>
+                    <input type="text" placeholder="nguyenvana1999" formControlName="username" nz-input />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="password" class="text-start">Mật
+                khẩu</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Nhập mật khẩu có vấn đề!">
+                <nz-input-group>
+                    <input type="password" formControlName="password" nz-input />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <div class="mb-3">
+            <button type="button" (click)="toggleTabRegiser('OK_TAB1')"
+                class="  transition ease-in-out delay-150 underline underline-offset-8 hover:translate-x-4 cursor-pointer">
+                <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+                Trở lại chút
+            </button>
+        </div>
+        <div>
+            <button nz-button class="w-full" [nzType]="'primary'">Tạo tài khoản</button>
+        </div>
+    </form>
+</ng-template>

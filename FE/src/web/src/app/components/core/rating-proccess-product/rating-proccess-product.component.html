@@ -1,0 +1,36 @@
+<div class="rating-summary">
+  <div class="rating-header">
+    <span
+      nz-icon
+      nzType="star"
+      nzTheme="fill"
+      class="text-yellow-300 text-2xl"
+    ></span>
+    <span class="text-lg font-light mx-2 mt-1">{{
+      getAverageRating() | number : "1.1-1"
+    }}</span>
+    <span class="text-base font-light mt-1.5"
+      >({{ getTotalReviews() }} người đánh giá)</span
+    >
+  </div>
+
+  <div class="rating-progress-list">
+    <div *ngFor="let rating of ratingData" class="rating-progress-item">
+      <span
+        nz-icon
+        nzType="star"
+        nzTheme="fill"
+        class="text-yellow-300 text-base mx-2"
+      ></span>
+      <label class="mt-1">{{ rating.stars }} sao</label>
+      <div class="progress-bar">
+        <div
+          class="progress-bar-fill"
+          [style.width.%]="rating.count"
+          [style.backgroundColor]="rating.color"
+        ></div>
+      </div>
+      <span class="font-light">{{ rating.count }}</span>
+    </div>
+  </div>
+</div>

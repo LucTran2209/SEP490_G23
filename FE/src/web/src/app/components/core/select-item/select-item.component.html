@@ -1,0 +1,17 @@
+<nz-select nzShowSearch nzAllowClear
+[(ngModel)]="selectedValue"
+(ngModelChange)="selectOption($event)"
+[nzPlaceHolder]="placeholder" [nzMode]="modeOption"
+[nzCustomTemplate]="customTemplate" >
+    @for (item of data; track $index) {
+        <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+    }
+</nz-select>
+<ng-template #customTemplate let-selected>
+    <div class="ant-select-selection-item-content">
+        @if(hasIcon){
+        <span nz-icon [nzType]="selected.nzValue"></span>
+        }
+        {{ selected.nzLabel }}
+    </div>
+</ng-template>
