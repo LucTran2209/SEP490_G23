@@ -35,6 +35,7 @@ const routes: Routes = [
       {
         path: 'reset-password',
         component: ResetPasswordComponent,
+        title: AuthSlug.ResetPassWord.title,
       },
       {
         path: 'register',

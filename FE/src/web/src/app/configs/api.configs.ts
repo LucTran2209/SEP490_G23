@@ -29,6 +29,11 @@ export const AuthSlug = {
     title: 'change password | MOERRA',
     api: 'api/user/changepassword',
   },
+  ResetPassWord: {
+    label: 'reset password',
+    title: 'reset password | NOERRA',
+    api: 'api/user/changepassword',
+  },
 };
 
 export const StepRegisterLessor = {

@@ -49,6 +49,16 @@ import { FooterComponent } from '../core/footer/footer.component';
 import { ChatComponent } from '../core/chat/chat.component';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { RentalDetailCardComponent } from '../core/rental-detail-card/rental-detail-card.component';
+import { ProductCarouseComponent } from '../core/product-carouse/product-carouse.component';
+import { CommentComponent } from '../core/comment/comment.component';
+import { RatingProccessProductComponent } from '../core/rating-proccess-product/rating-proccess-product.component';
+
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -76,6 +86,11 @@ const ANTD_MODULES = [
   NzSelectModule,
   NzCardModule,
   NzSkeletonModule,
+  NzDropDownModule,
+  NzTabsModule,
+  NzCarouselModule,
+  NzCommentModule,
+  NzProgressModule,
 ];
 
 const SHARED_MODULES = [
@@ -93,7 +108,11 @@ const SHARED_MODULES = [
   NavMenuComponent,
   ProductCardComponent,
   FooterComponent,
+  CommentComponent,
   ChatComponent,
+  RentalDetailCardComponent,
+  ProductCarouseComponent,
+  RatingProccessProductComponent,
 ];
 
 @NgModule({
