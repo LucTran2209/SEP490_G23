@@ -5,5 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	<ItemGroup>
+		<PackageReference Include="System.Security.Claims" Version="4.3.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\BE.Domain\BE.Domain.csproj" />
+	  <ProjectReference Include="..\BE.Persistence\BE.Persistence.csproj" />
+	</ItemGroup>
 </Project>
