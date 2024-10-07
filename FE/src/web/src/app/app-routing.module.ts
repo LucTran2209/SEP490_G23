@@ -9,8 +9,8 @@ import { HomePageComponent } from './features/users/components/home-page/home-pa
 import { IMPORT_STATE } from '@ngrx/store-devtools/src/actions';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/test' },
-  { path: 'test', component: AnonymousComponent },
+  { path: '', pathMatch: 'full', redirectTo: '/home' },
+  // { path: 'test', component: LoginOtherComponent },
   { path: 'error', component: AnonymousComponent },
   { path: 'home', component: HomePageComponent },
   {
@@ -38,6 +38,25 @@ const routes: Routes = [
       import('./features/register-lessor/register-lessor.module').then(
         (m) => m.RegisterLessorModule
       ),
+  },
+  {
+    path: 'user',
+    component: LayoutUserComponent,
+    loadChildren: () =>
+      import('./features/users/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./features/auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
+    path: 'lessor',
+    // canActivate: [authGuard],
+    component: LayoutDashboardComponent,
+    data: { expectedRole: USER_ROLE.LESSOR },
+    loadChildren: () =>
+      import('./features/lessor/lessor.module').then((m) => m.LessorModule),
   },
 ];
 
