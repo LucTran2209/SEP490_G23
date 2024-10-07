@@ -26,6 +26,12 @@ export interface IForgotPassword {
   email: string;
 }
 
+export interface IResetPassword {
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface IOtpCodeResponse {
   optcode: string;
 }

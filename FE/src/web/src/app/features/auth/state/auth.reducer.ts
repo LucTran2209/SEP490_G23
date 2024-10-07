@@ -32,6 +32,7 @@ export const authReducer = createReducer(
     status: 'error' as StatusProcess,
     message: action.error,
   })),
+  //----------------------------------login
   on(AuthActions.login_external, (state, action) => ({
     ...state,
     status: 'loading' as StatusProcess,
@@ -48,11 +49,12 @@ export const authReducer = createReducer(
     status: 'error' as StatusProcess,
     message: action.error,
   })),
-  on(AuthActions.forgotPassword, (state, action) => ({
+  //----------------------------------login_external
+  on(AuthActions.forgotPassword, (state) => ({
     ...state,
     status: 'loading' as StatusProcess,
   })),
-  on(AuthActions.forgotPassword_success, (state, action) => ({
+  on(AuthActions.forgotPassword_success, (state) => ({
     ...state,
     status: 'loaded' as StatusProcess,
     isRecoveringPassword: true,
@@ -63,6 +65,23 @@ export const authReducer = createReducer(
     status: 'error' as StatusProcess,
     message: action.error,
   })),
+  //----------------------------------forgot
+  on(AuthActions.resetPassword, (state, action) => ({
+    ...state,
+    status: 'loading' as StatusProcess,
+  })),
+  on(AuthActions.resetPassword_success, (state, action) => ({
+    ...state,
+    status: 'loaded' as StatusProcess,
+    isRecoveringPassword: false,
+    isRecoveredPassword: true,
+  })),
+  on(AuthActions.resetPassword_failure, (state, action) => ({
+    ...state,
+    status: 'error' as StatusProcess,
+    message: action.error,
+  })),
+  //----------------------------------reset
   on(AuthActions.checkOtpCode, (state, action) => ({
     ...state,
     status: 'loading' as StatusProcess,
@@ -76,6 +95,7 @@ export const authReducer = createReducer(
     ...state,
     status: 'error' as StatusProcess,
   })),
+  //----------------------------------checkOtpCode
   on(AuthActions.register, (state, action) => ({
     ...state,
     status: 'loading' as StatusProcess,
@@ -89,5 +109,10 @@ export const authReducer = createReducer(
     ...state,
     errorRegister: action.error,
     status: 'error' as StatusProcess,
+  })),
+  //----------------------------------register
+  on(AuthActions.logout, (state, action) => ({
+    ...initialState,
   }))
+  //----------------------------------logout
 );

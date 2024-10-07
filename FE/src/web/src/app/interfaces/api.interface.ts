@@ -1,3 +1,5 @@
+import { Province } from './province.interface';
+
 export interface BaseResponseApi<T> {
   statusCode: number;
   data: T;
@@ -11,5 +13,11 @@ export interface BaseResponseRecords<T> {
   items: T[];
 }
 
+export interface BaseResponseAddressApi {
+  error: number;
+  error_text: string;
+  data_name: string;
+  data: Province[] | [];
+}
 
 export type ApiType = 'common' | 'auth' | 'admin' | 'hra' | 'cra';

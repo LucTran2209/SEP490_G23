@@ -5,10 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
 
-
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, HttpClientModule, withInterceptors, HTTP_INTERCEPTORS, withFetch } from '@angular/common/http';
+import {
+  provideHttpClient,
+  HttpClientModule,
+  withInterceptors,
+  HTTP_INTERCEPTORS,
+  withFetch,
+} from '@angular/common/http';
 import { SharedModule } from './components/shared/shared.module';
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -29,11 +34,17 @@ import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { AuthLayoutComponent } from './components/layout/auth-layout/auth-layout.component';
+import { addressFeature } from './store/province/province.reducer';
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent, AuthLayoutComponent, LayoutDashboardComponent, LayoutUserComponent],
+  declarations: [
+    AppComponent,
+    AuthLayoutComponent,
+    LayoutDashboardComponent,
+    LayoutUserComponent,
+  ],
   imports: [
     SharedModule,
     BrowserModule,
@@ -42,7 +53,10 @@ registerLocaleData(en);
     FormsModule,
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature(authFeature),
-    EffectsModule.forRoot([HydrationEffects, AuthEffect,
+    StoreModule.forFeature(addressFeature),
+    EffectsModule.forRoot([
+      HydrationEffects,
+      AuthEffect,
       //  UserEffects
     ]),
     StoreRouterConnectingModule.forRoot(),
@@ -64,4 +78,4 @@ registerLocaleData(en);
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

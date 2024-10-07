@@ -22,6 +22,7 @@ import {
   ILoginResponse,
   IOtpCodeResponse,
   IRegisterRequest,
+  IResetPassword,
 } from '../interfaces/account.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
 import { FeatureAppState } from '../store/featureApp.state';
@@ -42,7 +43,6 @@ import { UserProfileService } from './user-profile.service';
 export class AuthService {
   //test
   private BASE_URL = 'https://dummyjson.com/auth';
-
   //test
 
   private isLoggedSubject = new BehaviorSubject<boolean>(
@@ -189,8 +189,10 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<any> {
-    return this.httpClient.post<any>(AuthSlug.Logout.api);
+  logout() {
+    this.endSession();
+    removeAllCookies();
+    this.storageService.unset(LocalStorageKey.currentUser);
   }
 
   forgotPassWord(
@@ -202,9 +204,9 @@ export class AuthService {
     );
   }
 
-  resetPassword(): Observable<BaseResponseApi<any>> {
-    return this.httpClient.post<BaseResponseApi<any>>(
-      AuthSlug.ResetPassWord.api
+  resetPassword(data: IResetPassword): Observable<BaseResponseApi<any>> {
+    return this.httpClient.put<BaseResponseApi<any>>(
+      AuthSlug.ChangePassword.api
     );
   }
 

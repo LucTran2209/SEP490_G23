@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class RentalDetailCardComponent {
 
+  selectedTimeOption: string = 'day'; 
+  dateRange: Date[] = [];
+  month: Date | null = null;
+  year: Date | null = null;
 }
