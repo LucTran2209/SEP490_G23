@@ -4,7 +4,7 @@ using BE.Application.Common.Results;
 using BE.Application.DependencyInjections;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities.Users;
+using BE.Domain.Entities;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -51,7 +51,7 @@ namespace BE.Application.Services.Authentication
 
             var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(inputDto.UserName);
 
-            if (user == null || !inputDto.Password.VerifyPassword(user.Password))
+            if (user == null || !inputDto.Password.VerifyPassword(user.Password!))
             {
                 return new ResultService
                 {
@@ -92,7 +92,7 @@ namespace BE.Application.Services.Authentication
 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Email, user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
@@ -100,7 +100,7 @@ namespace BE.Application.Services.Authentication
             {
                 foreach (var role in user.UserRoles)
                 {
-                    authClaims.Add(new Claim(ClaimTypes.Role, role.Role.RoleName));
+                    
                 }
             }
 

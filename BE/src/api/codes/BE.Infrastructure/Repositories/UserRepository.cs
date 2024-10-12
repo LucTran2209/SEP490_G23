@@ -1,5 +1,5 @@
-﻿using BE.Domain.Entities.Roles;
-using BE.Domain.Entities.Users;
+﻿using BE.Domain.Entities;
+using BE.Domain.Interfaces;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +17,15 @@ namespace BE.Infrastructure.Repositories
             context.Users.Remove(entity);
         }
 
-        public async Task<User> FindByIdAsync(Guid id)
+        public async Task<User?> FindByIdAsync(Guid id)
         {
             var user = await context.Users.SingleOrDefaultAsync(u => u.Id == id);
             return user;
         }
 
-        public async Task<User> FirstOrDefaultAsync(string userName)
+        public async Task<User?> FirstOrDefaultAsync(string userName)
         {
-            var user = await context.Users.Include(u => u.UserRoles)
+            var user = await context.Users.Include(u => u.UserRoles!)
                                             .ThenInclude(ur => ur.Role)
                                             .FirstOrDefaultAsync(x => x.UserName == userName);
             

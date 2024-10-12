@@ -1,7 +1,7 @@
 ﻿using BE.Domain.Abstractions;
 using BE.Domain.Abstractions.IEntities;
 using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities.Users;
+using BE.Domain.Interfaces;
 using BE.Infrastructure.Repositories;
 using BE.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ namespace BE.Infrastructure.Common
     public class UnitOfWork : IUnitOfWork , IDisposable
     {
         private readonly ApplicationDbContext context;
-        private readonly ClaimsPrincipal claimsPrincipal;
+        //private readonly ClaimsPrincipal claimsPrincipal;
         private IDbContextTransaction? _currentTransaction;
         public IDbContextTransaction? GetCurrentTransaction()
         {
@@ -98,7 +98,7 @@ namespace BE.Infrastructure.Common
                             added.CreatedDate = DateTime.UtcNow;
                         }
 
-                        if (entry.Entity is IUserTracking<Guid> hasTrace)
+                        if (entry.Entity is IUserTracking hasTrace)
                         {
                             hasTrace.CreatedBy = new Guid(); //this.claimsPrincipal.GetUserId();
                             hasTrace.CreatedByName = "Admin"; //this.claimsPrincipal.GetUserName();
@@ -111,7 +111,7 @@ namespace BE.Infrastructure.Common
                             modified.LastModifiedDate = DateTime.UtcNow;
                         }
 
-                        if (entry.Entity is IUserTracking<Guid> trace)
+                        if (entry.Entity is IUserTracking trace)
                         {
                             trace.ModifiedBy = new Guid(); //claimsPrincipal.GetUserId();
                             trace.ModifiedByName = "Admin"; // claimsPrincipal.GetUserName();

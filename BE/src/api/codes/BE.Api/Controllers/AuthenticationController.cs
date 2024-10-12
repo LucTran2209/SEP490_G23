@@ -1,8 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 
 namespace BE.Api.Controllers
 {
@@ -16,7 +14,7 @@ namespace BE.Api.Controllers
             this.authenticationService = authenticationService;
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<IActionResult> LoginByUserNamePassword(LoginByUserNamePasswordInputDto inputDto)
         {
             var result =  await authenticationService.LoginByUserNamePasswordAsync(inputDto);

@@ -1,4 +1,4 @@
-﻿using BE.Domain.Entities.Users;
+﻿using BE.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BE.Persistence.DataSeeds;

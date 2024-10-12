@@ -89,8 +89,8 @@ public static class DataExtensions
 	}
 
 	public static async Task<T?> GetById<T, Tkey>(this IQueryable<T> query, Tkey id)
-		where T : IEntityBase<Tkey>
+		where T : IEntityBase
 	{
-		return await query.FirstOrDefaultAsync(x => x.Id.ToString() == id.ToString());
+		return await query.FirstOrDefaultAsync(x => x.Id.ToString() == id!.ToString());
 	}
 }

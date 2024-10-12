@@ -1,6 +1,4 @@
-﻿using BE.Domain.Entities.Users;
-
-namespace BE.Application.Services.Authentication
+﻿namespace BE.Application.Services.Authentication
 {
     public static class AuthenExtention
     {

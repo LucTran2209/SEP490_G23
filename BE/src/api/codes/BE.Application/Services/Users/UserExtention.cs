@@ -1,6 +1,6 @@
 ﻿using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Application.Services.Users.UserServiceOutputDto;
-using BE.Domain.Entities.Users;
+using BE.Domain.Entities;
 
 namespace BE.Application.Services.Users
 {

@@ -1,13 +1,13 @@
 ﻿namespace BE.Domain.Abstractions.IRepositories
 {
-    public interface IBaseRepository<TEntity, in TKey> where TEntity : class
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
         /// <summary>
         /// Find Entity by its Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<TEntity> FindByIdAsync(TKey id);
+        public Task<TEntity?> FindByIdAsync(Guid id);
 
         /// <summary>
         /// Add a Entity to Database
