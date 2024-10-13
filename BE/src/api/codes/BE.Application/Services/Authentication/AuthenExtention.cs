@@ -2,9 +2,10 @@
 {
     public static class AuthenExtention
     {
-        public static string EncodePassword(this string password)
+        public static string HashPassword(this string password)
         {
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
             return passwordHash;
         }
 

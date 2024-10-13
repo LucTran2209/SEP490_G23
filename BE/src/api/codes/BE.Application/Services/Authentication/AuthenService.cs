@@ -4,6 +4,7 @@ using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.DependencyInjections;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
+using BE.Application.Services.Authentication.AuthenServiceOutputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using BE.Domain.Entities;
 using BE.Domain.Interfaces;
@@ -49,7 +50,7 @@ namespace BE.Application.Services.Authentication
 
             if (currentUser != null)
             {
-                currentUser.Password = inputDto.NewPassword.EncodePassword();
+                currentUser.Password = inputDto.NewPassword.HashPassword();
 
                 await unitOfWork.SaveChangesAsync();
 
@@ -94,13 +95,19 @@ namespace BE.Application.Services.Authentication
 
             string accessToken = GenerateToken(user);
 
+            var ouputDto = new LoginByUserNamePasswordOutputDto()
+            {
+                AccessToken = accessToken,
+                RefreshToken = "adhqdasdhwncqdojaodjqoiwwwwwwjdaosjdwjdoasjdonqjdq",
+            };
+
             SetCookie(accessToken);
 
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "",
-                Datas = accessToken
+                Datas = ouputDto
             };
         }
 
@@ -117,7 +124,9 @@ namespace BE.Application.Services.Authentication
 
             var user = _mapper.Map<User>(inputDto);
 
-            user.Password!.EncodePassword();
+            var hashPassword = AuthenExtention.HashPassword(user.Password!);
+
+            user.Password = hashPassword;
 
             await unitOfWork.UserRepository.AddAsync(user);
 
