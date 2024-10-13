@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
 import { AnonymousComponent } from './components/anonymous/anonymous.component';
-import { authGuard } from './guards/auth.guard';
-import { USER_ROLE } from './utils/constant';
 import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
 import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
 import { HomePageComponent } from './features/users/components/home-page/home-page.component';
-import { IMPORT_STATE } from '@ngrx/store-devtools/src/actions';
+import { USER_ROLE } from './utils/constant';
+import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
-  // { path: 'test', component: LoginOtherComponent },
+  // { path: 'test', component: AnonymousComponent },
   { path: 'error', component: AnonymousComponent },
   { path: 'home', component: HomePageComponent },
   {
@@ -34,6 +33,7 @@ const routes: Routes = [
   },
   {
     path: 'portal',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./features/register-lessor/register-lessor.module').then(
         (m) => m.RegisterLessorModule
@@ -52,7 +52,7 @@ const routes: Routes = [
   },
   {
     path: 'lessor',
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     component: LayoutDashboardComponent,
     data: { expectedRole: USER_ROLE.LESSOR },
     loadChildren: () =>

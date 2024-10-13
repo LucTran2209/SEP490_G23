@@ -54,14 +54,10 @@ export interface IRegisterRequest
   extends IRegisterTabCommon,
     IRegisterTabAuth {}
 
-export interface IAccount {
+export interface IPayLoad {
   _id: string;
-  name?: string;
-  phone?: string;
-  email?: string;
-  password?: string;
-  role: USER_ROLE;
-  isActive?: boolean;
-  slug?: string;
-  avatar?: string;
+  fullName: string;
+  username: string;
+  email: string;
+  roleId: number[];
 }

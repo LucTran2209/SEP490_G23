@@ -11,7 +11,7 @@ export const AuthSlug = {
     api: 'api/user/externallogin',
   },
   ForgotPassWord: {
-    label: 'forgot password',
+    label: 'forgot-password',
     title: 'forgot password | MOERRA',
     api: 'api/user/forgotpassword',
   },
@@ -25,12 +25,12 @@ export const AuthSlug = {
     api: 'renew-token',
   },
   ChangePassword: {
-    label: 'change passowrd',
+    label: 'change-passowrd',
     title: 'change password | MOERRA',
     api: 'api/user/changepassword',
   },
   ResetPassWord: {
-    label: 'reset password',
+    label: 'reset-password',
     title: 'reset password | NOERRA',
     api: 'api/user/changepassword',
   },

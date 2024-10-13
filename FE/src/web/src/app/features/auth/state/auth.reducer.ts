@@ -1,10 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
-import { AuthState } from './auth.state';
-import * as AuthActions from './auth.actions';
 import { StatusProcess } from '../../../interfaces/anonymous.interface';
+import * as AuthActions from './auth.actions';
+import { AuthState } from './auth.state';
 
 const initialState: AuthState = {
-  dataUser: [],
+  accessToken: null,
   isAuthenticated: false,
   message: null,
   errorRegister: null,
@@ -23,7 +23,7 @@ export const authReducer = createReducer(
   on(AuthActions.login_success, (state, action) => ({
     ...state,
     status: 'loaded' as StatusProcess,
-    dataUser: action.user,
+    accessToken: action.accessToken,
     isAuthenticated: true,
     message: 'ok',
   })),
@@ -40,7 +40,7 @@ export const authReducer = createReducer(
   on(AuthActions.login_external_success, (state, action) => ({
     ...state,
     status: 'loaded' as StatusProcess,
-    dataUser: action.user,
+    accessToken: action.accessToken,
     isAuthenticated: true,
     message: 'ok',
   })),
