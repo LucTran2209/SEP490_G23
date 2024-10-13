@@ -1,18 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  debounceTime,
-  map,
-  Observable,
-  of,
-  tap,
-} from 'rxjs';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { jwtDecode } from 'jwt-decode';
-import { RouteData } from '../configs/anonymous.config';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import {
+  MappingLinkAfterLoginByRoles,
+  RouteData,
+} from '../configs/anonymous.config';
 import { AuthSlug } from '../configs/api.configs';
 import {
   IChangePassword,
@@ -21,13 +16,14 @@ import {
   ILoginRequest,
   ILoginResponse,
   IOtpCodeResponse,
+  IPayLoad,
   IRegisterRequest,
   IResetPassword,
 } from '../interfaces/account.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
-import { FeatureAppState } from '../store/featureApp.state';
+import { FeatureAppState } from '../store/app.state';
 import { decodeBase64 } from '../utils/anonymous.helper';
-import { LocalStorageKey, STRING } from '../utils/constant';
+import { LocalStorageKey, STRING, USER_ROLE } from '../utils/constant';
 import {
   getCookie,
   removeAllCookies,
@@ -51,7 +47,7 @@ export class AuthService {
   public routerLinkRedirectURLSubject = new BehaviorSubject<string>('');
 
   isLoggedIn$: Observable<boolean> = this.isLoggedSubject.asObservable();
-  routerLinkRedirectURL$: Observable<string> =
+  private routerLinkRedirectURL$: Observable<string> =
     this.routerLinkRedirectURLSubject.asObservable();
 
   constructor(
@@ -64,9 +60,7 @@ export class AuthService {
   ) {}
 
   private checkInitialLoginStatus(): boolean {
-    return (
-      !!getCookie(STRING.ACCESS_TOKEN) && !!getCookie(STRING.REFRESH_TOKEN)
-    );
+    return !!getCookie(STRING.ACCESS_TOKEN);
   }
 
   get token() {
@@ -122,10 +116,9 @@ export class AuthService {
    * @returns
    * @description
    */
-  decodedTokenToGiveInfo(token: string): any {
-    console.log(token);
-    let decoded = jwtDecode(token);
-    console.log(decoded);
+  decodedTokenToGiveInfo(token: string) {
+    let decoded = jwtDecode<IPayLoad>(token);
+    console.log('line 128', decoded);
     return decoded;
   }
 
@@ -133,41 +126,50 @@ export class AuthService {
    *
    * @param token
    */
-  isTokenExpired(token: string): boolean {
-    const expiry = jwtDecode(token).exp;
-    if (expiry) {
-      return Math.floor(new Date().getTime() / 1000) >= expiry;
+  isTokenExpired(token: string | null): boolean {
+    if (!token) {
+      return true;
     }
-    return false;
+    try {
+      const expiry = jwtDecode(token).exp;
+      if (expiry) {
+        return Math.floor(new Date().getTime() / 1000) <= expiry;
+      }
+    } catch (error) {
+      return true;
+    }
+    return true;
   }
 
-  //test
-  startSession({ accesstoken, refreshToken }: any): void {
+  startSession(accesstoken: string): void {
+    const userPayLoad = this.decodedTokenToGiveInfo(accesstoken);
+    const roleId = userPayLoad.roleId[0] as USER_ROLE;
     replaceCookie(STRING.ACCESS_TOKEN, accesstoken, null, '/');
-    // replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null);
     this.storageService.set(
       LocalStorageKey.currentUser,
-      JSON.stringify(this.decodedTokenToGiveInfo(accesstoken))
+      JSON.stringify(userPayLoad)
     );
     this.isLoggedSubject.next(true);
 
-    // this.redirectToPageAfter();
+    this.routerLinkRedirectURLSubject.next(
+      MappingLinkAfterLoginByRoles[roleId]
+    );
+    this.redirectToPageAfter();
   }
 
   redirectToPageAfter() {
     this.routerLinkRedirectURL$.subscribe((toUrl) => {
-      const redirectUrl = toUrl ? this.router.parseUrl(toUrl) : '/test';
+      const redirectUrl = toUrl ? this.router.parseUrl(toUrl) : '/home';
       this.router.navigateByUrl(redirectUrl);
     });
   }
 
   //logout with user
   endSession(): void {
-    this.userProfileService.currentUser = null;
     removeAllCookies();
-    this.router.navigate(['/auth/login']);
+    window.localStorage.clear();
+    window.location.href = '/home';
   }
-  //test
 
   /**
    *
@@ -191,8 +193,6 @@ export class AuthService {
 
   logout() {
     this.endSession();
-    removeAllCookies();
-    this.storageService.unset(LocalStorageKey.currentUser);
   }
 
   forgotPassWord(
