@@ -1,27 +1,19 @@
-<!-- expandable-checkbox-list.component.html -->
-<div class="flex flex-col gap-3">
-  <label *ngFor="let item of visibleItems">
-    <nz-checkbox
-      [(ngModel)]="item.checked"
-      (ngModelChange)="onSelectionChange(item)"
-    >
-      {{ item.label }}
-    </nz-checkbox>
-  </label>
-
-  <p class="icon_text" *ngIf="showMoreButton" (click)="toggleMore()">
-    {{ isExpanded ? "Thu gọn" : "Xem thêm" }}
-    <i nz-icon [nzType]="isExpanded ? 'up' : 'down'"></i>
-  </p>
-
-  <ng-container *ngIf="isExpanded">
-    <label *ngFor="let item of hiddenItems">
-      <nz-checkbox
-        [(ngModel)]="item.checked"
-        (ngModelChange)="onSelectionChange(item)"
-      >
-        {{ item.label }}
-      </nz-checkbox>
-    </label>
+<div #contentWrapper>
+  <ng-container *ngFor="let item of visibleItems; let i = index">
+    <ng-container
+      *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"
+    ></ng-container>
   </ng-container>
 </div>
+
+<!-- Toggle button to show more or less -->
+<p
+  *ngIf="shouldShowToggleButton()"
+  class="icon_text py-3 text-sm font-semibold cursor-pointer"
+  nz-button
+  (click)="toggleShowMore()"
+  nzType="link"
+>
+  <span nz-icon [nzType]="showMore ? 'down' : 'up'" nzTheme="outline"></span>
+  {{ showMore ? "Xem Thêm" : "Thu Gọn" }}
+</p>

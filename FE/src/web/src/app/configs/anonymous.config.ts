@@ -10,3 +10,24 @@ export const MappingLinkAfterLoginByRoles = {
 export interface RouteData {
   expectedRole?: string[];
 }
+
+export interface OptionSelect {
+  label: string;
+  value: string | number;
+}
+
+export interface OptionSelectCheckBox {
+  label: string;
+  value: string | number;
+  checked: boolean;
+}
+
+export interface IITemListNav {
+  label: string;
+  href: string;
+}
+
+export interface IIRateStar {
+  level: number;
+  text?: string;
+}
