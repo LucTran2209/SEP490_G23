@@ -5,11 +5,11 @@ namespace BE.Application.Abstractions.ServiceInterfaces
 {
     public interface IAuthenticationService
     {
+        Task<ResultService> RegisterAsync(RegisterInputDto inputDto);
         Task<ResultService> LoginByUserNamePasswordAsync(LoginByUserNamePasswordInputDto inputDto);
         Task<ResultService> ExternalLoginAsync(ExternalLoginInputDto inputDto);
         Task<ResultService> ForgotPasswordAsync(ForgotPasswordInputDto inputDto);
         Task<ResultService> ChangePasswordAsync(ChangePasswordInputDto inputDto);
         Task<ResultService> LogoutAsync();
-        Task<ResultService> RegisterAsync(RegisterInputDto inputDto);
     }
 }

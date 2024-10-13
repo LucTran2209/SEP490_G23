@@ -1,6 +1,4 @@
-﻿using BE.Domain.Entities.Users;
-
-namespace BE.Application.Services.Authentication
+﻿namespace BE.Application.Services.Authentication
 {
     public static class AuthenExtention
     {
@@ -10,7 +8,7 @@ namespace BE.Application.Services.Authentication
             return passwordHash;
         }
 
-        public static bool VerifyPassword(this string providedPassword, string hashedPassword)
+        public static bool VerifyPassword(string providedPassword, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
         }    

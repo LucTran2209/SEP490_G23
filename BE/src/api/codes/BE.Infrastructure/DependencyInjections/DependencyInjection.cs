@@ -1,6 +1,7 @@
 ﻿namespace BE.Infrastructure.DependencyInjections
 {
-    internal class DependencyInjection
+    public class DependencyInjection
     {
+
     }
 }

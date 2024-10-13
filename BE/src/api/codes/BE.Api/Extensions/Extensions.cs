@@ -26,68 +26,7 @@ public static class Extensions
         services.AddHttpContextAccessor();
         services.AddTransient(s => s.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new ClaimsPrincipal());
 
-        //services.AddOpenIddict()
-        //    // Register the OpenIddict core components.
-        //    .AddCore(options =>
-        //    {
-        //        // Configure OpenIddict to use the Entity Framework Core stores and models.
-        //        // Note: call ReplaceDefaultEntities() to replace the default OpenIddict entities.
-        //        options.UseEntityFrameworkCore()
-        //               .UseDbContext<ApplicationDbContext>();
-        //    })
-
-        //    // Register the OpenIddict server components.
-        //    .AddServer(options =>
-        //    {
-        //        // Enable the token endpoint.
-        //        options.SetTokenEndpointUris("connect/token");
-
-        //        // Enable the password flow.
-        //        options
-        //            .AllowPasswordFlow()
-        //            .AllowClientCredentialsFlow()
-        //            .AcceptAnonymousClients();
-
-        //        // Register the signing and encryption credentials.
-
-        //        if (configuration.IsDevelopment())
-        //        {
-        //            options.AddDevelopmentEncryptionCertificate()
-        //               .AddDevelopmentSigningCertificate();
-        //        }
-        //        else
-        //        {
-        //            options.AddEncryptionCertificate(configuration.GetX509Certificate(
-        //                encryptionFileName,
-        //                "CN=Fabrikam Encryption Certificate"));
-
-        //            options.AddSigningCertificate(configuration.GetX509Certificate(
-        //                signingFileName,
-        //                "CN=Fabrikam Signing Certificate",
-        //                X509KeyUsageFlags.DigitalSignature));
-        //        }
-
-        //        options.AddEncryptionKey(new SymmetricSecurityKey(
-        //            Convert.FromBase64String("DRjd/GnduI3Efzen9V9BvbNUfc/VKgXltV7Kbk9sMkY=")));
-
-        //        options.AddSigningKey(securiryKey);
-
-        //        // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
-        //        options.UseAspNetCore()
-        //               .EnableTokenEndpointPassthrough();
-        //    })
-
-        //    // Register the OpenIddict validation components.
-        //    .AddValidation(options =>
-        //    {
-        //        // Import the configuration from the local OpenIddict server instance.
-        //        options.UseLocalServer();
-
-        //        // Register the ASP.NET Core host.
-        //        options.UseAspNetCore();
-
-        //        options.Configure(o => o.TokenValidationParameters.IssuerSigningKey = securiryKey);
-        //    });
+        
 
         return services;
     }

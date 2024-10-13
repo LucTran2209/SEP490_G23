@@ -1,4 +1,4 @@
-﻿using BE.Domain.Entities.UserRoles;
+﻿using BE.Domain.Entities;
 using BE.Persistence.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

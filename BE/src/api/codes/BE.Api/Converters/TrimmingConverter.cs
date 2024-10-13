@@ -10,7 +10,7 @@ public class TrimmingConverter : JsonConverter<string>
         return typeToConvert == typeof(string);
     }
 
-    public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return reader.GetString()?.Trim();
     }

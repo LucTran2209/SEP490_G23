@@ -1,10 +1,10 @@
 ﻿namespace BE.Domain.Abstractions.IEntities
 {
-    public interface IUserTracking<TKey>
+    public interface IUserTracking
     {
-        TKey? CreatedBy { get; set; }
+        Guid? CreatedBy { get; set; }
         string? CreatedByName { get; set; }
-        TKey? ModifiedBy { get; set; }
+        Guid? ModifiedBy { get; set; }
         string? ModifiedByName { get; set; }
     }
 }
