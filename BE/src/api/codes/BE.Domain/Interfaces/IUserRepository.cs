@@ -5,6 +5,6 @@ namespace BE.Domain.Interfaces
 {
     public interface IUserRepository : IBaseRepository<User>
     {
-        Task<User?> FirstOrDefaultAsync(string userName);
+        Task<User?> GetsUserByUserNameAsync(string userName);
     }
 }

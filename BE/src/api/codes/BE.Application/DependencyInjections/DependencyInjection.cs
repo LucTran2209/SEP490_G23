@@ -6,7 +6,7 @@ using BE.Infrastructure.Common;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-
+    
 namespace BE.Application.DependencyInjections
 {
     public static class DependencyInjection
@@ -15,6 +15,8 @@ namespace BE.Application.DependencyInjections
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
       
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(IAuthenticationService), typeof(AuthenService));

@@ -13,18 +13,18 @@
         /// Add a Entity to Database
         /// </summary>
         /// <param name="entity"></param>
-        public void Insert(TEntity entity);
+        public Task AddAsync(TEntity entity);
 
         /// <summary>
         /// Update data of Entity
         /// </summary>
         /// <param name="entity"></param>
-        public void Update(TEntity entity);
+        public Task UpdateAsync(TEntity entity);
 
         /// <summary>
         /// Deactive a Entity
         /// </summary>
         /// <param name="entity"></param>
-        public void Delete(TEntity entity);
+        public Task DeleteAsync(TEntity entity);
     }
 }

@@ -21,5 +21,22 @@ namespace BE.Api.Controllers
             
             return Ok(result);
         }
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(RegisterInputDto inputDto)
+        {
+            var result = await authenticationService.RegisterAsync(inputDto);
+
+            return Ok(result);
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordInputDto inputDto)
+        {
+            var result = await authenticationService.ChangePasswordAsync(inputDto);
+
+            return Ok(result);
+        }
+
     }
 }

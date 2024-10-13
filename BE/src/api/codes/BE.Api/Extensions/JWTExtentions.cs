@@ -1,4 +1,6 @@
-﻿using BE.Application.DependencyInjections;
+﻿using BE.Api.Services;
+using BE.Application.DependencyInjections;
+using BE.Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -9,6 +11,9 @@ namespace BE.Api.Extensions
     {
         public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpContextAccessor();  
+            services.AddScoped<IUser, CurrentUserService>();
+
             services.Configure<JwtOption>(configuration.GetSection("JWT"));
 
             services.AddAuthentication(options =>
