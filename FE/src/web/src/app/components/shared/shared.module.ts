@@ -50,16 +50,14 @@ import { NavbarHeadearComponent } from '../core/navbar-headear/navbar-headear.co
 import { ProductCardComponent } from '../core/product-card/product-card.component';
 import { ProductCarouseComponent } from '../core/product-carouse/product-carouse.component';
 import { RatingProccessProductComponent } from '../core/rating-proccess-product/rating-proccess-product.component';
-import { RentalDetailCardComponent } from '../core/rental-detail-card/rental-detail-card.component';
-import { SelectItemComponent } from '../core/select-item/select-item.component';
-import { SvgIconComponent } from '../core/svg-icon/svg-icon.component';
-import { UserNavbarHeaderComponent } from '../core/user-navbar-header/user-navbar-header.component';
-import { GoogleSigninComponent } from '../google-signin/google-signin.component';
-import { UploadFileComponent } from '../upload-file/upload-file.component';
-import { ErrorComponent } from '../../features/error/error.component';
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzRateModule } from 'ng-zorro-antd/rate';
-import { ViewMoreItemComponent } from '../core/view-more-item/view-more-item.component';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { GoogleSigninComponent } from '../google-signin/google-signin.component';
+import { SvgIconComponent } from '../core/svg-icon/svg-icon.component';
+import { SelectItemComponent } from '../core/select-item/select-item.component';
+import { UploadFileComponent } from '../upload-file/upload-file.component';
+import { UserNavbarHeaderComponent } from '../core/user-navbar-header/user-navbar-header.component';
+import { RentalDetailCardComponent } from '../core/rental-detail-card/rental-detail-card.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -116,8 +114,6 @@ const SHARED_MODULES = [
   RentalDetailCardComponent,
   ProductCarouseComponent,
   RatingProccessProductComponent,
-  ErrorComponent,
-  ViewMoreItemComponent,
 ];
 
 @NgModule({

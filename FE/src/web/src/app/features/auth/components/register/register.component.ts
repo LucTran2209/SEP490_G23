@@ -1,15 +1,11 @@
-import { ChangeDetectorRef, Component, effect, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { FormatDate, REGEX } from '../../../../utils/constant';
-import { StorageService } from '../../../../services/storage.service';
-import {
-  IRegisterRequest,
-  IRegisterTabAuth,
-  IRegisterTabCommon,
-} from '../../../../interfaces/account.interface';
 import { Store } from '@ngrx/store';
-import * as AuthActions from '../../state/auth.actions';
+import { IRegisterRequest } from '../../../../interfaces/account.interface';
+import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
+import { FormatDate } from '../../../../utils/constant';
+import * as AuthActions from '../../state/auth.actions';
 type Flag_ProcessType = 'OK_TAB1' | 'OK_TAB2';
 
 @Component({
