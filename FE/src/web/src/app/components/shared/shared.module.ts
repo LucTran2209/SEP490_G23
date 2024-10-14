@@ -114,8 +114,8 @@ const SHARED_MODULES = [
   ChatComponent,
   RentalDetailCardComponent,
   ProductCarouseComponent,
-  RatingProccessProductComponent,
   ViewMoreItemComponent,
+  RatingProccessProductComponent,
 ];
 
 @NgModule({
