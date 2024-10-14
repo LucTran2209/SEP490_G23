@@ -1,6 +1,6 @@
 ﻿namespace BE.Application.Services.Users.UserServiceOutputDto
 {
-    public class GetListUserOutputDto
+    public class UpdateUserOutputDto
     {
         public string FullName { get; set; } = null!;
         public string UserName { get; set; } = null!;
@@ -9,7 +9,5 @@
         public string Address { get; set; } = null!;
         public bool Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public bool IsActive { get; set; }
-        public List<Guid>? ListRole { get; set; } = new List<Guid>();
     }
 }

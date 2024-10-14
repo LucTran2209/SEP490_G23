@@ -29,7 +29,9 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<User> GetAll()
         {
-            var query = context.Users.AsQueryable();
+            var query = context.Users.Include(u => u.UserRoles!)
+                                            .ThenInclude(ur => ur.Role)
+                                            .AsQueryable();
 
             return query;
         }
@@ -51,6 +53,16 @@ namespace BE.Infrastructure.Repositories
             context.Users.Remove(entity);
 
             return Task.CompletedTask;
+        }
+
+        public async Task<User> GetByName(string username)
+        {
+            var user = context.Users
+                 .Include(u => u.UserRoles)!
+                 .ThenInclude(ur => ur.Role)
+                 .SingleOrDefault(u => u.UserName == username);
+
+            return user;
         }
     }
 }
