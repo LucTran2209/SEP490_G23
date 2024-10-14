@@ -19,7 +19,9 @@ namespace BE.Application.Services.Authentication.Validators
 
                     if (currentUser == null)  return false; 
 
-                    return AuthenExtention.VerifyPassword(password, currentUser.Password!);
+                    bool isCorrectPass =  AuthenExtention.VerifyPassword(password, currentUser.Password!);
+
+                    return isCorrectPass;
                 }).WithMessage("Current Password is not correct!");
         }
     }
