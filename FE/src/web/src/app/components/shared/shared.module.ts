@@ -125,6 +125,7 @@ const SHARED_MODULES = [
   ViewMoreItemComponent,
   RatingProccessProductComponent,
   ErrorComponent,
+  ViewMoreItemComponent,
 ];
 
 @NgModule({
