@@ -9,6 +9,6 @@
         public string Address { get; set; } = null!;
         public bool Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public List<Guid> ListRole { get; set; } = new List<Guid>();
+        public List<string> ListRole { get; set; } = new List<string>();
     }
 }

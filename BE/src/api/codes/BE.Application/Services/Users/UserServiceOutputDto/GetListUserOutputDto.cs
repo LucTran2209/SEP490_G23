@@ -10,6 +10,6 @@
         public bool Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool IsActive { get; set; }
-        public List<Guid>? ListRole { get; set; } = new List<Guid>();
+        public List<string>? ListRole { get; set; } = new List<string>();
     }
 }
