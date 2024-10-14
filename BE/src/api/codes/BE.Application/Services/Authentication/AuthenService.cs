@@ -112,7 +112,6 @@ namespace BE.Application.Services.Authentication
         }
 
 
-
         public Task<ResultService> LogoutAsync()
         {
             throw new NotImplementedException();
@@ -142,6 +141,7 @@ namespace BE.Application.Services.Authentication
         {
             var authClaims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim("Email", user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("FullName", user.FullName!),
