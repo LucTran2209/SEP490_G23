@@ -151,7 +151,7 @@ namespace BE.Application.Services.Authentication
             {
                 foreach (var role in user.UserRoles)
                 {
-                    new Claim("Role", role.Role!.Name!);
+                    authClaims.Add(new Claim("Role", role.Role!.Name!));
                 }
             }
 
