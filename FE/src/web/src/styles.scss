@@ -7,14 +7,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@layer base {
-
-    .icon_text {
-        @apply text-base flex items-center gap-3
-    }
-}
-
 //custom ng-zoro theme light mode | dark mode
 body {
     &.ant-dark{

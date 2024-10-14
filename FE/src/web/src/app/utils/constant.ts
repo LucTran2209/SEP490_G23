@@ -29,13 +29,11 @@ export const BASE_AVATAR_IMG =
   'https://firebasestorage.googleapis.com/v0/b/sm-ngrx-6e4cd.appspot.com/o/ezgif-1-c7078777f5-removebg-preview%201%20(1).png?alt=media&token=aa4b5717-5708-4bc9-8ffc-24d992c47b48';
 
 export enum USER_ROLE {
-  ADMIN = 1,
-  LESSOR = 2,
-  RENTER = 3,
-  MODERATOR = 4,
+  ADMIN = 'admin',
+  LESSOR = 'lessor',
+  LESSEE = 'lessee',
+  MODERATOR = 'moderator',
 }
-
-export const PERMISSION_ALL = [];
 
 export const LocalStorageKey = {
   currentUser: 'current_user',

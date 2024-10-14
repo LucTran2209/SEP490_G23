@@ -1,18 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {
-  catchError,
-  delay,
-  map,
-  mergeMap,
-  of,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
 import { StorageService } from '../../../services/storage.service';
@@ -20,7 +11,6 @@ import { encodeBase64 } from '../../../utils/anonymous.helper';
 import { STRING } from '../../../utils/constant';
 import { replaceCookie } from '../../../utils/cookie.helper';
 import * as AuthActions from './auth.actions';
-import { selectAccessToken } from './auth.feature';
 
 @Injectable()
 export class AuthEffect {
@@ -41,16 +31,11 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.login(data).pipe(
             map((res) => {
-              console.log('res', res);
-              return AuthActions.login_success({
-                accessToken: res.data.accessToken,
-                refreshToken: res.data.refreshToken,
-              });
+              return AuthActions.login_success({ user: res });
             }),
             catchError((error) => {
-              return of(
-                AuthActions.login_failure({ error: 'Token không hợp lệ' })
-              );
+              console.log('line 37:', error);
+              return of(AuthActions.login_failure({ error }));
             })
           )
         )
@@ -66,10 +51,7 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.loginwithGoogle(data).pipe(
             map((res) => {
-              return AuthActions.login_external_success({
-                accessToken: res.data.accessToken,
-                refreshToken: res.data.refreshToken,
-              });
+              return AuthActions.login_external_success({ user: res });
             }),
             catchError((error) => {
               return of(AuthActions.login_external_failure({ error }));
@@ -181,20 +163,9 @@ export class AuthEffect {
     () =>
       this.action$.pipe(
         ofType(AuthActions.login_success, AuthActions.login_external_success),
-        tap((data) => {
-          if (data) {
-            this.loadingSerivce.setOtherLoading('loaded');
-            this.authService.startSession(data.accessToken, data.refreshToken);
-          } else {
-            this.loadingSerivce.setOtherLoading('error');
-            catchError((err) =>
-              of(
-                AuthActions.checkOtpCode_failure({
-                  error: 'Mã xác nhận không hợp lệ vui lòng thử lại',
-                })
-              )
-            );
-          }
+        tap(({ user }) => {
+          this.loadingSerivce.setOtherLoading('loaded');
+          this.authService.startSession(user.data);
         })
       ),
     { dispatch: false }
@@ -256,19 +227,6 @@ export class AuthEffect {
           this.messageNZ.create('success', 'Bạn đã tạo tài khoản thành công!');
           this.loadingSerivce.setOtherLoading('loaded');
           this.router.navigateByUrl('/auth/login');
-        })
-      ),
-    {
-      dispatch: false,
-    }
-  );
-
-  logout$ = createEffect(
-    () =>
-      this.action$.pipe(
-        ofType(AuthActions.logout),
-        tap(() => {
-          this.authService.logout();
         })
       ),
     {

@@ -1,25 +1,34 @@
-<div nz-row class="auth_wrapper container-fluid p-0 min-h-screen bg-[#fff]">
-  <section
-    nz-col
-    [nzMd]="{ span: 12 }"
-    class="bg-bg-4 bg-no-repeat bg-center bg-cover z-30"
+<nz-spin [nzSpinning]="isLoadingImage">
+  <div
+    nz-row
+    class="auth_wrapper container-fluid p-0 min-h-screen bg-[#ECECEC]"
   >
-    <div class="image_logo absolute brightness-150">
-      <img [src]="imageUse.Logo" alt="logo_image.png" srcset="" />
-    </div>
-  </section>
-  <section
-    nz-col
-    [nzMd]="{ span: 12 }"
-    [nzSm]="{ span: 24 }"
-    class="form-section relative"
-  >
-    <img [src]="imageUse.ShapeT1" alt="" />
-    <img [src]="imageUse.ShapeT2" alt="" class="fixed -right-6" />
-    <div
-      class="container_auth_form p-5 rounded-md w-72 sm:w-[425px] lg:w-[500px]"
+    <section
+      nz-col
+      [nzMd]="{ span: 12 }"
+      [ngClass]="imageWrapper.image[0]"
+      class="bg-no-repeat bg-center bg-cover z-30"
     >
-      <router-outlet></router-outlet>
-    </div>
-  </section>
-</div>
+      <div class="image_logo absolute brightness-150">
+        <img [src]="imageLogo" alt="logo_image.png" srcset="" />
+      </div>
+    </section>
+    <section
+      nz-col
+      [nzMd]="{ span: 12 }"
+      [nzSm]="{ span: 24 }"
+      class="form-section relative"
+    >
+      @for (item of imageWrapper.svg; track $index) {
+      <app-svg-icon [src]="item" />
+
+      }
+
+      <div
+        class="container_auth_form p-5 rounded-md w-72 sm:w-[425px] lg:w-[500px]"
+      >
+        <router-outlet></router-outlet>
+      </div>
+    </section>
+  </div>
+</nz-spin>

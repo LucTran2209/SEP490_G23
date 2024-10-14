@@ -18,26 +18,10 @@
     </ng-template>
   </div>
 
-  @if(!user){
+  @if(userName == null){
   <div>
-    <button
-      nz-button
-      nzType="primary"
-      (click)="onRedirect('/auth/login')"
-      nzGhost
-      class="m-2"
-    >
-      Đăng Nhập
-    </button>
-    <button
-      nz-button
-      nzType="primary"
-      nzGhost
-      class="m-2"
-      (click)="onRedirect('/auth/register')"
-    >
-      Đăng Ký
-    </button>
+    <button nz-button nzType="primary" nzGhost class="m-2">Đăng Nhập</button>
+    <button nz-button nzType="primary" nzGhost class="m-2">Đăng Ký</button>
   </div>
 
   }@else{
@@ -60,11 +44,7 @@
       <li nz-menu-item class="p-3 uppercase text-center menu-item">
         Đăng ký thành chủ thuê
       </li>
-      <li
-        nz-menu-item
-        class="p-3 uppercase text-center menu-item"
-        (click)="logout()"
-      >
+      <li nz-menu-item class="p-3 uppercase text-center menu-item">
         Đăng xuất
       </li>
     </ul>

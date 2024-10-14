@@ -1,48 +1,49 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { IRegisterRequest } from '../../../../interfaces/account.interface';
+import { FormatDate, REGEX } from '../../../../utils/constant';
 import { StorageService } from '../../../../services/storage.service';
-import { FeatureAppState } from '../../../../store/app.state';
-import { FormatDate } from '../../../../utils/constant';
+import { IRegisterRequest, IRegisterTabAuth, IRegisterTabCommon } from '../../../../interfaces/account.interface';
+import { FeatureAppState } from '../../../../store/featureApp.state';
+import { Store } from '@ngrx/store';
 import * as AuthActions from '../../state/auth.actions';
 type Flag_ProcessType = 'OK_TAB1' | 'OK_TAB2';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  styleUrl: './register.component.scss'
 })
+
+
 export class RegisterComponent implements OnInit {
   flag_process: Flag_ProcessType = 'OK_TAB1';
   selectAddress = [];
   dateFormat = FormatDate.DDMMYYYY;
 
   forminfocommongroup: FormGroup = this.fb.group({
-    firstName: [
-      '',
-      [Validators.required, Validators.min(1), Validators.maxLength(100)],
-    ],
-    lastName: [
-      '',
-      [Validators.required, Validators.min(1), Validators.maxLength(100)],
-    ],
+    fullname: ['', [Validators.required, Validators.min(1), Validators.maxLength(100)]],
+    phonenumber: ['', [Validators.required, Validators.pattern(REGEX.phoneNumber)]],
+    gender: [true, Validators.required],
+    address: [''],
+    dateofbirth: [null, [Validators.required]],
+    introduction: ['bla bla bla'],
   });
   forminfoauthgroup: FormGroup = this.fb.group({
     username: [null, [Validators.required, Validators.maxLength(100)]],
     password: [null, [Validators.required]],
-    email: [null, [Validators.required, Validators.email]],
+    email: [null, [Validators.required, Validators.email]]
   });
 
-  constructor(
-    private fb: NonNullableFormBuilder,
+
+  constructor(private fb: NonNullableFormBuilder,
     private storageService: StorageService,
     private cdRef: ChangeDetectorRef,
     private store: Store<FeatureAppState>
-  ) {}
+  ) {
+  }
 
   private markControlsAsDirty(formCurent: FormGroup): void {
-    Object.values(formCurent.controls).forEach((control) => {
+    Object.values(formCurent.controls).forEach(control => {
       if (control.invalid) {
         control.markAsDirty();
         control.updateValueAndValidity({ onlySelf: true });
@@ -50,15 +51,21 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
+
 
   handleselectAddress(address: string) {
     this.forminfocommongroup.patchValue({ address });
   }
 
+
   toggleTabRegiser(tabHandle: Flag_ProcessType) {
     this.flag_process = tabHandle;
   }
+
+
+
 
   submitTab1(): void {
     if (this.forminfocommongroup.valid) {
@@ -71,13 +78,14 @@ export class RegisterComponent implements OnInit {
   submitTabFinall(): void {
     if (this.forminfoauthgroup.valid) {
       let requestRegister: IRegisterRequest = {
-        ...this.forminfocommongroup.value,
-        ...this.forminfoauthgroup.value,
-      };
+       ...this.forminfocommongroup.value,
+        ...this.forminfoauthgroup.value
+      }
       this.store.dispatch(AuthActions.register({ data: requestRegister }));
       console.log(requestRegister);
     } else {
       this.markControlsAsDirty(this.forminfoauthgroup);
     }
   }
+
 }

@@ -35,12 +35,10 @@ export const REGISTER_FAILURE = '[Auth] register failure';
 
 export const LOGOUT = '[Auth] logout';
 
-export const TOKEN_EXPIRED = '[Auth] token expired';
-
 export const login = createAction(LOGIN_INIT, props<{ data: ILoginRequest }>());
 export const login_success = createAction(
   LOGIN_SUCCESS,
-  props<{ accessToken: string; refreshToken: string }>()
+  props<{ user: any }>()
 );
 export const login_failure = createAction(
   LOGIN_FAILURE,
@@ -53,7 +51,7 @@ export const login_external = createAction(
 );
 export const login_external_success = createAction(
   LOGI_EXTERNAL_SUCCESS,
-  props<{ accessToken: string; refreshToken: string }>()
+  props<{ user: any }>()
 );
 export const login_external_failure = createAction(
   LOGIN_EXTERNAL_FAILURE,
@@ -108,8 +106,3 @@ export const register_failure = createAction(
   props<{ error: string }>()
 );
 export const logout = createAction(LOGOUT);
-
-export const tokenExpire = createAction(
-  TOKEN_EXPIRED,
-  props<{ message: string }>()
-);

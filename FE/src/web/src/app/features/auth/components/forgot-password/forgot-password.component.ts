@@ -16,13 +16,13 @@ import { Observable, tap } from 'rxjs';
 import { IForgotPassword } from '../../../../interfaces/account.interface';
 import { ItimeClock } from '../../../../interfaces/anonymous.interface';
 import { AuthService } from '../../../../services/auth.service';
+import { FeatureAppState } from '../../../../store/featureApp.state';
 import { countDownTimer } from '../../../../utils/anonymous.helper';
 import { otpValidator } from '../../../../utils/validators';
 import * as AuthActions from '../../state/auth.actions';
 import { selectIsRecoveringPassword } from '../../state/auth.feature';
 import { StorageService } from '../../../../services/storage.service';
 import { STRING } from '../../../../utils/constant';
-import { FeatureAppState } from '../../../../store/app.state';
 
 interface OtpFormControls {
   number1: AbstractControl<string | null>;

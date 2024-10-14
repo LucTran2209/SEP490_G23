@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthLayoutComponent } from '../../components/layout/auth-layout/auth-layout.component';
+import { LoginComponent } from './components/login/login.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { AuthSlug } from '../../configs/api.configs';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AuthLayoutComponent } from '../../components/layout/auth-layout/auth-layout.component';
+import { imageResolver } from '../../resolvers/image.resolver';
 
 const routes: Routes = [
   {
@@ -15,33 +16,36 @@ const routes: Routes = [
     redirectTo: 'login',
   },
   {
-    path: AuthSlug.Login.label,
+    path: 'login',
     component: LoginComponent,
     title: AuthSlug.Login.title,
   },
   {
     path: '',
     component: AuthLayoutComponent,
+    resolve: {
+      imageResolve: imageResolver,
+    },
     children: [
       {
-        path: AuthSlug.ForgotPassWord.label,
+        path: 'forgot-password',
         component: ForgotPasswordComponent,
         title: AuthSlug.ForgotPassWord.title,
       },
       {
-        path: AuthSlug.ResetPassWord.label,
+        path: 'reset-password',
         component: ResetPasswordComponent,
         title: AuthSlug.ResetPassWord.title,
       },
       {
-        path: AuthSlug.Register.label,
+        path: 'register',
         component: RegisterComponent,
         title: AuthSlug.Register.title,
       },
     ],
   },
   {
-    path: AuthSlug.ChangePassword.label,
+    path: 'change-password',
     component: ChangePasswordComponent,
     title: AuthSlug.ChangePassword.title,
   },
