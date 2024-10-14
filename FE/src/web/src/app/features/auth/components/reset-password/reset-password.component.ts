@@ -10,12 +10,12 @@ import {
 } from '@angular/forms';
 import { confirmValidator } from '../../../../utils/validators';
 import { StorageService } from '../../../../services/storage.service';
-import { FeatureAppState } from '../../../../store/featureApp.state';
 import { Store } from '@ngrx/store';
 import { getCookie } from '../../../../utils/cookie.helper';
 import { STRING } from '../../../../utils/constant';
 import { IResetPassword } from '../../../../interfaces/account.interface';
 import { resetPassword } from '../../state/auth.actions';
+import { FeatureAppState } from '../../../../store/app.state';
 
 @Component({
   selector: 'app-reset-password',

@@ -1,0 +1,46 @@
+<div class="">
+  <div class="backcrumb">asd / asdasd</div>
+  <div class="py-3">
+    <p class="font-semibold text-4xl">
+      <span class="text-red-500">199</span> sản phẩm được tìm thấy trong <br />
+      <span class="text-red-500">loại sản phẩm n2</span>
+    </p>
+  </div>
+  <div class="grid grid-cols-12 gap-5">
+    <section class="col-span-3">
+        <app-filter-post-rental></app-filter-post-rental>
+    </section>
+    <section class="col-span-9">
+      <div class="">
+        <h4 class="uppercase text-center text-2xl font-semibold">
+          CHO THUE SAN PHAM N2
+        </h4>
+      </div>
+      <div class="flex justify-between pb-3">
+        <div>form search</div>
+        <div class="min-w-[20%]">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Select a person"
+            [(ngModel)]="selectedValue"
+            class="w-full"
+          >
+            <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+            <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+            <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="grid grid-cols-12 gap-3 pb-3">
+        <div *ngFor="let post of postList" class="col-span-4">
+          <app-product-card [post]="post" class=""></app-product-card>
+        </div>
+      </div>
+      <!-- pagination -->
+      <div class="flex justify-center">
+        <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+      </div>
+    </section>
+  </div>
+</div>
