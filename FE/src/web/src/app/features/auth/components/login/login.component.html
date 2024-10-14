@@ -64,9 +64,14 @@
       </nz-form-item>
       <div nz-row class="login-form-margin">
         <div nz-col [nzSpan]="12">
-          <label nz-checkbox formControlName="remember">
-            <span>Ghi nhớ</span>
-          </label>
+          <span>
+            &nbsp; Bạn là người mới
+            <a
+              routerLink="/auth/register"
+              class="text-gray-400 hover:text-blue-500"
+              >Tạo tài khoản</a
+            >?
+          </span>
         </div>
         <div nz-col [nzSpan]="12">
           <a class="login-form-forgot" routerLink="/auth/forgot-password"
@@ -89,11 +94,5 @@
     <app-google-signin
       (loginWithGoogle)="googleSignin($event)"
     ></app-google-signin>
-    <p class="text-right">
-      Bạn là người mới
-      <a routerLink="/auth/register" class="text-gray-400 hover:text-blue-500"
-        >Tạo tài khoản</a
-      >?
-    </p>
   </section>
 </div>
