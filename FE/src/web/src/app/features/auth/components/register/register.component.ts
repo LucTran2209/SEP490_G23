@@ -23,18 +23,14 @@ export class RegisterComponent implements OnInit {
   dateFormat = FormatDate.DDMMYYYY;
 
   forminfocommongroup: FormGroup = this.fb.group({
-    fullname: [
+    firstName: [
       '',
       [Validators.required, Validators.min(1), Validators.maxLength(100)],
     ],
-    phonenumber: [
+    lastName: [
       '',
-      [Validators.required, Validators.pattern(REGEX.phoneNumber)],
+      [Validators.required, Validators.min(1), Validators.maxLength(100)],
     ],
-    gender: [true, Validators.required],
-    address: [''],
-    dateofbirth: [null, [Validators.required]],
-    introduction: ['bla bla bla'],
   });
   forminfoauthgroup: FormGroup = this.fb.group({
     username: [null, [Validators.required, Validators.maxLength(100)]],

@@ -16,6 +16,7 @@ export interface ResultService {
 
 export interface ILoginResponse {
   accessToken: string;
+  refreshToken: string;
 }
 
 export interface IExternalLoginRequest {
@@ -37,12 +38,8 @@ export interface IOtpCodeResponse {
 }
 
 export interface IRegisterTabCommon {
-  fullname: string;
-  phonenumber?: string;
-  address?: string;
-  gender: boolean;
-  dateofbirth: Date;
-  introduction?: string;
+  firstName: string;
+  lastName: string;
 }
 export interface IRegisterTabAuth {
   username: string;
@@ -59,5 +56,6 @@ export interface IPayLoad {
   fullName: string;
   username: string;
   email: string;
-  roleId: number[];
+  roleId?: number[];
+  exp: number;
 }

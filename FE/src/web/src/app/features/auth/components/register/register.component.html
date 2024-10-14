@@ -16,20 +16,20 @@
         [nzSm]="24"
         [nzXs]="24"
         nzRequired
-        nzFor="fullname"
+        nzFor="firstName"
         class="text-start"
-        >Tên đầy đủ</nz-form-label
+        >Tên đầu tiên</nz-form-label
       >
       <nz-form-control
         [nzSm]="24"
         [nzXs]="24"
-        nzErrorTip="Nhập đầy đủ tên người dùng không hợp lệ!"
+        nzErrorTip="Nhập tên dầu tiên không hợp lệ!"
       >
         <nz-input-group>
           <input
             type="text"
-            placeholder="Nguyen Van A"
-            formControlName="fullname"
+            placeholder="Nguyen Van"
+            formControlName="firstName"
             nz-input
           />
         </nz-input-group>
@@ -40,97 +40,23 @@
         [nzSm]="24"
         [nzXs]="24"
         nzRequired
-        nzFor="phonenumber"
+        nzFor="lastName"
         class="text-start"
-        >Số điện thoại</nz-form-label
+        >Tên cuối</nz-form-label
       >
       <nz-form-control
         [nzSm]="24"
         [nzXs]="24"
-        nzErrorTip="Nhập số điện thoại không hợp lệ!"
+        nzErrorTip="Nhập tên cuối không hợp lệ!"
       >
         <nz-input-group>
           <input
             type="text"
-            placeholder="(+84) 0327033756"
-            formControlName="phonenumber"
+            placeholder="A"
+            formControlName="lastName"
             nz-input
           />
         </nz-input-group>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label
-        [nzSm]="24"
-        [nzXs]="24"
-        nzRequired
-        nzFor="gender"
-        class="text-start"
-        >Giới tính</nz-form-label
-      >
-      <nz-form-control [nzSm]="24" [nzXs]="24">
-        <nz-radio-group formControlName="gender" nzName="gender">
-          <label nz-radio [nzValue]="true">Nam</label>
-          <label nz-radio [nzValue]="false">Nữ</label>
-        </nz-radio-group>
-      </nz-form-control>
-    </nz-form-item>
-    <div class="grid grid-cols-3 gap-3">
-      <nz-form-item>
-        <nz-form-label
-          [nzSm]="24"
-          [nzXs]="24"
-          nzFor="address"
-          class="text-start"
-          >Địa chỉ</nz-form-label
-        >
-        <nz-form-control [nzSm]="24" [nzXs]="24">
-          <app-select-item
-            placeholder="Lựa chọn địa chỉ"
-            (selectItem)="handleselectAddress($event)"
-            [data]="selectAddress"
-          ></app-select-item>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item class="col-span-2">
-        <nz-form-label
-          [nzSm]="24"
-          [nzXs]="24"
-          nzRequired
-          nzFor="dateofbirth"
-          class="text-start"
-          >Ngày sinh</nz-form-label
-        >
-        <nz-form-control
-          [nzSm]="24"
-          [nzXs]="24"
-          nzErrorTip="Chọn ngày sinh không hợp lệ!"
-        >
-          <nz-date-picker
-            [nzSize]="'large'"
-            formControlName="dateofbirth"
-            [nzFormat]="dateFormat"
-            class="w-full"
-          ></nz-date-picker>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-    <nz-form-item class="col-span-2">
-      <nz-form-label
-        [nzSm]="24"
-        [nzXs]="24"
-        nzRequired
-        nzFor="introduction"
-        class="text-start"
-        >Giới thiệu một chút:</nz-form-label
-      >
-      <nz-form-control [nzSm]="24" [nzXs]="24">
-        <textarea
-          nz-input
-          placeholder="Controlled autosize"
-          formControlName="introduction"
-          [nzAutosize]="{ minRows: 5, maxRows: 5 }"
-        ></textarea>
       </nz-form-control>
     </nz-form-item>
     <div>

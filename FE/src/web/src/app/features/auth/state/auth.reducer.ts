@@ -5,6 +5,7 @@ import { AuthState } from './auth.state';
 
 const initialState: AuthState = {
   accessToken: null,
+  refreshToken: null,
   isAuthenticated: false,
   message: null,
   errorRegister: null,
@@ -24,6 +25,7 @@ export const authReducer = createReducer(
     ...state,
     status: 'loaded' as StatusProcess,
     accessToken: action.accessToken,
+    refreshToken: action.refreshToken,
     isAuthenticated: true,
     message: 'ok',
   })),

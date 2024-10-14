@@ -141,10 +141,12 @@ export class AuthService {
     return true;
   }
 
-  startSession(accesstoken: string): void {
-    const userPayLoad = this.decodedTokenToGiveInfo(accesstoken);
-    const roleId = userPayLoad.roleId[0] as USER_ROLE;
-    replaceCookie(STRING.ACCESS_TOKEN, accesstoken, null, '/');
+  startSession(accessToken: string, refreshToken: string): void {
+    const userPayLoad = this.decodedTokenToGiveInfo(accessToken);
+    // const roleId = userPayLoad && userPayLoad.roleId[0] ? userPayLoad.roleId[0] : 1;
+    const roleId = 1;
+    replaceCookie(STRING.ACCESS_TOKEN, accessToken, null, '/');
+    replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
     this.storageService.set(
       LocalStorageKey.currentUser,
       JSON.stringify(userPayLoad)
@@ -159,7 +161,7 @@ export class AuthService {
 
   redirectToPageAfter() {
     this.routerLinkRedirectURL$.subscribe((toUrl) => {
-      const redirectUrl = toUrl ? this.router.parseUrl(toUrl) : '/home';
+      const redirectUrl = toUrl ? this.router.parseUrl(toUrl) : '/common/home';
       this.router.navigateByUrl(redirectUrl);
     });
   }
@@ -168,7 +170,7 @@ export class AuthService {
   endSession(): void {
     removeAllCookies();
     window.localStorage.clear();
-    window.location.href = '/home';
+    window.location.href = '/common/home';
   }
 
   /**
@@ -210,10 +212,8 @@ export class AuthService {
     );
   }
 
-  register(
-    data: IRegisterRequest
-  ): Observable<BaseResponseApi<IRegisterRequest>> {
-    return this.httpClient.post<BaseResponseApi<IRegisterRequest>>(
+  register(data: IRegisterRequest): Observable<BaseResponseApi<null>> {
+    return this.httpClient.post<BaseResponseApi<null>>(
       AuthSlug.Register.api,
       data
     );
