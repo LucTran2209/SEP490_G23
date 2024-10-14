@@ -1,27 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../../components/shared/shared.module';
-import { AnonymousV2Component } from './components/anonymous-v2/anonymous-v2.component';
+import { CommonRoutingModule } from './common-routing.module';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { userFeature } from './state/user.feature';
-import { UserRoutingModule } from './user-routing.module';
+import { PostRetailListComponent } from './components/post-retail-list/post-retail-list.component';
+import { FilterPostRentalComponent } from './components/filter-post-rental/filter-post-rental.component';
 
 @NgModule({
   declarations: [
-    AnonymousV2Component,
     ProfileComponent,
     HomePageComponent,
     PostDetailComponent,
+    PostRetailListComponent,
+    FilterPostRentalComponent,
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    UserRoutingModule,
-    StoreModule.forFeature(userFeature),
-  ],
+  imports: [CommonModule, SharedModule, CommonRoutingModule],
 })
-export class UserModule {}
+export class CommonFeatureModule {}

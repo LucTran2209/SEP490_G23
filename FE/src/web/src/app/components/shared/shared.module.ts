@@ -57,9 +57,14 @@ import { UserNavbarHeaderComponent } from '../core/user-navbar-header/user-navba
 import { GoogleSigninComponent } from '../google-signin/google-signin.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { ErrorComponent } from '../../features/error/error.component';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { ViewMoreItemComponent } from '../core/view-more-item/view-more-item.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzRateModule,
+  NzPaginationModule,
   NzStepsModule,
   NzToolTipModule,
   NzLayoutModule,
@@ -112,6 +117,7 @@ const SHARED_MODULES = [
   ProductCarouseComponent,
   RatingProccessProductComponent,
   ErrorComponent,
+  ViewMoreItemComponent,
 ];
 
 @NgModule({

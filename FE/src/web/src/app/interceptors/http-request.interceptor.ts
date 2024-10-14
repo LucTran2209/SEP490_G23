@@ -14,7 +14,7 @@ import { SVGcommon } from '../configs/svg-icon';
 /**
  * @description: some of api don't need token on header
  */
-const PROTECTED_URL = [...getApi(AuthSlug), ...SVGcommon];
+const NOT_PROTECTED_URL = [...getApi(AuthSlug), ...SVGcommon];
 
 /**
  *
@@ -28,14 +28,14 @@ export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
   const store = inject(Store);
   const messageNZ = inject(NzMessageService);
   console.log('req url', req.url);
-  const isSkipApi = PROTECTED_URL.every((url) => !req.url.includes(url));
+  const isSkipApi = NOT_PROTECTED_URL.every((url) => !req.url.includes(url));
 
   if (!isSkipApi) {
     return next(req);
   }
 
   const token$ = store.select(selectAccessToken);
-  console.log('line 24', PROTECTED_URL);
+  console.log('line 24', NOT_PROTECTED_URL);
   return token$.pipe(
     take(1),
     switchMap((token) => {
