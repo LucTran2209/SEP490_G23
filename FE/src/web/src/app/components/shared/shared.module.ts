@@ -58,6 +58,8 @@ import { SelectItemComponent } from '../core/select-item/select-item.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { UserNavbarHeaderComponent } from '../core/user-navbar-header/user-navbar-header.component';
 import { RentalDetailCardComponent } from '../core/rental-detail-card/rental-detail-card.component';
+import { ViewMoreItemComponent } from '../core/view-more-item/view-more-item.component';
+
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -113,6 +115,7 @@ const SHARED_MODULES = [
   ChatComponent,
   RentalDetailCardComponent,
   ProductCarouseComponent,
+  ViewMoreItemComponent,
   RatingProccessProductComponent,
 ];
 
