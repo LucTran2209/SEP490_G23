@@ -11,25 +11,26 @@ using System.Security.Claims;
 
 namespace BE.Infrastructure.Common
 {
-    public class UnitOfWork : IUnitOfWork , IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext context;
-        //private readonly ClaimsPrincipal claimsPrincipal;
         private IDbContextTransaction? _currentTransaction;
+        private readonly IUser user;
         public IDbContextTransaction? GetCurrentTransaction()
         {
             return _currentTransaction;
         }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, IUser user)
         {
-            this.context = context;          
+            this.context = context;
+            this.user = user;
         }
 
         // Interface Repository
         public IUserRepository userRepository;
         public IUserRepository UserRepository => userRepository = new UserRepository(context);
-     
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
@@ -100,8 +101,8 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking hasTrace)
                         {
-                            hasTrace.CreatedBy = new Guid(); //this.claimsPrincipal.GetUserId();
-                            hasTrace.CreatedByName = "Admin"; //this.claimsPrincipal.GetUserName();
+                            hasTrace.CreatedBy = Guid.Empty;// user.Id ?? Guid.Empty;
+                            hasTrace.CreatedByName = "admin"; // user.UserName ?? string.Empty;
                         }
 
                         break;
@@ -113,8 +114,8 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking trace)
                         {
-                            trace.ModifiedBy = new Guid(); //claimsPrincipal.GetUserId();
-                            trace.ModifiedByName = "Admin"; // claimsPrincipal.GetUserName();
+                            trace.CreatedBy = Guid.Empty; // user.Id ?? Guid.Empty;
+                            trace.CreatedByName = "admin"; // user.UserName ?? string.Empty;
                         }
 
                         break;
@@ -134,6 +135,6 @@ namespace BE.Infrastructure.Common
         }
 
         public async void Dispose() => await context.DisposeAsync();
-        
+
     }
 }
