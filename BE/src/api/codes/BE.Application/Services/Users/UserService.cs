@@ -24,8 +24,10 @@ namespace BE.Application.Services.Users
         {
             var user = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
             user.IsActive = inputDto.IsActive;
+            
             await unitOfWork.UserRepository.UpdateAsync(user);
             await unitOfWork.SaveChangesAsync();
+            
             return new ResultService
             {
                 StatusCode = HttpStatusCode.Created.ToString(),
@@ -63,7 +65,6 @@ namespace BE.Application.Services.Users
 
         public async Task<ResultService> GetListUserAsync(GetListUserInputDto inputDto)
         {
-
             var r = unitOfWork.UserRepository.GetAll();
 
             var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.Search))
@@ -88,9 +89,12 @@ namespace BE.Application.Services.Users
         public async Task<ResultService> UpadteUserAsync(UpadteUserInputDto inputDto)
         {
             var r = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
+            
             UserExtention.updateuser(inputDto, r);
+            
             await unitOfWork.UserRepository.UpdateAsync(r);
             await unitOfWork.SaveChangesAsync();
+            
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
