@@ -68,3 +68,12 @@ export function countDownTimer(
 export function getApi(wrapperSlug: object): string[] {
   return Object.entries(wrapperSlug).map(([k, v]) => v.api);
 }
+
+export const convertCurrency = (
+  amount: number,
+  unit?: string,
+  noUnit?: boolean
+) => {
+  const convert = `${amount}`.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  return `${convert} ${noUnit ? '' : unit ? unit : 'VND'}`;
+};

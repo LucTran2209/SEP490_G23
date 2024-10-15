@@ -1,44 +1,96 @@
-<div class="p-3">
+<div class="flex flex-col gap-5 justify-center">
   <!-- all category rental post -->
-  <div class="">
-    <p class="icon_text">
-      <span nz-icon nzType="filter" nzTheme="outline"></span>Các loại bài viết
-      cho thuê
+  <div class="pb-5 border-[#ddd] border-b-2">
+    <p class="icon_text pb-3">
+      <span nz-icon nzType="profile" nzTheme="outline"></span>
+      Tất Cả Danh Mục Bài Viết Cho Thuê
     </p>
     <app-view-more-item
-      [items]="checkOptionCategory"
-      (selectionChange)="onCategory($event)"
+      [items]="categoryOptions"
+      [itemTemplate]="contentTemplate"
     >
     </app-view-more-item>
   </div>
-  <!-- location -->
-  <div class="">
-    <div class="pb-5">
-      <p class="icon_text">
-        <span nz-icon nzType="filter" nzTheme="outline"></span>Bộ Lọc Tìm Kiếm
-      </p>
-    </div>
-    <nz-checkbox-group
-      class="flex flex-col gap-3"
-      [(ngModel)]="checkOptionsOne"
-      (ngModelChange)="({})"
-    ></nz-checkbox-group>
-  </div>
-  <!-- range price -->
-
-  <!-- status device  -->
-
-  <!-- branch  -->
-
-  <!-- review  -->
-  <div class="">
-    <p class="icon_text">
-      <span nz-icon nzType="filter" nzTheme="outline"></span>Đánh giá
+  <!-- filter -->
+  <div class="pb-2">
+    <p class="icon_text pb-5">
+      <span nz-icon nzType="filter" nzTheme="outline"></span>Bộ Lọc Tìm Kiếm
     </p>
-    <nz-rate [ngModel]="5" nzDisabled></nz-rate>
-    <div><nz-rate [ngModel]="4" nzDisabled></nz-rate> trở lên</div>
-    <div><nz-rate [ngModel]="3" nzDisabled></nz-rate> trở lên</div>
-    <div><nz-rate [ngModel]="2" nzDisabled></nz-rate> trở lên</div>
-    <div><nz-rate [ngModel]="1" nzDisabled></nz-rate> trở lên</div>
+
+    <div class="pl-3">
+      <!-- location -->
+      <div class="pb-5 mb-5 border-[#ddd] border-b-2">
+        <p class="icon_text pb-3 font-semibold">Nơi Bán</p>
+        <app-view-more-item
+          [items]="selectLocationOptions"
+          [itemTemplate]="contenCheckboxTemplate"
+        >
+        </app-view-more-item>
+      </div>
+      <!-- range price -->
+      <div class="pb-5 mb-5 border-[#ddd] border-b-2">
+        <p class="icon_text pb-3 font-semibold">Khoảng Giá Cho Thuê</p>
+        <nz-slider
+          [(ngModel)]="rentalPriceRange"
+          [nzTipFormatter]="titleTemplate"
+          [nzRange]="true"
+          [nzMin]="50000"
+          [nzMax]="10000000"
+          [nzStep]="50000"
+          (ngModelChange)="onSliderChange($event)"
+        ></nz-slider>
+      </div>
+      <!-- status device  -->
+      <div class="pb-5 mb-5 border-[#ddd] border-b-2">
+        <p class="icon_text pb-3 font-semibold">Tình Trạng Sản Phẩm</p>
+        <app-view-more-item
+          [items]="selectProductStatus"
+          [itemTemplate]="contenCheckboxTemplate"
+        >
+        </app-view-more-item>
+      </div>
+      <!-- branch  -->
+      <div class="pb-5 mb-5 border-[#ddd] border-b-2">
+        <p class="icon_text pb-3 font-semibold">Nhãn Hiệu</p>
+        <app-view-more-item
+          [items]="selectBranch"
+          [itemTemplate]="contenCheckboxTemplate"
+        >
+        </app-view-more-item>
+      </div>
+      <!-- review  -->
+      <div class="pb-5">
+        <p class="icon_text pb-1 font-semibold">Đánh Giá</p>
+        <app-view-more-item
+          [items]="rateStar"
+          [itemTemplate]="contentRateTemplate"
+        >
+        </app-view-more-item>
+      </div>
+    </div>
+  </div>
+  <!-- remove all filter -->
+  <div>
+    <button nz-button class="" nzType="primary" nzBlock>Xóa Tất Cả</button>
   </div>
 </div>
+
+<ng-template #contentTemplate let-item>
+  <div class="border-b-[1px] p-3" nzType="link">
+    <a class="font-semibold" [routerLink]="[item.href]">{{ item.label }}</a>
+  </div>
+</ng-template>
+<ng-template #contenCheckboxTemplate let-item>
+  <div class="p-3">
+    <label nz-checkbox>{{ item.label }}</label>
+  </div>
+</ng-template>
+<ng-template #contentRateTemplate let-item>
+  <div class="py-2 px-3 flex justify-between gap-3">
+    <nz-rate [ngModel]="item.level" nzDisabled class=""></nz-rate>
+    <span>{{ item?.text }}</span>
+  </div>
+</ng-template>
+<ng-template #titleTemplate let-value>
+  <span>{{ onConvertPrice(value) }}</span>
+</ng-template>

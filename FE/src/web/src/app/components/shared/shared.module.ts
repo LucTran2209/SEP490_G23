@@ -59,10 +59,17 @@ import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { UserNavbarHeaderComponent } from '../core/user-navbar-header/user-navbar-header.component';
 import { RentalDetailCardComponent } from '../core/rental-detail-card/rental-detail-card.component';
 import { ViewMoreItemComponent } from '../core/view-more-item/view-more-item.component';
-
+import { ErrorComponent } from '../../features/error/error.component';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { RouterModule } from '@angular/router';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzBreadCrumbModule,
+  NzSliderModule,
+  NzListModule,
   NzRateModule,
   NzPaginationModule,
   NzStepsModule,
@@ -117,11 +124,20 @@ const SHARED_MODULES = [
   ProductCarouseComponent,
   ViewMoreItemComponent,
   RatingProccessProductComponent,
+  ErrorComponent,
+  ViewMoreItemComponent,
+  RatingProccessProductComponent,
 ];
 
 @NgModule({
   declarations: [...SHARED_MODULES],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ...ANTD_MODULES],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    ...ANTD_MODULES,
+  ],
   exports: [
     CommonModule,
     FormsModule,

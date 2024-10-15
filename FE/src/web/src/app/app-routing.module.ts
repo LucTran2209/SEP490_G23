@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { AnonymousComponent } from './components/anonymous/anonymous.component';
 import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
 import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
-import { USER_ROLE } from './utils/constant';
-import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
+import { USER_ROLE } from './utils/constant';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/common/home' },

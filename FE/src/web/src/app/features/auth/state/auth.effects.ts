@@ -3,16 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {
-  catchError,
-  delay,
-  map,
-  mergeMap,
-  of,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
 import { StorageService } from '../../../services/storage.service';

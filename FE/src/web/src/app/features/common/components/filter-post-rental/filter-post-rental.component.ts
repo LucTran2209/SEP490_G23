@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
-import { checkCategory, checkLocationOptions } from '../../../../mock/post';
-import { CheckboxItem } from '../../../../components/core/view-more-item/view-more-item.component';
+import { IITemListNav } from '../../../../configs/anonymous.config';
+import { rateStar } from '../../../../configs/post.config';
+import {
+  categoryOptions,
+  selectBranch,
+  selectLocationOptions,
+  selectProductStatus,
+} from '../../../../mock/post';
+import { convertCurrency } from '../../../../utils/anonymous.helper';
 
 @Component({
   selector: 'app-filter-post-rental',
@@ -8,10 +15,25 @@ import { CheckboxItem } from '../../../../components/core/view-more-item/view-mo
   styleUrl: './filter-post-rental.component.scss',
 })
 export class FilterPostRentalComponent {
-  checkOptionsOne = checkLocationOptions;
-  checkOptionCategory = checkCategory;
+  selectLocationOptions = selectLocationOptions;
+  categoryOptions = categoryOptions;
+  rateStar = rateStar;
+  selectBranch = selectBranch;
+  selectProductStatus = selectProductStatus;
+  rentalPriceRange: number[] = [100000, 5000000];
 
-  onCategory(item: CheckboxItem) {
+  onSliderChange(value: number[]): void {
+    console.log('Selected rental price range: ', value);
+    this.rentalPriceRange = value;
+  }
+
+  onCategory(item: IITemListNav) {
     console.log('Location changed:', item);
+  }
+
+  onLoadMore(e: boolean) {}
+
+  onConvertPrice(value: number): string {
+    return convertCurrency(value);
   }
 }

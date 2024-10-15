@@ -1,15 +1,14 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as AuthActions from '../features/auth/state/auth.actions';
-import { Router } from '@angular/router';
-import { catchError, switchMap, throwError, take } from 'rxjs';
-import { AuthService } from '../services/auth.service';
-import { selectAccessToken } from '../features/auth/state/auth.feature';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { switchMap, take, throwError } from 'rxjs';
 import { AuthSlug } from '../configs/api.configs';
-import { getApi } from '../utils/anonymous.helper';
 import { SVGcommon } from '../configs/svg-icon';
+import * as AuthActions from '../features/auth/state/auth.actions';
+import { selectAccessToken } from '../features/auth/state/auth.feature';
+import { AuthService } from '../services/auth.service';
+import { getApi } from '../utils/anonymous.helper';
 
 /**
  * @description: some of api don't need token on header

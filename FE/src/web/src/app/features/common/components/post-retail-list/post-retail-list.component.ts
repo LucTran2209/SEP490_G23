@@ -4,6 +4,8 @@ import {
   PostOutputDto,
   PostResultService,
 } from '../../../../interfaces/post.interface';
+import { selectSortByOrder } from '../../../../configs/post.config';
+import { OptionSelect } from '../../../../configs/anonymous.config';
 
 @Component({
   selector: 'app-post-retail-list',
@@ -13,6 +15,7 @@ import {
 export class PostRetailListComponent {
   selectedValue = null;
   postList: PostOutputDto[] = [];
+  groupOptionFilterSelect: OptionSelect[] = selectSortByOrder;
   constructor(private postService: PostService) {}
   ngOnInit(): void {
     this.loadPosts();

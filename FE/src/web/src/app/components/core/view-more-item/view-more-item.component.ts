@@ -1,37 +1,59 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-export interface CheckboxItem {
-  label: string;
-  checked: boolean;
-}
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 
 @Component({
   selector: 'app-view-more-item',
   templateUrl: './view-more-item.component.html',
-  styleUrl: './view-more-item.component.scss',
+  styleUrls: ['./view-more-item.component.scss'],
 })
 export class ViewMoreItemComponent {
-  @Input() items: CheckboxItem[] = [];
-  @Output() selectionChange = new EventEmitter<CheckboxItem>();
+  @Input() items: any[] = [];
+  @Input() itemTemplate!: TemplateRef<any>;
+  @Output() loadMore = new EventEmitter<boolean>();
 
-  isExpanded = false;
-  showMoreButton = true;
+  showMore: boolean = true;
+  visibleItems: any[] = [];
 
-  visibleItems: CheckboxItem[] = [];
-  hiddenItems: CheckboxItem[] = [];
+  private visibleCount: number = 6;
+  private incrementFactor: number = 6;
+
+  constructor() {}
 
   ngOnInit() {
-    this.visibleItems = this.items.slice(0, 4);
-    this.hiddenItems = this.items.slice(4);
-
-    this.showMoreButton = this.items.length > 4;
+    this.updateVisibleItems();
   }
 
-  onSelectionChange(item: CheckboxItem) {
-    this.selectionChange.emit(item);
+  toggleShowMore() {
+    if (this.showMore) {
+      this.visibleCount += this.incrementFactor;
+    } else {
+      this.visibleCount = Math.max(
+        this.incrementFactor,
+        this.visibleCount - this.incrementFactor
+      );
+    }
+
+    this.updateVisibleItems();
+
+    this.loadMore.emit(this.showMore);
   }
 
-  toggleMore(): void {
-    this.isExpanded = !this.isExpanded;
+  updateVisibleItems() {
+    this.visibleItems = this.items.slice(0, this.visibleCount);
+
+    if (this.visibleItems.length >= this.items.length) {
+      this.showMore = false;
+    } else {
+      this.showMore = true;
+    }
+  }
+
+  shouldShowToggleButton(): boolean {
+    return this.items.length > this.incrementFactor;
   }
 }

@@ -3,9 +3,9 @@ import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { IRegisterRequest } from '../../../../interfaces/account.interface';
 import { StorageService } from '../../../../services/storage.service';
-import { FeatureAppState } from '../../../../store/app.state';
 import { FormatDate } from '../../../../utils/constant';
 import * as AuthActions from '../../state/auth.actions';
+import { FeatureAppState } from '../../../../store/app.state';
 type Flag_ProcessType = 'OK_TAB1' | 'OK_TAB2';
 
 @Component({

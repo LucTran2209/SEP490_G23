@@ -31,7 +31,7 @@ export const AuthSlug = {
   },
   ResetPassWord: {
     label: 'reset-password',
-    title: 'reset password | NOERRA',
+    title: 'reset password | ERMS',
     api: 'api/user/changepassword',
   },
 };
