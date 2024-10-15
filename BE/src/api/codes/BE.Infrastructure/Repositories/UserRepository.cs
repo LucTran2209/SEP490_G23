@@ -55,12 +55,11 @@ namespace BE.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task<User> GetByName(string username)
+        public async Task<User?> GetsUserByUserIDAsync(Guid ID)
         {
-            var user = context.Users
-                 .Include(u => u.UserRoles)!
-                 .ThenInclude(ur => ur.Role)
-                 .SingleOrDefault(u => u.UserName == username);
+            var user = await context.Users.Include(u => u.UserRoles!)
+                                            .ThenInclude(ur => ur.Role)
+                                            .FirstOrDefaultAsync(x => x.Id == ID);
 
             return user;
         }

@@ -2,7 +2,7 @@
 {
     public class ActiveUserInputDto
     {
-        public string UserName { get; set; } = null!;
+        public Guid Id { get; set; }
         public bool IsActive { get; set; }
     }
 }

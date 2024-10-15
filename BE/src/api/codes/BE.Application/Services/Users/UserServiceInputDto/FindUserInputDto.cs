@@ -2,6 +2,6 @@
 {
     public class FindUserInputDto
     {
-        public string UserName { get; set; } = null!;
+        public string? UserName { get; set; }
     }
 }

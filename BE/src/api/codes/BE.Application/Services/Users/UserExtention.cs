@@ -23,14 +23,6 @@ namespace BE.Application.Services.Users
             user.IsActive = command.IsActive;
             return user;
         }
-
-        public static GetListUserOutputDto ToDto(this User user)
-        {
-            return new GetListUserOutputDto
-            {
-
-            };
-        }
         public static User updateuser(this UpadteUserInputDto command, User user)
         {
 
@@ -42,10 +34,10 @@ namespace BE.Application.Services.Users
             user.DateOfBirth = command.DateOfBirth;
             return user;
         }
-        public static FindUserOutputDto FindUser(Task<User> userTask)
+        public static FindUserOutputDto FindUser(User user)
         {
-            var user = userTask.Result;
             var findUser = new FindUserOutputDto();
+            findUser.Id = user.Id;
             findUser.FullName = user.FullName;
             findUser.Gender = user.Gender;
             findUser.UserName = user.UserName;
@@ -60,6 +52,7 @@ namespace BE.Application.Services.Users
         {
             var Users = new GetListUserOutputDto
             {
+                Id = user.Id,
                 FullName = user.FullName,
                 Gender = user.Gender,
                 UserName = user.UserName,

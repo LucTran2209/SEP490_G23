@@ -20,11 +20,11 @@ namespace BE.Application.Services.Users
             this.createUserValidator = createUserValidator;
         }
 
-        public async Task<ResultService> ActiveUser(ActiveUserInputDto inputDto)
+        public async Task<ResultService> ActiveUserAsync(ActiveUserInputDto inputDto)
         {
-            var user = await unitOfWork.UserRepository.GetByName(inputDto.UserName);
+            var user = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
             user.IsActive = inputDto.IsActive;
-            unitOfWork.UserRepository.UpdateAsync(user);
+            await unitOfWork.UserRepository.UpdateAsync(user);
             await unitOfWork.SaveChangesAsync();
             return new ResultService
             {
@@ -49,9 +49,9 @@ namespace BE.Application.Services.Users
             };
         }
 
-        public async Task<ResultService> FindUserAsync(FindUserInputDto inputDto)
+        public async Task<ResultService> GetUserByNameAsync(FindUserInputDto inputDto)
         {
-            var r = unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
+            var r = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
             var data = UserExtention.FindUser(r);
             return new ResultService
             {
@@ -87,9 +87,9 @@ namespace BE.Application.Services.Users
 
         public async Task<ResultService> UpadteUserAsync(UpadteUserInputDto inputDto)
         {
-            var r = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
+            var r = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
             UserExtention.updateuser(inputDto, r);
-            unitOfWork.UserRepository.UpdateAsync(r);
+            await unitOfWork.UserRepository.UpdateAsync(r);
             await unitOfWork.SaveChangesAsync();
             return new ResultService
             {
