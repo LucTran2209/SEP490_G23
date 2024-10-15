@@ -31,11 +31,32 @@ namespace BE.Api.Controllers
             return Created(output.StatusCode, output);
         }
 
-        [HttpGet]
+        [HttpGet("listuser")]
         public async Task<IActionResult> GetListAsync([FromQuery] GetListUserInputDto inputDto)
         {
             var output = await userService.GetListUserAsync(inputDto);
             return Ok(output);
+        }
+
+        [HttpGet("viewprofile")]
+        public async Task<IActionResult> GetUserByUserNameAsync([FromQuery] FindUserInputDto inputDto)
+        {
+            var output = await userService.GetUserByNameAsync(inputDto);
+            return Created(output.StatusCode, output);
+        }
+
+        [HttpPut("activeuser")]
+        public async Task<IActionResult> AcitiveUser([FromBody] ActiveUserInputDto inputDto)
+        {
+            var output = await userService.ActiveUserAsync(inputDto);
+            return Created(output.StatusCode, output);
+        }
+
+        [HttpPut("updateprofile")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpadteUserInputDto inputDto)
+        {
+            var output = await userService.UpadteUserAsync(inputDto);
+            return Created(output.StatusCode, output);
         }
     }
 }

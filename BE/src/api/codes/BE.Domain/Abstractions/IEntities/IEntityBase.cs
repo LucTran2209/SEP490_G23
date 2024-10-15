@@ -1,7 +1,7 @@
 ﻿namespace BE.Domain.Abstractions.IEntities
 {
-    public interface IEntityBase<Tkey>
+    public interface IEntityBase
     {
-        Tkey? Id { get; }
+        Guid Id { get; }
     }
 }

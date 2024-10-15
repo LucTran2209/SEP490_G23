@@ -11,10 +11,7 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        'bg-2': "url('../src/assets/images/bg-2.png')",
-        'bg-reset-psw': "url('../src/assets/images/reset-psw.png')",
-        'bg-4': "url('../src/assets/images/bg-4.png')",
-        'bg-for-rent': "url('../src/assets/images/for-rent.png')",
+        'bg-4': "url('../src/assets/images/bg-auth-other.jpg')",
       },
       spacing: {
         '9/16': '56.25%',

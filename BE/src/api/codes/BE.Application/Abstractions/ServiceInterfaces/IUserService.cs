@@ -7,5 +7,8 @@ namespace BE.Application.Abstractions.ServiceInterfaces
     {
         Task<ResultService> CreateAsync(CreateUserInputDto inputDto);
         Task<ResultService> GetListUserAsync(GetListUserInputDto inputDto);
+        Task<ResultService> UpadteUserAsync(UpadteUserInputDto inputDto);
+        Task<ResultService> GetUserByNameAsync(FindUserInputDto inputDto);
+        Task<ResultService> ActiveUserAsync(ActiveUserInputDto inputDto);
     }
 }

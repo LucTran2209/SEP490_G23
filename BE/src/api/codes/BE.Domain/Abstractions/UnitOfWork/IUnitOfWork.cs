@@ -1,4 +1,4 @@
-﻿using BE.Domain.Entities.Users;
+﻿using BE.Domain.Interfaces;
 
 namespace BE.Domain.Abstractions.UnitOfWork
 {

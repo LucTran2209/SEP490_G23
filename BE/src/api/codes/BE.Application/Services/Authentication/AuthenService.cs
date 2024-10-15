@@ -1,10 +1,13 @@
-﻿using BE.Application.Abstractions;
+﻿using AutoMapper;
+using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.DependencyInjections;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
+using BE.Application.Services.Authentication.AuthenServiceOutputDto;
 using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities.Users;
+using BE.Domain.Entities;
+using BE.Domain.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -19,20 +22,50 @@ namespace BE.Application.Services.Authentication
     {
 
         private readonly IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator;
+        private readonly IValidator<RegisterInputDto> registerValidator;
+        private readonly IValidator<ChangePasswordInputDto> changePasswordValidator;
         private readonly JwtOption jwtOption;
+        private readonly IMapper _mapper;
 
         public AuthenService(IUnitOfWork unitOfWork,
+                             IUser user,
                              IOptions<JwtOption> jwtOption,
-                             IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork)
+                             IMapper mapper,
+                             IValidator<RegisterInputDto> registerValidator,
+                             IValidator<ChangePasswordInputDto> changePasswordValidator,
+                             IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork, user)
         {
             this.loginByUserNamePasswordValidator = loginByUserNamePasswordValidator;
+            this.registerValidator = registerValidator;
+            this.changePasswordValidator = changePasswordValidator;
             this.jwtOption = jwtOption.Value;
-
+            this._mapper = mapper;
         }
 
-        public Task<ResultService> ChangePasswordAsync(ChangePasswordInputDto inputDto)
+        public async Task<ResultService> ChangePasswordAsync(ChangePasswordInputDto inputDto)
         {
-            throw new NotImplementedException();
+            await changePasswordValidator.ValidateAsync(inputDto);
+
+            var currentUser = await unitOfWork.UserRepository.FindByIdAsync(user.Id ?? Guid.Empty);
+
+            if (currentUser != null)
+            {
+                currentUser.Password = inputDto.NewPassword.HashPassword();
+
+                await unitOfWork.SaveChangesAsync();
+
+                return new ResultService()
+                {
+                    StatusCode = "200",
+                    Message = "Success"
+                };
+            }
+
+            return new ResultService()
+            {
+                StatusCode = "500",
+                Message = "Fail"
+            };
         }
 
         public Task<ResultService> ExternalLoginAsync(ExternalLoginInputDto inputDto)
@@ -49,9 +82,9 @@ namespace BE.Application.Services.Authentication
         {
             await loginByUserNamePasswordValidator.ValidateAndThrowAsync(inputDto);
 
-            var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(inputDto.UserName);
+            var user = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
 
-            if (user == null || !inputDto.Password.VerifyPassword(user.Password))
+            if (user == null || !AuthenExtention.VerifyPassword(inputDto.Password,user.Password!))
             {
                 return new ResultService
                 {
@@ -62,45 +95,64 @@ namespace BE.Application.Services.Authentication
 
             string accessToken = GenerateToken(user);
 
+            var ouputDto = new LoginByUserNamePasswordOutputDto()
+            {
+                AccessToken = accessToken,
+                RefreshToken = "adhqdasdhwncqdojaodjqoiwwwwwwjdaosjdwjdoasjdonqjdq",
+            };
+
             SetCookie(accessToken);
 
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "",
-                Datas = accessToken
+                Datas = ouputDto
             };
         }
 
-        private void SetCookie(string accessToken)
-        {
-
-        }
 
         public Task<ResultService> LogoutAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResultService> RegisterAsync(RegisterInputDto inputDto)
+        public async Task<ResultService> RegisterAsync(RegisterInputDto inputDto)
         {
-            throw new NotImplementedException();
+            await registerValidator.ValidateAndThrowAsync(inputDto);
+
+            var user = _mapper.Map<User>(inputDto);
+
+            var hashPassword = AuthenExtention.HashPassword(user.Password!);
+
+            user.Password = hashPassword;
+
+            await unitOfWork.UserRepository.AddAsync(user);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return new ResultService
+            {
+                Message = "Success",
+            };
         }
 
         private string GenerateToken(User user)
         {
-
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("Email", user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("FullName", user.FullName!),
+                new Claim("UserName", user.UserName!)
             };
 
             if (user.UserRoles?.Count > 0)
             {
                 foreach (var role in user.UserRoles)
                 {
-                    authClaims.Add(new Claim(ClaimTypes.Role, role.Role.RoleName));
+                    new Claim("Role", role.Role!.Name!);
                 }
             }
 
@@ -116,6 +168,11 @@ namespace BE.Application.Services.Authentication
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private void SetCookie(string accessToken)
+        {
+
         }
     }
 }
