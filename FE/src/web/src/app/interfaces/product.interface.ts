@@ -8,7 +8,7 @@ export interface ProductOutputDto {
     images: string;
     rentalShopName: string;
   }
-  export interface UserResultService {
+  export interface ProductResultService {
     statusCode: string;
     message: string;
     data: ProductOutputDto[];

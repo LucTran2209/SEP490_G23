@@ -20,7 +20,7 @@ import { encodeBase64 } from '../../../utils/anonymous.helper';
 import { STRING } from '../../../utils/constant';
 import { replaceCookie } from '../../../utils/cookie.helper';
 import * as AdminActions from './admin.actions';
-import { ListUserOutputDto, UserResultService } from '../../../interfaces/user.interface';
+import { UserOutputDto, UserResultService } from '../../../interfaces/user.interface';
 @Injectable()
 export class AdminEffect {
     constructor(
@@ -40,7 +40,7 @@ export class AdminEffect {
             this.userService.listUser(action.pageIndex, action.pageSize).pipe(
               map((response: UserResultService) => {
                 console.log(response);
-                const userList: ListUserOutputDto[] = response.data.items;
+                const userList: UserOutputDto[] = response.data.items;
                 return AdminActions.load_users_success({ userList });
               }),
               catchError(error => of(AdminActions.load_users_failure({ error })))

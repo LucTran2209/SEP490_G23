@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserService } from '../../../../services/user.service';
 
-import { ListUserOutputDto, UserResultService, ActiveUserInputDto, UserInputDto } from '../../../../interfaces/user.interface';
+import { UserOutputDto, UserResultService, ActiveUserInputDto, UserInputDto } from '../../../../interfaces/user.interface';
 import { StorageService } from '../../../../services/storage.service';
 import { Store } from '@ngrx/store';
 import { FeatureAppState } from '../../../../store/app.state';
@@ -15,9 +15,9 @@ import { selectLoading, selectUsers } from '../../state/admin.selectors';
   styleUrl: './manage-user.component.scss'
 })
 export class ManageUserComponent implements OnInit {
-  userList: ListUserOutputDto[] = [];
+  userList: UserOutputDto[] = [];
   res!: UserResultService;
-  filteredUsers: ListUserOutputDto[] = [];
+  filteredUsers: UserOutputDto[] = [];
   searchText: string = '';
   userActive!: ActiveUserInputDto;
   userInformation!: UserInputDto;
@@ -28,7 +28,7 @@ export class ManageUserComponent implements OnInit {
   pageSize = 10;      
   loading = false; 
   isActive: boolean = true;
-  userResult$!: Observable<ListUserOutputDto[]>;
+  userResult$!: Observable<UserOutputDto[]>;
   loading$!: Observable<boolean>;
   constructor(private modal: NzModalService, 
     private userService: UserService,

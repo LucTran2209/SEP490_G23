@@ -1,5 +1,5 @@
 // Interface for each user in the datas array
-export interface ListUserOutputDto {
+export interface UserOutputDto {
   id: string;
   fullName: string;
   userName: string;
@@ -35,7 +35,7 @@ export interface ListUserOutputDto {
     statusCode: string;
     message: string;
     data: {
-      items : ListUserOutputDto[];
+      items : UserOutputDto[];
       pageSize: number;
       pageIndex: number;
       totalCount: number;
@@ -45,5 +45,5 @@ export interface ListUserOutputDto {
   export interface ProfileResultService {
     statusCode: string;
     message: string;
-    datas: UserInputDto; 
+    data: UserOutputDto; 
   }

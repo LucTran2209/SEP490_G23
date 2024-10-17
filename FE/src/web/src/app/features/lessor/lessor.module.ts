@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LessorRoutingModule } from './lessor-routing.module';
 import { SharedModule } from '../../components/shared/shared.module';
 import { ManagePostComponent } from './components/manage-post/manage-post.component';
-import { ManagerShopComponent } from './manager-shop/manager-shop.component';
+import { ManagerShopComponent } from './components/manager-shop/manager-shop.component';
 
 @NgModule({
   declarations: [ManagePostComponent, ManagerShopComponent],

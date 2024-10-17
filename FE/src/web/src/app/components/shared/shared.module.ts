@@ -68,6 +68,7 @@ import { FormPostComponent } from '../core/form/form-post/form-post.component';
 import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
 import { LayoutProfileComponent } from '../core/layout-profile/layout-profile.component';
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
+import { FormProductComponent } from '../core/form/form-product/form-product.component';
 
 registerLocaleData(en);
 
@@ -136,6 +137,7 @@ const SHARED_MODULES = [
   FormRentalRegistrationComponent,
   LayoutProfileComponent,
   PostCardComponent,
+  FormProductComponent,
   
 ];
 

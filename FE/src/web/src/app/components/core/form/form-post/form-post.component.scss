@@ -22,3 +22,10 @@ textarea[nz-input] {
       flex-wrap: wrap;
     }
   }
+  ::ng-deep .ant-modal-footer{
+    display: none;
+
+}
+::ng-deep .ant-upload.ant-upload-select-picture-card{
+  width: 100%;
+}

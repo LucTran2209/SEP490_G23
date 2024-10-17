@@ -1,6 +1,6 @@
 import { IPayLoad } from '../../../interfaces/account.interface';
 import { StatusProcess } from '../../../interfaces/anonymous.interface';
-import { ListUserOutputDto, UserResultService } from '../../../interfaces/user.interface';
+import { UserOutputDto, UserResultService } from '../../../interfaces/user.interface';
 
 export interface AdminState {
   status: StatusProcess;
@@ -8,7 +8,7 @@ export interface AdminState {
   messageCreateUser: string | null;
   errorCreateUser: string | null;
   refreshToken: string | null;
-  userList: ListUserOutputDto[];
+  userList: UserOutputDto[];
   loading: boolean;
   error: string | null;
 }

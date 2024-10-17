@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { UserInputDto } from '../../../../interfaces/user.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { PostResultService } from '../../../../interfaces/post.interface';
 
 @Component({
   selector: 'app-form-post',
@@ -15,7 +15,7 @@ export class FormPostComponent implements OnInit{
   uploading = false;
   @Input() isVisible: boolean = false;
   @Input() title: string = '';
-  @Output() saveUser = new EventEmitter<UserInputDto>();
+  @Output() savePost = new EventEmitter<PostResultService>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   @Input() listOfControl: Array<{ id: number; controlInstance: string }> = [];
 
@@ -23,14 +23,12 @@ export class FormPostComponent implements OnInit{
   handleOk(): void {
     this.isVisible = false;
     this.closeModal.emit();
-    // this.userForm.reset();
 
   }
 
   handleCancel(): void {
     this.isVisible = false;
     this.closeModal.emit();
-    // this.userForm.reset();
   }
 
   ngOnInit(): void {

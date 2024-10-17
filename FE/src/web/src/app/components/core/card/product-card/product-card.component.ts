@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { PostOutputDto } from '../../../../interfaces/post.interface';
+import { ProductOutputDto } from '../../../../interfaces/product.interface';
 
 @Component({
   selector: 'app-product-card',
@@ -7,5 +7,9 @@ import { PostOutputDto } from '../../../../interfaces/post.interface';
   styleUrl: './product-card.component.scss'
 })
 export class ProductCardComponent {
-  @Input() post!: PostOutputDto;
+  @Input() product!: ProductOutputDto;
+  @Output() editProduct = new EventEmitter<ProductOutputDto>();  
+  onEditClick(): void {
+    this.editProduct.emit(this.product);  // Emit the product when the button is clicked
+  }
 }

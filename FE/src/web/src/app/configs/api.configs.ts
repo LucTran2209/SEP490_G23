@@ -109,3 +109,35 @@ export const PostSlug = {
     api: 'ActivePost',
   },
 };
+export const ProductSlug = {
+  AddProduct: {
+    label: 'Add Product',
+    title: 'Add Product | ERMS',
+    api: 'api/Post/addnewpost',
+  },
+  ListProduct: {
+    label: 'List Product',
+    title: 'List Product | ERMS',
+    api: 'Product/list',
+  },
+  FilterProduct: {
+    label: 'Filter Product',
+    title: 'Filter Product| ERMS',
+    api: 'api/Post/Filterpost',
+  },
+  GetProduct: {
+    label: 'View Product',
+    title: 'View Product | ERMS',
+    api: 'api/Post/?postId =',
+  },
+  UpdateProduct: {
+    label: 'Update Product',
+    title: 'Update Product | ERMS',
+    api: 'Update Post',
+  },
+  ActiveProduct: {
+    label: 'Active Product',
+    title: 'Active Product | ERMS',
+    api: 'ActivePost',
+  },
+};

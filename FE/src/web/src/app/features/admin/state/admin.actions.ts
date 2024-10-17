@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { ListUserOutputDto, UserInputDto, UserResultService } from "../../../interfaces/user.interface";
+import { UserOutputDto, UserInputDto, UserResultService } from "../../../interfaces/user.interface";
 
 export const LOAD_USERS_INIT = '[User] load users init';
 export const LOAD_USERS_SUCCESS = '[User] load users success';
@@ -20,7 +20,7 @@ export const create_user_failure = createAction(
 export const load_users = createAction(LOAD_USERS_INIT, props<{ pageIndex: number, pageSize: number }>()); // Dữ liệu cần truyền vào (pagination)
 export const load_users_success = createAction(
   LOAD_USERS_SUCCESS,
-  props<{userList: ListUserOutputDto[] }>()  // Trả về danh sách người dùng
+  props<{userList: UserOutputDto[] }>()  // Trả về danh sách người dùng
 );
 export const load_users_failure = createAction(
   LOAD_USERS_FAILURE,

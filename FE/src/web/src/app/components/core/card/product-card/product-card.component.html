@@ -1,17 +1,28 @@
-<!-- <nz-card nzHoverable [nzCover]="coverTemplate(product)">
+<nz-card class="mt-4" style="width: 270px" [nzCover]="nzAvatar">
   <nz-card-meta
     nzTitle="{{ product.productName }}"
-    nzDescription="{{ product.description }}"
+    nzDescription="GIÁ THUÊ: {{ product.price | number }} VND"
   >
+    <ng-template #nzAvatar>
+      <img
+        class="w-96 h-36"
+        [src]="product.images"
+        alt="{{ product.productName }}"
+      />
+    </ng-template>
   </nz-card-meta>
-  <ul class="product-details">
-    <li><b>Price:</b> {{ product.price | currency:'VND' }}</li>
-    <li><b>Quantity:</b> {{ product.quantity }}</li>
-    <li><b>Rental Shop:</b> {{ product.rentalShopName }}</li>
-    <li><b>Rating:</b> {{ product.evaluate }} ★</li>
-  </ul>
-  <button nz-button nzType="primary">Chỉnh Sửa</button>
+  <div class="flex justify-between mt-10">
+    <div class="flex justify-between">
+      <span
+        nz-icon
+        nzType="star"
+        nzTheme="fill"
+        class="text-yellow-300 text-lg"
+      ></span>
+      <p class="text-sm mx-2 mt-1.5">{{ product.evaluate }}</p>
+    </div>
+    <button nz-button nzGhost nzType="primary" (click)="onEditClick()">
+      Chỉnh Sửa
+    </button>
+  </div>
 </nz-card>
-<ng-template #coverTemplate let-product>
-  <img [src]="product.images" alt="{{ product.productName }}" />
-</ng-template> -->

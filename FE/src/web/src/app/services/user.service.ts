@@ -3,7 +3,7 @@ import { AppHttpClientService } from './app-http-client.service';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpParams  } from '@angular/common/http';
 import { UserSlug } from '../configs/api.configs';
-import { ActiveUserInputDto, ListUserOutputDto, UserInputDto, UserResultService } from '../interfaces/user.interface';
+import { ActiveUserInputDto, UserOutputDto, UserInputDto, UserResultService, ProfileResultService } from '../interfaces/user.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
 
 @Injectable({
@@ -198,8 +198,8 @@ export class UserService {
     // };
     return this.httpClient.get<UserResultService>(UserSlug.FilterUser.api);
   }
-  viewProfile(userName: string){
-    return this.httpClient.get(UserSlug.GetUser.api + userName);
+  viewProfile(userName: string): Observable<ProfileResultService>{
+    return this.httpClient.get<ProfileResultService>(UserSlug.GetUser.api + userName);
   }
   updateProfile(data : UserInputDto){
     return this.httpClient.put(UserSlug.UpdateUser.api,  data);
