@@ -29,8 +29,6 @@ import { AuthEffect } from './features/auth/state/auth.effects';
 import { authFeature } from './features/auth/state/auth.feature';
 import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
 // import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
-import { AdminEffect } from './features/admin/state/admin.effects';
-import { adminFeature } from './features/admin/state/admin.feature';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
 import { addressFeature } from './store/province/province.reducer';
@@ -54,9 +52,6 @@ registerLocaleData(en);
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature(authFeature),
     StoreModule.forFeature(addressFeature),
-    StoreModule.forFeature(adminFeature),
-
-    EffectsModule.forRoot([AdminEffect]),
     EffectsModule.forRoot([AuthEffect, ProvinceEffect]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
