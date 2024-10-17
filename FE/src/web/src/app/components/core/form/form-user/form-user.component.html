@@ -16,7 +16,7 @@
     >
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="userName" nzRequired>
-          Tên Người Dùng:
+          Tên Người Dùng
         </nz-form-label>
         <nz-form-control
           [nzSm]="14"
@@ -29,7 +29,7 @@
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fullName" nzRequired>
-          Họ và Tên:
+          Họ và Tên
         </nz-form-label>
         <nz-form-control
           [nzSm]="14"
@@ -42,7 +42,7 @@
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email" nzRequired>
-          E-mail:
+          E-mail
         </nz-form-label>
         <nz-form-control
           [nzSm]="14"
@@ -55,7 +55,7 @@
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>
-          Số Điện Thoại:
+          Số Điện Thoại
         </nz-form-label>
         <nz-form-control
           [nzSm]="14"
@@ -68,7 +68,7 @@
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address" nzRequired>
-          Địa Chỉ:
+          Địa Chỉ
         </nz-form-label>
         <nz-form-control
           [nzSm]="14"
@@ -81,25 +81,38 @@
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="gender" nzRequired>
-          Giới Tính:
+          Giới Tính
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
           <nz-radio-group formControlName="gender">
-            <label nz-radio nzValue="true">Nam</label>
-            <label nz-radio nzValue="false">Nữ</label>
+            <label nz-radio [nzValue]="true">Nam</label>
+            <label nz-radio [nzValue]="false">Nữ</label>
           </nz-radio-group>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="dateOfBirth" nzRequired>
-          Ngày Sinh:
+          Ngày Sinh
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
           <nz-date-picker
             formControlName="dateOfBirth"
             [nzFormat]="dateFormat"
           ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction" nzRequired>
+          Giới Thiệu Bản Thân
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <textarea
+            nz-input
+            formControlName="introduction"
+            placeholder="Thông tin cá nhân"
+            [nzAutosize]="{ minRows: 3, maxRows: 5 }"
+          ></textarea>
         </nz-form-control>
       </nz-form-item>
 

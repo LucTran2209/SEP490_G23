@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { PostOutputDto, PostResultService } from '../interfaces/post.interface';
 import { Observable, of } from 'rxjs';
 import { PostSlug } from '../configs/api.configs';
+import { AppHttpClientService } from './app-http-client.service';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,7 @@ export class PostService {
     }
   };
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient, private httpClient: AppHttpClientService) { }
   listPost(): Observable<PostResultService>{
     // return this.httpClient.get<PostResultService>(PostSlug.ListPost.api);
     return of(this.postList);
