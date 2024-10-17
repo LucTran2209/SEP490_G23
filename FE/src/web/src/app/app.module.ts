@@ -28,7 +28,7 @@ import { SharedModule } from './components/shared/shared.module';
 import { AuthEffect } from './features/auth/state/auth.effects';
 import { authFeature } from './features/auth/state/auth.feature';
 import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
-import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
+// import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
 import { HydrationEffects } from './store/hydration/hydration.effects';
@@ -67,7 +67,8 @@ registerLocaleData(en);
     },
     provideHttpClient(
       withFetch(),
-      withInterceptors([httpRequestInterceptor, responseInterceptor])
+      // withInterceptors([httpRequestInterceptor, responseInterceptor])
+      withInterceptors([responseInterceptor])
     ),
   ],
   bootstrap: [AppComponent],

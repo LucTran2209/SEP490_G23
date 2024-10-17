@@ -67,7 +67,7 @@ namespace BE.Application.Services.Users
         {
             var r = unitOfWork.UserRepository.GetAll();
 
-            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.Search))
+            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.FullName))
                         .Filter(inputDto.Email, e => e.Email.Contains(inputDto.Email))
                         .Filter(inputDto.PhoneNumber, p => p.PhoneNumber.Contains(inputDto.PhoneNumber))
                         .Filter(inputDto.Address, ad => ad.Address.Contains(inputDto.Address))

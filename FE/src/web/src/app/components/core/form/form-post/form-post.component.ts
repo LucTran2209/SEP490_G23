@@ -1,0 +1,66 @@
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { UserInputDto } from '../../../../interfaces/user.interface';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
+@Component({
+  selector: 'app-form-post',
+  templateUrl: './form-post.component.html',
+  styleUrl: './form-post.component.scss'
+})
+export class FormPostComponent implements OnInit{
+  showAlert: boolean = false;  // To control the visibility of the alert
+  alertMessage: string = '';    // To hold the alert message
+  uploading = false;
+  @Input() isVisible: boolean = false;
+  @Input() title: string = '';
+  @Output() saveUser = new EventEmitter<UserInputDto>();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
+  @Input() listOfControl: Array<{ id: number; controlInstance: string }> = [];
+
+  constructor(private msg: NzMessageService) {}
+  handleOk(): void {
+    this.isVisible = false;
+    this.closeModal.emit();
+    // this.userForm.reset();
+
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+    this.closeModal.emit();
+    // this.userForm.reset();
+  }
+
+  ngOnInit(): void {
+    this.addField();
+  }
+
+  addField(e?: MouseEvent): void {
+    e?.preventDefault();
+
+    const id = this.listOfControl.length > 0 ? this.listOfControl[this.listOfControl.length - 1].id + 1 : 0;
+
+    const control = {
+      id,
+      controlInstance: `passenger${id}`
+    };
+    const index = this.listOfControl.push(control);
+    // console.log(this.listOfControl[this.listOfControl.length - 1]);
+    // this.validateForm.addControl(
+    //   this.listOfControl[index - 1].controlInstance,
+    //   this.fb.control('', Validators.required)
+    // );
+  }
+
+  removeField(i: { id: number; controlInstance: string }, e: MouseEvent): void {
+    e.preventDefault();
+    if (this.listOfControl.length > 1) {
+      const index = this.listOfControl.indexOf(i);
+      this.listOfControl.splice(index, 1);
+      // console.log(this.listOfControl);
+      // this.validateForm.removeControl(i.controlInstance);
+    }
+  }
+}

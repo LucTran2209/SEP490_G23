@@ -1,42 +1,170 @@
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
-import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { HttpClient, HttpParams  } from '@angular/common/http';
 import { UserSlug } from '../configs/api.configs';
 import { ActiveUserInputDto, ListUserOutputDto, UserInputDto, UserResultService } from '../interfaces/user.interface';
+import { BaseResponseApi } from '../interfaces/api.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private useList: UserResultService = {
-    statusCode: "OK",
-    message: "Success",
-    datas: {
-      list: [
-        {
-          "fullName": "Nguyễn Văn A",
-          "userName": "nguyenvana",
-          "email": "nguyenvana@example.com",
-          "phoneNumber": "0123456789",
-          "address": "Hà Nội",
-          "gender": true,
-          "dateOfBirth": "1990-01-01T00:00:00.000",
-          "isActive": true
-        },
-        {
-          "fullName": "Trần Thị B",
-          "userName": "tranthib",
-          "email": "tranthib@example.com",
-          "phoneNumber": "0987654321",
-          "address": "Hồ Chí Minh",
-          "gender": false,
-          "dateOfBirth": "1995-05-05T00:00:00.000",
-          "isActive": false
-        }
-      ]
-    }
-  };
+  // private useList: UserResultService = {
+  //   statusCode: "OK",
+  //   message: "Success",
+  //   data: {
+  //     items: [
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e20",
+  //         "fullName": "Nguyễn Văn A",
+  //         "userName": "nguyenvana",
+  //         "email": "nguyenvana@example.com",
+  //         "phoneNumber": "0123456789",
+  //         "address": "Hà Nội",
+  //         "gender": true,
+  //         "dateOfBirth": "1990-01-01T00:00:00.000",
+  //         "isActive": true,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e20",
+  //         "fullName": "Nguyễn Văn A",
+  //         "userName": "nguyenvana",
+  //         "email": "nguyenvana@example.com",
+  //         "phoneNumber": "0123456789",
+  //         "address": "Hà Nội",
+  //         "gender": true,
+  //         "dateOfBirth": "1990-01-01T00:00:00.000",
+  //         "isActive": true,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e20",
+  //         "fullName": "Nguyễn Văn A",
+  //         "userName": "nguyenvana",
+  //         "email": "nguyenvana@example.com",
+  //         "phoneNumber": "0123456789",
+  //         "address": "Hà Nội",
+  //         "gender": true,
+  //         "dateOfBirth": "1990-01-01T00:00:00.000",
+  //         "isActive": true,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e20",
+  //         "fullName": "Nguyễn Văn A",
+  //         "userName": "nguyenvana",
+  //         "email": "nguyenvana@example.com",
+  //         "phoneNumber": "0123456789",
+  //         "address": "Hà Nội",
+  //         "gender": true,
+  //         "dateOfBirth": "1990-01-01T00:00:00.000",
+  //         "isActive": true,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       },
+  //       {
+  //         "id": "ca26a6d1-1d9d-4e59-9f2f-2ca5a24c8e26",
+  //         "fullName": "Trần Thị B",
+  //         "userName": "tranthib",
+  //         "email": "tranthib@example.com",
+  //         "phoneNumber": "0987654321",
+  //         "address": "Hồ Chí Minh",
+  //         "gender": false,
+  //         "dateOfBirth": "1995-05-05T00:00:00.000",
+  //         "isActive": false,
+  //         "listRole": []
+  //       }
+  //     ],
+  //     pageSize: 10,
+  //     pageIndex: 1,
+  //     totalCount: 2
+  //   }
+  // };
 
 
   //test
@@ -44,7 +172,7 @@ export class UserService {
 
   //test
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient, private httpClient: AppHttpClientService) { }
 
   //test get data current user
   getCurrentUser(token: string): Observable<any> {
@@ -56,23 +184,30 @@ export class UserService {
     });
   }
   //test
-  listUser(): Observable<UserResultService>{
-    // return this.httpClient.get<UserResultService>(UserSlug.ListUser.api);
-    return of(this.useList);
+  listUser(pageIndex: number, pageSize: number): Observable<UserResultService>{
+    const params = {
+      PageSize: pageSize.toString(),
+      PageIndex: pageIndex.toString(),
+    };
+    return this.httpClient.get<UserResultService>(UserSlug.ListUser.api, params );
   }
   searchUser(): Observable<UserResultService>{
+    // const params = {
+    //   PageSize: pageSize.toString(),
+    //   PageIndex: pageIndex.toString(),
+    // };
     return this.httpClient.get<UserResultService>(UserSlug.FilterUser.api);
   }
   viewProfile(userName: string){
     return this.httpClient.get(UserSlug.GetUser.api + userName);
   }
   updateProfile(data : UserInputDto){
-    return this.httpClient.post(UserSlug.UpdateUser.api,  data);
+    return this.httpClient.put(UserSlug.UpdateUser.api,  data);
   }
-  addUser(data : UserInputDto){
-    return this.httpClient.put(UserSlug.AddUser.api, data);
+  addUser(data : UserInputDto): Observable<BaseResponseApi<null>>{
+    return this.httpClient.post<BaseResponseApi<null>>(UserSlug.AddUser.api, data);
   }
-  activeUser(data : ActiveUserInputDto){
-    return this.httpClient.post(UserSlug.ActiveUser.api, data)
+  activeUser(data : ActiveUserInputDto): Observable<BaseResponseApi<null>>{
+    return this.httpClient.put<BaseResponseApi<null>>(UserSlug.ActiveUser.api, data)
   }
 }

@@ -48,32 +48,32 @@ export const UserSlug = {
   AddUser: {
     label: 'Add User',
     title: 'Add User | ERMS',
-    api: 'api/User/addnewuser',
+    api: 'User',
   },
   ListUser: {
     label: 'List User',
     title: 'List User | ERMS',
-    api: 'api/User/Listuser',
+    api: 'User/listuser',
   },
   FilterUser: {
     label: 'Filter User',
     title: 'Filter User| ERMS',
-    api: 'api/User/Filteruser',
+    api: 'User/listuser',
   },
   GetUser: {
     label: 'View Profile',
     title: 'View Profile | ERMS',
-    api: 'api/user/viewprofile?UserName=',
+    api: 'User/viewprofile?UserName=',
   },
   UpdateUser: {
     label: 'Update User',
     title: 'Update User | ERMS',
-    api: 'Update User',
+    api: 'User/updateprofile',
   },
   ActiveUser: {
     label: 'Active User',
     title: 'Active User | ERMS',
-    api: 'ActiveUser',
+    api: 'User/activeuser',
   },
 };
 

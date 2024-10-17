@@ -1,6 +1,7 @@
 export const feature_key = {
   authFeature: 'feature_auth',
   userFeature: 'feature_user',
+  adminFeature: 'feature_admin',
   addressVNFeature: 'feature_addressVN',
 } as const;
 
