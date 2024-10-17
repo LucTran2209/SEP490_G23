@@ -64,6 +64,8 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { RouterModule } from '@angular/router';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { FormPostComponent } from '../core/form/form-post/form-post.component';
+
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -127,6 +129,7 @@ const SHARED_MODULES = [
   ErrorComponent,
   ViewMoreItemComponent,
   RatingProccessProductComponent,
+  FormPostComponent,
 ];
 
 @NgModule({
