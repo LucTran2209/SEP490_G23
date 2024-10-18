@@ -20,8 +20,9 @@ import { encodeBase64 } from '../../../utils/anonymous.helper';
 import { STRING } from '../../../utils/constant';
 import { replaceCookie } from '../../../utils/cookie.helper';
 import * as AdminActions from './admin.actions';
+import { ListUserOutputDto, UserResultService } from '../../../interfaces/user.interface';
 @Injectable()
-export class AuthEffect {
+export class AdminEffect {
     constructor(
         private action$: Actions,
         private userService: UserService,
@@ -31,16 +32,34 @@ export class AuthEffect {
         private storageService: StorageService,
         private messageNZ: NzMessageService
       ) {}
-      registerProcess$ = createEffect(
+
+      loadUsersProcess$ = createEffect(() =>
+        this.action$.pipe(
+          ofType(AdminActions.load_users),
+          mergeMap(action =>
+            this.userService.listUser(action.pageIndex, action.pageSize).pipe(
+              map((response: UserResultService) => {
+                console.log(response);
+                const userList: ListUserOutputDto[] = response.data.items;
+                return AdminActions.load_users_success({ userList });
+              }),
+              catchError(error => of(AdminActions.load_users_failure({ error })))
+            )
+          )
+        )
+      );
+      createUserProcess$ = createEffect(
         () =>
           this.action$.pipe(
             ofType(AdminActions.create_user),
             tap(() => this.loadingSerivce.setLoading()),
             mergeMap(({ data }) =>
               this.userService.addUser(data).pipe(
+                // Nếu API call thành công, dispatch createUsersSuccess với dữ liệu trả về
                 map((data) => {
                   return AdminActions.create_user_success({ message: data.message });
                 }),
+                // Nếu API call thành công, dispatch createUsersFailure với dữ liệu trả về
                 catchError((err) =>
                   of(AdminActions.create_user_failure({ error: err.message }))
                 )
@@ -59,7 +78,6 @@ export class AuthEffect {
             tap(() => {
               this.messageNZ.create('success', 'Bạn đã thêm một người mới thành công!');
               this.loadingSerivce.setOtherLoading('loaded');
-              this.router.navigateByUrl('/admin/users');
             })
           ),
         {

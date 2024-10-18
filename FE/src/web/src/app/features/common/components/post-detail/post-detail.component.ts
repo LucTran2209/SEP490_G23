@@ -9,6 +9,8 @@ import { PostOutputDto, PostResultService } from '../../../../interfaces/post.in
 })
 export class PostDetailComponent {
   postList: PostOutputDto[] = [];
+  isVisible : boolean = false;
+  title: string = 'Biểu Mẫu Đăng Ký Cho Thuê';
   
   constructor(private postService: PostService) {}
   ngOnInit(): void{
@@ -18,6 +20,12 @@ export class PostDetailComponent {
     this.postService.listPost().subscribe((res: PostResultService) =>{
       this.postList = res.datas.list;
     });
+  }
+  ShowRentalForm(){
+    this.isVisible = true;
+  }
+  handleCloseModal(){
+    this.isVisible = false;
   }
 
 }

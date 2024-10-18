@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { USER_ROLE } from '../../../utils/constant';
 
 @Component({
   selector: 'app-layout-dashboard',
@@ -9,6 +10,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 export class LayoutDashboardComponent {
   isSidebarCollapsed: boolean = false; 
   notificationCount: number = 5; 
+  userRole: USER_ROLE = USER_ROLE.ADMIN; // Set your default role
 
   onToggleSidebar(collapsed: boolean): void {
     this.isSidebarCollapsed = collapsed;

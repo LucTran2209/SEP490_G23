@@ -4,6 +4,7 @@ import { PostDetailComponent } from './components/post-detail/post-detail.compon
 import { ProfileComponent } from './components/profile/profile.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { PostRetailListComponent } from './components/post-retail-list/post-retail-list.component';
+import { LayoutProfileComponent } from '../../components/core/layout-profile/layout-profile.component';
 
 const routes: Routes = [
   {
@@ -11,11 +12,15 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'profile',
-    component: ProfileComponent,
+    path: 'account',
+    component: LayoutProfileComponent,
+    children: [
+      {path: 'proflie',
+      component: ProfileComponent}
+    ]
   },
   {
-    path: 'product-detail',
+    path: 'post-detail',
     component: PostDetailComponent,
   },
   {
