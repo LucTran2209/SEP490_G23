@@ -14,14 +14,25 @@ namespace BE.Application.Services.Users
     public class UserService : BaseService, IUserService
     {
         private readonly IValidator<CreateUserInputDto> createUserValidator;
+        private readonly IValidator<UpadteUserInputDto> updateUserValidator;
+        private readonly IValidator<ActiveUserInputDto> activeUserValidator;
 
-        public UserService(IUnitOfWork unitOfWork, IUser user, IValidator<CreateUserInputDto> createUserValidator) : base(unitOfWork, user)
+
+        public UserService(IUnitOfWork unitOfWork, IUser user,
+            IValidator<CreateUserInputDto> createUserValidator,
+            IValidator<UpadteUserInputDto> updateUserValidator,
+            IValidator<ActiveUserInputDto> activeUserValidator
+            ) : base(unitOfWork, user)
         {
             this.createUserValidator = createUserValidator;
+            this.updateUserValidator = updateUserValidator;
+            this.activeUserValidator = activeUserValidator;
+
         }
 
         public async Task<ResultService> ActiveUserAsync(ActiveUserInputDto inputDto)
         {
+            await activeUserValidator.ValidateAsync(inputDto);
             var user = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
             user.IsActive = inputDto.IsActive;
             
@@ -67,7 +78,7 @@ namespace BE.Application.Services.Users
         {
             var r = unitOfWork.UserRepository.GetAll();
 
-            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.Search))
+            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.FullName))
                         .Filter(inputDto.Email, e => e.Email.Contains(inputDto.Email))
                         .Filter(inputDto.PhoneNumber, p => p.PhoneNumber.Contains(inputDto.PhoneNumber))
                         .Filter(inputDto.Address, ad => ad.Address.Contains(inputDto.Address))
@@ -88,6 +99,7 @@ namespace BE.Application.Services.Users
 
         public async Task<ResultService> UpadteUserAsync(UpadteUserInputDto inputDto)
         {
+            await updateUserValidator.ValidateAndThrowAsync(inputDto);
             var r = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
             
             UserExtention.updateuser(inputDto, r);
