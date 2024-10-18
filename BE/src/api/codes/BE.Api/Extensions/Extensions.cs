@@ -34,7 +34,7 @@ public static class Extensions
     private static X509Certificate2 GetX509Certificate(
         string distinguishedName,
         X509KeyUsageFlags keyUsageFlags = X509KeyUsageFlags.KeyEncipherment,
-        string password = default)
+        string password = default!)
     {
         using var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
         store.Open(OpenFlags.ReadWrite | OpenFlags.OpenExistingOnly);
@@ -85,7 +85,7 @@ public static class Extensions
         string fileName,
         string distinguishedName,
         X509KeyUsageFlags keyUsageFlags = X509KeyUsageFlags.KeyEncipherment,
-        string password = default)
+        string password = default!)
     {
         string filePath = Path.Combine(configuration.ContentRootPath, fileName);
         var flags = X509KeyStorageFlags.PersistKeySet

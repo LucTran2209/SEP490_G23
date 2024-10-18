@@ -20,9 +20,8 @@ namespace BE.Application.Services.Authentication
 {
     public class AuthenService : BaseService, IAuthenticationService
     {
-
         private readonly IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator;
-        private readonly IValidator<RegisterInputDto> registerValidator;
+        private readonly IValidator<RegisterInputDto> registerValidator; 
         private readonly IValidator<ChangePasswordInputDto> changePasswordValidator;
         private readonly JwtOption jwtOption;
         private readonly IMapper _mapper;
