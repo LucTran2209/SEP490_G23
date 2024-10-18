@@ -76,3 +76,6 @@ export const addressFeature = createFeature({
   name: getFeatureKeyValue('addressVNFeature'),
   reducer: addressReducer,
 });
+
+export const { selectDataDistrict, selectDataProvince, selectDataWard } =
+  addressFeature;

@@ -11,3 +11,8 @@ export const getFeatureKeyValue = (
 ): FeatureKeyValues => {
   return feature_key[key];
 };
+
+export const PRESISTED_STATE = [
+  feature_key.authFeature,
+  feature_key.addressVNFeature,
+];

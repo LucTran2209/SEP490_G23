@@ -32,27 +32,28 @@ export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
   if (!isSkipApi) {
     return next(req);
   }
+  return next(req);
 
-  const token$ = store.select(selectAccessToken);
-  console.log('line 24', NOT_PROTECTED_URL);
-  return token$.pipe(
-    take(1),
-    switchMap((token) => {
-      if (authService.isTokenExpired(token)) {
-        messageNZ.info('Bạn đã hết phiên đăng nhập vui lòng đăng nhập lại');
-        store.dispatch(AuthActions.logout());
-        return throwError(
-          () => new Error('Token expired, redirecting to login page.')
-        );
-      }
+  // const token$ = store.select(selectAccessToken);
+  // console.log('line 24', NOT_PROTECTED_URL);
+  // return token$.pipe(
+  //   take(1),
+  //   switchMap((token) => {
+  //     if (authService.isTokenExpired(token)) {
+  //       messageNZ.info('Bạn đã hết phiên đăng nhập vui lòng đăng nhập lại');
+  //       store.dispatch(AuthActions.logout());
+  //       return throwError(
+  //         () => new Error('Token expired, redirecting to login page.')
+  //       );
+  //     }
 
-      const clonedRequest = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  //     const clonedRequest = req.clone({
+  //       setHeaders: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      return next(clonedRequest);
-    })
-  );
+  //     return next(clonedRequest);
+  //   })
+  // );
 };

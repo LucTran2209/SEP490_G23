@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageKey } from '../utils/constant';
 import { StorageService } from './storage.service';
+import { IPayLoad } from '../interfaces/account.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +9,7 @@ import { StorageService } from './storage.service';
 export class UserProfileService {
   constructor(private storgageService: StorageService) {}
 
-  set currentUser(user: any | null) {
+  set currentUser(user: IPayLoad | null) {
     if (user) {
       this.storgageService.set(
         LocalStorageKey.currentUser,
@@ -19,7 +20,7 @@ export class UserProfileService {
     }
   }
 
-  get currentUser(): any {
+  get currentUser(): IPayLoad {
     try {
       return JSON.parse(
         this.storgageService.get(LocalStorageKey.currentUser) || '{}'
@@ -27,5 +28,9 @@ export class UserProfileService {
     } catch (error) {
       return JSON.parse('{}');
     }
+  }
+
+  get roleCurrentUser(): number[] | undefined {
+    return this.currentUser.roleId;
   }
 }

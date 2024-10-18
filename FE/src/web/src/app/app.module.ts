@@ -31,8 +31,8 @@ import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
-import { HydrationEffects } from './store/hydration/hydration.effects';
 import { addressFeature } from './store/province/province.reducer';
+import { ProvinceEffect } from './store/province/province.effects';
 
 registerLocaleData(en);
 
@@ -52,7 +52,7 @@ registerLocaleData(en);
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature(authFeature),
     StoreModule.forFeature(addressFeature),
-    EffectsModule.forRoot([HydrationEffects, AuthEffect]),
+    EffectsModule.forRoot([AuthEffect, ProvinceEffect]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,
