@@ -28,9 +28,18 @@
     <nz-form-label [nzSpan]="24" nzRequired
       >Địa chỉ đăng ký kinh doanh</nz-form-label
     >
-    <!-- <nz-form-control [nzSpan]="24">
-      <input nz-input formControlName="mobile" placeholder="mobile" />
-    </nz-form-control> -->
+    <nz-form-control [nzSpan]="8">
+      <nz-select
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Chọn tỉnh thành"
+        [(ngModel)]="selectProvince"
+      >
+        @for (item of (getListProvince$ | async); track $index) {
+        <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        }
+      </nz-select>
+    </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzRequired>́Mã số thuê</nz-form-label>

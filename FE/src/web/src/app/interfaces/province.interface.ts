@@ -7,3 +7,10 @@ export interface Province {
   latitude: string;
   longitude: string;
 }
+
+export interface ResponseAddressEsgoo {
+  error: number;
+  error_text: string;
+  data_name: string;
+  data: Province[];
+}

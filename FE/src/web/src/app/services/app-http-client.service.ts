@@ -13,7 +13,8 @@ import { IDummy } from '../interfaces/anonymous.interface';
  * purpose: create a base class that communicates the api with the backend
  */
 export class AppHttpClientService {
-  static prefix = environment.apiUrl;
+  // static prefix = environment.apiUrl;
+  static prefix = environment.serverUrl;
 
   constructor(protected httpClient: HttpClient) {}
   /**

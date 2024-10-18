@@ -8,7 +8,7 @@ export const MappingLinkAfterLoginByRoles = {
 };
 
 export interface RouteData {
-  expectedRole?: string[];
+  expectedRole?: USER_ROLE[];
 }
 
 export interface OptionSelect {

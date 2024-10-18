@@ -1,5 +1,5 @@
 export const environment = {
-  serverUrl: 'http://localhost:3000/',
+  serverUrl: 'http://localhost:7088/',
   apiUrl: 'https://localhost:7088/',
   baseDomain: location.hostname,
   googleID:

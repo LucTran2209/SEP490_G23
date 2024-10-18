@@ -22,7 +22,10 @@ export const getProvince_failure = createAction(
   props<{ errorMessage: string }>()
 );
 
-export const getDistrict = createAction(DISTRICT_INIT, props<{ id: string }>());
+export const getDistrict = createAction(
+  DISTRICT_INIT,
+  props<{ id: string | number }>()
+);
 export const getDistrict_success = createAction(
   DISTRICT_OK,
   props<{ dataD: Province[] | [] }>()
