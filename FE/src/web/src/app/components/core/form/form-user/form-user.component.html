@@ -118,7 +118,12 @@
 
       <nz-form-item nz-row>
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button nz-button nzType="primary">Lưu</button>
+          <button nz-button nzType="primary" class="mx-3" type="submit">
+            Lưu
+          </button>
+          <button nz-button nzType="primary" type="reset" nzGhost>
+            Làm Mới
+          </button>
           <nz-alert
             class="mt-4"
             *ngIf="showAlert"

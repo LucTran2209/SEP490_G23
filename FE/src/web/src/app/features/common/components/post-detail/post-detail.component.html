@@ -143,7 +143,14 @@
             </div>
           </div>
           <div class="third-wrapper">
-            <app-rental-detail-card></app-rental-detail-card>
+            <app-rental-detail-card
+              (showForm)="ShowRentalForm()"
+            ></app-rental-detail-card>
+            <app-form-rental-registration
+              [isVisible]="isVisible"
+              [title]="title"
+              (closeModal)="handleCloseModal()"
+            ></app-form-rental-registration>
           </div>
           <div class="fourth-wrapper col-span-2 mt-5">
             <i class="font-bold mx-2 text-lg">****Mô Tả****:</i>

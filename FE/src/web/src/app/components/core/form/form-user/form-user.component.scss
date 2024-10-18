@@ -1,3 +1,7 @@
 .phone-select{
     width: 80px;
 }
+::ng-deep .ant-modal-footer{
+    display: none;
+
+}

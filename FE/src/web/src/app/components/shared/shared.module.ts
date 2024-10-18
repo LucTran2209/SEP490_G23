@@ -65,6 +65,8 @@ import { RouterModule } from '@angular/router';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { FormPostComponent } from '../core/form/form-post/form-post.component';
+import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
+import { LayoutProfileComponent } from '../core/layout-profile/layout-profile.component';
 
 registerLocaleData(en);
 
@@ -130,6 +132,9 @@ const SHARED_MODULES = [
   ViewMoreItemComponent,
   RatingProccessProductComponent,
   FormPostComponent,
+  FormRentalRegistrationComponent,
+  LayoutProfileComponent,
+  
 ];
 
 @NgModule({
