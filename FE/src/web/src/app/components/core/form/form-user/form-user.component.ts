@@ -93,17 +93,6 @@ export class FormUserComponent{
     // }
     this.saveUser.emit(this.userForm.value);
     this.userForm.reset();
+    this.handleOk();
   }
-
-  // isFormValid(): boolean {
-  //   return (
-  //     !!this.user.userName &&
-  //     !!this.user.fullName &&
-  //     !!this.user.email &&
-  //     !!this.user.phoneNumber &&
-  //     !!this.user.address &&
-  //     !!this.user.gender &&
-  //     !!this.user.dateOfBirth
-  //   );
-  // }
 }

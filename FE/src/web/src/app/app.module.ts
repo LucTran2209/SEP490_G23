@@ -33,6 +33,10 @@ import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
 import { HydrationEffects } from './store/hydration/hydration.effects';
 import { addressFeature } from './store/province/province.reducer';
+import { LayoutProfileComponent } from './components/core/layout-profile/layout-profile.component';
+import { adminReducer } from './features/admin/state/admin.reducer';
+import { adminFeature } from './features/admin/state/admin.feature';
+import { AdminEffect } from './features/admin/state/admin.effects';
 
 registerLocaleData(en);
 
@@ -52,7 +56,9 @@ registerLocaleData(en);
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature(authFeature),
     StoreModule.forFeature(addressFeature),
-    EffectsModule.forRoot([HydrationEffects, AuthEffect]),
+    StoreModule.forFeature(adminFeature),
+    
+    EffectsModule.forRoot([HydrationEffects, AuthEffect, AdminEffect]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,

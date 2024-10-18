@@ -1,14 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
 import { StatusProcess } from '../../../interfaces/anonymous.interface';
 import * as AdminActions from './admin.actions';
-import { UserState } from './admin.state';
+import { AdminState } from './admin.state';
 
-const initialState: UserState = {
+const initialState: AdminState = {
     refreshToken: null,
     message: null,
     errorCreateUser: null,
     messageCreateUser: null,
     status: 'idle',
+    userList: [],
+    loading: false,
+    error: null,
 };
   export const adminReducer = createReducer(
     initialState,
@@ -26,5 +29,20 @@ const initialState: UserState = {
         ...state,
         errorRegister: action.error,
         status: 'error' as StatusProcess,
+      })),
+
+      //load users
+      on(AdminActions.load_users, (state) => ({
+        ...state,
+        loading: true,
+      })),
+      on(AdminActions.load_users_success, (state, { userList }) => ({
+        ...state,
+        userList: userList,
+        loading: false,
+      })),
+      on(AdminActions.load_users_failure, (state, { error }) => ({
+        ...state,
+        loading: false,
       })),
   );

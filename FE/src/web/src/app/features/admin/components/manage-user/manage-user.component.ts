@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserService } from '../../../../services/user.service';
 
 import { ListUserOutputDto, UserResultService, ActiveUserInputDto, UserInputDto } from '../../../../interfaces/user.interface';
+import { StorageService } from '../../../../services/storage.service';
+import { Store } from '@ngrx/store';
+import { FeatureAppState } from '../../../../store/app.state';
+import * as AdminActions from '../../state/admin.actions';
+import { Observable } from 'rxjs';
+import { selectLoading, selectUsers } from '../../state/admin.selectors';
 @Component({
   selector: 'app-manage-user',
   templateUrl: './manage-user.component.html',
@@ -10,6 +16,7 @@ import { ListUserOutputDto, UserResultService, ActiveUserInputDto, UserInputDto 
 })
 export class ManageUserComponent implements OnInit {
   userList: ListUserOutputDto[] = [];
+  res!: UserResultService;
   filteredUsers: ListUserOutputDto[] = [];
   searchText: string = '';
   userActive!: ActiveUserInputDto;
@@ -21,10 +28,24 @@ export class ManageUserComponent implements OnInit {
   pageSize = 10;      
   loading = false; 
   isActive: boolean = true;
-  constructor(private modal: NzModalService, private userService: UserService) {}
+  userResult$!: Observable<ListUserOutputDto[]>;
+  loading$!: Observable<boolean>;
+  constructor(private modal: NzModalService, 
+    private userService: UserService,
+    private storageService: StorageService,
+    private cdRef: ChangeDetectorRef,
+    private store: Store<FeatureAppState>
+  ) 
+  {
+    this.userResult$ = this.store.select(selectUsers);
+    this.loading$ = this.store.select(selectLoading);
+  }
   ngOnInit(): void{
     this.loadUsers(this.currentPage, this.pageSize);
-    this.title = 'Điền Thông Tin Của Người Mới'
+    this.title = 'Điền Thông Tin Của Người Mới';
+    this.userResult$.subscribe(users => {
+      console.log('User List:', users);
+    });
   }
   errorMessage: string = '';
   loadUsers(pageIndex: number, pageSize: number){
@@ -35,6 +56,7 @@ export class ManageUserComponent implements OnInit {
       this.loading = false;
       console.log(res)
     });
+    // this.store.dispatch(AdminActions.load_users({ pageIndex, pageSize }));
   }
   onSearch() {
     this.userService.searchUser().subscribe((res: UserResultService) =>{
@@ -62,6 +84,7 @@ export class ManageUserComponent implements OnInit {
       next: (response) => {
         console.log('User created successfully!');
         this.loadUsers(this.currentPage, this.pageSize); // Load lại danh sách người dùng sau khi tạo thành công
+        
       },
       error: (error) => {
         console.error('Failed to create user');
