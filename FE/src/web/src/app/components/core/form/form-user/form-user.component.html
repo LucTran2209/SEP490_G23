@@ -95,11 +95,21 @@
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="dateOfBirth" nzRequired>
           Ngày Sinh
         </nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24">
-          <nz-date-picker
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng nhập ngày sinh hoặc phải trên 18 tuổi!"
+        >
+          <!-- <nz-date-picker
             formControlName="dateOfBirth"
             [nzFormat]="dateFormat"
-          ></nz-date-picker>
+          ></nz-date-picker> -->
+          <input
+            nz-input
+            type="date"
+            formControlName="dateOfBirth"
+            nzPlaceHolder="'Chọn ngày sinh'"
+          />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

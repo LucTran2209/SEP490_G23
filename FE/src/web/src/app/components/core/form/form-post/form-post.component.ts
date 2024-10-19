@@ -19,6 +19,11 @@ export class FormPostComponent implements OnInit{
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   @Input() listOfControl: Array<{ id: number; controlInstance: string }> = [];
   constructor(private msg: NzMessageService) {}
+  
+  handleOk(): void {
+    this.isVisible = false;
+    this.closeModal.emit();
+  }
 
   handleCancel(): void {
     this.isVisible = false;
