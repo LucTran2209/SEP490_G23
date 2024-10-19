@@ -10,6 +10,5 @@ export class ProductCardComponent {
   @Input() product!: ProductOutputDto;
   @Output() editProduct = new EventEmitter<ProductOutputDto>();  
   onEditClick(): void {
-    this.editProduct.emit(this.product);  // Emit the product when the button is clicked
   }
 }
