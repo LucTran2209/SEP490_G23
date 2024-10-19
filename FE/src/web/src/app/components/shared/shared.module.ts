@@ -70,9 +70,11 @@ import { LayoutProfileComponent } from '../core/layout-profile/layout-profile.co
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
 import { FormProductComponent } from '../core/form/form-product/form-product.component';
 
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzSpaceModule,
   NzBreadCrumbModule,
   NzSliderModule,
   NzListModule,
@@ -138,7 +140,6 @@ const SHARED_MODULES = [
   LayoutProfileComponent,
   PostCardComponent,
   FormProductComponent,
-  
 ];
 
 @NgModule({

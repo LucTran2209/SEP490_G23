@@ -14,6 +14,7 @@ import { IDummy } from '../interfaces/anonymous.interface';
  */
 export class AppHttpClientService {
   static prefix = environment.apiUrl;
+  // static prefix = environment.serverUrl;
 
   constructor(protected httpClient: HttpClient) {}
   /**

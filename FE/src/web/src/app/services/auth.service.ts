@@ -15,7 +15,6 @@ import {
   IForgotPassword,
   ILoginRequest,
   ILoginResponse,
-  IOtpCodeResponse,
   IPayLoad,
   IRegisterRequest,
   IResetPassword,
@@ -71,22 +70,22 @@ export class AuthService {
     route: ActivatedRouteSnapshot,
     url: any
   ): Observable<boolean> {
-    //check isLoggedIn$ && data user
     const data = route.data as RouteData;
-    //  const user = this.userProfileService.currentUser ??
-    const user = { role: 'admin' }; //fixed: cứng admin test
-    console.log('line 56:', user);
+    const userRoleId = this.userProfileService.roleCurrentUser;
+    // const user = { role: 'admin' }; //fixed: cứng admin test
     return this.isLoggedIn$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          if (data.expectedRole && !data.expectedRole.includes(user.role)) {
-            // Redirect to login or error page if role does not match
+          if (
+            data.expectedRole &&
+            userRoleId &&
+            data.expectedRole.some((r) => userRoleId.includes(r))
+          ) {
             this.router.navigate(['/auth/login']);
             return false;
           }
           return true;
         } else {
-          // Redirect to login page if not authenticated
           this.router.navigate(['/auth/login']);
           return false;
         }
@@ -143,23 +142,31 @@ export class AuthService {
 
   startSession(accessToken: string, refreshToken: string): void {
     const userPayLoad = this.decodedTokenToGiveInfo(accessToken);
-    // const roleId = userPayLoad && userPayLoad.roleId[0] ? userPayLoad.roleId[0] : 1;
-    const roleId = 1;
-    replaceCookie(STRING.ACCESS_TOKEN, accessToken, null, '/');
+
+    const roleId =
+      Array.isArray(userPayLoad.roleId) && userPayLoad.roleId.length > 0
+        ? userPayLoad.roleId[0]
+        : userPayLoad.roleId;
+
+    const redirectUrl =
+      roleId !== undefined
+        ? MappingLinkAfterLoginByRoles[roleId as USER_ROLE] ?? '/common/home'
+        : '/common/home';
+
+    replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
     this.storageService.set(
       LocalStorageKey.currentUser,
       JSON.stringify(userPayLoad)
     );
-    this.isLoggedSubject.next(true);
 
-    this.routerLinkRedirectURLSubject.next(
-      MappingLinkAfterLoginByRoles[roleId]
-    );
+    this.isLoggedSubject.next(true);
+    this.routerLinkRedirectURLSubject.next(redirectUrl);
+
     this.redirectToPageAfter();
   }
 
-  redirectToPageAfter() {
+  redirectToPageAfter(): void {
     this.routerLinkRedirectURL$.subscribe((toUrl) => {
       const redirectUrl = toUrl ? this.router.parseUrl(toUrl) : '/common/home';
       this.router.navigateByUrl(redirectUrl);
@@ -197,18 +204,17 @@ export class AuthService {
     this.endSession();
   }
 
-  forgotPassWord(
-    data: IForgotPassword
-  ): Observable<BaseResponseApi<IOtpCodeResponse>> {
-    return this.httpClient.post<BaseResponseApi<IOtpCodeResponse>>(
+  forgotPassWord(data: IForgotPassword): Observable<BaseResponseApi<null>> {
+    return this.httpClient.post<BaseResponseApi<null>>(
       AuthSlug.ForgotPassWord.api,
       data
     );
   }
 
   resetPassword(data: IResetPassword): Observable<BaseResponseApi<any>> {
-    return this.httpClient.put<BaseResponseApi<any>>(
-      AuthSlug.ChangePassword.api
+    return this.httpClient.post<BaseResponseApi<any>>(
+      AuthSlug.ChangePassword.api,
+      data
     );
   }
 

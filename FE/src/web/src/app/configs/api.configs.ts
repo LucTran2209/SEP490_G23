@@ -13,7 +13,7 @@ export const AuthSlug = {
   ForgotPassWord: {
     label: 'forgot-password',
     title: 'forgot password | ERMS',
-    api: 'api/user/forgotpassword',
+    api: 'api/Authentication/ForgotPassword',
   },
   Register: {
     label: 'register',
@@ -30,9 +30,9 @@ export const AuthSlug = {
     api: 'api/user/changepassword',
   },
   ResetPassWord: {
-    label: 'reset-password',
+    label: 'reset-password/:token/:email',
     title: 'reset password | ERMS',
-    api: 'api/user/changepassword',
+    api: 'api/Authentication/ResetPassword',
   },
 };
 

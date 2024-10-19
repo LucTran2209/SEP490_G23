@@ -28,19 +28,76 @@
     <nz-form-label [nzSpan]="24" nzRequired
       >Địa chỉ đăng ký kinh doanh</nz-form-label
     >
-    <!-- <nz-form-control [nzSpan]="24">
-      <input nz-input formControlName="mobile" placeholder="mobile" />
-    </nz-form-control> -->
+    <div nz-row [nzGutter]="16">
+      <nz-form-control [nzSpan]="8">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Chọn tỉnh thành"
+          [nzLoading]="true"
+          [(ngModel)]="selectProvince"
+          (ngModelChange)="onProvinceChange($event)"
+          name="province"
+        >
+          @if((statusProvince$ | async) !== 'loading'){ @for (item of
+          (getListProvince$ | async); track $index) {
+          <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          } } @else {
+          <nz-option nzDisabled nzCustomContent>
+            <span nz-icon nzType="loading" class="loading-icon"></span>
+            Đăng tải...
+          </nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+      <nz-form-control [nzSpan]="8">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Chọn quận, huyện"
+          [(ngModel)]="selectDistrict"
+          (ngModelChange)="onDistrictChange($event)"
+          name="disctrict"
+          [nzDisabled]="!selectProvince"
+        >
+          @if((statusDistrict$ | async) !== 'loading'){ @for (item of
+          (getListDistrict$ | async); track $index) {
+          <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          } } @else {
+          <nz-option nzDisabled nzCustomContent>
+            <span nz-icon nzType="loading" class="loading-icon"></span>
+            Đăng tải...
+          </nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+      <nz-form-control [nzSpan]="8">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Chọn phường, xã"
+          [(ngModel)]="selectWard"
+          name="ward"
+          [nzDisabled]="!selectDistrict"
+          (ngModelChange)="ontWardChange($event)"
+        >
+          @if((statusWard$ | async) !== 'loading'){ @for (item of (getListWard$
+          | async); track $index) {
+          <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          } } @else {
+          <nz-option nzDisabled nzCustomContent>
+            <span nz-icon nzType="loading" class="loading-icon"></span>
+            Đăng tải...
+          </nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </div>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzRequired>́Mã số thuê</nz-form-label>
     <nz-form-control [nzSpan]="24">
-      <input
-        nz-input
-        formControlName="email"
-        placeholder="00000000000000"
-        type="text"
-      />
+      <input nz-input placeholder="00000000000000" type="text" />
     </nz-form-control>
   </nz-form-item>
 </form>
