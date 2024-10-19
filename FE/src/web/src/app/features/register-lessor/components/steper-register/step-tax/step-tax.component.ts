@@ -8,9 +8,13 @@ import {
   selectDataDistrict,
   selectDataProvince,
   selectDataWard,
+  selectStatusDistrict,
+  selectStatusProvince,
+  selectStatusWard,
 } from '../../../../../store/province/province.reducer';
 import { Observable } from 'rxjs';
 import { Province } from '../../../../../interfaces/province.interface';
+import { StatusProcess } from '../../../../../interfaces/anonymous.interface';
 
 @Component({
   selector: 'app-step-tax',
@@ -19,9 +23,14 @@ import { Province } from '../../../../../interfaces/province.interface';
 })
 export class StepTaxComponent {
   selectProvince?: string;
+  selectDistrict?: string;
+  selectWard?: string;
   getListProvince$?: Observable<Province[]>;
   getListDistrict$?: Observable<Province[]>;
   getListWard$?: Observable<Province[]>;
+  statusProvince$?: Observable<StatusProcess>;
+  statusDistrict$?: Observable<StatusProcess>;
+  statusWard$?: Observable<StatusProcess>;
   constructor(
     private msg: NzMessageService,
     private store: Store<GlobalState>
@@ -47,12 +56,30 @@ export class StepTaxComponent {
     this.store.dispatch(ProvinceAddress.getDistrict({ id }));
   }
   loadAddressDataWard(id: string | number) {
-    this.store.dispatch(ProvinceAddress.getDistrict({ id }));
+    this.store.dispatch(ProvinceAddress.getWardOrCommume({ id }));
   }
 
   ngOnInit(): void {
     this.getListProvince$ = this.store.select(selectDataProvince);
     this.getListDistrict$ = this.store.select(selectDataDistrict);
     this.getListWard$ = this.store.select(selectDataWard);
+    this.statusProvince$ = this.store.select(selectStatusProvince);
+    this.statusDistrict$ = this.store.select(selectStatusDistrict);
+    this.statusWard$ = this.store.select(selectStatusWard);
   }
+
+  onProvinceChange(value: string) {
+    this.loadAddressDistrict(value);
+    if (!this.selectProvince) {
+      this.selectDistrict = '';
+      this.selectWard = '';
+    }
+  }
+  onDistrictChange(value: string) {
+    this.loadAddressDataWard(value);
+    if (!this.selectDistrict) {
+      this.selectWard = '';
+    }
+  }
+  ontWardChange(value: string) {}
 }

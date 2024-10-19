@@ -37,7 +37,7 @@ export const getDistrict_failure = createAction(
 
 export const getWardOrCommume = createAction(
   WARD_OR_COMMUNE_INIT,
-  props<{ id: string }>()
+  props<{ id: string | number }>()
 );
 export const getWardOrCommume_success = createAction(
   WARD_OR_COMMUNE_OK,

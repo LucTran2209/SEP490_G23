@@ -47,7 +47,8 @@ const replaceCookie = (
 ) => {
   const date = expireTime || new Date();
   if (!expireTime) {
-    date.setTime(date.getTime() + 3 * 60 * 1000); // Mặc định là 3 phút nếu không có expireTime
+    // date.setTime(date.getTime() + 3 * 60 * 1000); // Mặc định là 3 phút nếu không có expireTime
+    date.setTime(date.getTime() + 365 * 24 * 60 * 60 * 1000); // Mặc định là 60 phút nếu không có expireTime
   }
 
   /** Tạo cookie */
