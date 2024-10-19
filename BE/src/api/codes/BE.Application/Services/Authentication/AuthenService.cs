@@ -93,8 +93,6 @@ namespace BE.Application.Services.Authentication
             return new ResultService();
         }
 
-
-
         public async Task<ResultService> LoginByUserNamePasswordAsync(LoginByUserNamePasswordInputDto inputDto)
         {
             await loginByUserNamePasswordValidator.ValidateAndThrowAsync(inputDto);

@@ -1,10 +1,10 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Authentication;
+using BE.Application.Services.Mails;
 using BE.Application.Services.Products;
 using BE.Application.Services.RentalShops;
 using BE.Application.Services.Users;
 using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Interfaces;
 using BE.Infrastructure.Common;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +25,7 @@ namespace BE.Application.DependencyInjections
             services.AddScoped(typeof(IAuthenticationService), typeof(AuthenService));
             services.AddScoped(typeof(IProductService), typeof(ProductService));
             services.AddScoped(typeof(IRentalShopService), typeof(RentalShopService));
+            services.AddScoped(typeof(IMailService), typeof(MailService));
             return services;
         }
     }

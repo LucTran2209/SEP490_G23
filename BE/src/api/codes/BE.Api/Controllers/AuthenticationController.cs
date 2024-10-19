@@ -15,7 +15,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> LoginByUserNamePassword(LoginByUserNamePasswordInputDto inputDto)
+        public async Task<IActionResult> LoginByUserNamePassword([FromBody] LoginByUserNamePasswordInputDto inputDto)
         {
             var result =  await authenticationService.LoginByUserNamePasswordAsync(inputDto);
             
@@ -23,7 +23,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(RegisterInputDto inputDto)
+        public async Task<IActionResult> Register([FromBody] RegisterInputDto inputDto)
         {
             var result = await authenticationService.RegisterAsync(inputDto);
 
@@ -31,7 +31,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordInputDto inputDto)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordInputDto inputDto)
         {
             var result = await authenticationService.ChangePasswordAsync(inputDto);
 
@@ -39,7 +39,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordInputDto inputDto)
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordInputDto inputDto)
         {
             var result = await authenticationService.ForgotPasswordAsync(inputDto);
 
@@ -47,7 +47,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordInputDto inputDto)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordInputDto inputDto)
         {
             var result = await authenticationService.ResetPassword(inputDto);
 
