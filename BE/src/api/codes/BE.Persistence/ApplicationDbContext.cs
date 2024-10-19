@@ -25,5 +25,10 @@ namespace BE.Persistence
         public DbSet<Role> Roles => this.Set<Role>();
         public DbSet<UserRole> UserRoles => this.Set<UserRole>();
 
+        public DbSet<RentalShop> RentalShops => this.Set<RentalShop>();
+        public DbSet<Product> Products => this.Set<Product>();
+        public DbSet<RentalRequest> RentalRequests => this.Set<RentalRequest>();
+        public DbSet<RentalRequestStatus> RentalRequestStatuses => this.Set<RentalRequestStatus>();
+
     }
 }
