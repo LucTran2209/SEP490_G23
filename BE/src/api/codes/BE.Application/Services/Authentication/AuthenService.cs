@@ -142,6 +142,11 @@ namespace BE.Application.Services.Authentication
 
             user.Password = hashPassword;
 
+            var userRoles = new List<UserRole>();
+            userRoles.Add(new UserRole() { UserId = user.Id, RoleId = Guid.Parse("dae936b7-3505-4c7e-813a-9221e658be61") });
+
+            user.UserRoles = userRoles;
+
             await unitOfWork.UserRepository.AddAsync(user);
 
             await unitOfWork.SaveChangesAsync();
@@ -247,6 +252,7 @@ namespace BE.Application.Services.Authentication
         {
 
         }
+
         private async Task SendMailAsync(User user)
         {
             string subject = "ERMS Forgot Password";
@@ -261,7 +267,5 @@ namespace BE.Application.Services.Authentication
 
             await mailService.SendMailAsync(null, user.Email!, subject, body);
         }
-
-
     }
 }
