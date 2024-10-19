@@ -80,12 +80,12 @@
         class="flex justify-between rounded-full item-wrapper p-1 pe-6 mt-10"
       >
         <span
-          class="bg-red-200 text-red-600 p-2 rounded-full"
+          class="bg-red-200 text-red-600 p-5 rounded-full"
           nz-icon
           nzType="like"
           nzTheme="outline"
         ></span>
-        <p class="ms-4 mt-1">Thiết bị AAA</p>
+        <p class="ms-4 mt-1 p-3">Thiết bị AAA</p>
       </div>
     </div>
   </div>
@@ -127,7 +127,7 @@
       </div>
       <div class="xl:columns-4 md:columns-2">
         <div *ngFor="let post of postList">
-          <app-product-card [post]="post"></app-product-card>
+          <app-post-card [post]="post"></app-post-card>
         </div>
       </div>
       <div class="mt-14 flex justify-center">
