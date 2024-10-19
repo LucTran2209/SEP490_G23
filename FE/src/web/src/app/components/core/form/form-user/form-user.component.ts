@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserInputDto } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user.service';
+import { ageValidator } from '../../../../utils/form-validators';
 
 @Component({
   selector: 'app-form-user',
@@ -38,27 +39,33 @@ export class FormUserComponent{
       password: new FormControl('123456789'), 
       fullName: new FormControl(this.user.fullName, [Validators.required]),
       email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-      phoneNumber: new FormControl(this.user.phoneNumber, [Validators.required]),
+      phoneNumber: new FormControl(this.user.phoneNumber, [Validators.required, Validators.pattern('^0[0-9]{9}$')]),
       address: new FormControl(this.user.address, [Validators.required]),
       gender: new FormControl(this.user.gender, [Validators.required]),
-      dateOfBirth: new FormControl(this.user.dateOfBirth, [Validators.required]),
+      dateOfBirth: new FormControl(this.user.dateOfBirth, [Validators.required, ageValidator()]),
       introduction: new FormControl(this.user.introduction, []),
-      avatarPersonal: new FormControl('NULL'),
+      avatarPersonal: new FormControl(''),
       isActive: new FormControl(true),
-      refreshToken: new FormControl('NULL')
+      refreshToken: new FormControl('')
     });
   }
   handleOk(): void {
     this.isVisible = false;
     this.closeModal.emit();
-    this.userForm.reset();
+    this.userForm.reset({
+      password: '123456789',
+      isActive: true,
+    });
 
   }
 
   handleCancel(): void {
     this.isVisible = false;
     this.closeModal.emit();
-    this.userForm.reset();
+    this.userForm.reset({
+      password: '123456789',
+      isActive: true,
+    });
   }
   
   submitForm(){
