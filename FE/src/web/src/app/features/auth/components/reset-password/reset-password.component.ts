@@ -1,21 +1,16 @@
 import { Component } from '@angular/core';
 import {
-  AbstractControl,
-  AbstractControlOptions,
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { confirmValidator } from '../../../../utils/validators';
-import { StorageService } from '../../../../services/storage.service';
 import { Store } from '@ngrx/store';
-import { getCookie } from '../../../../utils/cookie.helper';
-import { STRING } from '../../../../utils/constant';
-import { IResetPassword } from '../../../../interfaces/account.interface';
-import { resetPassword } from '../../state/auth.actions';
+import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
+import { STRING } from '../../../../utils/constant';
+import { getCookie } from '../../../../utils/cookie.helper';
+import { confirmValidator } from '../../../../utils/validators';
 
 @Component({
   selector: 'app-reset-password',
@@ -32,12 +27,12 @@ export class ResetPasswordComponent {
 
   submitForm(): void {
     let emailSession = getCookie(STRING.EMAIL) || '';
-    const data: IResetPassword = {
-      email: emailSession,
-      currentPassword: this.validateResetForm.controls.password.value,
-      newPassword: this.validateResetForm.controls.confirm.value,
-    };
-    this.store.dispatch(resetPassword({ data }));
+    // const data: IResetPassword = {
+    //   email: emailSession,
+    //   newPassword: this.validateResetForm.controls.confirm.value,
+
+    // };
+    // this.store.dispatch(resetPassword({ data }));
     console.log('submit', this.validateResetForm.value);
   }
 

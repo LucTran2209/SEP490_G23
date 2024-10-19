@@ -29,12 +29,8 @@ export interface IForgotPassword {
 
 export interface IResetPassword {
   email: string;
-  currentPassword: string;
   newPassword: string;
-}
-
-export interface IOtpCodeResponse {
-  optcode: string;
+  token: string;
 }
 
 export interface IRegisterTabCommon {

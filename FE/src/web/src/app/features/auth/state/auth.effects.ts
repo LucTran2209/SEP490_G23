@@ -82,7 +82,6 @@ export class AuthEffect {
           this.authService.forgotPassWord(data).pipe(
             map((res) => {
               return AuthActions.forgotPassword_success({
-                otpCode: res.data,
                 email: data.email,
               });
             }),
@@ -195,15 +194,10 @@ export class AuthEffect {
     () =>
       this.action$.pipe(
         ofType(AuthActions.forgotPassword_success),
-        tap(({ otpCode: { optcode }, email }) => {
+        tap(({ email }) => {
           let date = new Date();
-          let currentRoute = this.router.routerState.snapshot.url;
           this.loadingSerivce.setOtherLoading('loaded');
-          this.messageNZ.create('success', 'Chúng tôi đã gửi otpCode cho bạn!');
-          let encodeCode = encodeBase64(optcode);
-          date.setTime(date.getTime() + 1 * 60 * 1000);
           this.storageService.setSession(STRING.EMAIL, email);
-          replaceCookie(STRING.OTPCODE, encodeCode, null, currentRoute);
         })
       ),
     { dispatch: false }

@@ -3,7 +3,6 @@ import {
   IExternalLoginRequest,
   IForgotPassword,
   ILoginRequest,
-  IOtpCodeResponse,
   IRegisterRequest,
   IResetPassword,
 } from '../../../interfaces/account.interface';
@@ -66,7 +65,7 @@ export const forgotPassword = createAction(
 );
 export const forgotPassword_success = createAction(
   FORGOT_PASSWORD_SUCCESS,
-  props<{ otpCode: IOtpCodeResponse; email: string }>()
+  props<{ email: string }>()
 );
 export const forgotPassword_failure = createAction(
   FORGOT_PASSWORD_FAILURE,

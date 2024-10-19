@@ -66,7 +66,7 @@ export class StepTaxComponent {
     this.statusProvince$ = this.store.select(selectStatusProvince);
     this.statusDistrict$ = this.store.select(selectStatusDistrict);
     this.statusWard$ = this.store.select(selectStatusWard);
-
+  }
   onProvinceChange(value: string) {
     this.loadAddressDistrict(value);
     if (!this.selectProvince) {
