@@ -14,11 +14,13 @@ namespace BE.Application.Services.RentalShops
     public class RentalShopService : BaseService, IRentalShopService
     {
         private readonly IValidator<CreateRentalShopInputDto> createValidator;
+        private readonly IValidator<UpdateRentalShopInputDto> updateValidator;
 
-        public RentalShopService(IUnitOfWork unitOfWork, IUser user, IValidator<CreateRentalShopInputDto> createValidator)
+        public RentalShopService(IUnitOfWork unitOfWork, IUser user, IValidator<CreateRentalShopInputDto> createValidator, IValidator<UpdateRentalShopInputDto> updateValidator)
             : base(unitOfWork, user)
         {
             this.createValidator = createValidator;
+            this.updateValidator = updateValidator;
         }
 
         public async Task<ResultService> CreateAsync(CreateRentalShopInputDto inputDto)
@@ -36,14 +38,21 @@ namespace BE.Application.Services.RentalShops
             };
         }
 
-        public async Task<ResultService> UpdateAsync(CreateRentalShopInputDto inputDto, Guid id)
+        public async Task<ResultService> UpdateAsync(UpdateRentalShopInputDto inputDto, Guid id)
         {
-            var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(id);
+            await updateValidator.ValidateAndThrowAsync(inputDto);
 
+            var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(id);
             if (rentalShop == null)
                 return new ResultService { StatusCode = HttpStatusCode.NotFound.ToString(), Message = "Rental shop not found." };
 
-            rentalShop = inputDto.UpdateEntity(rentalShop);
+            rentalShop.ShopName = inputDto.ShopName;
+            rentalShop.Email = inputDto.Email;
+            rentalShop.PhoneNumber = inputDto.PhoneNumber;
+            rentalShop.Address = inputDto.Address;
+            rentalShop.Description = inputDto.Description;
+            rentalShop.IsActive = inputDto.IsActive;
+
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
 
@@ -94,5 +103,7 @@ namespace BE.Application.Services.RentalShops
                 Datas = rentalShops
             };
         }
+
+
     }
 }

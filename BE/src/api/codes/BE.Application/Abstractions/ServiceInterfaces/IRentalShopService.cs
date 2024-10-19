@@ -8,7 +8,7 @@ namespace BE.Application.Abstractions.ServiceInterfaces
     {
         Task<ResultService> CreateAsync(CreateRentalShopInputDto inputDto);
         Task<ResultService> GetListRentalShopAsync(GetListRentalShopInputDto inputDto);
-        Task<ResultService> UpdateAsync(CreateRentalShopInputDto inputDto, Guid id);
+        Task<ResultService> UpdateAsync(UpdateRentalShopInputDto inputDto, Guid id);
         Task<ResultService> DeleteAsync(Guid id);
     }
 }

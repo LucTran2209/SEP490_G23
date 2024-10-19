@@ -32,7 +32,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] CreateRentalShopInputDto inputDto)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateRentalShopInputDto inputDto)
         {
             var output = await rentalShopService.UpdateAsync(inputDto, id);
             return Ok(output);
