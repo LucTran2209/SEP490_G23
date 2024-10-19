@@ -63,5 +63,12 @@ namespace BE.Infrastructure.Repositories
 
             return user;
         }
+
+        public async Task<User?> GetsUserByUserEmailAsync(string email)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            return user;
+        }
     }
 }

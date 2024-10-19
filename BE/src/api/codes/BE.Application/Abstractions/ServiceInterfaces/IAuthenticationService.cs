@@ -10,6 +10,7 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> ExternalLoginAsync(ExternalLoginInputDto inputDto);
         Task<ResultService> ForgotPasswordAsync(ForgotPasswordInputDto inputDto);
         Task<ResultService> ChangePasswordAsync(ChangePasswordInputDto inputDto);
+        Task<ResultService> ResetPassword(ResetPasswordInputDto inputDto);
         Task<ResultService> LogoutAsync();
     }
 }
