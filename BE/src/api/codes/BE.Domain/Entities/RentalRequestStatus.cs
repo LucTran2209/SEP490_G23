@@ -8,8 +8,8 @@ namespace BE.Domain.Entities
         public Guid RentalRequestId { get; set; }
         public string? Message { get; set; }
         public RequestStatus Status { get; set; }
-        public string? FileAttach {  get; set; }
+        public string? FileAttach { get; set; }
 
-        public virtual RentalRequest? RentalRequest { get; set; }
+        public virtual RentalRequest RentalRequest { get; set; } = null!;
     }
 }
