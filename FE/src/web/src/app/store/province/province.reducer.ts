@@ -77,5 +77,11 @@ export const addressFeature = createFeature({
   reducer: addressReducer,
 });
 
-export const { selectDataDistrict, selectDataProvince, selectDataWard } =
-  addressFeature;
+export const {
+  selectDataDistrict,
+  selectDataProvince,
+  selectDataWard,
+  selectStatusDistrict,
+  selectStatusProvince,
+  selectStatusWard,
+} = addressFeature;

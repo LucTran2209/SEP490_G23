@@ -64,9 +64,11 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { RouterModule } from '@angular/router';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzSpaceModule,
   NzBreadCrumbModule,
   NzSliderModule,
   NzListModule,
