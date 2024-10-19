@@ -29,14 +29,12 @@ import { AuthEffect } from './features/auth/state/auth.effects';
 import { authFeature } from './features/auth/state/auth.feature';
 import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
 // import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
+import { AdminEffect } from './features/admin/state/admin.effects';
+import { adminFeature } from './features/admin/state/admin.feature';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
-import { addressFeature } from './store/province/province.reducer';
-import { LayoutProfileComponent } from './components/core/layout-profile/layout-profile.component';
-import { adminReducer } from './features/admin/state/admin.reducer';
-import { adminFeature } from './features/admin/state/admin.feature';
-import { AdminEffect } from './features/admin/state/admin.effects';
 import { ProvinceEffect } from './store/province/province.effects';
+import { addressFeature } from './store/province/province.reducer';
 
 registerLocaleData(en);
 

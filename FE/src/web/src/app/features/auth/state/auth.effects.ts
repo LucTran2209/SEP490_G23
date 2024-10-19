@@ -203,7 +203,7 @@ export class AuthEffect {
           let encodeCode = encodeBase64(optcode);
           date.setTime(date.getTime() + 1 * 60 * 1000);
           this.storageService.setSession(STRING.EMAIL, email);
-          replaceCookie(STRING.OTPCODE, encodeCode, date, currentRoute);
+          replaceCookie(STRING.OTPCODE, encodeCode, null, currentRoute);
         })
       ),
     { dispatch: false }

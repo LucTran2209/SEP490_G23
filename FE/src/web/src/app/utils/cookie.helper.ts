@@ -42,17 +42,16 @@ const removeAllCookies = (excludes: Array<string> = []) => {
 const replaceCookie = (
   cookieName: string,
   cookieValue: string,
-  expireTime: Date | null,
+  expireTime: number | null,
   path: string
 ) => {
-  const date = expireTime || new Date();
+  const date = expireTime ? new Date(expireTime * 1000) : new Date();
   if (!expireTime) {
-    // date.setTime(date.getTime() + 3 * 60 * 1000); // Mặc định là 3 phút nếu không có expireTime
-    date.setTime(date.getTime() + 365 * 24 * 60 * 60 * 1000); // Mặc định là 60 phút nếu không có expireTime
+    date.setTime(date.getTime() + 365 * 24 * 60 * 60 * 1000); //test 1 year
   }
 
   /** Tạo cookie */
-  document.cookie = `${cookiePrf}${cookieName}=${cookieValue};expires=${date.toUTCString()}; domain=${
+  document.cookie = `${cookieName}=${cookieValue};expires=${date.toUTCString()}; domain=${
     environment.baseDomain
   }; path=${path ?? '/'}`;
 };

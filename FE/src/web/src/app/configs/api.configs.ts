@@ -32,7 +32,7 @@ export const AuthSlug = {
   ResetPassWord: {
     label: 'reset-password',
     title: 'reset password | ERMS',
-    api: 'api/user/changepassword',
+    api: 'api/user/changepassword/:token/:email',
   },
 };
 

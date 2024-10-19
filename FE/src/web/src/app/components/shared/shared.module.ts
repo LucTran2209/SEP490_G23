@@ -64,16 +64,13 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { RouterModule } from '@angular/router';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-<<<<<<< HEAD
 import { FormPostComponent } from '../core/form/form-post/form-post.component';
 import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
 import { LayoutProfileComponent } from '../core/layout-profile/layout-profile.component';
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
 import { FormProductComponent } from '../core/form/form-product/form-product.component';
 
-=======
 import { NzSpaceModule } from 'ng-zorro-antd/space';
->>>>>>> e5f5f59 (add call api address in register-lessor)
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -143,7 +140,6 @@ const SHARED_MODULES = [
   LayoutProfileComponent,
   PostCardComponent,
   FormProductComponent,
-  
 ];
 
 @NgModule({
