@@ -15,7 +15,6 @@ import {
   IForgotPassword,
   ILoginRequest,
   ILoginResponse,
-  IOtpCodeResponse,
   IPayLoad,
   IRegisterRequest,
   IResetPassword,
@@ -205,18 +204,17 @@ export class AuthService {
     this.endSession();
   }
 
-  forgotPassWord(
-    data: IForgotPassword
-  ): Observable<BaseResponseApi<IOtpCodeResponse>> {
-    return this.httpClient.post<BaseResponseApi<IOtpCodeResponse>>(
+  forgotPassWord(data: IForgotPassword): Observable<BaseResponseApi<null>> {
+    return this.httpClient.post<BaseResponseApi<null>>(
       AuthSlug.ForgotPassWord.api,
       data
     );
   }
 
   resetPassword(data: IResetPassword): Observable<BaseResponseApi<any>> {
-    return this.httpClient.put<BaseResponseApi<any>>(
-      AuthSlug.ChangePassword.api
+    return this.httpClient.post<BaseResponseApi<any>>(
+      AuthSlug.ChangePassword.api,
+      data
     );
   }
 
