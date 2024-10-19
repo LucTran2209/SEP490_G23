@@ -45,7 +45,7 @@ namespace BE.Application.Services.Users
             findUser.PhoneNumber = user.PhoneNumber;
             findUser.Address = user.Address;
             findUser.DateOfBirth = user.DateOfBirth;
-            findUser.ListRole = user.UserRoles?.Select(ur => ur.Role.Name).ToList() ?? new List<string>();
+            findUser.ListRole = user.UserRoles?.Select(ur => ur.Role?.Name!).ToList() ?? new List<string>();
             return findUser;
         }
         public static GetListUserOutputDto GetListUser(this User user)
@@ -55,13 +55,13 @@ namespace BE.Application.Services.Users
                 Id = user.Id,
                 FullName = user.FullName,
                 Gender = user.Gender,
-                UserName = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+                UserName = user.UserName!,
+                Email = user.Email!,
+                PhoneNumber = user.PhoneNumber!,
                 Address = user.Address,
                 DateOfBirth = user.DateOfBirth,
                 IsActive = user.IsActive,
-                ListRole = user.UserRoles?.Select(ur => ur.Role.Name).ToList() ?? new List<string>()
+                ListRole = user.UserRoles?.Select(ur => ur.Role?.Name!).ToList()
             };
             return Users;
         }

@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BE.Api.Middlewares;
 
-public class ExceptionHandlingMiddleware: IMiddleware
+public class ExceptionHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<ExceptionHandlingMiddleware> logger;
 
