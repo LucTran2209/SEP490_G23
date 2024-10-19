@@ -38,5 +38,20 @@ namespace BE.Api.Controllers
             return Ok(result);
         }
 
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordInputDto inputDto)
+        {
+            var result = await authenticationService.ForgotPasswordAsync(inputDto);
+
+            return Ok(result);
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordInputDto inputDto)
+        {
+            var result = await authenticationService.ResetPassword(inputDto);
+
+            return Ok(result);
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace BE.Domain.Interfaces
         Task<User?> GetsUserByUserNameAsync(string userName);
         IQueryable<User> GetAll();
         Task<User?> GetsUserByUserIDAsync(Guid ID);
+        Task<User?> GetsUserByUserEmailAsync(string email);
     }
 }
