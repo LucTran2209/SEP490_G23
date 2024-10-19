@@ -125,6 +125,19 @@
           ></textarea>
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction" nzRequired>
+          Giới Thiệu Bản Thân
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <textarea
+            nz-input
+            formControlName="introduction"
+            placeholder="Thông tin cá nhân"
+            [nzAutosize]="{ minRows: 3, maxRows: 5 }"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
 
       <nz-form-item nz-row>
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
