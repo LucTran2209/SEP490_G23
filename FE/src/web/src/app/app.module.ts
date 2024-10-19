@@ -67,7 +67,10 @@ registerLocaleData(en);
     },
     provideHttpClient(
       withFetch(),
-      withInterceptors([httpRequestInterceptor, responseInterceptor])
+      withInterceptors([
+        // httpRequestInterceptor
+        responseInterceptor,
+      ])
     ),
   ],
   bootstrap: [AppComponent],

@@ -12,7 +12,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { IForgotPassword } from '../../../../interfaces/account.interface';
 import { ItimeClock } from '../../../../interfaces/anonymous.interface';
 import { AuthService } from '../../../../services/auth.service';
@@ -145,9 +145,10 @@ export class ForgotPasswordComponent implements OnInit {
       { asyncValidators: [otpValidator(_authSerivce)] }
     );
 
-    this.isRecoveringForgotPassword = this.store.select(
-      selectIsRecoveringPassword
-    );
+    this.isRecoveringForgotPassword = of(true);
+    // this.isRecoveringForgotPassword = this.store.select(
+    //   selectIsRecoveringPassword
+    // );
   }
 
   ngOnInit(): void {

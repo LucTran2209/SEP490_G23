@@ -154,7 +154,7 @@ export class AuthService {
         ? MappingLinkAfterLoginByRoles[roleId as USER_ROLE] ?? '/common/home'
         : '/common/home';
 
-    replaceCookie(STRING.ACCESS_TOKEN, accessToken, null, '/');
+    replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
     this.storageService.set(
       LocalStorageKey.currentUser,
