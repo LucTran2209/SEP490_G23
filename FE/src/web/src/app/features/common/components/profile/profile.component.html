@@ -1,62 +1,54 @@
-<div class="container mt-5">
+<div class="container mt-5 mx-10">
   <div class="grid grid-cols-3 gap-8">
-    <div>
-      <div class="max-w-lg rounded overflow-hidden shadow-lg font-mono">
-        <img
-          class="w-full"
-          src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1726704000&semt=ais_hybrid"
-          alt="Avatar"
-        />
-        <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2 text-center">Nguyen Van A</div>
-          <div class="font-light text-base mb-5 text-center">
-            Người cho thuê
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="col-span-2">
-      <div class="max-w-3xl rounded overflow-hidden shadow-lg font-mono">
-        <div class="px-6 py-4">
+      <div class="w-max rounded overflow-hidden shadow-lg font-mono">
+        <div class="px-24 py-10">
           <div
-            class="font-bold text-4xl mb-2 text-center text-gray-500 mt-6 uppercase"
+            class="font-bold text-4xl mb-2 text-start text-gray-500 mt-6 uppercase"
           >
-            Hồ sơ của Nguyễn Văn A
+            Thông Tin Cá Nhân
           </div>
-          <div class="flex justify-center mt-6">
-            <div class="columns-2 gap-6">
-              <p class="font-bold mb-4 text-xl">Tên người dùng:</p>
-              <p class="font-bold mb-4 text-xl">Họ và Tên:</p>
-              <p class="font-bold mb-4 text-xl">Email:</p>
-              <p class="font-bold mb-4 text-xl">Số điện thoại:</p>
-              <p class="font-bold mb-4 text-xl">Địa chỉ:</p>
-              <p class="font-bold mb-4 text-xl">Giới tính:</p>
-              <p class="font-bold mb-4 text-xl">Ngày sinh:</p>
+          <div class="flex justify-between">
+            <div class="flex justify-start mt-6 pr-20 pl-0">
+              <div class="columns-2 gap-6">
+                <p class="font-bold mb-4 text-xl">Tên người dùng:</p>
+                <p class="font-bold mb-4 text-xl">Họ và Tên:</p>
+                <p class="font-bold mb-4 text-xl">Email:</p>
+                <p class="font-bold mb-4 text-xl">Số điện thoại:</p>
+                <p class="font-bold mb-4 text-xl">Địa chỉ:</p>
+                <p class="font-bold mb-4 text-xl">Giới tính:</p>
+                <p class="font-bold mb-4 text-xl">Ngày sinh:</p>
 
-              <!-- user information -->
-              <p class="text-xl mb-4">Nguyễn Văn A</p>
-              <p class="text-xl mb-4">Nguyễn Văn A</p>
-              <p class="text-xl mb-4">a123&#64;gmail.com</p>
-              <p class="text-xl mb-4">0123456789</p>
-              <p class="text-xl mb-4">Hà Nội</p>
-              <p class="text-xl mb-4">Nam</p>
-              <p class="text-xl mb-4">01/01/2000</p>
+                <p class="text-xl mb-4">{{ user.userName }}</p>
+                <p class="text-xl mb-4">{{ user.fullName }}</p>
+                <p class="text-xl mb-4">{{ user.email }}</p>
+                <p class="text-xl mb-4">{{ user.phoneNumber }}</p>
+                <p class="text-xl mb-4">{{ user.address }}</p>
+                <p class="text-xl mb-4">{{ user.gender ? "Nam" : "Nữ" }}</p>
+                <p class="text-xl mb-4">
+                  {{ user.dateOfBirth | date : "dd/MM/yyyy" }}
+                </p>
+              </div>
+            </div>
+            <div class="pl-24 divide">
+              <nz-avatar
+                [nzSize]="200"
+                nzSrc="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
+              ></nz-avatar>
+              <p class="text-xl text-gray-400 text-center mt-2">Ảnh Đại Diện</p>
+              <div class="flex justify-center mt-4">
+                <button
+                  nz-button
+                  [nzSize]="'large'"
+                  nzType="primary"
+                  (click)="showEditProfile()"
+                >
+                  Sửa Hồ Sơ
+                </button>
+              </div>
             </div>
           </div>
-          <div class="flex justify-end">
-            <button
-              (click)="showEditProfile()"
-              class="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              <span
-                class="text-base pe-2"
-                nz-icon
-                nzType="edit"
-                nzTheme="outline"
-              ></span>
-              <span>Chỉnh sửa hồ sơ</span>
-            </button>
-          </div>
+          <div class="flex justify-end"></div>
           <app-form-user
             [isVisible]="isVisible"
             [title]="title"

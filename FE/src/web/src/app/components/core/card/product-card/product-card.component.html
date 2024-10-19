@@ -1,0 +1,28 @@
+<nz-card class="mt-4" style="width: 270px" [nzCover]="nzAvatar">
+  <nz-card-meta
+    nzTitle="{{ product.productName }}"
+    nzDescription="GIÁ THUÊ: {{ product.price | number }} VND"
+  >
+    <ng-template #nzAvatar>
+      <img
+        class="w-96 h-36"
+        [src]="product.images"
+        alt="{{ product.productName }}"
+      />
+    </ng-template>
+  </nz-card-meta>
+  <div class="flex justify-between mt-10">
+    <div class="flex justify-between">
+      <span
+        nz-icon
+        nzType="star"
+        nzTheme="fill"
+        class="text-yellow-300 text-lg"
+      ></span>
+      <p class="text-sm mx-2 mt-1.5">{{ product.evaluate }}</p>
+    </div>
+    <button nz-button nzGhost nzType="primary" (click)="onEditClick()">
+      Chỉnh Sửa
+    </button>
+  </div>
+</nz-card>

@@ -1,0 +1,31 @@
+textarea[nz-input] {
+    height: 100px;
+  }
+  
+  nz-form-item {
+    margin-bottom: 16px;
+  }
+  
+  .nz-form-label {
+    text-align: right; /* Aligns labels to the right for better readability */
+  }
+  .format-border {
+    padding: 10px;
+    border: 1px dashed #d9d9d9;
+    margin-bottom: 16px;
+    border-radius: 4px;
+  }
+  @media screen and (max-width: 768px) {
+    // Your styles for screens 768px and smaller
+    .wrap {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  ::ng-deep .ant-modal-footer{
+    display: none;
+
+}
+::ng-deep .ant-upload.ant-upload-select-picture-card{
+  width: 100%;
+}

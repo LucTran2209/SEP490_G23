@@ -5,14 +5,14 @@
   (avatarClick)="onAvatarClick()"
 >
 </app-navbar-headear>
-<nz-layout class="main-layout h-screen">
+<nz-layout class="main-layout h-full">
   <nz-sider
     nzCollapsible
     [(nzCollapsed)]="isSidebarCollapsed"
     [nzTrigger]="null"
     nzTheme="light"
   >
-    <ul nz-menu nzTheme="light" nzMode="inline">
+    <!-- <ul nz-menu nzTheme="light" nzMode="inline">
       <li nz-menu-item>
         <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
         <span>DashBoard</span>
@@ -29,20 +29,46 @@
         <span nz-icon nzType="team" nzTheme="outline"></span>
         <span>Group</span>
       </li>
-      <!-- <li nz-submenu nzTitle="User" nzIcon="user">
-        <ul>
-          <li nz-menu-item>List User</li>
-          <li nz-menu-item>Bill</li>
-          <li nz-menu-item>Alex</li>
-        </ul>
-      </li> -->
+    </ul> -->
+    <ul nz-menu nzTheme="light" nzMode="inline">
+      <!-- Admin Role -->
+      <ng-container *ngIf="userRole === 1">
+        <li nz-menu-item>
+          <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
+          <span>Thống Kê</span>
+        </li>
+        <li nz-menu-item>
+          <span nz-icon nzType="user" nzTheme="outline"></span>
+          <span>Quản Lý Người Dùng</span>
+        </li>
+        <li nz-menu-item>
+          <span nz-icon nzType="shop" nzTheme="outline"></span>
+          <span>Danh Sách Cửa Hàng</span>
+        </li>
+      </ng-container>
+
+      <!-- Lessor Role -->
+      <ng-container *ngIf="userRole === 2">
+        <li nz-menu-item>
+          <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
+          <span>Thông Kê</span>
+        </li>
+        <li nz-menu-item>
+          <span nz-icon nzType="file-text" nzTheme="outline"></span>
+          <span>Danh Sách Bài Đăng</span>
+        </li>
+        <li nz-menu-item>
+          <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
+          <span>Danh Sách Người Thuê</span>
+        </li>
+        <li nz-menu-item>
+          <span nz-icon nzType="shop" nzTheme="outline"></span>
+          <span>Cửa Hàng</span>
+        </li>
+      </ng-container>
     </ul>
   </nz-sider>
   <nz-content>
-    <!-- <nz-breadcrumb>
-      <nz-breadcrumb-item>User</nz-breadcrumb-item>
-      <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
-    </nz-breadcrumb> -->
     <router-outlet></router-outlet>
   </nz-content>
 </nz-layout>

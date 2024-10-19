@@ -48,32 +48,32 @@ export const UserSlug = {
   AddUser: {
     label: 'Add User',
     title: 'Add User | ERMS',
-    api: 'api/User/addnewuser',
+    api: 'User',
   },
   ListUser: {
     label: 'List User',
     title: 'List User | ERMS',
-    api: 'api/User/Listuser',
+    api: 'User/listuser',
   },
   FilterUser: {
     label: 'Filter User',
     title: 'Filter User| ERMS',
-    api: 'api/User/Filteruser',
+    api: 'User/listuser',
   },
   GetUser: {
     label: 'View Profile',
     title: 'View Profile | ERMS',
-    api: 'api/user/viewprofile?UserName=',
+    api: 'User/viewprofile?UserName=',
   },
   UpdateUser: {
     label: 'Update User',
     title: 'Update User | ERMS',
-    api: 'Update User',
+    api: 'User/updateprofile',
   },
   ActiveUser: {
     label: 'Active User',
     title: 'Active User | ERMS',
-    api: 'ActiveUser',
+    api: 'User/activeuser',
   },
 };
 
@@ -106,6 +106,38 @@ export const PostSlug = {
   ActivePost: {
     label: 'Active Post',
     title: 'Active Post | ERMS',
+    api: 'ActivePost',
+  },
+};
+export const ProductSlug = {
+  AddProduct: {
+    label: 'Add Product',
+    title: 'Add Product | ERMS',
+    api: 'api/Post/addnewpost',
+  },
+  ListProduct: {
+    label: 'List Product',
+    title: 'List Product | ERMS',
+    api: 'Product/list',
+  },
+  FilterProduct: {
+    label: 'Filter Product',
+    title: 'Filter Product| ERMS',
+    api: 'api/Post/Filterpost',
+  },
+  GetProduct: {
+    label: 'View Product',
+    title: 'View Product | ERMS',
+    api: 'api/Post/?postId =',
+  },
+  UpdateProduct: {
+    label: 'Update Product',
+    title: 'Update Product | ERMS',
+    api: 'Update Post',
+  },
+  ActiveProduct: {
+    label: 'Active Product',
+    title: 'Active Product | ERMS',
     api: 'ActivePost',
   },
 };

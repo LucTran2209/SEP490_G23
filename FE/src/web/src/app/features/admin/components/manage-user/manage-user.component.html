@@ -1,7 +1,7 @@
 <div class="bg-light container">
   <div class="row flex-nowrap">
     <div class="col py-3 m-3">
-      <div class="card mt">
+      <div class="card">
         <h1 class="text-3xl">Danh sách người dùng</h1>
         <div class="flex justify-between mt-5">
           <div class="search-bar w-25 ms-0">
@@ -42,29 +42,43 @@
           [title]="title"
           [user]="userInformation"
           (closeModal)="handleCloseModal()"
+          (saveUser)="handleCreateUser($event)"
         ></app-form-user>
-        <table class="mt-2">
-          <thead class="table-primary">
-            <tr class="th-product">
-              <th class="p-3 m-1 text-secondary text-uppercase">
+        <nz-table
+          #basicTable
+          [nzData]="userList"
+          [nzFrontPagination]="false"
+          [nzPageSize]="pageSize"
+          [nzTotal]="totalUsers"
+          [(nzPageIndex)]="currentPage"
+          (nzPageIndexChange)="onPageChange($event)"
+          [nzLoading]="loading"
+          class="mt-2"
+        >
+          <thead>
+            <tr>
+              <th class="m-1 text-secondary text-uppercase">
                 <span class="name">No.</span>
               </th>
-              <th class="p-3 m-1 text-secondary text-uppercase">
-                <span class="name">Tên Người Dùng</span>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Tên Người Dùng</span>
               </th>
-              <th class="p-3 m-1 text-secondary text-uppercase">
+              <th class="m-1 text-secondary text-uppercase">
                 <span class="name">Email</span>
               </th>
-              <th class="p-3 m-1 text-secondary text-uppercase">
+              <th class="m-1 text-secondary text-uppercase">
                 <span class="name">Địa Chỉ</span>
               </th>
-              <th class="p-3 m-1 text-secondary text-uppercase">
+              <th class="m-1 text-secondary text-uppercase">
                 <span class="name">Số Điện Thoại</span>
               </th>
-              <th class="p-3 text-secondary text-uppercase">
+              <th class="text-secondary text-uppercase">
+                <span class="name">Vai Trò</span>
+              </th>
+              <th class="text-secondary text-uppercase">
                 <span class="name">Trạng Thái</span>
               </th>
-              <th class="p-3 m-1 text-secondary text-uppercase">
+              <th class="m-1 text-secondary text-uppercase">
                 <span class="name">Hoạt Động</span>
               </th>
             </tr>
@@ -73,48 +87,47 @@
             <tr *ngFor="let user of userList; let i = index" class="tr-product">
               <td>
                 <span class="name text-secondary p-3 text-center">
-                  {{ i + 1 | number : "2.0" }}
-                  <!-- 01 -->
+                  {{ i + 1 + (currentPage - 1) * pageSize | number : "2.0" }}
                 </span>
               </td>
               <td>
-                <div class="flex justify-start ">
+                <div class="flex justify-start">
                   <img
                     class="rounded-full w-12 h-12"
                     src="https://cdn-icons-png.flaticon.com/512/1458/1458201.png"
                     alt="image-product"
                   />
                   <span class="name text-secondary p-3 mt-3">
-                    <!-- Nguyen Van A -->
-                    {{ user.fullName }}
+                    {{ user.userName }}
                   </span>
                 </div>
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  <!-- a123&#64;gmail.com -->
                   {{ user.email }}
                 </span>
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  <!-- Hà Nội -->
                   {{ user.address }}
                 </span>
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  <!-- 0123445667 -->
                   {{ user.phoneNumber }}
                 </span>
               </td>
-              <td class="p-3 flex justify-center">
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ user.listRole.join(", ") || "Không" }}
+                </span>
+              </td>
+              <td class="text-center">
                 @if(user.isActive){
-                <p class="active">Hoạt đông</p>
+                <p class="active">Hoạt động</p>
                 }@else{
                 <p class="inactive">Không hoạt động</p>
                 }
-                <!-- <p class="active">Active</p> -->
               </td>
               <td>
                 <div class="flex flex-wrap justify-center p-3">
@@ -124,14 +137,14 @@
                       nz-icon
                       nzType="stop"
                       nzTheme="outline"
-                      (click)="showDeleteConfirm(user.userName)"
+                      (click)="showDeleteConfirm(user.id)"
                     ></span>
                   </a>
                 </div>
               </td>
             </tr>
           </tbody>
-        </table>
+        </nz-table>
       </div>
     </div>
   </div>

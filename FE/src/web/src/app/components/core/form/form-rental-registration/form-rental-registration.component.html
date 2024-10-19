@@ -1,0 +1,118 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  (nzOnOk)="handleOk()"
+  (nzOnCancel)="handleCancel()"
+  [nzMaskClosable]="true"
+  [nzWidth]="'1250px'"
+>
+  <ng-container *nzModalContent>
+    <div class="mt-3 bg-zinc-300 flex justify-between p-6">
+      <div>
+        <h1 class="text-xl pb-4">Thông Tin Thiết Bị</h1>
+        <p class="text-base font-bold py-1">
+          Tên Thiết Bị: <span class="font-light">Máy giặt XQB30MJ102W</span>
+        </p>
+
+        <p class="text-base font-bold py-1">
+          Số Lượng: <span class="font-light"> 1</span>
+        </p>
+      </div>
+      <img
+        class="rounded"
+        src="{{ image }}"
+        alt="anh thiet bi"
+        [width]="210"
+        [height]="30"
+      />
+    </div>
+    <div class="mt-3 flex justify-between">
+      <div class="bg-zinc-300 p-6">
+        <h1 class="text-xl pb-4">Thông Tin Bên Cho Thuê</h1>
+        <p class="text-base font-bold py-1">
+          Tên: <span class="font-light">Ngô Hữu Nam</span>
+        </p>
+        <p class="text-base font-bold py-1">
+          CCCD: <span class="font-light">027202009789</span>
+        </p>
+        <p class="text-base font-bold py-1">
+          Địa chỉ: <span class="font-light"> Trang hạ, từ sơn, bắc ninh</span>
+        </p>
+
+        <p class="text-base font-bold py-1">
+          Số điện thoại: <span class="font-light">0327033756</span>
+        </p>
+
+        <p class="text-base font-bold py-1">
+          Email: <span class="font-light">ngohuunam2002&#64;gmail.com</span>
+        </p>
+        <button class="w-full mt-36" nz-button nzType="primary">
+          Nội dung điều khoản thuê
+        </button>
+      </div>
+      <div>
+        <h1 class="text-xl p-4">Thông Tin Bên Thuê</h1>
+        <div class="flex justify-between">
+          <div class="p-6">
+            <p class="text-base font-bold py-2">
+              Tên: <span class="font-light">Ngô Hữu Nam</span>
+            </p>
+            <p class="text-base font-bold py-2">
+              CCCD: <span class="font-light">027202009789</span>
+            </p>
+            <p class="text-base font-bold py-2">
+              Địa chỉ:
+              <span class="font-light"> Trang hạ, từ sơn, bắc ninh</span>
+            </p>
+
+            <p class="text-base font-bold py-2">
+              Số điện thoại: <span class="font-light">0327033756</span>
+            </p>
+
+            <p class="text-base font-bold py-2">
+              Email: <span class="font-light">ngohuunam2002&#64;gmail.com</span>
+            </p>
+          </div>
+          <div class="p-6">
+            <p class="text-base font-bold py-2">
+              Ngày bắt đầu: <span class="font-light">12/10/2024</span>
+            </p>
+            <p class="text-base font-bold py-2">
+              Ngày kết thúc: <span class="font-light">22/10/2024</span>
+            </p>
+          </div>
+          <div class="p-6 w-80 border-solid border-2 border-zinc-300 h-96">
+            <p class="text-base font-bold py-2">
+              Tổng ngày thuê: <span class="font-light">10 ngày</span>
+            </p>
+            <p class="text-base font-bold py-2">
+              Tổng tiền thuê: <span class="font-light">2 triệu</span>
+            </p>
+            <p class="text-base font-bold py-2">Ghi Chú:</p>
+            <nz-form-item>
+              <textarea
+                nz-input
+                placeholder="Ghi chú cho người cho thuê ở đây"
+                [nzAutosize]="{ minRows: 5, maxRows: 10 }"
+              ></textarea>
+            </nz-form-item>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-6 flex justify-end">
+      <button
+        nz-button
+        nzType="primary"
+        class="mx-3"
+        nzGhost
+        (click)="editInformation()"
+      >
+        Chỉnh Sửa
+      </button>
+      <button nz-button nzType="primary" (click)="confirmInformation()">
+        Xác Nhận Thuê
+      </button>
+    </div>
+  </ng-container>
+</nz-modal>

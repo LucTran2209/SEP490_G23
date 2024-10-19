@@ -1,1 +1,5 @@
-<p>manage-post works!</p>
+<button nz-button (click)="showCreatePost()">Create Post</button>
+<app-form-post
+  [isVisible]="isVisible"
+  (closeModal)="handleCloseModal()"
+></app-form-post>

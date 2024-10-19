@@ -14,7 +14,7 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'users',
+    path: 'manage-users',
     component: ManageUserComponent,
   },
 ];

@@ -47,7 +47,7 @@ import { FormUserComponent } from '../core/form/form-user/form-user.component';
 import { LoadingComponent } from '../core/loading/loading.component';
 import { NavMenuComponent } from '../core/nav-menu/nav-menu.component';
 import { NavbarHeadearComponent } from '../core/navbar-headear/navbar-headear.component';
-import { ProductCardComponent } from '../core/product-card/product-card.component';
+import { ProductCardComponent } from '../core/card/product-card/product-card.component';
 import { ProductCarouseComponent } from '../core/product-carouse/product-carouse.component';
 import { RatingProccessProductComponent } from '../core/rating-proccess-product/rating-proccess-product.component';
 import { NzRateModule } from 'ng-zorro-antd/rate';
@@ -64,6 +64,12 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { RouterModule } from '@angular/router';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { FormPostComponent } from '../core/form/form-post/form-post.component';
+import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
+import { LayoutProfileComponent } from '../core/layout-profile/layout-profile.component';
+import { PostCardComponent } from '../core/card/post-card/post-card.component';
+import { FormProductComponent } from '../core/form/form-product/form-product.component';
+
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -127,6 +133,12 @@ const SHARED_MODULES = [
   ErrorComponent,
   ViewMoreItemComponent,
   RatingProccessProductComponent,
+  FormPostComponent,
+  FormRentalRegistrationComponent,
+  LayoutProfileComponent,
+  PostCardComponent,
+  FormProductComponent,
+  
 ];
 
 @NgModule({
