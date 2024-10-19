@@ -1,0 +1,117 @@
+<div class="m-20">
+  <div class="border relative rounded-lg p-4 bg-white shadow-md mt-3">
+    <div class="flex">
+      <div class="w-1/4 relative">
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/007/068/286/small/background-for-website-or-mobile-app-online-shopping-with-3d-smartphone-on-blue-background-free-vector.jpg"
+          alt="Group Image"
+          class="rounded-lg w-full h-auto"
+        />
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div
+            class="text-white bg-black bg-opacity-50 w-full h-full flex items-center justify-center rounded-lg p-4"
+          >
+            <img
+              src="https://gcs.tripi.vn/public-tripi/tripi-feed/img/477743KJB/anh-mo-ta.png"
+              alt="Avatar"
+              class="w-16 h-16 rounded-full mr-4"
+            />
+            <div class="flex flex-col items-start">
+              <h2 class="text-xl font-semibold text-white">VD GROUP VN</h2>
+              <p class="text-xs text-gray-500">Online 1 phút trước</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-3/4 pl-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="flex items-center m-5">
+              <span
+                class="text-xl"
+                nz-icon
+                nzType="shop"
+                nzTheme="outline"
+              ></span>
+              <span class="text-lg mx-2"> Thiết Bị: </span>
+              <span class="text-blue-500 ml-1 text-lg">118</span>
+            </p>
+          </div>
+          <div>
+            <p class="flex items-center mx-5 mt-5">
+              <span
+                class="text-xl"
+                nz-icon
+                nzType="star"
+                nzTheme="outline"
+              ></span>
+              <span class="text-lg mx-2"> Đánh Giá: </span>
+              <span class="text-blue-500 ml-1 text-lg">4.9 (118 đánh giá)</span>
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <p class="flex items-center mx-5">
+              <span
+                class="text-xl"
+                nz-icon
+                nzType="usergroup-add"
+                nzTheme="outline"
+              ></span>
+              <span class="text-lg mx-2"> Người Đang Thuê: </span>
+              <span class="text-blue-500 ml-1 text-lg">118</span>
+            </p>
+          </div>
+          <div>
+            <p class="flex items-center"></p>
+            <p class="flex items-center mx-5">
+              <span
+                class="text-xl"
+                nz-icon
+                nzType="team"
+                nzTheme="outline"
+              ></span>
+              <span class="text-lg mx-2"> Tham Gia: </span>
+              <span class="text-blue-500 ml-1 text-lg">3 Tháng Trước</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg">
+    <img
+      class="w-full h-72 my-4 rounded"
+      src="https://png.pngtree.com/thumb_back/fh260/background/20210908/pngtree-real-shots-of-the-entire-digital-product-store-and-neatly-placed-image_825889.jpg"
+      alt=""
+    />
+  </div>
+  <div class="flex justify-end">
+    <button
+      class="mt-6"
+      nz-button
+      nzType="primary"
+      nzGhost
+      (click)="showCreateProduct()"
+    >
+      Tạo Thiết Bị Cho Thuê Mới
+    </button>
+  </div>
+  <nz-row [nzGutter]="16">
+    <nz-col
+      *ngFor="let product of productList"
+      [nzXs]="24"
+      [nzSm]="12"
+      [nzMd]="8"
+      [nzLg]="6"
+    >
+      <app-product-card [product]="product"> </app-product-card>
+    </nz-col>
+  </nz-row>
+</div>
+
+<app-form-product
+  [isVisible]="isVisible"
+  (closeModal)="handleCloseModal()"
+></app-form-product>
