@@ -8,6 +8,7 @@ import { PostDetailComponent } from './components/post-detail/post-detail.compon
 import { ProfileComponent } from './components/profile/profile.component';
 import { PostRetailListComponent } from './components/post-retail-list/post-retail-list.component';
 import { FilterPostRentalComponent } from './components/filter-post-rental/filter-post-rental.component';
+import { ShopComponent } from './components/shop/shop.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FilterPostRentalComponent } from './components/filter-post-rental/filte
     PostDetailComponent,
     PostRetailListComponent,
     FilterPostRentalComponent,
+    ShopComponent,
   ],
   imports: [CommonModule, SharedModule, CommonRoutingModule],
 })

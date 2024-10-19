@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { PostOutputDto } from '../../../interfaces/post.interface';
+import { PostOutputDto } from '../../../../interfaces/post.interface';
 
 @Component({
   selector: 'app-product-card',
