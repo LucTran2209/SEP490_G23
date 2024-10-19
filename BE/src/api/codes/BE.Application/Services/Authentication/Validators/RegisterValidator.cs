@@ -25,6 +25,8 @@ namespace BE.Application.Services.Authentication.Validators
                 {
                     return !await context.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
                 }).WithMessage("UserName has existed");
+
+
         }
     }
 }

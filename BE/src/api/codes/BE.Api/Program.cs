@@ -25,7 +25,7 @@ namespace BE.Api
             builder.Services.AddPersistenceServices(builder.Configuration);
 
             // # DI ApplicationService
-            builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationServices(builder.Configuration);
 
             builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 

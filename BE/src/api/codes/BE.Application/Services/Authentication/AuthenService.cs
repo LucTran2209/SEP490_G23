@@ -20,25 +20,34 @@ namespace BE.Application.Services.Authentication
 {
     public class AuthenService : BaseService, IAuthenticationService
     {
-
         private readonly IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator;
         private readonly IValidator<RegisterInputDto> registerValidator;
         private readonly IValidator<ChangePasswordInputDto> changePasswordValidator;
+        private readonly IValidator<ForgotPasswordInputDto> forgotPasswordValidator;
         private readonly JwtOption jwtOption;
+        private readonly SystemConfig systemConfig;
+        private readonly IMailService mailService;
         private readonly IMapper _mapper;
+
 
         public AuthenService(IUnitOfWork unitOfWork,
                              IUser user,
                              IOptions<JwtOption> jwtOption,
+                             IOptions<SystemConfig> systemConfig,
+                             IMailService mailService,
                              IMapper mapper,
                              IValidator<RegisterInputDto> registerValidator,
                              IValidator<ChangePasswordInputDto> changePasswordValidator,
-                             IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork, user)
+                             IValidator<ForgotPasswordInputDto> forgotPasswordValidator,
+        IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork, user)
         {
             this.loginByUserNamePasswordValidator = loginByUserNamePasswordValidator;
             this.registerValidator = registerValidator;
             this.changePasswordValidator = changePasswordValidator;
+            this.forgotPasswordValidator = forgotPasswordValidator;
+            this.mailService = mailService;
             this.jwtOption = jwtOption.Value;
+            this.systemConfig = systemConfig.Value;
             this._mapper = mapper;
         }
 
@@ -73,9 +82,15 @@ namespace BE.Application.Services.Authentication
             throw new NotImplementedException();
         }
 
-        public Task<ResultService> ForgotPasswordAsync(ForgotPasswordInputDto inputDto)
+        public async Task<ResultService> ForgotPasswordAsync(ForgotPasswordInputDto inputDto)
         {
-            throw new NotImplementedException();
+            await forgotPasswordValidator.ValidateAsync(inputDto);
+
+            var user = await unitOfWork.UserRepository.GetsUserByUserEmailAsync(inputDto.Email);
+
+            await SendMailAsync(user!);
+
+            return new ResultService();
         }
 
         public async Task<ResultService> LoginByUserNamePasswordAsync(LoginByUserNamePasswordInputDto inputDto)
@@ -84,7 +99,7 @@ namespace BE.Application.Services.Authentication
 
             var user = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
 
-            if (user == null || !AuthenExtention.VerifyPassword(inputDto.Password,user.Password!))
+            if (user == null || !AuthenExtention.VerifyPassword(inputDto.Password, user.Password!))
             {
                 return new ResultService
                 {
@@ -127,6 +142,11 @@ namespace BE.Application.Services.Authentication
 
             user.Password = hashPassword;
 
+            var userRoles = new List<UserRole>();
+            userRoles.Add(new UserRole() { UserId = user.Id, RoleId = Guid.Parse("dae936b7-3505-4c7e-813a-9221e658be61") });
+
+            user.UserRoles = userRoles;
+
             await unitOfWork.UserRepository.AddAsync(user);
 
             await unitOfWork.SaveChangesAsync();
@@ -135,6 +155,64 @@ namespace BE.Application.Services.Authentication
             {
                 Message = "Success",
             };
+        }
+
+        public async Task<ResultService> ResetPassword(ResetPasswordInputDto inputDto)
+        {
+            var user = await unitOfWork.UserRepository.GetsUserByUserEmailAsync(inputDto.Email!);
+
+            if (IsTokenExpired(inputDto.Token!))
+            {
+                return new ResultService()
+                {
+                    StatusCode = "400",
+                    Message = "Token was expired"
+                };
+            }
+
+            user!.Password = AuthenExtention.HashPassword(inputDto.NewPassword!);
+
+            await unitOfWork.UserRepository.UpdateAsync(user);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return new ResultService()
+            {
+                StatusCode = "200"
+            };
+        }
+
+        public bool IsTokenExpired(string token)
+        {
+            try
+            {
+                // Tạo một JwtSecurityTokenHandler để phân tích token
+                var tokenHandler = new JwtSecurityTokenHandler();
+
+                // Kiểm tra token có hợp lệ về mặt định dạng không
+                if (tokenHandler.CanReadToken(token))
+                {
+                    // Phân tích cú pháp token thành JwtSecurityToken
+                    var jwtToken = tokenHandler.ReadJwtToken(token);
+
+                    // Lấy claim `exp` từ token
+                    var expClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
+                    if (expClaim != null)
+                    {
+                        // Chuyển giá trị `exp` từ Unix timestamp sang DateTime
+                        var expUnix = long.Parse(expClaim.Value);
+                        var expirationDate = DateTimeOffset.FromUnixTimeSeconds(expUnix).UtcDateTime;
+
+                        // So sánh thời gian hết hạn với thời gian hiện tại
+                        return expirationDate < DateTime.UtcNow; // Trả về true nếu token đã hết hạn
+                    }
+                }
+                return true; // Token không hợp lệ hoặc không có `exp`, xem như đã hết hạn
+            }
+            catch (Exception)
+            {
+                return true; // Bất kỳ lỗi nào cũng xem như token đã hết hạn
+            }
         }
 
         private string GenerateToken(User user)
@@ -152,7 +230,7 @@ namespace BE.Application.Services.Authentication
             {
                 foreach (var role in user.UserRoles)
                 {
-                    new Claim("Role", role.Role!.Name!);
+                    authClaims.Add(new Claim("Role", role.Role!.Name!));
                 }
             }
 
@@ -173,6 +251,21 @@ namespace BE.Application.Services.Authentication
         private void SetCookie(string accessToken)
         {
 
+        }
+
+        private async Task SendMailAsync(User user)
+        {
+            string subject = "ERMS Forgot Password";
+
+            var htmlContent = await File.ReadAllTextAsync("../BE.Api/wwwroot/templates/email/ForgotPassword.html");
+
+            var token = GenerateToken(user);
+
+            var url = $"{systemConfig.BasePath}/{systemConfig.ForgotPasswordUrl}/{token}/{user.Email}";
+
+            var body = htmlContent.Replace("{{url}}", url);
+
+            await mailService.SendMailAsync(null, user.Email!, subject, body);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace BE.Api.Extensions
             services.AddScoped<IUser, CurrentUserService>();
 
             services.Configure<JwtOption>(configuration.GetSection("JWT"));
+            services.Configure<SystemConfig>(configuration.GetSection("SystemConfig"));
+            services.Configure<SmtpConfig>(configuration.GetSection("SmtpConfig"));
 
             services.AddAuthentication(options =>
             {
