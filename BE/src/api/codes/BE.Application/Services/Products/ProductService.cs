@@ -124,6 +124,7 @@ namespace BE.Application.Services.Products
             {
                 var productImage = new ProductImage
                 {
+                    ProductId = product.Id,
                     Link = item,
                 };
 
