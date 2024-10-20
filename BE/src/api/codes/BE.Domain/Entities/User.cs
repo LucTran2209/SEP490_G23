@@ -20,7 +20,7 @@ namespace BE.Domain.Entities
         public decimal Balance { get; set; }
 
         public virtual ICollection<RentalShop>? RentalShops { get; set; }
-        public virtual ICollection<RentalRequest>? RentalRequests { get; set; }
+        public virtual ICollection<Order>? Orders { get; set; }
 
         public virtual ICollection<UserRole>? UserRoles { get; set; }
     }
