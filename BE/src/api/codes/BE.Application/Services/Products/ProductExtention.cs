@@ -5,7 +5,7 @@ using BE.Domain.Entities;
 namespace BE.Application.Services.Products
 {
     public static class ProductExtention
-    {
+    {      
         public static Product ToEntity(this CreateProductInputDto inputDto)
         {
             return new Product
@@ -18,8 +18,7 @@ namespace BE.Application.Services.Products
                 RentalPrice = inputDto.RentalPrice,     
                 DepositPrice = inputDto.DepositPrice,   
                 RentalLimitDays = inputDto.RentalLimitDays,
-                Evaluate = inputDto.Evaluate,
-                //Images = inputDto.Images => To do
+                Evaluate = inputDto.Evaluate
             };
         }
 

@@ -1,4 +1,7 @@
-﻿namespace BE.Application.Services.Products.ProductServiceInputDto
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+
+namespace BE.Application.Services.Products.ProductServiceInputDto
 {
     public class CreateProductInputDto
     {
@@ -11,6 +14,6 @@
         public decimal DepositPrice { get; set; }
         public int RentalLimitDays { get; set; } 
         public decimal Evaluate { get; set; }
-        public string Images { get; set; } = string.Empty;
+        public List<IFormFile>? Images { get; set; }     
     }
 }
