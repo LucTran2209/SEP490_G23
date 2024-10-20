@@ -120,6 +120,8 @@ namespace BE.Application.Services.Products
         {
             var listUri = await _azureService.UpLoadFileAsync(images ?? new List<IFormFile>());
 
+            var productImages = new List<ProductImage>();
+
             foreach (var item in listUri)
             {
                 var productImage = new ProductImage
@@ -128,8 +130,10 @@ namespace BE.Application.Services.Products
                     Link = item,
                 };
 
-                product.ProductImages?.Add(productImage);
+                productImages.Add(productImage);
             }
+
+            product.ProductImages = productImages;
         }
     }
 }
