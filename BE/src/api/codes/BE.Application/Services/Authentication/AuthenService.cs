@@ -29,7 +29,6 @@ namespace BE.Application.Services.Authentication
         private readonly IMailService mailService;
         private readonly IMapper _mapper;
 
-
         public AuthenService(IUnitOfWork unitOfWork,
                              IUser user,
                              IOptions<JwtOption> jwtOption,
@@ -126,7 +125,6 @@ namespace BE.Application.Services.Authentication
             };
         }
 
-
         public Task<ResultService> LogoutAsync()
         {
             throw new NotImplementedException();
@@ -186,32 +184,26 @@ namespace BE.Application.Services.Authentication
         {
             try
             {
-                // Tạo một JwtSecurityTokenHandler để phân tích token
                 var tokenHandler = new JwtSecurityTokenHandler();
 
-                // Kiểm tra token có hợp lệ về mặt định dạng không
                 if (tokenHandler.CanReadToken(token))
                 {
-                    // Phân tích cú pháp token thành JwtSecurityToken
                     var jwtToken = tokenHandler.ReadJwtToken(token);
 
-                    // Lấy claim `exp` từ token
                     var expClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
                     if (expClaim != null)
                     {
-                        // Chuyển giá trị `exp` từ Unix timestamp sang DateTime
                         var expUnix = long.Parse(expClaim.Value);
                         var expirationDate = DateTimeOffset.FromUnixTimeSeconds(expUnix).UtcDateTime;
 
-                        // So sánh thời gian hết hạn với thời gian hiện tại
-                        return expirationDate < DateTime.UtcNow; // Trả về true nếu token đã hết hạn
+                        return expirationDate < DateTime.UtcNow;
                     }
                 }
-                return true; // Token không hợp lệ hoặc không có `exp`, xem như đã hết hạn
+                return true;
             }
             catch (Exception)
             {
-                return true; // Bất kỳ lỗi nào cũng xem như token đã hết hạn
+                return true;
             }
         }
 
@@ -250,7 +242,6 @@ namespace BE.Application.Services.Authentication
 
         private void SetCookie(string accessToken)
         {
-
         }
 
         private async Task SendMailAsync(User user)

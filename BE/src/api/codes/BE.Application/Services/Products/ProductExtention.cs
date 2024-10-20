@@ -16,7 +16,7 @@ namespace BE.Application.Services.Products
                 RentalShopId = command.RentalShopId,
                 Price = command.Price,
                 Evaluate = command.Evaluate,
-                Images = command.Images
+                //Images = command.Images
             };
             return product;
         }
@@ -32,7 +32,7 @@ namespace BE.Application.Services.Products
                 Quantity = product.Quantity,
                 Price = product.Price,
                 Evaluate = product.Evaluate,
-                Images = product.Images,
+               // Images = product.Images,
                 RentalShopName = product.RentalShop?.ShopName ?? "N/A"
             };
         }
