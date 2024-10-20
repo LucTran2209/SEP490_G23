@@ -44,13 +44,13 @@ namespace BE.Application.Services.Products
                 ProductName = product.ProductName,
                 Description = product.Description,
                 Quantity = product.Quantity,
-                SubCategoryId = product.SubCategoryId,  
+                SubCategoryId = product.SubCategoryId,
                 RentalShopName = product.RentalShop?.ShopName ?? "N/A",
-                RentalPrice = product.RentalPrice,     
-                DepositPrice = product.DepositPrice,   
-                RentalLimitDays = product.RentalLimitDays, 
+                RentalPrice = product.RentalPrice,
+                DepositPrice = product.DepositPrice,
+                RentalLimitDays = product.RentalLimitDays,
                 Evaluate = product.Evaluate,
-                //Images = product.Images => To do
+                Images = product.ProductImages?.Select(pi => pi.Link).ToList()
             };
         }
     }
