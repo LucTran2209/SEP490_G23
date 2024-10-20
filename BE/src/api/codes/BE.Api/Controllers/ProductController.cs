@@ -18,7 +18,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateProductInputDto inputDto)
+        public async Task<IActionResult> CreateAsync([FromForm] CreateProductInputDto inputDto)
         {
             var output = await productService.CreateAsync(inputDto);
             return Created(output.StatusCode, output);
@@ -34,7 +34,7 @@ namespace BE.Api.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateProductInputDto inputDto)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateProductInputDto inputDto)
         {
             var output = await productService.UpdateProductAsync(inputDto,id);
             return Ok(output);

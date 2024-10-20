@@ -3,10 +3,11 @@ using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.Extensions;
 using BE.Application.Services.Products.ProductServiceInputDto;
-using BE.Application.Services.Products.ProductServiceOutputDto;
 using BE.Domain.Abstractions.UnitOfWork;
+using BE.Domain.Entities;
 using BE.Domain.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
@@ -17,15 +18,19 @@ namespace BE.Application.Services.Products
         private readonly IValidator<CreateProductInputDto> createProductValidator;
         private readonly IValidator<UpdateProductInputDto> updateProductValidator;
 
+        private readonly IAzureService _azureService;
+
         public ProductService(
             IUnitOfWork unitOfWork,
             IUser user,
+            IAzureService azureService,
             IValidator<CreateProductInputDto> createProductValidator,
             IValidator<UpdateProductInputDto> updateProductValidator)
             : base(unitOfWork, user)
         {
             this.createProductValidator = createProductValidator;
             this.updateProductValidator = updateProductValidator;
+            _azureService = azureService;
         }
 
         public async Task<ResultService> CreateAsync(CreateProductInputDto inputDto)
@@ -33,7 +38,11 @@ namespace BE.Application.Services.Products
             await createProductValidator.ValidateAndThrowAsync(inputDto);
 
             var product = inputDto.ToEntity();
+
+            await ConvertImageAsync(product, inputDto.Images);
+
             await unitOfWork.ProductRepository.AddAsync(product);
+
             await unitOfWork.SaveChangesAsync();
 
             return new ResultService
@@ -91,10 +100,11 @@ namespace BE.Application.Services.Products
             product.Description = inputDto.Description;
             product.Quantity = inputDto.Quantity;
             product.Evaluate = inputDto.Evaluate;
-            //product.Images = inputDto.Images; =>To do
             product.RentalLimitDays = inputDto.RentalLimitDays;
             product.RentalPrice = inputDto.RentalPrice;
             product.DepositPrice = inputDto.DepositPrice;
+
+            await ConvertImageAsync(product, inputDto.Images);
 
             await unitOfWork.ProductRepository.UpdateAsync(product);
             await unitOfWork.SaveChangesAsync();
@@ -104,6 +114,21 @@ namespace BE.Application.Services.Products
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "Product updated successfully."
             };
+        }
+
+        private async Task ConvertImageAsync(Product product, List<IFormFile>? images)
+        {
+            var listUri = await _azureService.UpLoadFileAsync(images ?? new List<IFormFile>());
+
+            foreach (var item in listUri)
+            {
+                var productImage = new ProductImage
+                {
+                    Link = item,
+                };
+
+                product.ProductImages?.Add(productImage);
+            }
         }
     }
 }

@@ -3,8 +3,8 @@
     public class ListProductOutputDto
     {
         public Guid Id { get; set; }
-        public string ProductName { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+            public string ProductName { get; set; } = string.Empty;
+            public string Description { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public Guid SubCategoryId { get; set; }
         public string RentalShopName { get; set; } = string.Empty;

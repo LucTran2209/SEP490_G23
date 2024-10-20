@@ -17,6 +17,7 @@ namespace BE.Api.Extensions
             services.Configure<JwtOption>(configuration.GetSection("JWT"));
             services.Configure<SystemConfig>(configuration.GetSection("SystemConfig"));
             services.Configure<SmtpConfig>(configuration.GetSection("SmtpConfig"));
+            services.Configure<AzureConfig>(configuration.GetSection("AzureConfig"));
 
             services.AddAuthentication(options =>
             {
