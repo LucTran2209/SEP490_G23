@@ -83,13 +83,11 @@ namespace BE.Application.Services.RentalShops
         public async Task<ResultService> GetListRentalShopAsync(GetListRentalShopInputDto inputDto)
         {
             var query = unitOfWork.RentalShopRepository.GetAll();
-
-            // Áp dụng các bộ lọc giống như phần UserService
             query = query
-                .Filter(inputDto.ShopName, rs => rs.ShopName.Contains(inputDto.ShopName))
-                .Filter(inputDto.Email, rs => rs.Email.Contains(inputDto.Email))
-                .Filter(inputDto.PhoneNumber, rs => rs.PhoneNumber.Contains(inputDto.PhoneNumber))
-                .Filter(inputDto.Address, rs => rs.Address.Contains(inputDto.Address));
+                .Filter(inputDto.ShopName, rs => rs.ShopName.Contains(inputDto.ShopName ?? string.Empty))
+                .Filter(inputDto.Email, rs => rs.Email.Contains(inputDto.Email ?? string.Empty))
+                .Filter(inputDto.PhoneNumber, rs => rs.PhoneNumber.Contains(inputDto.PhoneNumber ?? string.Empty))
+                .Filter(inputDto.Address, rs => rs.Address.Contains(inputDto.Address ?? string.Empty));
 
             var rentalShops = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                 .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)

@@ -1,13 +1,10 @@
-﻿namespace BE.Application.Services.Products.ProductServiceOutputDto
+﻿namespace BE.Application.Services.Products.ProductServiceInputDto
 {
-    public class ListProductOutputDto
+    public class UpdateProductInputDto
     {
-        public Guid Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int Quantity { get; set; }
-        public Guid SubCategoryId { get; set; }
-        public string RentalShopName { get; set; } = string.Empty;
         public decimal RentalPrice { get; set; }
         public decimal DepositPrice { get; set; }
         public int RentalLimitDays { get; set; }
