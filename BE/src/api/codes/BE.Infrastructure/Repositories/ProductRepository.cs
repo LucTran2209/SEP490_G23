@@ -20,7 +20,8 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<Product> GetAll()
         {
-            var query = context.Products.Include(p => p.RentalShop).AsQueryable();
+            var query = context.Products.Include(p => p.RentalShop).Include(p => p.ProductImages).AsQueryable();
+
             return query;
         }
 
