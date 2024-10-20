@@ -34,44 +34,74 @@ namespace BE.Application.Services.Users
         {
             await activeUserValidator.ValidateAsync(inputDto);
             var user = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
-            user.IsActive = inputDto.IsActive;
-            
-            await unitOfWork.UserRepository.UpdateAsync(user);
-            await unitOfWork.SaveChangesAsync();
-            
-            return new ResultService
+            if (user == null)
             {
-                StatusCode = HttpStatusCode.Created.ToString(),
-                Message = "Success"
-            };
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    Message = "User not found"
+                };
+            }
+            else
+            {
+                user.IsActive = inputDto.IsActive;
+                await unitOfWork.UserRepository.UpdateAsync(user);
+                await unitOfWork.SaveChangesAsync();
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.OK.ToString(),
+                    Message = "Success"
+                };
+            }
         }
 
         public async Task<ResultService> CreateAsync(CreateUserInputDto inputDto)
         {
             await createUserValidator.ValidateAndThrowAsync(inputDto);
-
-            var user = inputDto.ToEntity();
-            user.Id = new Guid();
-            await unitOfWork.UserRepository.AddAsync(user);
-            await unitOfWork.SaveChangesAsync();
-
-            return new ResultService
+            var r = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
+            if (r == null)
             {
-                StatusCode = HttpStatusCode.Created.ToString(),
-                Message = "Success"
-            };
-        }
+                var user = inputDto.ToEntity();
+                user.Id = new Guid();
+                await unitOfWork.UserRepository.AddAsync(user);
+                await unitOfWork.SaveChangesAsync();
 
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.Created.ToString(),
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Failed to create! Username already exists"
+                };
+            }
+        }
         public async Task<ResultService> GetUserByNameAsync(FindUserInputDto inputDto)
         {
             var r = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
-            var data = UserExtention.FindUser(r);
-            return new ResultService
+            if (r != null)
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
-                Message = "Success",
-                Datas = data
-            };
+                var data = UserExtention.FindUser(r);
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.OK.ToString(),
+                    Message = "Success",
+                    Datas = data
+                };
+            }
+            else
+            {
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    Message = "Success",
+                };
+            }
         }
 
         public async Task<ResultService> GetListUserAsync(GetListUserInputDto inputDto)
@@ -101,17 +131,26 @@ namespace BE.Application.Services.Users
         {
             await updateUserValidator.ValidateAndThrowAsync(inputDto);
             var r = await unitOfWork.UserRepository.GetsUserByUserIDAsync(inputDto.Id);
-            
-            UserExtention.updateuser(inputDto, r);
-            
-            await unitOfWork.UserRepository.UpdateAsync(r);
-            await unitOfWork.SaveChangesAsync();
-            
-            return new ResultService
+
+            if (r == null)
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
-                Message = "Success",
-            };
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    Message = "User not found",
+                };
+            }
+            else
+            {
+                UserExtention.updateuser(inputDto, r);
+                await unitOfWork.UserRepository.UpdateAsync(r);
+                await unitOfWork.SaveChangesAsync();
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.OK.ToString(),
+                    Message = "Success",
+                };
+            }
         }
     }
 }

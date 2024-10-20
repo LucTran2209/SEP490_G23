@@ -15,7 +15,7 @@ namespace BE.Application.Services.Users
             user.PhoneNumber = command.PhoneNumber;
             user.FullName = command.FullName;
             user.Address = command.Address;
-            user.Gender = command.Gender;
+            user.Gender = (bool)command.Gender;
             user.DateOfBirth = command.DateOfBirth;
             user.AvatarPersonal = command.AvatarPersonal;
             user.Introduction = command.Introduction;
@@ -30,7 +30,7 @@ namespace BE.Application.Services.Users
             user.Email = command.Email;
             user.PhoneNumber = command.PhoneNumber;
             user.FullName = command.FullName;
-            user.Gender = command.Gender;
+            user.Gender = (bool)command.Gender;
             user.DateOfBirth = command.DateOfBirth;
             return user;
         }
