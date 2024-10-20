@@ -23,6 +23,8 @@ namespace BE.Persistence.DependencyInjections
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddTransient<IDataSeedContributor, UsersDataSeedContributor>();
+            services.AddTransient<IDataSeedContributor, CategoriesDataSeedContributor>();
+            services.AddTransient<IDataSeedContributor, SubCategoriesDataSeedContributor>();
             services.AddTransient<IDataSeedContributor, RoleDataSeedContributor>();
 
             return services;

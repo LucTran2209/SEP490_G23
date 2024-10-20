@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BE.Application.Services.Products.Validators
 {
-    public class CreateProductValidator : AbstractValidator<CreateProductInputDto>
+    public class UpdateProductValidator : AbstractValidator<UpdateProductInputDto>
     {
-        public CreateProductValidator()
+        public UpdateProductValidator()
         {
             RuleFor(p => p.ProductName)
                 .NotEmpty().WithMessage("Product name is required.")
@@ -22,9 +22,6 @@ namespace BE.Application.Services.Products.Validators
 
             RuleFor(p => p.RentalLimitDays)
                 .GreaterThan(0).WithMessage("Rental limit days must be greater than zero.");
-
-            RuleFor(p => p.SubCategoryId)
-                .NotEmpty().WithMessage("SubCategoryId is required.");
         }
     }
 }

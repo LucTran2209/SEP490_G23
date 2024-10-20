@@ -6,9 +6,8 @@ namespace BE.Application.Abstractions.ServiceInterfaces
     public interface IProductService
     {
         Task<ResultService> CreateAsync(CreateProductInputDto inputDto);
-        Task<ResultService> GetListProductAsync();
-        //Task<ResultService> UpdateProductAsync(UpdateProductInputDto inputDto);
-        //Task<ResultService> GetProductByIdAsync(FindProductInputDto inputDto);
+        Task<ResultService> GetListProductAsync(GetListProductInputDto inputDto);
+        Task<ResultService> UpdateProductAsync(UpdateProductInputDto inputDto, Guid id);
         Task<ResultService> DeleteProductAsync(Guid productId);
     }
 }

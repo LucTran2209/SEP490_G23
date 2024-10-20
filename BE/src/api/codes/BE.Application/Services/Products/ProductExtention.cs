@@ -6,21 +6,36 @@ namespace BE.Application.Services.Products
 {
     public static class ProductExtention
     {
-        public static Product ToEntity(this CreateProductInputDto command)
+        public static Product ToEntity(this CreateProductInputDto inputDto)
         {
-            var product = new Product
+            return new Product
             {
-                ProductName = command.ProductName,
-                Description = command.Description,
-                Quantity = command.Quantity,
-                RentalShopId = command.RentalShopId,
-                Price = command.Price,
-                Evaluate = command.Evaluate,
-                Images = command.Images
+                ProductName = inputDto.ProductName,
+                Description = inputDto.Description,
+                Quantity = inputDto.Quantity,
+                SubCategoryId = inputDto.SubCategoryId, 
+                RentalShopId = inputDto.RentalShopId,
+                RentalPrice = inputDto.RentalPrice,     
+                DepositPrice = inputDto.DepositPrice,   
+                RentalLimitDays = inputDto.RentalLimitDays,
+                Evaluate = inputDto.Evaluate,
+                //Images = inputDto.Images => To do
             };
-            return product;
         }
 
+        public static Product UpdateEntity(this UpdateProductInputDto inputDto, Product product)
+        {
+            product.ProductName = inputDto.ProductName;
+            product.Description = inputDto.Description;
+            product.Quantity = inputDto.Quantity;
+            product.RentalPrice = inputDto.RentalPrice;    
+            product.DepositPrice = inputDto.DepositPrice;   
+            product.RentalLimitDays = inputDto.RentalLimitDays; 
+            product.Evaluate = inputDto.Evaluate;
+            //product.Images = inputDto.Images; => To do
+
+            return product;
+        }
 
         public static ListProductOutputDto ToListProductOutput(this Product product)
         {
@@ -30,10 +45,13 @@ namespace BE.Application.Services.Products
                 ProductName = product.ProductName,
                 Description = product.Description,
                 Quantity = product.Quantity,
-                Price = product.Price,
+                SubCategoryId = product.SubCategoryId,  
+                RentalShopName = product.RentalShop?.ShopName ?? "N/A",
+                RentalPrice = product.RentalPrice,     
+                DepositPrice = product.DepositPrice,   
+                RentalLimitDays = product.RentalLimitDays, 
                 Evaluate = product.Evaluate,
-                Images = product.Images,
-                RentalShopName = product.RentalShop?.ShopName ?? "N/A"
+                //Images = product.Images => To do
             };
         }
     }
