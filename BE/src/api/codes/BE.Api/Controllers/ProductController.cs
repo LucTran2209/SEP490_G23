@@ -26,19 +26,19 @@ namespace BE.Api.Controllers
 
   
         [HttpGet("list")]
-        public async Task<IActionResult> GetListAsync()
+        public async Task<IActionResult> GetListAsync([FromQuery] GetListProductInputDto inputDto)
         {
-            var output = await productService.GetListProductAsync();
+            var output = await productService.GetListProductAsync(inputDto);
             return Ok(output);
         }
 
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] CreateProductInputDto inputDto)
-        //{
-        //    var output = await productService.UpdateAsync(inputDto, id);
-        //    return Ok(output);
-        //}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateProductInputDto inputDto)
+        {
+            var output = await productService.UpdateProductAsync(inputDto,id);
+            return Ok(output);
+        }
 
 
         [HttpDelete("{id}")]

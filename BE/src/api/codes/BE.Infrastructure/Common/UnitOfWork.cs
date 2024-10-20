@@ -37,6 +37,7 @@ namespace BE.Infrastructure.Common
         public IRentalShopRepository rentalShopRepository;
 
         public IRentalShopRepository RentalShopRepository => rentalShopRepository = new RentalShopRepository(context);
+
      
         public async Task BeginTransactionAsync()
         {

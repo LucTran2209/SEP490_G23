@@ -29,6 +29,8 @@ namespace BE.Persistence
         public DbSet<Product> Products => this.Set<Product>();
         public DbSet<RentalRequest> RentalRequests => this.Set<RentalRequest>();
         public DbSet<RentalRequestStatus> RentalRequestStatuses => this.Set<RentalRequestStatus>();
+        public DbSet<Category> Categories => this.Set<Category>();
+        public DbSet<SubCategory> SubCategories => this.Set<SubCategory>();
 
     }
 }

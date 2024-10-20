@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BE.Persistence.ConfigurationTables
 {
-    internal sealed class RentalShopConfiguration : IEntityTypeConfiguration<RentalShop>
+    public class RentalShopConfiguration : IEntityTypeConfiguration<RentalShop>
     {
         public void Configure(EntityTypeBuilder<RentalShop> builder)
         {
