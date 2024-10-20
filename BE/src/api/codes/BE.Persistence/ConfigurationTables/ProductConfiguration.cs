@@ -43,6 +43,11 @@ namespace BE.Persistence.ConfigurationTables
                    .HasForeignKey(p => p.SubCategoryId)
                    .OnDelete(DeleteBehavior.Cascade);  
 
+            builder.HasMany(p => p.ProductImages)
+                    .WithOne(pi => pi.Product)
+                    .HasForeignKey(pi => pi.ProductId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

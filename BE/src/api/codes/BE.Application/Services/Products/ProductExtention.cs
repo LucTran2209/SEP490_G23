@@ -19,7 +19,7 @@ namespace BE.Application.Services.Products
                 DepositPrice = inputDto.DepositPrice,   
                 RentalLimitDays = inputDto.RentalLimitDays,
                 Evaluate = inputDto.Evaluate,
-                Images = inputDto.Images
+                //Images = inputDto.Images => To do
             };
         }
 
@@ -28,12 +28,11 @@ namespace BE.Application.Services.Products
             product.ProductName = inputDto.ProductName;
             product.Description = inputDto.Description;
             product.Quantity = inputDto.Quantity;
-            //product.SubCategoryId = inputDto.SubCategoryId;  
             product.RentalPrice = inputDto.RentalPrice;    
             product.DepositPrice = inputDto.DepositPrice;   
             product.RentalLimitDays = inputDto.RentalLimitDays; 
             product.Evaluate = inputDto.Evaluate;
-            product.Images = inputDto.Images;
+            //product.Images = inputDto.Images; => To do
 
             return product;
         }
@@ -52,7 +51,7 @@ namespace BE.Application.Services.Products
                 DepositPrice = product.DepositPrice,   
                 RentalLimitDays = product.RentalLimitDays, 
                 Evaluate = product.Evaluate,
-                Images = product.Images
+                //Images = product.Images => To do
             };
         }
     }

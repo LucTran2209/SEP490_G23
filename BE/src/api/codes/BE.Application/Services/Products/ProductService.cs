@@ -91,11 +91,10 @@ namespace BE.Application.Services.Products
             product.Description = inputDto.Description;
             product.Quantity = inputDto.Quantity;
             product.Evaluate = inputDto.Evaluate;
-            product.Images = inputDto.Images;
+            //product.Images = inputDto.Images; =>To do
             product.RentalLimitDays = inputDto.RentalLimitDays;
             product.RentalPrice = inputDto.RentalPrice;
             product.DepositPrice = inputDto.DepositPrice;
-            //product.SubCategoryId = inputDto.SubCategoryId;
 
             await unitOfWork.ProductRepository.UpdateAsync(product);
             await unitOfWork.SaveChangesAsync();
