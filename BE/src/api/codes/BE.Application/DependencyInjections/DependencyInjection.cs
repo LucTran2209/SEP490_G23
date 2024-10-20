@@ -1,6 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Authentication;
-using BE.Application.Services.Mails;
+using BE.Application.Services.ExternalServices;
 using BE.Application.Services.Products;
 using BE.Application.Services.RentalShops;
 using BE.Application.Services.Users;
@@ -19,13 +19,15 @@ namespace BE.Application.DependencyInjections
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-          
+            services.AddTransient(typeof(IAzureService), typeof(AzureService));
+
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(IAuthenticationService), typeof(AuthenService));
             services.AddScoped(typeof(IProductService), typeof(ProductService));
             services.AddScoped(typeof(IRentalShopService), typeof(RentalShopService));
             services.AddScoped(typeof(IMailService), typeof(MailService));
+
             return services;
         }
     }

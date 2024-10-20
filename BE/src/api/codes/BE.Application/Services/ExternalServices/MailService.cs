@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 
-namespace BE.Application.Services.Mails
+namespace BE.Application.Services.ExternalServices
 {
     public class MailService : IMailService
     {
