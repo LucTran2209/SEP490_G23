@@ -14,6 +14,7 @@ namespace BE.Application.Services.Order.Validator
             RuleFor(o => o.Address)
                 .NotEmpty().WithMessage("Address is required");
 
+            // Kiểm tra ngày bắt đầu (StartDate) phải là ngày hiện tại hoặc sau đó
             RuleFor(o => o.StartDate)
                 .GreaterThanOrEqualTo(DateTime.Now).WithMessage("StartDate must be today or a future date");
 
@@ -38,6 +39,14 @@ namespace BE.Application.Services.Order.Validator
                 products.RuleFor(p => p.Quantity)
                     .GreaterThan(0).WithMessage("Quantity must be greater than 0");
             });
+
+            // Kiểm tra trường Note (nếu có)
+            RuleFor(o => o.Note)
+                .MaximumLength(500).WithMessage("Note cannot exceed 500 characters");
+
+            // Kiểm tra MessageStatus (nếu có)
+            RuleFor(o => o.MessageStatus)
+                .MaximumLength(500).WithMessage("MessageStatus cannot exceed 255 characters");
         }
     }
 }
