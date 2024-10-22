@@ -17,8 +17,8 @@ import { EffectsModule } from '@ngrx/effects';
     CommonModule,
     SharedModule,
     AdminRoutingModule,
-    StoreModule.forFeature(adminFeature),
-    EffectsModule.forRoot([AdminEffect]),
+    // StoreModule.forFeature(adminFeature),
+    // EffectsModule.forRoot([AdminEffect]),
 
   ]
 })

@@ -22,8 +22,12 @@
                 <p class="text-xl mb-4">{{ user.userName }}</p>
                 <p class="text-xl mb-4">{{ user.fullName }}</p>
                 <p class="text-xl mb-4">{{ user.email }}</p>
-                <p class="text-xl mb-4">{{ user.phoneNumber }}</p>
-                <p class="text-xl mb-4">{{ user.address }}</p>
+                <p class="text-xl mb-4">
+                  {{ user.phoneNumber || "chưa có thông tin" }}
+                </p>
+                <p class="text-xl mb-4">
+                  {{ user.address || "chưa có thông tin" }}
+                </p>
                 <p class="text-xl mb-4">{{ user.gender ? "Nam" : "Nữ" }}</p>
                 <p class="text-xl mb-4">
                   {{ user.dateOfBirth | date : "dd/MM/yyyy" }}
@@ -50,9 +54,15 @@
           </div>
           <div class="flex justify-end"></div>
           <app-form-user
+            [isEditMode]="true"
+            [userUpdate]="userInformation"
             [isVisible]="isVisible"
             [title]="title"
             (closeModal)="handleCloseModal()"
+            [alertType]="alertType"
+            [alertMessage]="alertMessage"
+            [showAlert]="showAlert"
+            (updateUser)="updateUser($event)"
           ></app-form-user>
         </div>
       </div>

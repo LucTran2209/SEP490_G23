@@ -7,7 +7,14 @@
   [nzWidth]="'1200px'"
 >
   <ng-container *nzModalContent>
-    <form nz-form>
+    <nz-alert
+      class="my-2"
+      *ngIf="showAlert"
+      [nzType]="alertType"
+      [nzMessage]="alertMessage"
+      nzShowIcon
+    ></nz-alert>
+    <form [formGroup]="productForm" nz-form (ngSubmit)="submitForm()">
       <div nz-row nzGutter="16" class="mt-10">
         <div nz-col nzSpan="18">
           <nz-form-item>
@@ -30,7 +37,7 @@
               nzGhost
               type="submit"
             >
-              Lưu Và Tạo Mới
+              Lưu Sản Phẩm
             </button>
             <button
               nz-button
@@ -49,7 +56,12 @@
           <p class="mb-2.5">Ảnh thiết bị</p>
           <nz-form-item>
             <nz-upload
-              nzAction="https://jsonplaceholder.typicode.com/posts"
+              [(nzFileList)]="imageList"
+              [nzLimit]="5"
+              [nzMultiple]="true"
+              nzListType="picture-card"
+              [nzBeforeUpload]="beforeUpload"
+              [nzShowUploadList]="true"
               nzListType="picture-card"
             >
               <div>
@@ -73,8 +85,8 @@
                   >Giá cho thuê</nz-form-label
                 >
                 <nz-form-control nzSpan="18">
-                  <input
-                    nz-input
+                  <nz-input-number
+                    class="w-full"
                     placeholder="Giá cho thuê"
                     id="rentalPrice"
                     formControlName="rentalPrice"
@@ -91,8 +103,8 @@
                   >Giá cọc</nz-form-label
                 >
                 <nz-form-control nzSpan="18">
-                  <input
-                    nz-input
+                  <nz-input-number
+                    class="w-full"
                     placeholder="Giá cọc"
                     id="depositPrice"
                     formControlName="depositPrice"
@@ -102,15 +114,15 @@
 
               <!-- Rent Limit Field -->
               <nz-form-item>
-                <nz-form-label nzFor="rentLimit" nzSpan="6"
+                <nz-form-label nzFor="rentalLimitDays" nzSpan="6"
                   >Giới hạn cho thuê</nz-form-label
                 >
                 <nz-form-control nzSpan="18">
-                  <input
-                    nz-input
+                  <nz-input-number
+                    class="w-full"
                     placeholder="Giới hạn cho thuê"
-                    id="rentLimit"
-                    formControlName="rentLimit"
+                    id="rentalLimitDays"
+                    formControlName="rentalLimitDays"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -130,41 +142,43 @@
                   >Số Lượng Thiết Bị</nz-form-label
                 >
                 <nz-form-control nzErrorTip="Vui Lòng chọn số lượng thiết bị!">
-                  <nz-select
-                    nzPlaceHolder="Số lượng"
+                  <nz-input-number
+                    class="w-full"
+                    placeholder="Số lượng thiết bị cho thuê"
                     id="quantity"
                     formControlName="quantity"
-                  >
-                    <nz-option nzValue="Loại 1" nzLabel="Loại 1"></nz-option>
-                    <nz-option nzValue="Loại 2" nzLabel="Loại 2"></nz-option>
-                  </nz-select>
+                  />
                 </nz-form-control>
               </nz-input-group>
             </nz-form-item>
-            <nz-form-item class="px-3 w-full">
+            <nz-form-item class="px-3 w-full" *ngIf="!isEditMode">
               <nz-input-group nzLayout="vertical">
-                <nz-form-label nzRequired nzFor="style"
+                <nz-form-label nzRequired nzFor="subCategoryId"
                   >Loại Thiết Bị</nz-form-label
                 >
                 <nz-form-control nzErrorTip="Vui Lòng chọn loại thiết bị!">
                   <nz-select
                     nzPlaceHolder="Loại Thiết Bị"
-                    id="style"
-                    formControlName="style"
+                    id="subCategoryId"
+                    formControlName="subCategoryId"
                   >
-                    <nz-option nzValue="1" nzLabel="1"></nz-option>
-                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                    <nz-option
+                      nzValue="bf354ba4-4b19-4d90-9f5a-90032254d1a5"
+                      nzLabel="Laptops"
+                    ></nz-option>
+                    <nz-option
+                      nzValue="40ef0621-7384-4467-a2d6-9a2d546a628a"
+                      nzLabel="Tables"
+                    ></nz-option>
+                    <nz-option
+                      nzValue="887f3350-c8a6-49a6-ad06-adad2fbbf6e0"
+                      nzLabel="Office Chairs"
+                    ></nz-option>
+                    <nz-option
+                      nzValue="8e3a34fd-8eb8-4244-9bc6-bd80b1104cb8"
+                      nzLabel="Mobile Phones"
+                    ></nz-option>
                   </nz-select>
-                </nz-form-control>
-              </nz-input-group>
-            </nz-form-item>
-            <nz-form-item class="px-3 w-full">
-              <nz-input-group nzLayout="vertical">
-                <nz-form-label nzFor="brand" nzRequired>
-                  Hãng Thiết Bị
-                </nz-form-label>
-                <nz-form-control nzErrorTip="Vui lòng nhập tên hãng thiết bị!">
-                  <input nz-input formControlName="brand" />
                 </nz-form-control>
               </nz-input-group>
             </nz-form-item>
@@ -177,6 +191,7 @@
             <textarea
               nz-input
               placeholder="Thông tin thiết bị cho thuê"
+              formControlName="description"
               [nzAutosize]="{ minRows: 6, maxRows: 12 }"
             ></textarea>
           </nz-form-item>

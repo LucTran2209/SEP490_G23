@@ -1,12 +1,12 @@
 <nz-card class="mt-4" style="width: 270px" [nzCover]="nzAvatar">
   <nz-card-meta
     nzTitle="{{ product.productName }}"
-    nzDescription="GIÁ THUÊ: {{ product.price | number }} VND"
+    nzDescription="GIÁ THUÊ: {{ product.rentalPrice | number }} VND"
   >
     <ng-template #nzAvatar>
       <img
-        class="w-96 h-36"
-        [src]="product.images"
+        class="w-96 h-48"
+        [src]="product.images[0]"
         alt="{{ product.productName }}"
       />
     </ng-template>

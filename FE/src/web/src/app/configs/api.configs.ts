@@ -113,7 +113,7 @@ export const ProductSlug = {
   AddProduct: {
     label: 'Add Product',
     title: 'Add Product | ERMS',
-    api: 'api/Post/addnewpost',
+    api: 'Product',
   },
   ListProduct: {
     label: 'List Product',
@@ -133,7 +133,7 @@ export const ProductSlug = {
   UpdateProduct: {
     label: 'Update Product',
     title: 'Update Product | ERMS',
-    api: 'Update Post',
+    api: 'Product/',
   },
   ActiveProduct: {
     label: 'Active Product',

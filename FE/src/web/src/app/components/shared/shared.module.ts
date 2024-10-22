@@ -36,6 +36,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 import { environment } from '../../../environments/environment.development';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
 import { AnonymousComponent } from '../anonymous/anonymous.component';
@@ -109,6 +110,7 @@ const ANTD_MODULES = [
   NzCarouselModule,
   NzCommentModule,
   NzProgressModule,
+  NzMessageModule,
 ];
 
 const SHARED_MODULES = [

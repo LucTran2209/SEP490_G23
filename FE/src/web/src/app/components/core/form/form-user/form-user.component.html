@@ -14,7 +14,7 @@
       (ngSubmit)="submitForm()"
       novalidate
     >
-      <nz-form-item>
+      <nz-form-item *ngIf="!isEditMode">
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="userName" nzRequired>
           Tên Người Dùng
         </nz-form-label>
@@ -112,21 +112,8 @@
           />
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction" nzRequired>
-          Giới Thiệu Bản Thân
-        </nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24">
-          <textarea
-            nz-input
-            formControlName="introduction"
-            placeholder="Thông tin cá nhân"
-            [nzAutosize]="{ minRows: 3, maxRows: 5 }"
-          ></textarea>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction" nzRequired>
+      <nz-form-item *ngIf="!isEditMode">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="introduction">
           Giới Thiệu Bản Thân
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
@@ -150,7 +137,7 @@
           <nz-alert
             class="mt-4"
             *ngIf="showAlert"
-            [nzType]="alertMessage.includes('invalid') ? 'error' : 'success'"
+            [nzType]="alertType"
             [nzMessage]="alertMessage"
             nzShowIcon
           >

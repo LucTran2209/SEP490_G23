@@ -12,6 +12,7 @@ import {
   UserInputDto,
   UserOutputDto,
   UserResultService,
+  UserUpdateInputDto,
 } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
@@ -23,29 +24,68 @@ import { UserProfileService } from '../../../../services/user-profile.service';
 })
 export class ProfileComponent implements OnInit {
   user!: UserOutputDto;
+  userInformation!: UserUpdateInputDto;
   username: string = '';
   isVisible: boolean = false;
   title: string = '';
+  showAlert: boolean = false;
+  alertType: 'success' | 'error' = 'success';
+  alertMessage: string = '';
   constructor(
     private userService: UserService,
     private userProfileService: UserProfileService
   ) {}
   ngOnInit() {
-    this.title = 'Chỉnh sửa thông tin của Nguyễn Văn A';
+    
+    this.title = 'Chỉnh sửa Hồ Sơ';
     this.loadUser();
   }
   showEditProfile() {
+    this.userInformation = {
+      id: this.user.id,
+      fullName: this.user.fullName,
+      email: this.user.email,
+      phoneNumber: this.user.phoneNumber,
+      address: this.user.address,
+      gender: this.user.gender,
+      dateOfBirth: this.user.dateOfBirth
+    }
+    console.log(this.userInformation);
     this.isVisible = true;
   }
   handleCloseModal() {
     this.isVisible = false;
   }
-  saveUser(user: UserInputDto) {
-    this.userService.updateProfile(user).subscribe(() => {});
+  updateUser(user: any) {
+    console.log(this.userInformation);
+    this.userService.updateProfile(user).subscribe({
+      next: (response) => {
+        this.alertMessage = 'Cập Nhật Hồ Sơ Thành Công!';
+          this.alertType = 'success';
+          this.showAlert = true;
+          setTimeout(() => {
+            this.handleCloseModal();
+            this.showAlert = false;
+          }, 5000);
+          this.loadUser();
+        
+      },
+      error: (error) => {
+        this.alertMessage = 'Cập Nhật Hồ Sơ Thất Bại!';
+          this.alertType = 'error';
+          this.showAlert = true;
+          setTimeout(() => {
+            this.handleCloseModal();
+            this.showAlert = false;
+          }, 5000);
+        console.error('Failed to create user');
+      }
+
+    });
   }
   loadUser() {
     const userCurrent = this.userProfileService.currentUser;
-    this.username = userCurrent?.username;
+    this.username = userCurrent?.UserName;
     this.userService
       .viewProfile(this.username)
       .subscribe((res: ProfileResultService) => {
