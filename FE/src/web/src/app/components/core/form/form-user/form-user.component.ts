@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserInputDto } from '../../../../interfaces/user.interface';
+import { UserInputDto, UserUpdateInputDto } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user.service';
 import { ageValidator } from '../../../../utils/form-validators';
 
@@ -26,29 +26,57 @@ export class FormUserComponent{
     isActive: true,
     refreshToken: '',
   };
-  showAlert: boolean = false;  // To control the visibility of the alert
-  alertMessage: string = '';    // To hold the alert message
+  @Input() userUpdate!: UserUpdateInputDto;
+  @Input() showAlert: boolean = false;
+  @Input() alertMessage: string = ''; 
+  @Input() alertType: 'success' | 'error' = 'success';
   @Input() isVisible: boolean = false;
+  @Input() isEditMode: boolean = false;
   @Input() title: string = '';
   @Output() saveUser = new EventEmitter<UserInputDto>();
+  @Output() updateUser = new EventEmitter<UserUpdateInputDto>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private userService: UserService) {
     this.userForm = new FormGroup({
-      userName: new FormControl(this.user.userName, [Validators.required]),
-      password: new FormControl('123456789'), 
       fullName: new FormControl(this.user.fullName, [Validators.required]),
       email: new FormControl(this.user.email, [Validators.required, Validators.email]),
       phoneNumber: new FormControl(this.user.phoneNumber, [Validators.required, Validators.pattern('^0[0-9]{9}$')]),
       address: new FormControl(this.user.address, [Validators.required]),
       gender: new FormControl(this.user.gender, [Validators.required]),
       dateOfBirth: new FormControl(this.user.dateOfBirth, [Validators.required, ageValidator()]),
-      introduction: new FormControl(this.user.introduction, []),
-      avatarPersonal: new FormControl(''),
-      isActive: new FormControl(true),
-      refreshToken: new FormControl('')
     });
+
+    if (!this.isEditMode) {
+      // Add these controls only in create mode
+      this.userForm.addControl('userName', new FormControl(this.user.userName, [Validators.required]));
+      this.userForm.addControl('password', new FormControl('123456789'));
+      this.userForm.addControl('introduction', new FormControl(this.user.introduction, []));
+      this.userForm.addControl('avatarPersonal', new FormControl(''));
+      this.userForm.addControl('isActive', new FormControl(true));
+      this.userForm.addControl('refreshToken', new FormControl(''));
+    }
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userUpdate'] && this.userUpdate) {
+      this.populateForm();
+    }
+  }
+
+  populateForm(): void {
+    this.userForm.patchValue({
+      fullName: this.userUpdate.fullName,
+      email: this.userUpdate.email,
+      phoneNumber: this.userUpdate.phoneNumber,
+      address: this.userUpdate.address,
+      gender: this.userUpdate.gender,
+      dateOfBirth: this.userUpdate.dateOfBirth,
+    });
+    if (this.isEditMode) {
+      this.userForm.removeControl('userName');
+    }
+  }
+
   handleOk(): void {
     this.isVisible = false;
     this.closeModal.emit();
@@ -76,30 +104,44 @@ export class FormUserComponent{
         this.userForm.patchValue({ dateOfBirth: isoString }, { emitEvent: false });
       }
     });
-    console.log(this.userForm.value);
+    const formValue = this.userForm.value;
+
     if (this.userForm.invalid) {
-      // Kiểm tra nếu form không hợp lệ
-      console.log('Form is invalid');
+      this.alertMessage = 'Thất Bại! Vui Lòng Điền Đúng Thông Tin';
+      this.showAlert = true;
+      this.alertType = 'error';
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 5000);
       return;
     }
-    // if (this.userForm.valid) {
-    //   this.saveUser.emit(this.user);
-    //   console.log('Form submitted successfully', this.user);
-    //   this.showAlert = true;  // Show the alert
-    //   this.alertMessage = 'Update Profile successfully!';
-    //   setTimeout(() => {
-    //     this.showAlert = false;
-    //   }, 2000);
-    // } else {
-    //   console.log('Form is invalid');
-    //   this.showAlert = true;
-    //   this.alertMessage = 'Form is invalid. Please fill out all required fields.';
-    //   setTimeout(() => {
-    //     this.showAlert = false;
-    //   }, 2000);
-    // }
-    this.saveUser.emit(this.userForm.value);
-    this.userForm.reset();
-    this.handleOk();
+  if (this.isEditMode) {
+    // update value
+    const updatedData: UserUpdateInputDto = {
+      id: this.userUpdate.id,
+      fullName: formValue.fullName,
+      email: formValue.email,
+      phoneNumber: formValue.phoneNumber,
+      address: formValue.address,
+      gender: formValue.gender,
+      dateOfBirth: formValue.dateOfBirth,
+    };
+    
+    this.updateUser.emit(updatedData);
+  } else {
+    // create value
+    const userData: UserInputDto = {
+      ...formValue,
+      userName: formValue.userName,
+      password: formValue.password,
+      introduction: formValue.introduction,
+      avatarPersonal: formValue.avatarPersonal,
+      isActive: formValue.isActive,
+      refreshToken: formValue.refreshToken,
+    };
+    
+    this.saveUser.emit(userData);
+  }
+    
   }
 }

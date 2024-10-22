@@ -43,6 +43,9 @@
           [user]="userInformation"
           (closeModal)="handleCloseModal()"
           (saveUser)="handleCreateUser($event)"
+          [alertType]="alertType"
+          [alertMessage]="alertMessage"
+          [showAlert]="showAlert"
         ></app-form-user>
         <nz-table
           #basicTable
@@ -60,17 +63,73 @@
               <th class="m-1 text-secondary text-uppercase">
                 <span class="name">No.</span>
               </th>
-              <th class="m-1 text-secondary text-uppercase">
-                <span class="name text-uppercase">Tên Người Dùng</span>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name text-uppercase">Họ Tên</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleName"
+                    [nzActive]="searchFullName.length > 0"
+                    [nzDropdownMenu]="searchName"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
               </th>
-              <th class="m-1 text-secondary text-uppercase">
-                <span class="name">Email</span>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name text-uppercase">Email</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleEmail"
+                    [nzActive]="searchEmail.length > 0"
+                    [nzDropdownMenu]="searchMail"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
               </th>
-              <th class="m-1 text-secondary text-uppercase">
-                <span class="name">Địa Chỉ</span>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name">Địa Chỉ</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleAddress"
+                    [nzActive]="searchAddress.length > 0"
+                    [nzDropdownMenu]="searchAddr"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
               </th>
-              <th class="m-1 text-secondary text-uppercase">
-                <span class="name">Số Điện Thoại</span>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name">Số Điện Thoại</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visiblePhoneNumber"
+                    [nzActive]="searchPhoneNumber.length > 0"
+                    [nzDropdownMenu]="searchPhone"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th
+                class="m-1 text-secondary text-uppercase"
+                [nzFilters]="filterGender"
+                [nzFilterFn]="true"
+                (nzFilterChange)="onFilterChange($event)"
+              >
+                <span class="name">Giới Tính</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name">Ngày Sinh</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleDateOfBirth"
+                    [nzActive]="searchDateOfBirth.length > 0"
+                    [nzDropdownMenu]="searchDOB"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
               </th>
               <th class="text-secondary text-uppercase">
                 <span class="name">Vai Trò</span>
@@ -79,7 +138,7 @@
                 <span class="name">Trạng Thái</span>
               </th>
               <th class="m-1 text-secondary text-uppercase">
-                <span class="name">Hoạt Động</span>
+                <span class="name">Cấm</span>
               </th>
             </tr>
           </thead>
@@ -98,7 +157,7 @@
                     alt="image-product"
                   />
                   <span class="name text-secondary p-3 mt-3">
-                    {{ user.userName }}
+                    {{ user.fullName }}
                   </span>
                 </div>
               </td>
@@ -115,6 +174,16 @@
               <td class="">
                 <span class="name text-secondary p-3 text-center">
                   {{ user.phoneNumber }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ user.gender ? "Nam" : "Nữ" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ user.dateOfBirth | date : "dd/MM/yyyy" }}
                 </span>
               </td>
               <td class="">
@@ -149,3 +218,98 @@
     </div>
   </div>
 </div>
+<nz-dropdown-menu #searchName="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton1">
+        <input
+          type="text"
+          nz-input
+          placeholder="Tìm họ tên người dùng"
+          [(ngModel)]="searchFullName"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconButton1>
+        <button nz-button nzType="primary" nzSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</nz-dropdown-menu>
+<nz-dropdown-menu #searchMail="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton2">
+        <input
+          type="email"
+          nz-input
+          placeholder="Tìm theo email"
+          [(ngModel)]="searchEmail"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconButton2>
+        <button nz-button nzType="primary" nzSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</nz-dropdown-menu>
+<nz-dropdown-menu #searchAddr="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton3">
+        <input
+          type="text"
+          nz-input
+          placeholder="Tìm theo địa chỉ"
+          [(ngModel)]="searchAddress"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconButton3>
+        <button nz-button nzType="primary" nzSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</nz-dropdown-menu>
+<nz-dropdown-menu #searchPhone="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton4">
+        <input
+          type="text"
+          nz-input
+          placeholder="Tìm theo sđt"
+          [(ngModel)]="searchPhoneNumber"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconButton4>
+        <button nz-button nzType="primary" nzSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</nz-dropdown-menu>
+<nz-dropdown-menu #searchDOB="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton5">
+        <input
+          type="text"
+          nz-input
+          placeholder="Tìm theo ngày sinh"
+          [(ngModel)]="searchDateOfBirth"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconButton5>
+        <button nz-button nzType="primary" nzSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</nz-dropdown-menu>

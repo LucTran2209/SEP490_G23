@@ -9,6 +9,7 @@ import { FeatureAppState } from '../../../../store/app.state';
 import * as AdminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 import { selectLoading, selectUsers } from '../../state/admin.selectors';
+import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-manage-user',
   templateUrl: './manage-user.component.html',
@@ -16,7 +17,6 @@ import { selectLoading, selectUsers } from '../../state/admin.selectors';
 })
 export class ManageUserComponent implements OnInit {
   userList: UserOutputDto[] = [];
-  res!: UserResultService;
   filteredUsers: UserOutputDto[] = [];
   searchText: string = '';
   userActive!: ActiveUserInputDto;
@@ -28,29 +28,53 @@ export class ManageUserComponent implements OnInit {
   pageSize = 10;      
   loading = false; 
   isActive: boolean = true;
+  isEditMode: boolean = false;
+  showAlert: boolean = false;
+  alertType: 'success' | 'error' = 'success';
+  alertMessage: string = '';
+  visibleName = false;
+  visibleEmail = false;
+  visiblePhoneNumber = false;
+  visibleAddress = false;
+  visibleGender = false;
+  visibleDateOfBirth = false;
+  selectedGender: string[] = [];
   userResult$!: Observable<UserOutputDto[]>;
   loading$!: Observable<boolean>;
+  searchFullName: string = '';
+  searchEmail: string = '';
+  searchPhoneNumber: string = '';
+  searchAddress: string = '';
+  searchGender: string = '';
+  searchDateOfBirth: string = '';
+  filterGender = [
+    { text: 'Nam', value: 'male' },
+    { text: 'Nữ', value: 'female' }
+  ];
+
   constructor(private modal: NzModalService, 
     private userService: UserService,
     private storageService: StorageService,
     private cdRef: ChangeDetectorRef,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private message: NzMessageService,
   ) 
   {
     this.userResult$ = this.store.select(selectUsers);
     this.loading$ = this.store.select(selectLoading);
   }
+  
   ngOnInit(): void{
     this.loadUsers(this.currentPage, this.pageSize);
     this.title = 'Điền Thông Tin Của Người Mới';
-    this.userResult$.subscribe(users => {
-      console.log('User List:', users);
-    });
+    // this.userResult$.subscribe(users => {
+    //   console.log('User List:', users);
+    // });
   }
   errorMessage: string = '';
-  loadUsers(pageIndex: number, pageSize: number){
+  loadUsers(pageIndex: number, pageSize: number, FullName?: string, Email?: string, PhoneNumber?: string, Address?: string, Gender?: string, DateOfBirth?: string){
     this.loading = true;
-    this.userService.listUser(pageIndex, pageSize).subscribe((res: UserResultService) =>{
+    this.userService.listUser(pageIndex, pageSize, FullName, Email, PhoneNumber, Address, Gender, DateOfBirth).subscribe((res: UserResultService) =>{
       this.userList = res.data.items;
       this.totalUsers = res.data.totalCount;
       this.loading = false;
@@ -59,13 +83,21 @@ export class ManageUserComponent implements OnInit {
     // this.store.dispatch(AdminActions.load_users({ pageIndex, pageSize }));
   }
   onSearch() {
-    this.userService.searchUser().subscribe((res: UserResultService) =>{
-      this.userList = res.data.items;
-      this.totalUsers = res.data.totalCount;
-      this.loading = false;
-    }); 
+    this.loadUsers(
+      this.currentPage,
+      this.pageSize,
+      this.searchFullName,
+      this.searchEmail,
+      this.searchPhoneNumber,
+      this.searchAddress,
+      this.searchGender,
+      this.searchDateOfBirth
+    );
   }
-  // Phương thức để xử lý khi trang thay đổi
+  onFilterChange(selected: string[]): void {
+    this.selectedGender = selected;
+    this.loadUsers(this.currentPage, this.pageSize, this.searchFullName, this.searchEmail, this.searchPhoneNumber, this.searchAddress, this.selectedGender.length > 0 ? this.selectedGender.join(',') : undefined);
+  }
   onPageChange(pageIndex: number): void {
     this.currentPage = pageIndex;
     this.loadUsers(this.currentPage, this.pageSize);
@@ -77,16 +109,23 @@ export class ManageUserComponent implements OnInit {
   handleCloseModal(){
     this.isVisible = false;
   }
-  // Hàm xử lý khi nhận sự kiện tạo người dùng mới từ component con
   handleCreateUser(userData: any): void {
 
     this.userService.addUser(userData).subscribe({
       next: (response) => {
-        console.log('User created successfully!');
-        this.loadUsers(this.currentPage, this.pageSize); // Load lại danh sách người dùng sau khi tạo thành công
+        this.message.success('Tạo Tài Khoản Mới Thành Công!');
+        this.handleCloseModal();
+        this.loadUsers(this.currentPage, this.pageSize);
         
       },
       error: (error) => {
+        this.alertMessage = 'Tạo Tài Khoản Mới Thất Bại!';
+          this.alertType = 'error';
+          this.showAlert = true;
+          setTimeout(() => {
+            this.handleCloseModal();
+            this.showAlert = false;
+          }, 5000);
         console.error('Failed to create user');
       }
     });
@@ -94,7 +133,7 @@ export class ManageUserComponent implements OnInit {
   showDeleteConfirm(id: string): void {
     this.modal.confirm({
       nzTitle: 'Ngừng Hoạt Động',
-      nzContent: '<b style="color: red;">Bạn chắc chắn muốn người dùng này ngừng hoạt động không?</b>',
+      nzContent: '<b style="color: red;">Bạn chắc chắn muốn cấm tài khoản này không?</b>',
       nzOkText: 'Có',
       nzOkType: 'primary',
       nzOkDanger: true,
@@ -104,6 +143,7 @@ export class ManageUserComponent implements OnInit {
         console.log(this.userActive);
         this.userService.activeUser(this.userActive).subscribe(
           (response) => {
+            this.message.success('Cấm tài khoản thành công!');
             console.log(response);
             this.loadUsers(this.currentPage, this.pageSize);
           },
@@ -113,7 +153,7 @@ export class ManageUserComponent implements OnInit {
         );
       },
       nzCancelText: 'Không',
-      nzOnCancel: () => console.log('Cancel')
+      nzOnCancel: () => this.message.error('Cấm tài khoản thất bại!')
     });
   }
 }

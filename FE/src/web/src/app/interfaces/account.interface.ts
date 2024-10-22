@@ -50,7 +50,7 @@ export interface IRegisterRequest
 export interface IPayLoad {
   _id: string;
   fullName: string;
-  username: string;
+  UserName: string;
   email: string;
   roleId?: number[];
   exp: number;

@@ -15,7 +15,7 @@ const routes: Routes = [
     path: 'account',
     component: LayoutProfileComponent,
     children: [
-      {path: 'proflie',
+      {path: 'profile',
       component: ProfileComponent}
     ]
   },

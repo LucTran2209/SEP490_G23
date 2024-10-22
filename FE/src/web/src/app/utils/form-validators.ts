@@ -29,10 +29,12 @@ export function matchValidator(
   
       const today = new Date();
       const birthDate = new Date(dateOfBirth);
-      const age = today.getFullYear() - birthDate.getFullYear();
+      let age = today.getFullYear() - birthDate.getFullYear();
       const monthDifference = today.getMonth() - birthDate.getMonth();
-      const isUnder18 = age < 18 || (age === 18 && monthDifference < 0);
-      
-      return isUnder18 ? { under18: true } : null;
+      const dayDifference = today.getDate() - birthDate.getDate();
+      if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+        age--;
+      }
+    return age < 18 ? { under18: true } : null;
     };
   }

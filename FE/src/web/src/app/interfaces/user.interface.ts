@@ -25,6 +25,16 @@ export interface UserOutputDto {
     isActive: boolean;
     refreshToken: string;
   }
+  export interface UserUpdateInputDto {
+    id: string,
+    fullName: string,
+    email: string,
+    phoneNumber: string,
+    address: string,
+    gender: boolean,
+    dateOfBirth: string
+
+  }
   export interface ActiveUserInputDto{
     id: string;
     isActive: boolean;

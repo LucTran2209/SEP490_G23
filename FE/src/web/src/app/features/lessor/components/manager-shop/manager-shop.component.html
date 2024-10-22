@@ -87,13 +87,29 @@
       alt=""
     />
   </div>
-  <div class="flex justify-end">
+  <div class="flex justify-between">
+    <div class="mt-6">
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" class="w-96">
+        <input
+          type="text"
+          nz-input
+          placeholder="Tìm kiếm theo tên sản phẩm"
+          [(ngModel)]="searchText"
+          (keydown.enter)="onSearch()"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="onSearch()">
+          <span nz-icon nzType="search"></span>
+        </button>
+      </ng-template>
+    </div>
     <button
       class="mt-6"
       nz-button
       nzType="primary"
       nzGhost
-      (click)="showCreateProduct()"
+      (click)="showProductModal()"
     >
       Tạo Thiết Bị Cho Thuê Mới
     </button>
@@ -106,12 +122,33 @@
       [nzMd]="8"
       [nzLg]="6"
     >
-      <app-product-card [product]="product"> </app-product-card>
+      <app-product-card
+        [product]="product"
+        (editProduct)="showProductModal(product.id)"
+      >
+      </app-product-card>
     </nz-col>
   </nz-row>
+  <div class="flex justify-center mt-2">
+    <nz-pagination
+      [nzPageSize]="pageSize"
+      [nzTotal]="totalProducts"
+      [(nzPageIndex)]="currentPage"
+      (nzPageIndexChange)="handlePageChange($event)"
+      class="mt-6"
+    ></nz-pagination>
+  </div>
 </div>
 
 <app-form-product
+  [isEditMode]="isEditMode"
+  [title]="title"
   [isVisible]="isVisible"
+  [productUpdate]="productInformation"
+  [alertMessage]="alertMessage"
+  [showAlert]="showAlert"
   (closeModal)="handleCloseModal()"
+  (saveProduct)="handleCreateProduct($event)"
+  (updateProduct)="handleUpdateProduct($event)"
+  [alertType]="alertType"
 ></app-form-product>
