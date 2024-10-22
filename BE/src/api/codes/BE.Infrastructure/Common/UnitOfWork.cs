@@ -41,6 +41,9 @@ namespace BE.Infrastructure.Common
         public IOrderRepository orderRepository;
         public IOrderRepository OrderRepository => orderRepository = new OrderRepository(context);
 
+        public IOrderDeatilRepository orderDeatilRepository;
+        public IOrderDeatilRepository OrderDeatilRepository => orderDeatilRepository = new OrderDetailRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
