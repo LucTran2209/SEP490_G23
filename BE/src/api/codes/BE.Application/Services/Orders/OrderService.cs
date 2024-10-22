@@ -50,7 +50,7 @@ namespace BE.Application.Services.Order
                         if (RentailShopIdCheck != Product.RentalShopId)
                         {
                             //convert orderdetail
-                            var ord = OrderExtention.CreateOrderDetail(item.ProductId, item);
+                            var ord = OrderExtention.CreateOrderDetail(order.Id, item);
 
                             // thực hiện add vào bảng orderdetail
                             await unitOfWork.OrderDeatilRepository.AddAsync(ord);

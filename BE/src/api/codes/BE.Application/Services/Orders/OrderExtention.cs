@@ -16,7 +16,8 @@ public static class OrderExtention
     public static OrderDetail CreateOrderDetail(Guid Id, DeatilProduct dp)
     {
         var od = new OrderDetail();
-        od.Id = Id;
+        od.Id = Guid.NewGuid();
+        od.OrderId = Id;
         od.ProductId = dp.ProductId;
         od.Quantity = dp.Quantity;
         return od;
