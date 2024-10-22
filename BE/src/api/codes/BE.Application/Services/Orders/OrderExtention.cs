@@ -13,6 +13,23 @@ public static class OrderExtention
         order.Note = inputDto.Note;
         return order;
     }
-
+    public static OrderDetail CreateOrderDetail(Guid Id, DeatilProduct dp)
+    {
+        var od = new OrderDetail();
+        od.Id = Id;
+        od.ProductId = dp.ProductId;
+        od.Quantity = dp.Quantity;
+        return od;
+    }
+    public static OrderStatus CreateOrderStatus(CreateOrderInputDto inputDto, Guid Id)
+    {
+        var os = new OrderStatus();
+        os.Id = Guid.NewGuid();
+        os.OrderId = Id;
+        os.Message = inputDto.MessageStatus;
+        os.Status = inputDto.Status;
+        os.FileAttach = inputDto.FileAttach;
+        return os;
+    }
 }
 

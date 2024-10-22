@@ -35,6 +35,9 @@ namespace BE.Application.Services.Order
                 {
                     //add bang order
                     await unitOfWork.OrderRepository.AddAsync(order);
+                    var os = OrderExtention.CreateOrderStatus(inputDto, order.Id);
+                    //add bang ordersattus
+                    await unitOfWork.OrderStatusRepository.AddAsync(os);
                     //tạo biến để kiểm tra xem các sản phẩm có cùng 1 shop không
                     Guid RentailShopIdCheck = new Guid();
 
@@ -46,11 +49,10 @@ namespace BE.Application.Services.Order
                         //kiểm tra sản phẩm có cùng 1 shop không
                         if (RentailShopIdCheck != Product.RentalShopId)
                         {
+                            //convert orderdetail
+                            var ord = OrderExtention.CreateOrderDetail(item.ProductId, item);
+
                             // thực hiện add vào bảng orderdetail
-                            var ord = new OrderDetail();
-                            ord.ProductId = item.ProductId;
-                            ord.OrderId = order.Id;
-                            ord.Quantity = item.Quantity;
                             await unitOfWork.OrderDeatilRepository.AddAsync(ord);
 
                             //gán lại giá trị của shopid

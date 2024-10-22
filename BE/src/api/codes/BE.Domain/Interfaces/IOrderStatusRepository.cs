@@ -3,8 +3,8 @@ using BE.Domain.Entities;
 
 namespace BE.Domain.Interfaces
 {
-    public interface IOrderRepository : IBaseRepository<Order>
+    public interface IOrderStatusRepository : IBaseRepository<OrderStatus>
     {
-        IQueryable<Order> GetAll();
+
     }
 }
