@@ -1,5 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Order.OrderServiceInputDto;
+using BE.Application.Services.Orders.OrderServiceInputDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Api.Controllers
@@ -21,6 +22,12 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> InsertAsync([FromBody] CreateOrderInputDto inputDto)
         {
             var output = await orderService.CreateAsync(inputDto);
+            return Created(output.StatusCode, output);
+        }
+        [HttpPost("orderstatus")]
+        public async Task<IActionResult> InsertOrderStatusAsync([FromForm] CreateOrderStatusInputDto inputDto)
+        {
+            var output = await orderService.CreateOrderStatusAsync(inputDto);
             return Created(output.StatusCode, output);
         }
     }

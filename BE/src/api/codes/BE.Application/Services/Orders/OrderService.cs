@@ -2,6 +2,7 @@
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.Services.Order.OrderServiceInputDto;
+using BE.Application.Services.Orders.OrderServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using BE.Domain.Entities;
 using BE.Domain.Interfaces;
@@ -13,10 +14,17 @@ namespace BE.Application.Services.Order
     public class OrderService : BaseService, IOrderService
     {
         private readonly IValidator<CreateOrderInputDto> createOrderValidator;
+        //private readonly IValidator<CreateOrderStatusValidattor> createOrderStatusValidattor;
+        private readonly IAzureService _azureService;
 
-        public OrderService(IUnitOfWork unitOfWork, IUser user, IValidator<CreateOrderInputDto> createOrderValidator) : base(unitOfWork, user)
+        public OrderService(IUnitOfWork unitOfWork, IUser user,
+            IValidator<CreateOrderInputDto> createOrderValidator,
+            //IValidator<CreateOrderStatusValidattor> createOrderStatusValidattor,
+            IAzureService azureService) : base(unitOfWork, user)
         {
             this.createOrderValidator = createOrderValidator;
+            //this.createOrderStatusValidattor = createOrderStatusValidattor;
+            _azureService = azureService;
         }
 
         public async Task<ResultService> CreateAsync(CreateOrderInputDto inputDto)
@@ -31,13 +39,11 @@ namespace BE.Application.Services.Order
                 var order = inputDto.ToEntity();
                 order.Id = Guid.NewGuid();
 
-                if (order.OrderDetails != null)
+                if (inputDto.DetailProducts.Count > 0)
                 {
                     //add bang order
                     await unitOfWork.OrderRepository.AddAsync(order);
-                    var os = OrderExtention.CreateOrderStatus(inputDto, order.Id);
-                    //add bang ordersattus
-                    await unitOfWork.OrderStatusRepository.AddAsync(os);
+
                     //tạo biến để kiểm tra xem các sản phẩm có cùng 1 shop không
                     Guid RentailShopIdCheck = new Guid();
 
@@ -76,12 +82,15 @@ namespace BE.Application.Services.Order
                         Message = "created successfully."
                     };
                 }
-                //trả về fail khi chưa có sản phẩm khi add
-                return new ResultService
+                else
                 {
-                    StatusCode = HttpStatusCode.BadRequest.ToString(),
-                    Message = "created fails. No products yet"
-                };
+                    //trả về fail khi chưa có sản phẩm khi add
+                    return new ResultService
+                    {
+                        StatusCode = HttpStatusCode.BadRequest.ToString(),
+                        Message = "created fails. No products yet"
+                    };
+                }
             }
             // trả về fails khi không tồn tại user
             else
@@ -94,5 +103,20 @@ namespace BE.Application.Services.Order
             }
 
         }
+
+        public async Task<ResultService> CreateOrderStatusAsync(CreateOrderStatusInputDto inputDto)
+        {
+
+            var file = await _azureService.UpLoadFileAsync(inputDto.FileAttach);
+            var ords = OrderExtention.CreateOrderStatus(inputDto, file);
+            await unitOfWork.OrderStatusRepository.AddAsync(ords);
+            await unitOfWork.SaveChangesAsync();
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.Created.ToString(),
+                Message = "created successfully."
+            };
+        }
     }
+
 }
