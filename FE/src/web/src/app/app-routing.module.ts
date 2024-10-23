@@ -5,15 +5,17 @@ import { LayoutDashboardComponent } from './components/core/layout-dashboard/lay
 import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
 import { authGuard } from './guards/auth.guard';
 import { USER_ROLE } from './utils/constant';
+import { ErrorComponent } from './features/error/error.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/common/home' },
-  { path: 'error', component: AnonymousComponent },
+  { path: 'base', component: AnonymousComponent },
+  { path: 'error', component: ErrorComponent },
   {
     path: 'admin',
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     component: LayoutDashboardComponent,
-    data: { expectedRole: USER_ROLE.ADMIN },
+    data: { expectedRole: [USER_ROLE.ADMIN] },
     loadChildren: () =>
       import('./features/admin/admin.module').then((m) => m.AdminModule),
   },
@@ -33,6 +35,7 @@ const routes: Routes = [
   {
     path: 'portal',
     canActivate: [authGuard],
+    data: { expectedRole: [USER_ROLE.LESSOR] },
     loadChildren: () =>
       import('./features/register-lessor/register-lessor.module').then(
         (m) => m.RegisterLessorModule
@@ -42,7 +45,7 @@ const routes: Routes = [
     path: 'lessor',
     // canActivate: [authGuard],
     component: LayoutDashboardComponent,
-    data: { expectedRole: USER_ROLE.LESSOR },
+    data: { expectedRole: [USER_ROLE.LESSOR] },
     loadChildren: () =>
       import('./features/lessor/lessor.module').then((m) => m.LessorModule),
   },

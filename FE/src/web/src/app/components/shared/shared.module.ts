@@ -70,8 +70,12 @@ import { FormRentalRegistrationComponent } from '../core/form/form-rental-regist
 import { LayoutProfileComponent } from '../core/layout-profile/layout-profile.component';
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
 import { FormProductComponent } from '../core/form/form-product/form-product.component';
-
+import { MatButtonModule } from '@angular/material/button';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { SidebarLayoutComponent } from '../layout/sidebar-layout/sidebar-layout.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { InputComponent } from '../core/input/input.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -113,7 +117,10 @@ const ANTD_MODULES = [
   NzMessageModule,
 ];
 
+const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  InputComponent,
+  SidebarLayoutComponent,
   AnonymousComponent,
   BreadcrumbComponent,
   FormUserComponent,
@@ -152,12 +159,14 @@ const SHARED_MODULES = [
     ReactiveFormsModule,
     RouterModule,
     ...ANTD_MODULES,
+    ...MATERIAL_MODULES,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ...ANTD_MODULES,
+    ...MATERIAL_MODULES,
     ...SHARED_MODULES,
   ],
   providers: [

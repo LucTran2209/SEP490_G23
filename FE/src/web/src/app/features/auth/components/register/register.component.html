@@ -5,12 +5,10 @@
     <a class="hover:text-blue-600" [routerLink]="['/auth/login']">đăng nhập</a>
   </p>
 </div>
-<ng-container
-  *ngIf="flag_process === 'OK_TAB1'; then forminfocommon; else forminfoauth"
-></ng-container>
+<ng-container *ngTemplateOutlet="forminfocommon"></ng-container>
 
 <ng-template #forminfocommon>
-  <form nz-form [formGroup]="forminfocommongroup" (ngSubmit)="submitTab1()">
+  <form nz-form [formGroup]="forminfocommongroup" (ngSubmit)="submitTabFinall()">
     <nz-form-item>
       <nz-form-label
         [nzSm]="24"
@@ -18,7 +16,7 @@
         nzRequired
         nzFor="firstName"
         class="text-start"
-        >Tên đầu tiên</nz-form-label
+        >Tên</nz-form-label
       >
       <nz-form-control
         [nzSm]="24"
@@ -28,7 +26,7 @@
         <nz-input-group>
           <input
             type="text"
-            placeholder="Nguyen Van"
+            placeholder="A"
             formControlName="firstName"
             nz-input
           />
@@ -42,7 +40,7 @@
         nzRequired
         nzFor="lastName"
         class="text-start"
-        >Tên cuối</nz-form-label
+        >Họ</nz-form-label
       >
       <nz-form-control
         [nzSm]="24"
@@ -52,25 +50,13 @@
         <nz-input-group>
           <input
             type="text"
-            placeholder="A"
+            placeholder="Nguyen Van"
             formControlName="lastName"
             nz-input
           />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
-    <div>
-      <button
-        class="py-2 px-4 flex items-center gap-3 border-1 bg-blue-600 text-white rounded-lg transition ease-in-out delay-0 hover:translate-x-4 hover:shadow-lg cursor-pointer"
-      >
-        Tiếp theo
-        <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
-      </button>
-    </div>
-  </form>
-</ng-template>
-<ng-template #forminfoauth>
-  <form nz-form [formGroup]="forminfoauthgroup" (ngSubmit)="submitTabFinall()">
     <nz-form-item>
       <nz-form-label
         [nzSm]="24"
@@ -138,20 +124,12 @@
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
-    <div class="mb-3">
-      <button
-        type="button"
-        (click)="toggleTabRegiser('OK_TAB1')"
-        class="py-2 px-4 flex items-center gap-3 border-1 bg-blue-600 text-white rounded-lg transition ease-in-out delay-150 hover:translate-x-4 cursor-pointer"
-      >
-        <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
-        Trở lại
-      </button>
-    </div>
-    <div>
-      <button nz-button class="w-full" [nzType]="'primary'">
+    <nz-form-item>
+      <button nz-button type="submit" class="w-full" [nzType]="'primary'">
         Tạo tài khoản
       </button>
-    </div>
+    </nz-form-item>
+    <div></div>
   </form>
 </ng-template>
+

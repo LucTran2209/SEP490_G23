@@ -43,7 +43,7 @@ export const login_success = createAction(
 );
 export const login_failure = createAction(
   LOGIN_FAILURE,
-  props<{ error: string }>()
+  props<{ error: string, statusCode: number }>()
 );
 
 export const login_external = createAction(
@@ -79,7 +79,7 @@ export const resetPassword = createAction(
 export const resetPassword_success = createAction(RESET_PASSWORD_SUCCESS);
 export const resetPassword_failure = createAction(
   RESET_PASSWORD_FAILURE,
-  props<{ error: string }>()
+  props<{ error: string , statusCode: number}>()
 );
 
 export const checkOtpCode = createAction(

@@ -32,7 +32,7 @@
     </ul> -->
     <ul nz-menu nzTheme="light" nzMode="inline">
       <!-- Admin Role -->
-      <ng-container *ngIf="userRole === 1">
+      <ng-container *ngIf="userRole === USERROLE.ADMIN">
         <li nz-menu-item>
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thống Kê</span>
@@ -48,7 +48,7 @@
       </ng-container>
 
       <!-- Lessor Role -->
-      <ng-container *ngIf="userRole === 2">
+      <ng-container *ngIf="userRole === USERROLE.LESSOR">
         <li nz-menu-item>
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thông Kê</span>

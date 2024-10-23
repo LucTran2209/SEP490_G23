@@ -31,21 +31,16 @@ import {
 import { AppHttpClientService } from './app-http-client.service';
 import { StorageService } from './storage.service';
 import { UserProfileService } from './user-profile.service';
+import { selectIsAuthenticated } from '../features/auth/state/auth.feature';
+import { MessageResponseService } from './message-response.service';
+import { ErrorStatusCode } from '../configs/status-code.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  //test
-  private BASE_URL = 'https://dummyjson.com/auth';
-  //test
-
-  private isLoggedSubject = new BehaviorSubject<boolean>(
-    this.checkInitialLoginStatus()
-  );
   public routerLinkRedirectURLSubject = new BehaviorSubject<string>('');
 
-  isLoggedIn$: Observable<boolean> = this.isLoggedSubject.asObservable();
   private routerLinkRedirectURL$: Observable<string> =
     this.routerLinkRedirectURLSubject.asObservable();
 
@@ -55,15 +50,16 @@ export class AuthService {
     private router: Router,
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private errorPage: MessageResponseService
   ) {}
-
-  private checkInitialLoginStatus(): boolean {
-    return !!getCookie(STRING.ACCESS_TOKEN);
-  }
 
   get token() {
     return getCookie(STRING.ACCESS_TOKEN);
+  }
+
+  get isAuthenticated$() {
+    return this.store.select(selectIsAuthenticated);
   }
 
   checkUserLogin$(
@@ -71,22 +67,26 @@ export class AuthService {
     url: any
   ): Observable<boolean> {
     const data = route.data as RouteData;
-    const userRoleId = this.userProfileService.roleCurrentUser;
-    // const user = { role: 'admin' }; //fixed: cứng admin test
-    return this.isLoggedIn$.pipe(
+    const roleCheck = this.userProfileService.roleCurrentUser;
+    console.log('object', roleCheck);
+   debugger
+   const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
+  
+   const hasExpectedRole = expectedRole.some((r) => {
+     return roleCheck?.includes(r);
+   });
+   console.log(hasExpectedRole, "hasExpectedRole");
+    return this.isAuthenticated$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          if (
-            data.expectedRole &&
-            userRoleId &&
-            data.expectedRole.some((r) => userRoleId.includes(r))
-          ) {
-            this.router.navigate(['/auth/login']);
+          if (!hasExpectedRole) {
+            this.errorPage.setErrorCode(ErrorStatusCode.FORBIDDEN);
+            this.router.navigate(['error']);
             return false;
           }
           return true;
         } else {
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['auth/login']);
           return false;
         }
       })
@@ -143,15 +143,15 @@ export class AuthService {
   startSession(accessToken: string, refreshToken: string): void {
     const userPayLoad = this.decodedTokenToGiveInfo(accessToken);
 
-    const roleId =
-      Array.isArray(userPayLoad.roleId) && userPayLoad.roleId.length > 0
-        ? userPayLoad.roleId[0]
-        : userPayLoad.roleId;
+    // const roleId =
+    //   Array.isArray(userPayLoad.roleId) && userPayLoad.roleId.length > 0
+    //     ? userPayLoad.roleId[0]
+    //     : userPayLoad.roleId;
 
-    const redirectUrl =
-      roleId !== undefined
-        ? MappingLinkAfterLoginByRoles[roleId as USER_ROLE] ?? '/common/home'
-        : '/common/home';
+    // const redirectUrl =
+    //   roleId !== undefined
+    //     ? MappingLinkAfterLoginByRoles[roleId as USER_ROLE] ?? '/common/home'
+    //     : '/common/home';
 
     replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
@@ -159,9 +159,7 @@ export class AuthService {
       LocalStorageKey.currentUser,
       JSON.stringify(userPayLoad)
     );
-
-    this.isLoggedSubject.next(true);
-    this.routerLinkRedirectURLSubject.next(redirectUrl);
+    // this.routerLinkRedirectURLSubject.next(redirectUrl);
 
     this.redirectToPageAfter();
   }
@@ -213,7 +211,7 @@ export class AuthService {
 
   resetPassword(data: IResetPassword): Observable<BaseResponseApi<any>> {
     return this.httpClient.post<BaseResponseApi<any>>(
-      AuthSlug.ChangePassword.api,
+      AuthSlug.ResetPassWord.api,
       data
     );
   }

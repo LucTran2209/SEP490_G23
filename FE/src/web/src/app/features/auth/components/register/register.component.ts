@@ -3,10 +3,9 @@ import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { IRegisterRequest } from '../../../../interfaces/account.interface';
 import { StorageService } from '../../../../services/storage.service';
+import { FeatureAppState } from '../../../../store/app.state';
 import { FormatDate } from '../../../../utils/constant';
 import * as AuthActions from '../../state/auth.actions';
-import { FeatureAppState } from '../../../../store/app.state';
-type Flag_ProcessType = 'OK_TAB1' | 'OK_TAB2';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +13,6 @@ type Flag_ProcessType = 'OK_TAB1' | 'OK_TAB2';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent implements OnInit {
-  flag_process: Flag_ProcessType = 'OK_TAB1';
   selectAddress = [];
   dateFormat = FormatDate.DDMMYYYY;
 
@@ -27,8 +25,6 @@ export class RegisterComponent implements OnInit {
       '',
       [Validators.required, Validators.min(1), Validators.maxLength(100)],
     ],
-  });
-  forminfoauthgroup: FormGroup = this.fb.group({
     username: [null, [Validators.required, Validators.maxLength(100)]],
     password: [null, [Validators.required]],
     email: [null, [Validators.required, Validators.email]],
@@ -56,28 +52,15 @@ export class RegisterComponent implements OnInit {
     this.forminfocommongroup.patchValue({ address });
   }
 
-  toggleTabRegiser(tabHandle: Flag_ProcessType) {
-    this.flag_process = tabHandle;
-  }
-
-  submitTab1(): void {
-    if (this.forminfocommongroup.valid) {
-      this.toggleTabRegiser('OK_TAB2');
-    } else {
-      this.markControlsAsDirty(this.forminfocommongroup);
-    }
-  }
-
   submitTabFinall(): void {
-    if (this.forminfoauthgroup.valid) {
+    if (this.forminfocommongroup.valid) {
       let requestRegister: IRegisterRequest = {
         ...this.forminfocommongroup.value,
-        ...this.forminfoauthgroup.value,
       };
       this.store.dispatch(AuthActions.register({ data: requestRegister }));
       console.log(requestRegister);
     } else {
-      this.markControlsAsDirty(this.forminfoauthgroup);
+      this.markControlsAsDirty(this.forminfocommongroup);
     }
   }
 }
