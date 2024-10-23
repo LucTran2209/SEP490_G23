@@ -44,9 +44,6 @@ namespace BE.Application.Services.Order.Validator
             RuleFor(o => o.Note)
                 .MaximumLength(500).WithMessage("Note cannot exceed 500 characters");
 
-            // Kiểm tra MessageStatus (nếu có)
-            RuleFor(o => o.MessageStatus)
-                .MaximumLength(500).WithMessage("MessageStatus cannot exceed 255 characters");
         }
     }
 }
