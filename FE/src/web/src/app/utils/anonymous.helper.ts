@@ -77,3 +77,5 @@ export const convertCurrency = (
   const convert = `${amount}`.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   return `${convert} ${noUnit ? '' : unit ? unit : 'VND'}`;
 };
+
+

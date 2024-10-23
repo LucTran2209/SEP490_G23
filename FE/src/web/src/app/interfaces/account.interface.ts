@@ -49,9 +49,9 @@ export interface IRegisterRequest
 
 export interface IPayLoad {
   _id: string;
-  fullName: string;
+  FullName: string;
   UserName: string;
-  email: string;
-  roleId?: number[];
+  Email: string;
+  Role?: string | string[];
   exp: number;
 }

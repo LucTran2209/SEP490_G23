@@ -84,10 +84,10 @@ export class httpErrorInterceptor implements HttpInterceptor {
     error: HttpErrorResponse
   ) {
     const {} = error;
-    this.message.create(
-      'error',
-      'Đã xảy ra lỗi phần máy chủ. Vui lòng thử lại sau.'
-    );
+    // this.message.create(
+    //   'error',
+    //   'Đã xảy ra lỗi phần máy chủ. Vui lòng thử lại sau.'
+    // );
 
     console.warn(error);
 

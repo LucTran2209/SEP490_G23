@@ -1,2 +1,27 @@
-<p>Người dùng chưa login</p>
-<a nz-button routerLink="/auth/login">Đăng nhập ngay</a>
+<app-sidebar-layout>
+  <div class="flex flex-col gap-y-4">
+    <h1 class="text-9xl">line heading 9xl</h1>
+    <h1 class="text-8xl">line heading 8xl</h1>
+    <h1 class="text-7xl">line heading 7xl</h1>
+    <h1 class="text-6xl">line heading 6xl</h1>
+    <h1 class="text-5xl">line heading 5xl</h1>
+    <h1 class="text-4xl">line heading 4xl</h1>
+    <h1 class="text-3xl">line heading 3xl</h1>
+    <h1 class="text-2xl">line heading 2xl</h1>
+    <h1 class="text-1xl">line heading 1xl</h1>
+  </div>
+
+  <div class="py-5 flex gap-x-5">
+    <button mat-raised-button>raised-button</button>
+    <button mat-raised-button color="primary">raised-button</button>
+    <button mat-raised-button color="accent">raised-button</button>
+    <button mat-raised-button color="warn">raised-button</button>
+    <button mat-raised-button disabled>raised-button disabled</button>
+  </div>
+
+  <div class="toast py-5">
+    <button mat-raised-button (click)="showSuccess()">Sucess</button>
+    <button mat-raised-button (click)="showError()">Error</button>
+    <button mat-raised-button (click)="showInfo()">Info</button>
+  </div>
+</app-sidebar-layout>

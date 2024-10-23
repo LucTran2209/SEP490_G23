@@ -30,7 +30,7 @@ export class UserProfileService {
     }
   }
 
-  get roleCurrentUser(): number[] | undefined {
-    return this.currentUser.roleId;
+  get roleCurrentUser(): string | string[] | undefined {
+    return this.currentUser.Role;
   }
 }
