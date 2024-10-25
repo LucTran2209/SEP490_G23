@@ -7,7 +7,6 @@ using BE.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
-using System.Security.Claims;
 
 namespace BE.Infrastructure.Common
 {
@@ -39,7 +38,15 @@ namespace BE.Infrastructure.Common
 
         public IRentalShopRepository RentalShopRepository => rentalShopRepository = new RentalShopRepository(context);
 
-     
+        public IOrderRepository orderRepository;
+        public IOrderRepository OrderRepository => orderRepository = new OrderRepository(context);
+
+        public IOrderDeatilRepository orderDeatilRepository;
+        public IOrderDeatilRepository OrderDeatilRepository => orderDeatilRepository = new OrderDetailRepository(context);
+
+        public IOrderStatusRepository orderStatusRepository;
+        public IOrderStatusRepository OrderStatusRepository => orderStatusRepository = new OrderStatusRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)

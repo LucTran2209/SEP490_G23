@@ -27,8 +27,9 @@ namespace BE.Persistence
 
         public DbSet<RentalShop> RentalShops => this.Set<RentalShop>();
         public DbSet<Product> Products => this.Set<Product>();
-        public DbSet<RentalRequest> RentalRequests => this.Set<RentalRequest>();
-        public DbSet<RentalRequestStatus> RentalRequestStatuses => this.Set<RentalRequestStatus>();
+        public DbSet<Order> Orders => this.Set<Order>();
+        public DbSet<OrderDetail> OrderDetails => this.Set<OrderDetail>();
+        public DbSet<OrderStatus> OrderStatuses => this.Set<OrderStatus>();
         public DbSet<Category> Categories => this.Set<Category>();
         public DbSet<SubCategory> SubCategories => this.Set<SubCategory>();
 

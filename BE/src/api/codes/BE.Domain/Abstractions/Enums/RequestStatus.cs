@@ -4,5 +4,6 @@
     {
         Approved,
         Rejected,
+        Order,
     }
 }

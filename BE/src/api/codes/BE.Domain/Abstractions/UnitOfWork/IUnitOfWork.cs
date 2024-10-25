@@ -3,11 +3,14 @@
 namespace BE.Domain.Abstractions.UnitOfWork
 {
     public interface IUnitOfWork
-    {     
+    {
         public IUserRepository UserRepository { get; }
 
         public IProductRepository ProductRepository { get; }
         public IRentalShopRepository RentalShopRepository { get; }
+        public IOrderRepository OrderRepository { get; }
+        public IOrderDeatilRepository OrderDeatilRepository { get; }
+        public IOrderStatusRepository OrderStatusRepository { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
