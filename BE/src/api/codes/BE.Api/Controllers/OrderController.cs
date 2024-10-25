@@ -29,5 +29,11 @@ namespace BE.Api.Controllers
             var output = await orderService.CreateOrderStatusAsync(inputDto);
             return Created(output.StatusCode, output);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetListAsync([FromQuery] GetListOrderByUserInputDto inputDto)
+        {
+            var output = await orderService.ListOrderAsync(inputDto);
+            return Ok(output);
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace BE.Application.Abstractions.ServiceInterfaces
     {
         Task<ResultService> CreateAsync(CreateOrderInputDto inputDto);
         Task<ResultService> CreateOrderStatusAsync(CreateOrderStatusInputDto inputDto);
+        Task<ResultService> ListOrderAsync(GetListOrderByUserInputDto inputDto);
     }
 }
