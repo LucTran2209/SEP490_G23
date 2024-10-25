@@ -1,4 +1,5 @@
-﻿using BE.Application.Services.Orders.OrderServiceInputDto;
+﻿using BE.Application.Services.Orders.OrderOutputDto;
+using BE.Application.Services.Orders.OrderServiceInputDto;
 using BE.Domain.Entities;
 
 public static class OrderExtention
@@ -23,6 +24,32 @@ public static class OrderExtention
         os.Status = inputDto.Status;
         os.FileAttach = file;
         return os;
+    }
+    public static ListOrderByUserOutputDto ToOrderOutputDto(Order order)
+    {
+        var o = new ListOrderByUserOutputDto()
+        {
+            UserId = order.UserId,
+            Address = order.Address,
+            StartDate = order.StartDate,
+            EndDate = order.EndDate,
+            Note = order.Note,
+            OrderStatuts = order.OrderStatuses
+                .Select(s => s.Id)
+                .FirstOrDefault(),
+            RentalShopId = order.OrderDetails
+                .Select(od => od.Product.RentalShopId)
+                .FirstOrDefault(),
+
+            DetailProducts = order.OrderDetails.Select(od => new DeatilOfProduct
+            {
+                ProductId = od.ProductId,
+                Quantity = od.Quantity,
+                Price = od.Product.RentalPrice,
+                Images = od.Product.ProductImages?.Select(pi => pi.Link).ToList() ?? new List<string>()
+            }).ToList()
+        };
+        return o;
     }
 }
 
