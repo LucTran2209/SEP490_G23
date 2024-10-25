@@ -29,6 +29,7 @@ public static class OrderExtention
     {
         var o = new ListOrderByUserOutputDto()
         {
+            OrderId = order.Id,
             UserId = order.UserId,
             Address = order.Address,
             StartDate = order.StartDate,
@@ -46,8 +47,11 @@ public static class OrderExtention
                 ProductId = od.ProductId,
                 Quantity = od.Quantity,
                 Price = od.Product.RentalPrice,
-                Images = od.Product.ProductImages?.Select(pi => pi.Link).ToList() ?? new List<string>()
-            }).ToList()
+                Images = od.Product.ProductImages?.Select(pi => pi.Link ?? string.Empty).ToList()
+                     ?? new List<string>()
+            }
+            ).ToList()
+
         };
         return o;
     }

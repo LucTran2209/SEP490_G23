@@ -2,6 +2,7 @@
 {
     public class ListOrderByUserOutputDto
     {
+        public Guid OrderId { get; set; }
         public Guid UserId { get; set; }
         public string? Address { get; set; }
         public DateTime StartDate { get; set; }

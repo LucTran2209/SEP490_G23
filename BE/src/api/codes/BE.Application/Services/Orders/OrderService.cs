@@ -79,6 +79,10 @@ namespace BE.Application.Services.Orders
             var orders = unitOfWork.OrderRepository.GetAll();
             var query = orders
                 .Filter(inputDto.Address, o => o.Address.Contains(inputDto.Address));
+            if (inputDto.OrderId.ToString() != Guid.Empty.ToString())
+            {
+                query = query.Filter(inputDto.OrderId.ToString(), o => o.Id == inputDto.OrderId);
+            }
             if (inputDto.StartDate != DateTime.MinValue)
             {
                 query = query.Filter(inputDto.StartDate.ToString(), o => o.StartDate >= inputDto.StartDate);
