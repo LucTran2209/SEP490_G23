@@ -1,7 +1,7 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Authentication;
 using BE.Application.Services.ExternalServices;
-using BE.Application.Services.Order;
+using BE.Application.Services.Orders;
 using BE.Application.Services.Products;
 using BE.Application.Services.RentalShops;
 using BE.Application.Services.Users;
