@@ -1,0 +1,70 @@
+<nz-tabset class="">
+  <nz-tab nzTitle="Thuê theo ngày">
+    <nz-range-picker
+      nzInline
+      [nzRenderExtraFooter]="btnOk"
+      class="mb-3"
+    ></nz-range-picker>
+    <div class="flex justify-between items-center pb-3">
+      <nz-select
+        class="flex-1"
+        [(ngModel)]="selectedTimeStart"
+        (ngModelChange)="onChangeTimeStart($event)"
+        nzAllowClear
+        nzPlaceHolder="Chọn thời gian bắt đầu"
+      >
+        @for (option of timeChooseStart; track option) {
+        <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        }
+      </nz-select>
+      <div class="rounded-full bg-white p-3">
+        <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
+      </div>
+      <nz-select
+        class="flex-1"
+        [(ngModel)]="selectedTimeEnd"
+        (ngModelChange)="onChangeTimeEnd($event)"
+        nzAllowClear
+        nzPlaceHolder="Chọn thời gian kết thúc"
+      >
+        @for (option of timeChooseEnd; track option) {
+        <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        }
+      </nz-select>
+    </div>
+  </nz-tab>
+  <nz-tab nzTitle="Thuê theo giờ">
+    <div class="grid grid-cols-2 gap-4">
+      <nz-form-item>
+        <nz-form-label nzRequired
+          >Ngày bắt đầu</nz-form-label
+        >
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-date-picker class="w-full" formControlName="datePicker"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired
+          >Giờ nhận xe</nz-form-label
+        >
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-select
+            class="flex-1"
+            [(ngModel)]="selectedTimeEnd"
+            (ngModelChange)="onChangeTimeEnd($event)"
+            nzAllowClear
+            nzPlaceHolder="Giờ nhận xe"
+          >
+            @for (option of timeChooseEnd; track option) {
+            <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </nz-tab>
+</nz-tabset>
+
+<ng-template #btnOk>
+  <button nz-button nzType="primary">Chọn</button>
+</ng-template>

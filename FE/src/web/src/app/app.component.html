@@ -1,4 +1,7 @@
-<nz-spin nzTip="Đang tải..." [nzSize]="'large'" [nzSpinning]="(loading$ | async) === 'loading'">
-    <router-outlet>
-    </router-outlet>
+<nz-spin
+  nzTip="Đang tải..."
+  [nzSize]="'large'"
+  [nzSpinning]="(loading$ | async) === 'loading'"
+>
+  <router-outlet> </router-outlet>
 </nz-spin>

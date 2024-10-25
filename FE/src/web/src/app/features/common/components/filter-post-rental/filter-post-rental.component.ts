@@ -10,11 +10,11 @@ import {
 import { convertCurrency } from '../../../../utils/anonymous.helper';
 
 @Component({
-  selector: 'app-filter-post-rental',
+  selector: 'app-filter-product-rental',
   templateUrl: './filter-post-rental.component.html',
   styleUrl: './filter-post-rental.component.scss',
 })
-export class FilterPostRentalComponent {
+export class FilterProductRentalComponent {
   selectLocationOptions = selectLocationOptions;
   categoryOptions = categoryOptions;
   rateStar = rateStar;

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AnonymousComponent } from './components/anonymous/anonymous.component';
-import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
-import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
+import { LayoutDashboardComponent } from './components/layout/layout-dashboard/layout-dashboard.component';
+import { LayoutUserComponent } from './components/layout/layout-user/layout-user.component';
 import { authGuard } from './guards/auth.guard';
 import { USER_ROLE } from './utils/constant';
 import { ErrorComponent } from './features/error/error.component';

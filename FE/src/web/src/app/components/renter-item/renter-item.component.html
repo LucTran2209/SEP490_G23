@@ -1,0 +1,20 @@
+<div class="flex justify-between items-center border border-gray-300 rounded-lg p-3">
+    <div class="flex-1 flex gap-2 items-center">
+      <img [src]="imageBaseURl" alt="" width="150" height="90" class="" />
+      <div class="flex flex-col justify-between gap-y-5">
+        <p class="text-[#B8ACAC] font-medium">Máy giặt XQB30MJ102W</p>
+        <p class="">
+          100.000 VND <br />
+          <span class="text-[#1890FF]">1 ngày</span>
+        </p>
+      </div>
+    </div>
+    <nz-input-number
+     class=""
+      [(ngModel)]="demoValue"
+      [nzMin]="1"
+      [nzMax]="10"
+      [nzStep]="1"
+      nzCompact
+    ></nz-input-number>
+  </div>
