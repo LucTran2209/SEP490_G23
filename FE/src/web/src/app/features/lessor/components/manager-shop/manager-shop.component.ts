@@ -103,7 +103,7 @@ export class ManagerShopComponent  implements OnInit{
   }
   handleUpdateProduct(product: UpdateProductInputDto){
     this.productService.updateProduct(this.currentId, product).subscribe({
-      next: () => {
+      next: (res) => {
         this.message.success('Cập nhật sản phẩm thành công!');
         this.handleCloseModal();
         this.loadProducts(this.currentPage, this.pageSize);

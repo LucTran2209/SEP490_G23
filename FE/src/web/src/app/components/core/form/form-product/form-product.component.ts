@@ -73,7 +73,6 @@ export class FormProductComponent {
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.productUpdate);
     if (changes['productUpdate'] && this.productUpdate) {
       this.isEditMode = true;
       this.populateForm();
@@ -111,8 +110,10 @@ export class FormProductComponent {
         }
       });
     }
+    console.log(this.imageList);
   }
   submitForm(){
+    const formData = new FormData();
     if (this.isEditMode) {
       const formValue = this.productForm.value;
       const updatedData: UpdateProductInputDto = {
@@ -128,7 +129,7 @@ export class FormProductComponent {
       this.updateProduct.emit(updatedData);
     }else{
 
-      const formData = new FormData();
+      
       formData.append('productName', this.productForm.value.productName);
       formData.append('description', this.productForm.value.description);
       formData.append('quantity', this.productForm.value.quantity.toString());

@@ -76,6 +76,9 @@ import { SidebarLayoutComponent } from '../layout/sidebar-layout/sidebar-layout.
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { InputComponent } from '../core/input/input.component';
+import { ShopCardComponent } from '../core/card/shop-card/shop-card.component';
+import { OrderCardComponent } from '../core/card/order-card/order-card.component';
+import { FormFeedbackComponent } from '../core/form/form-feedback/form-feedback.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -143,12 +146,14 @@ const SHARED_MODULES = [
   RatingProccessProductComponent,
   ErrorComponent,
   ViewMoreItemComponent,
-  RatingProccessProductComponent,
   FormPostComponent,
   FormRentalRegistrationComponent,
   LayoutProfileComponent,
   PostCardComponent,
   FormProductComponent,
+  ShopCardComponent,
+  OrderCardComponent,
+  FormFeedbackComponent,
 ];
 
 @NgModule({
