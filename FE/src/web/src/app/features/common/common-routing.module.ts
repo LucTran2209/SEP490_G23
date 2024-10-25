@@ -5,6 +5,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { PostRetailListComponent } from './components/post-retail-list/post-retail-list.component';
 import { LayoutProfileComponent } from '../../components/core/layout-profile/layout-profile.component';
+import { ListMyOrderComponent } from './components/list-my-order/list-my-order.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,23 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'user',
+    component: LayoutProfileComponent,
+    children: [
+      { 
+        path: 'account', 
+        children: [
+          { path: 'profile', component: ProfileComponent },
+        ],
+      },
+      {
+
+        path: 'list-my-order',
+        component: ListMyOrderComponent,
+      },
+    ]
+  },
+  {
     path: 'post-detail',
     component: PostDetailComponent,
   },
@@ -27,6 +45,7 @@ const routes: Routes = [
     path: 'post-list',
     component: PostRetailListComponent,
   },
+  
 ];
 
 @NgModule({

@@ -4,11 +4,19 @@
     nzDescription="GIÁ THUÊ: {{ product.rentalPrice | number }} VND"
   >
     <ng-template #nzAvatar>
-      <img
-        class="w-96 h-48"
-        [src]="product.images[0]"
-        alt="{{ product.productName }}"
-      />
+      <div
+        class="image-container"
+        (mouseenter)="nextImage()"
+        (mouseleave)="resetImage()"
+      >
+        <!-- Display the current image from the image list -->
+        <img
+          style="width: 100%; height: 200px; object-fit: fill"
+          [src]="currentImage"
+          alt="{{ product.productName }}"
+          class="image"
+        />
+      </div>
     </ng-template>
   </nz-card-meta>
   <div class="flex justify-between mt-10">

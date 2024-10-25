@@ -1,0 +1,71 @@
+<nz-card class="mt-3 w-full">
+  <div class="card-title pb-2 border-b-2 border-zinc-300">
+    <div class="flex justify-between">
+      <div class="flex">
+        <div class="flex">
+          <p
+            class="pb-1 text-2xl font-extralight"
+            nz-icon
+            nzType="shop"
+            nzTheme="outline"
+          ></p>
+          <p class="p-1 text-xl font-semibold mx-1.5">{{ shopName }}</p>
+        </div>
+        <div class="flex">
+          <button class="mx-5" nz-button nzType="primary" nzGhost>
+            Chat Ngay
+          </button>
+          <button nz-button nzType="primary">Xem Shop</button>
+        </div>
+      </div>
+      <p class="text-zinc-500 text-xl">
+        {{ time }}
+      </p>
+    </div>
+  </div>
+  <div class="py-3 cursor-pointer">
+    <div class="flex justify-start gap-8">
+      <img
+        class="rounded object-cover"
+        src="https://cdn.tgdd.vn/Files/2016/10/25/904759/may-giat-mini-la-gi-nen-mua-hay-khong--19.jpg"
+        alt="anh san pham"
+        [width]="150"
+        [height]="200"
+      />
+      <div>
+        <h2 class="title font-semibold text-xl uppercase">
+          Máy giặt XQB30MJ102W
+        </h2>
+        <div
+          class="grid grid-cols-2 gap-10 text-zinc-500 text-base font-medium py-3"
+        >
+          <div class="columns-2 gap-6">
+            <p>GIÁ THUÊ:</p>
+            <p>SỐ LƯỢNG:</p>
+            <p class="font-normal">200,000 VND</p>
+            <p class="font-normal">2</p>
+          </div>
+          <div class="columns-2 gap-6">
+            <p>GIÁ CỌC:</p>
+            <p>THỜI GIAN:</p>
+            <p class="font-normal">200,000 VND</p>
+            <p class="font-normal">2 ngày</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @if(isShowBtn){
+  <div class="card-footer mt-3 flex justify-end gap-10">
+    <button class="px-5" nz-button nzType="primary" (click)="onClickBtn1()">
+      {{ buttonName1 }}
+    </button>
+    <button class="px-5" nz-button nzType="primary" nzGhost>
+      {{ buttonName2 }}
+    </button>
+    <button class="px-5" nz-button nzType="primary" nzGhost>
+      {{ buttonName3 }}
+    </button>
+  </div>
+  }
+</nz-card>

@@ -19,7 +19,7 @@ export class UserNavbarHeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private storageService: StorageService,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
   ) {}
   ngOnInit(): void {
     this.handleAssginInfo();
@@ -43,4 +43,6 @@ export class UserNavbarHeaderComponent implements OnInit {
   logout() {
     this.store.dispatch(logout());
   }
+  
+
 }
