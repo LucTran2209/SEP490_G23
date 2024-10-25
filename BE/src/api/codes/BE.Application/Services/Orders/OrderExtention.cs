@@ -41,18 +41,19 @@ public static class OrderExtention
             RentalShopId = order.OrderDetails
                 .Select(od => od.Product.RentalShopId)
                 .FirstOrDefault(),
-
             DetailProducts = order.OrderDetails.Select(od => new DeatilOfProduct
             {
                 ProductId = od.ProductId,
                 Quantity = od.Quantity,
                 Price = od.Product.RentalPrice,
+                DepositPrice = od.Product.DepositPrice,
+                RentalLimitDays = od.Product.RentalLimitDays,
                 Images = od.Product.ProductImages?.Select(pi => pi.Link ?? string.Empty).ToList()
                      ?? new List<string>()
             }
             ).ToList()
-
         };
+        o.TotalPrice = o.DetailProducts.Sum(dp => (double)(dp.Price * dp.Quantity));
         return o;
     }
 }
