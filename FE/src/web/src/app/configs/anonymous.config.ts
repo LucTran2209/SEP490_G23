@@ -16,6 +16,10 @@ export interface OptionSelect {
   value: string | number;
 }
 
+export interface OptionRadio extends OptionSelect{
+  icon: string;
+}
+
 export interface OptionSelectCheckBox {
   label: string;
   value: string | number;

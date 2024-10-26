@@ -86,9 +86,12 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { RenterItemComponent } from '../renter-item/renter-item.component';
+import { SelectRadioPaymentMethodComponent } from '../select-radio-payment-method/select-radio-payment-method.component';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzDividerModule,
   NzTagModule,
   NzAutocompleteModule,
   NzDrawerModule,
@@ -132,6 +135,7 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  SelectRadioPaymentMethodComponent,
   RenterItemComponent,
   InfoShopComponent,
   RentalPeriodComponent,

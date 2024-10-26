@@ -1,4 +1,5 @@
 <nz-card class="p-2 bg-gray-50 min-w-[480px]">
+  @if(currentRoute === 'shop'){
   <form class="flex items-center pb-3">
     <label for="simple-search" class="sr-only">Tìm kiếm</label>
     <div class="relative w-full">
@@ -41,7 +42,7 @@
   >
     {{ sliceTagName(tagItem.productName) }}
   </nz-tag>
-  }
+  } }
   <!-- tag found product search  -->
 
   @if(currentRoute !== 'shop'){
@@ -51,15 +52,11 @@
   ></nz-card-meta>
   }
   <div class="">
-    @if(tags.length === 0){
+    @if( currentRoute === 'shop' && tags.length === 0){
     <div class="flex justify-center items-center">
-      <img
-        src="assets/images/19197384-Photoroom.png"
-        alt=""
-        class="w-[250px]"
-      />
+      <img src="assets/images/6931683-Photoroom.png" alt="" class="w-[250px]" />
     </div>
-    } @else {
+    } @else if (currentRoute === 'shop' && tags.length !== 0){
     <div class="">
       <div class="flex justify-between items-center pb-2">
         <p class="font-medium">Mục</p>
@@ -71,9 +68,12 @@
         }
       </section>
     </div>
-    }
+    } @else if (currentRoute !== 'shop' && tags.length === 0) {
+    <app-renter-item />
+    } @if(currentRoute === 'shop' && tags.length !== 0 || currentRoute !==
+    'shop'){
     <div class="mb-3">
-      <p class="text-[20px] font-semibold">Thời gian thuê</p>
+      <p class="text-[20px] font-medium">Thời gian thuê</p>
       <app-rental-period (handleOpenPeriod)="showModal()"></app-rental-period>
     </div>
     <div class="flex justify-between items-center">
@@ -89,13 +89,14 @@
         <textarea rows="4" placeholder="ghi chú" nz-input></textarea>
       </nz-textarea-count>
     </div>
+    <button
+      nz-button
+      class="w-full bg-orange-500 h-12 text-white rounded-md hover:border-orange-600"
+    >
+      Chọn thuê
+    </button>
+    }
   </div>
-  <button
-    nz-button
-    class="w-full bg-orange-500 h-12 text-white rounded-md hover:border-orange-600"
-  >
-    Chọn thuê
-  </button>
 </nz-card>
 
 <ng-template #titleForm>
@@ -109,18 +110,27 @@
   [nzWidth]="700"
   nzTitle="Thời gian"
   (nzOnOk)="handleOk()"
+  (nzOnCancel)="handleCancel()"
 >
   <ng-container *nzModalContent>
-    <app-picker-timer></app-picker-timer>
+    <app-picker-timer/>
   </ng-container>
   <ng-container *nzModalFooter>
     <div class="flex justify-between items-center">
       <div class="font-semibold text-start">
         <p>
-          12:00 21/10
-          <span nz-icon nzType="minus" nzTheme="outline"></span> 12:00 30/10
+          <!-- 12:00 21/10 -->
+          {{ selectedTimeStart.value }}
+          {{ rangePickerTime[0] | date : "dd/MM/yyyy" }}
+          <span nz-icon nzType="minus" nzTheme="outline"></span>
+          <!-- 12:00 30/10 -->
+          {{ selectedTimeEnd.value }}
+          {{ rangePickerTime[1] | date : "dd/MM/yyyy" }}
         </p>
-        <p>Thời gian thuê: <span class="text-[#0F6CF8]">9 ngày</span></p>
+        <p>
+          Thời gian thuê:
+          <span class="text-[#0F6CF8]">{{ rentalDays }} ngày</span>
+        </p>
       </div>
       <button
         nz-button

@@ -1,22 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { timePeriodSelect } from '../../../configs/timer.config';
+import { RentalTimerService } from '../../../services/rental-timer.service';
 
 @Component({
   selector: 'app-picker-timer',
   templateUrl: './picker-timer.component.html',
   styleUrl: './picker-timer.component.scss',
- 
 })
 export class PickerTimerComponent {
   timeChooseStart = timePeriodSelect;
   timeChooseEnd = timePeriodSelect;
-  selectedTimeStart = { label: '00:00', value: '00:00' };
-  selectedTimeEnd = { label: '00:00', value: '00:00' };
+  constructor(private rentalTimerService: RentalTimerService) {}
 
-  onChangeTimeStart(value: any) {
-    
+  onDateRangeChange(dates: Date[]): void {
+    this.rentalTimerService.setRangePickerTime(dates);
   }
-  onChangeTimeEnd(value: any) {
-    
+
+  onChangeTimeStart(value: any): void {
+    this.rentalTimerService.setTimeStart(value);
   }
+
+  onChangeTimeEnd(value: any): void {
+    this.rentalTimerService.setTimeEnd(value);
+  }
+  // onDatePickerChange(dates: Date): void {
+  //   console.log('Ngày đã chọn thue theo gio:', dates);
+  // }
+
+  chooseOption1() {}
 }

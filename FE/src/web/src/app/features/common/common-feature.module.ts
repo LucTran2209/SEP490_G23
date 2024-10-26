@@ -11,6 +11,9 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ListMyOrderComponent } from './components/list-my-order/list-my-order.component';
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
 import { LayoutProfileComponent } from '../../components/layout/layout-profile/layout-profile.component';
+import { OrderProcessComponent } from './components/order/order-process/order-process.component';
+import { PersonalInfoComponent } from './components/order/order-process/personal-info/personal-info.component';
+import { OrderInfoPersonalComponent } from './components/order/order-process/order-info-personal/order-info-personal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,10 @@ import { LayoutProfileComponent } from '../../components/layout/layout-profile/l
     FilterProductRentalComponent,
     ProductRentalDetailComponent,
     ProductRentalListComponent,
+    ProductRentalListComponent,
+    OrderProcessComponent,
+    PersonalInfoComponent,
+    OrderInfoPersonalComponent,
     ShopPersonalComponent
   ],
   imports: [CommonModule, SharedModule, CommonRoutingModule],
