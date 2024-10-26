@@ -32,22 +32,21 @@ public static class OrderExtention
             OrderId = order.Id,
             UserId = order.UserId,
             Address = order.Address,
-            StartDate = order.StartDate,
-            EndDate = order.EndDate,
+            NumberofRentalDays = (order.EndDate - order.StartDate).Days,
             Note = order.Note,
-            OrderStatuts = order.OrderStatuses
-                .Select(s => s.Id)
-                .FirstOrDefault(),
+            Status = order.OrderStatuses
+                          .OrderByDescending(os => os.CreatedDate) // Sắp xếp theo CreatedDate giảm dần
+                          .Select(os => os.Status.ToString())      // Lấy tên trạng thái
+                          .FirstOrDefault() ?? "Order",
             RentalShopName = order.OrderDetails
-                .Select(od => od.Product.RentalShop.ShopName)
-                .FirstOrDefault(),
+                                    .Select(od => od.Product.RentalShop.ShopName)
+                                    .FirstOrDefault(),
             DetailProducts = order.OrderDetails.Select(od => new DeatilOfProduct
             {
                 ProductName = od.Product.ProductName,
                 Quantity = od.Quantity,
                 Price = od.Product.RentalPrice,
                 DepositPrice = od.Product.DepositPrice,
-                RentalLimitDays = od.Product.RentalLimitDays,
                 Images = od.Product.ProductImages?.Select(pi => pi.Link ?? string.Empty).ToList()
                      ?? new List<string>()
             }
