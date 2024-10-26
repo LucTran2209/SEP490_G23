@@ -41,25 +41,24 @@ import { environment } from '../../../environments/environment.development';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
 import { AnonymousComponent } from '../anonymous/anonymous.component';
 import { BreadcrumbComponent } from '../core/breadcrumb/breadcrumb.component';
-import { ChatComponent } from '../core/chat/chat.component';
-import { CommentComponent } from '../core/comment/comment.component';
+import { ChatComponent } from '../chat/chat.component';
+import { CommentComponent } from '../comment/comment.component';
 import { FooterComponent } from '../core/footer/footer.component';
 import { FormUserComponent } from '../core/form/form-user/form-user.component';
 import { LoadingComponent } from '../core/loading/loading.component';
 import { NavMenuComponent } from '../core/nav-menu/nav-menu.component';
 import { NavbarHeadearComponent } from '../core/navbar-headear/navbar-headear.component';
 import { ProductCardComponent } from '../core/card/product-card/product-card.component';
-import { ProductCarouseComponent } from '../core/product-carouse/product-carouse.component';
-import { RatingProccessProductComponent } from '../core/rating-proccess-product/rating-proccess-product.component';
+import { ProductCarouseComponent } from '../product-carouse/product-carouse.component';
+import { RatingProccessProductComponent } from '../rating-proccess-product/rating-proccess-product.component';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { GoogleSigninComponent } from '../google-signin/google-signin.component';
 import { SvgIconComponent } from '../core/svg-icon/svg-icon.component';
-import { SelectItemComponent } from '../core/select-item/select-item.component';
+import { SelectItemComponent } from '../core/select/select-item/select-item.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { UserNavbarHeaderComponent } from '../core/user-navbar-header/user-navbar-header.component';
-import { RentalDetailCardComponent } from '../core/rental-detail-card/rental-detail-card.component';
-import { ViewMoreItemComponent } from '../core/view-more-item/view-more-item.component';
+import { ViewMoreItemComponent } from '../view-more-item/view-more-item.component';
 import { ErrorComponent } from '../../features/error/error.component';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { RouterModule } from '@angular/router';
@@ -67,6 +66,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { FormPostComponent } from '../core/form/form-post/form-post.component';
 import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
+import { LayoutProfileComponent } from '../layout/layout-profile/layout-profile.component';
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
 import { FormProductComponent } from '../core/form/form-product/form-product.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -78,9 +78,23 @@ import { InputComponent } from '../core/input/input.component';
 import { ShopCardComponent } from '../core/card/shop-card/shop-card.component';
 import { OrderCardComponent } from '../core/card/order-card/order-card.component';
 import { FormFeedbackComponent } from '../core/form/form-feedback/form-feedback.component';
+import { FormRentalProductComponent } from '../core/form/form-rental-product/form-rental-product.component';
+import { PickerTimerComponent } from '../modal/picker-timer/picker-timer.component';
+import { RentalPeriodComponent } from '../rental-period/rental-period.component';
+import { InfoShopComponent } from '../info-shop/info-shop.component';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { RenterItemComponent } from '../renter-item/renter-item.component';
+import { SelectRadioPaymentMethodComponent } from '../select-radio-payment-method/select-radio-payment-method.component';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzDividerModule,
+  NzTagModule,
+  NzAutocompleteModule,
+  NzDrawerModule,
   NzSpaceModule,
   NzBreadCrumbModule,
   NzSliderModule,
@@ -121,6 +135,12 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  SelectRadioPaymentMethodComponent,
+  RenterItemComponent,
+  InfoShopComponent,
+  RentalPeriodComponent,
+  PickerTimerComponent,
+  FormRentalProductComponent,
   InputComponent,
   SidebarLayoutComponent,
   AnonymousComponent,
@@ -139,7 +159,6 @@ const SHARED_MODULES = [
   FooterComponent,
   CommentComponent,
   ChatComponent,
-  RentalDetailCardComponent,
   ProductCarouseComponent,
   ViewMoreItemComponent,
   RatingProccessProductComponent,

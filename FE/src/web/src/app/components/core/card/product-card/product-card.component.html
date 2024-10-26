@@ -1,4 +1,4 @@
-<nz-card class="mt-4" style="width: 270px" [nzCover]="nzAvatar">
+<nz-card class="mt-4" [nzCover]="nzAvatar">
   <nz-card-meta
     nzTitle="{{ product.productName }}"
     nzDescription="GIÁ THUÊ: {{ product.rentalPrice | number }} VND"
@@ -17,10 +17,16 @@
           class="image"
         />
       </div>
+      <!-- class="w-96 h-48" -->
+      <img
+        class="w-full"
+        [src]="product.images[0]"
+        alt="{{ product.productName }}"
+      />
     </ng-template>
   </nz-card-meta>
   <div class="flex justify-between mt-10">
-    <div class="flex justify-between">
+    <div class="flex justify-between items-center">
       <span
         nz-icon
         nzType="star"
@@ -29,8 +35,14 @@
       ></span>
       <p class="text-sm mx-2 mt-1.5">{{ product.evaluate }}</p>
     </div>
+    @if(user && user.Role === 'Lessor'){
     <button nz-button nzGhost nzType="primary" (click)="onEditClick()">
       Chỉnh Sửa
     </button>
+    }@else {
+    <button nz-button nzGhost nzType="primary">
+      Chọn thuê
+    </button>
+    }
   </div>
 </nz-card>

@@ -3,25 +3,32 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../../components/shared/shared.module';
 import { CommonRoutingModule } from './common-routing.module';
+import { FilterProductRentalComponent } from './components/filter-post-rental/filter-post-rental.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
-import { PostDetailComponent } from './components/post-detail/post-detail.component';
+import { ProductRentalDetailComponent } from './components/product-rental-detail/product-rental-detail.component';
+import { ProductRentalListComponent } from './components/product-rental-list/product-rental-list.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { PostRetailListComponent } from './components/post-retail-list/post-retail-list.component';
-import { FilterPostRentalComponent } from './components/filter-post-rental/filter-post-rental.component';
-import { ShopComponent } from './components/shop/shop.component';
 import { ListMyOrderComponent } from './components/list-my-order/list-my-order.component';
-import { LayoutProfileComponent } from '../../components/core/layout-profile/layout-profile.component';
+import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
+import { LayoutProfileComponent } from '../../components/layout/layout-profile/layout-profile.component';
+import { OrderProcessComponent } from './components/order/order-process/order-process.component';
+import { PersonalInfoComponent } from './components/order/order-process/personal-info/personal-info.component';
+import { OrderInfoPersonalComponent } from './components/order/order-process/order-info-personal/order-info-personal.component';
 
 @NgModule({
   declarations: [
     ProfileComponent,
     HomePageComponent,
-    PostDetailComponent,
-    PostRetailListComponent,
-    FilterPostRentalComponent,
-    ShopComponent,
     ListMyOrderComponent,
     LayoutProfileComponent,
+    FilterProductRentalComponent,
+    ProductRentalDetailComponent,
+    ProductRentalListComponent,
+    ProductRentalListComponent,
+    OrderProcessComponent,
+    PersonalInfoComponent,
+    OrderInfoPersonalComponent,
+    ShopPersonalComponent
   ],
   imports: [CommonModule, SharedModule, CommonRoutingModule],
 })

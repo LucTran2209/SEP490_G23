@@ -1,0 +1,68 @@
+<nz-tabset class="">
+  <nz-tab nzTitle="Thuê theo ngày">
+    <nz-range-picker
+      nzInline
+      [nzRenderExtraFooter]="btnOk"
+      class="mb-3"
+      ngModel
+      (ngModelChange)="onDateRangeChange($event)"
+    ></nz-range-picker>
+    <div class="flex justify-between items-center pb-3">
+      <nz-select
+        class="flex-1"
+        ngModel
+        (ngModelChange)="onChangeTimeStart($event)"
+        nzAllowClear
+        nzPlaceHolder="Chọn thời gian bắt đầu"
+      >
+        @for (option of timeChooseStart; track option) {
+        <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        }
+      </nz-select>
+      <div class="rounded-full bg-white p-3">
+        <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
+      </div>
+      <nz-select
+        class="flex-1"
+        ngModel
+        (ngModelChange)="onChangeTimeEnd($event)"
+        nzAllowClear
+        nzPlaceHolder="Chọn thời gian kết thúc"
+      >
+        @for (option of timeChooseEnd; track option) {
+        <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        }
+      </nz-select>
+    </div>
+  </nz-tab>
+  <!-- <nz-tab nzTitle="Thuê theo giờ">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="">Ngày bắt đầu</label>
+        <nz-date-picker
+          class="w-full"
+          ngModel
+          (ngModelChange)="onDatePickerChange($event)"
+        ></nz-date-picker>
+      </div>
+      <div class="flex flex-col gap-y-2">
+        <label for="">Giờ thuê</label>
+        <nz-select
+          class=""
+          [(ngModel)]="selectedTimeEnd"
+          (ngModelChange)="onChangeTimeEnd($event)"
+          nzAllowClear
+          nzPlaceHolder="Giờ nhận xe"
+        >
+          @for (option of timeChooseEnd; track option) {
+          <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </div>
+    </div>
+  </nz-tab> -->
+</nz-tabset>
+
+<ng-template #btnOk>
+  <button nz-button nzType="primary" (click)="chooseOption1()">Chọn</button>
+</ng-template>

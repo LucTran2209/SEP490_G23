@@ -1,0 +1,142 @@
+<div class="container">
+  <app-info-shop (handleRentalMoreProduct)="open()"/>
+  <section class="tab_href">
+    <nz-tabset>
+      <nz-tab nzTitle="Dạo" (nzClick)="goDown0()"> </nz-tab>
+      <nz-tab nzTitle="Tất Cả Thiết Bị" (nzClick)="goDown1()"></nz-tab>
+      <nz-tab nzTitle="Thuê Nhiều"  (nzClick)="goDown2()"></nz-tab>
+    </nz-tabset>
+  </section>
+  <div class="grid grid-cols-10 gap-4 pb-3">
+    <div class="col-span-10">
+      <div class="" id="viewEnjoy">
+        <div class="flex justify-between items-center">
+          <h4 class="text-[1rem] text-slate-300 py-3 font-medium">
+            Gợi ý cho bạn
+          </h4>
+          <a class="text-blue-500 hover:text-blue-700 leading-4">
+            Xem tất cả <span nz-icon nzType="right" nzTheme="outline"></span>
+          </a>
+        </div>
+        <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
+          <nz-col
+            *ngFor="let product of productList"
+            [nzXs]="12"
+            [nzSm]="8"
+            [nzMd]="6"
+            [nzLg]="4"
+          >
+            <app-product-card [product]="product"> </app-product-card>
+          </nz-col>
+        </nz-row>
+      </div>
+      <div class="shop_page__section">
+        <div class="">
+          <img
+            class="w-full h-full my-4 rounded"
+            src="https://down-tx-vn.img.susercontent.com/vn-11134210-7r98o-lzrkw1fkyrt934.webp"
+            alt=""
+          />
+        </div>
+      </div>
+      <div id="MoreRental">
+        <div class="flex justify-between items-center">
+          <h4 class="text-[1rem] text-slate-300 py-3 font-medium">
+            Thiết bị cho thuê nhiều
+          </h4>
+          <a class="text-blue-500 hover:text-blue-700 leading-4">
+            Xem tất cả <span nz-icon nzType="right" nzTheme="outline"></span>
+          </a>
+        </div>
+        <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
+          <nz-col
+            *ngFor="let product of productList"
+            [nzXs]="12"
+            [nzSm]="8"
+            [nzMd]="6"
+            [nzLg]="4"
+          >
+            <app-product-card [product]="product"> </app-product-card>
+          </nz-col>
+        </nz-row>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-10 gap-4 pb-3" id="targetAllProduct">
+    <div class="col-span-2">
+      <div class="pb-5">
+        <p class="icon_text pb-3">
+          <span nz-icon nzType="profile" nzTheme="outline"></span>
+          Danh mục thiết bị thuê
+        </p>
+        <app-view-more-item
+          [items]="categoryOptions"
+          [itemTemplate]="contentTemplate"
+        >
+        </app-view-more-item>
+      </div>
+    </div>
+    <div class="col-span-8">
+      <div class="bg-[#ebe5e5] flex justify-between items-center p-3 rounded-sm">
+        <div class="flex items-center gap-3">
+          <p>Sắp xếp theo</p>
+          <nz-button-group class="flex justify-center items-center gap-3">
+            <button nz-button nzType="default">Phổ biến</button>
+            <button nz-button nzType="default">Mới nhất</button>
+            <button nz-button nzType="default">Bán chạy</button>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="sắp xếp theo thứ tự"
+              [(ngModel)]="selectedValue"
+              class=""
+            >
+              @for (item of groupOptionFilterSelect; track $index) {
+              <nz-option
+                [nzLabel]="item.label"
+                [nzKey]="$index"
+                [nzValue]="item.value"
+              ></nz-option>
+              }
+            </nz-select>
+          </nz-button-group>
+        </div>
+        <nz-pagination
+          [nzPageIndex]="2"
+          [nzTotal]="50"
+          nzSimple
+        ></nz-pagination>
+      </div>
+      <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
+        <nz-col
+          *ngFor="let product of productList"
+          [nzXs]="24"
+          [nzSm]="12"
+          [nzMd]="8"
+          [nzLg]="6"
+        >
+          <app-product-card [product]="product"> </app-product-card>
+        </nz-col>
+      </nz-row>
+    </div>
+  </div>
+</div>
+<ng-template #contentTemplate let-item>
+  <div class="border-b-[1px] p-3" nzType="link">
+    <a class="font-medium" [routerLink]="[item.href]">{{ item.label }}</a>
+  </div>
+</ng-template>
+
+<nz-drawer
+  [nzVisible]="visible"
+  [nzBodyStyle]="{ overflow: 'auto' }"
+  [nzWidth]="720"
+  [nzMaskClosable]="false"
+  nzPlacement="right"
+  nzTitle="Thuê nhiều sản phẩm từ VD GROUP VN"
+  (nzOnClose)="close()"
+>
+  <ng-container *nzDrawerContent>
+      <app-form-rental-product />
+  </ng-container>
+</nz-drawer>
