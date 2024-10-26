@@ -23,833 +23,704 @@ namespace BE.Persistence.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("BE.Domain.Entities.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CategoryName")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Categories");
-                });
+                b.ToTable("Categories");
+            });
 
-            modelBuilder.Entity("BE.Domain.Entities.Feedback", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Rating")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Feedbacks", (string)null);
-                });
-
-            modelBuilder.Entity("BE.Domain.Entities.Product", b =>
-            modelBuilder.Entity("BE.Domain.Entities.Feedback", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Rating")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Feedbacks", (string)null);
-                });
-
-            modelBuilder.Entity("BE.Domain.Entities.Product", b =>
             modelBuilder.Entity("BE.Domain.Entities.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Address")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("EndDate")
+                    .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Note")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("StartDate")
+                    .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("TotalPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal?>("TotalPrice")
+                    .HasPrecision(18, 2)
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
-                });
+                b.ToTable("Orders", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.OrderDetail", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("OrderId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("ProductId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                b.Property<int>("Quantity")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails", (string)null);
-                });
+                b.ToTable("OrderDetails", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.OrderStatus", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("FileAttach")
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("FileAttach")
+                    .HasMaxLength(2147483647)
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Message")
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Message")
+                    .HasMaxLength(2147483647)
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("OrderId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                b.Property<int>("Status")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                b.HasIndex("OrderId");
 
-                    b.ToTable("OrderStatuses", (string)null);
-                });
+                b.ToTable("OrderStatuses", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<decimal>("DepositPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("DepositPrice")
+                    .HasPrecision(18, 2)
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                b.Property<string>("Description")
+                    .HasMaxLength(500)
+                    .HasColumnType("nvarchar(500)");
 
-                    b.Property<decimal>("Evaluate")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(2,1)")
-                        .HasDefaultValue(0m);
+                b.Property<decimal>("Evaluate")
+                    .ValueGeneratedOnAdd()
+                    .HasPrecision(18, 2)
+                    .HasColumnType("decimal(2,1)")
+                    .HasDefaultValue(0m);
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                b.Property<string>("ProductName")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                b.Property<int>("Quantity")
+                    .HasColumnType("int");
 
-                    b.Property<int>("RentalLimitDays")
-                        .HasColumnType("int");
+                b.Property<int>("RentalLimitDays")
+                    .HasColumnType("int");
 
-                    b.Property<decimal>("RentalPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("RentalPrice")
+                    .HasPrecision(18, 2)
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("RentalShopId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("RentalShopId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SubCategoryId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("SubCategoryId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("RentalShopId");
+                b.HasIndex("RentalShopId");
 
-                    b.HasIndex("SubCategoryId");
+                b.HasIndex("SubCategoryId");
 
-                    b.ToTable("Products", (string)null);
-                });
+                b.ToTable("Products", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.ProductImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Link")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ProductId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages", (string)null);
-                });
+                b.ToTable("ProductImages", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.RentalShop", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                b.Property<string>("Address")
+                    .IsRequired()
+                    .HasMaxLength(250)
+                    .HasColumnType("nvarchar(250)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Email")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsActive")
+                    .HasColumnType("bit");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PhoneNumber")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShopName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                b.Property<string>("ShopName")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("RentalShops", (string)null);
-                });
+                b.ToTable("RentalShops", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Name")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
-                });
+                b.ToTable("Roles", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.SubCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("CategoryId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SubCategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("SubCategoryName")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                b.HasIndex("CategoryId");
 
-                    b.ToTable("SubCategories");
-                });
+                b.ToTable("SubCategories");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Address")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AvatarPersonal")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("AvatarPersonal")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Balance")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("Balance")
+                    .HasPrecision(18, 2)
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("DateOfBirth")
+                    .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Email")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("FullName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Gender")
-                        .HasColumnType("bit");
+                b.Property<bool>("Gender")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("Introduction")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Introduction")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsActive")
+                    .HasColumnType("bit");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Password")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PhoneNumber")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("RefreshToken")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("UserName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
-                });
+                b.ToTable("Users", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.UserRole", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("RoleId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("CreatedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset>("CreatedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("Id")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LastModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LastModifiedDate")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("ModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ModifiedByName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId", "RoleId");
+                b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("BE.Domain.Entities.Feedback", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.Product", "Product")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("BE.Domain.Entities.Feedback", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.Product", "Product")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
+                b.ToTable("UserRoles", (string)null);
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Order", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("BE.Domain.Entities.User", "User")
+                    .WithMany("Orders")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.OrderDetail", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("BE.Domain.Entities.Order", "Order")
+                    .WithMany("OrderDetails")
+                    .HasForeignKey("OrderId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("BE.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                b.HasOne("BE.Domain.Entities.Product", "Product")
+                    .WithMany()
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
 
-                    b.Navigation("Order");
+                b.Navigation("Order");
 
-                    b.Navigation("Product");
-                });
+                b.Navigation("Product");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.OrderStatus", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.Order", "Order")
-                        .WithMany("OrderStatuses")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("BE.Domain.Entities.Order", "Order")
+                    .WithMany("OrderStatuses")
+                    .HasForeignKey("OrderId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Order");
-                });
+                b.Navigation("Order");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Product", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.RentalShop", "RentalShop")
-                        .WithMany("Products")
-                        .HasForeignKey("RentalShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("BE.Domain.Entities.RentalShop", "RentalShop")
+                    .WithMany("Products")
+                    .HasForeignKey("RentalShopId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("BE.Domain.Entities.SubCategory", "SubCategory")
-                        .WithMany("Products")
-                        .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("BE.Domain.Entities.SubCategory", "SubCategory")
+                    .WithMany("Products")
+                    .HasForeignKey("SubCategoryId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("RentalShop");
+                b.Navigation("RentalShop");
 
-                    b.Navigation("SubCategory");
-                });
+                b.Navigation("SubCategory");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.ProductImage", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.Product", "Product")
-                        .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+            {
+                b.HasOne("BE.Domain.Entities.Product", "Product")
+                    .WithMany("ProductImages")
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("Product");
-                });
+                b.Navigation("Product");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.RentalShop", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.User", "User")
-                        .WithMany("RentalShops")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("BE.Domain.Entities.User", "User")
+                    .WithMany("RentalShops")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.SubCategory", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.Category", "Category")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("BE.Domain.Entities.Category", "Category")
+                    .WithMany("SubCategories")
+                    .HasForeignKey("CategoryId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Category");
-                });
+                b.Navigation("Category");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.UserRole", b =>
-                {
-                    b.HasOne("BE.Domain.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("BE.Domain.Entities.Role", "Role")
+                    .WithMany("UserRoles")
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("BE.Domain.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("BE.Domain.Entities.User", "User")
+                    .WithMany("UserRoles")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Role");
+                b.Navigation("Role");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("SubCategories");
-                });
+            {
+                b.Navigation("SubCategories");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Order", b =>
-                {
-                    b.Navigation("Feedbacks");
+            {
+                b.Navigation("OrderDetails");
 
-                    b.Navigation("ProductImages");
-                    b.Navigation("OrderDetails");
-
-                    b.Navigation("OrderStatuses");
-                });
+                b.Navigation("OrderStatuses");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Product", b =>
-                {
-                    b.Navigation("ProductImages");
-                });
+            {
+                b.Navigation("ProductImages");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.RentalShop", b =>
-                {
-                    b.Navigation("Products");
-                });
+            {
+                b.Navigation("Products");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("UserRoles");
-                });
+            {
+                b.Navigation("UserRoles");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.SubCategory", b =>
-                {
-                    b.Navigation("Products");
-                });
+            {
+                b.Navigation("Products");
+            });
 
             modelBuilder.Entity("BE.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Orders");
+            {
+                b.Navigation("Orders");
 
-                    b.Navigation("RentalShops");
+                b.Navigation("RentalShops");
 
-                    b.Navigation("UserRoles");
-                });
+                b.Navigation("UserRoles");
+            });
 #pragma warning restore 612, 618
         }
     }
