@@ -1,6 +1,7 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Products.ProductServiceInputDto;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace BE.Api.Controllers
 {
@@ -32,6 +33,17 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductByIdAsync(Guid id)
+        {
+            var output = await productService.GetProductByIdAsync(id);
+            if (output.StatusCode == HttpStatusCode.NotFound.ToString())
+            {
+                return NotFound(output);
+            }
+
+            return Ok(output);
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateProductInputDto inputDto)

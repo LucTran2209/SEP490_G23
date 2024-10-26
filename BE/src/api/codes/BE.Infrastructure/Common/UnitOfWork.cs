@@ -50,6 +50,12 @@ namespace BE.Infrastructure.Common
         public IOrderStatusRepository orderStatusRepository;
         public IOrderStatusRepository OrderStatusRepository => orderStatusRepository = new OrderStatusRepository(context);
 
+        public ICategoryRepository categoryRepository;
+        public ICategoryRepository CategoryRepository => categoryRepository = new CategoryRepository(context);
+
+        public ISubCategoryRepository subCategoryRepository;
+        public ISubCategoryRepository SubCategoryRepository => subCategoryRepository = new SubCategoryRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
