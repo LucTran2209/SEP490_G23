@@ -1,4 +1,6 @@
-﻿namespace BE.Application.Services.Users.UserServiceInputDto
+﻿using Microsoft.AspNetCore.Http;
+
+namespace BE.Application.Services.Users.UserServiceInputDto
 {
     public class CreateUserInputDto
     {
@@ -11,7 +13,7 @@
         public bool? Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string? Introduction { get; set; }
-        public string? AvatarPersonal { get; set; }
+        public IFormFile? AvatarPersonal { get; set; }
         public bool IsActive { get; set; }
         public string? RefreshToken { get; set; }
     }

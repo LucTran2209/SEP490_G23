@@ -18,18 +18,19 @@ namespace BE.Application.Services.Users
         private readonly IValidator<CreateUserInputDto> createUserValidator;
         private readonly IValidator<UpadteUserInputDto> updateUserValidator;
         private readonly IValidator<ActiveUserInputDto> activeUserValidator;
-
+        private readonly IAzureService _azureService;
 
         public UserService(IUnitOfWork unitOfWork, IUser user,
             IValidator<CreateUserInputDto> createUserValidator,
             IValidator<UpadteUserInputDto> updateUserValidator,
-            IValidator<ActiveUserInputDto> activeUserValidator
+            IValidator<ActiveUserInputDto> activeUserValidator,
+            IAzureService _azureService
             ) : base(unitOfWork, user)
         {
             this.createUserValidator = createUserValidator;
             this.updateUserValidator = updateUserValidator;
             this.activeUserValidator = activeUserValidator;
-
+            this._azureService = _azureService;
         }
 
         public async Task<ResultService> ActiveUserAsync(ActiveUserInputDto inputDto)
@@ -63,7 +64,8 @@ namespace BE.Application.Services.Users
             var r = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
             if (r == null)
             {
-                var user = inputDto.ToEntity();
+                var file = await _azureService.UpLoadFileAsync(inputDto.AvatarPersonal!);
+                var user = UserExtention.ToEntity(inputDto, file);
                 user.Id = new Guid();
                 user.Password = AuthenExtention.HashPassword(user.Password!);
                 var userRoles = new List<UserRole>();
