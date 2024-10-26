@@ -47,7 +47,6 @@ namespace BE.Persistence.ConfigurationTables
                     .WithOne(pi => pi.Product)
                     .HasForeignKey(pi => pi.ProductId)
                     .OnDelete(DeleteBehavior.Cascade);
-
         }
     }
 }

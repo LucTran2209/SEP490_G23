@@ -9,6 +9,8 @@ namespace BE.Domain.Abstractions.UnitOfWork
         public IProductRepository ProductRepository { get; }
         public IRentalShopRepository RentalShopRepository { get; }
 
+        public IFeedbackRepository FeedbackRepository { get; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         Task BeginTransactionAsync();

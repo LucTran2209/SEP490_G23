@@ -1,6 +1,7 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Authentication;
 using BE.Application.Services.ExternalServices;
+using BE.Application.Services.Feedbacks;
 using BE.Application.Services.Products;
 using BE.Application.Services.RentalShops;
 using BE.Application.Services.Users;
@@ -27,6 +28,7 @@ namespace BE.Application.DependencyInjections
             services.AddScoped(typeof(IProductService), typeof(ProductService));
             services.AddScoped(typeof(IRentalShopService), typeof(RentalShopService));
             services.AddScoped(typeof(IMailService), typeof(MailService));
+            services.AddScoped(typeof(IFeedbackService), typeof(FeedbackService));
 
             return services;
         }
