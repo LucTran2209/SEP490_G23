@@ -9,5 +9,6 @@ namespace BE.Domain.Interfaces
         IQueryable<User> GetAll();
         Task<User?> GetsUserByUserIDAsync(Guid ID);
         Task<User?> GetsUserByUserEmailAsync(string email);
+        Task AddRole(UserRole userRole);
     }
 }
