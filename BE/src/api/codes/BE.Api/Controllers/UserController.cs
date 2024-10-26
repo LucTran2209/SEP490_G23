@@ -25,7 +25,7 @@ namespace BE.Api.Controllers
         //}
 
         [HttpPost]
-        public async Task<IActionResult> InsertAsync([FromBody] CreateUserInputDto inputDto)
+        public async Task<IActionResult> InsertAsync([FromForm] CreateUserInputDto inputDto)
         {
             var output = await userService.CreateAsync(inputDto);
             return Created(output.StatusCode, output);

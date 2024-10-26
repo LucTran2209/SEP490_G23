@@ -6,7 +6,7 @@ namespace BE.Application.Services.Users
 {
     public static class UserExtention
     {
-        public static User ToEntity(this CreateUserInputDto command)
+        public static User ToEntity(this CreateUserInputDto command, string file)
         {
             var user = new User();
             user.UserName = command.UserName;
@@ -17,7 +17,7 @@ namespace BE.Application.Services.Users
             user.Address = command.Address;
             user.Gender = (bool)command.Gender;
             user.DateOfBirth = command.DateOfBirth;
-            user.AvatarPersonal = command.AvatarPersonal;
+            user.AvatarPersonal = file;
             user.Introduction = command.Introduction;
             user.RefreshToken = command.RefreshToken;
             user.IsActive = command.IsActive;
