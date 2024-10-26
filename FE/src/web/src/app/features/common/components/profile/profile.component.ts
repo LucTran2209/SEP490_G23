@@ -16,6 +16,7 @@ import {
 } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-profile',
@@ -31,9 +32,12 @@ export class ProfileComponent implements OnInit {
   showAlert: boolean = false;
   alertType: 'success' | 'error' = 'success';
   alertMessage: string = '';
+  userError = false;
+  loading = true; 
   constructor(
     private userService: UserService,
-    private userProfileService: UserProfileService
+    private userProfileService: UserProfileService,
+    private message: NzMessageService,
   ) {}
   ngOnInit() {
     
@@ -60,14 +64,9 @@ export class ProfileComponent implements OnInit {
     console.log(this.userInformation);
     this.userService.updateProfile(user).subscribe({
       next: (response) => {
-        this.alertMessage = 'Cập Nhật Hồ Sơ Thành Công!';
-          this.alertType = 'success';
-          this.showAlert = true;
-          setTimeout(() => {
-            this.handleCloseModal();
-            this.showAlert = false;
-          }, 5000);
-          this.loadUser();
+        this.message.success('Cập Nhật Hồ Sơ Thành Công!');
+        this.handleCloseModal();
+        this.loadUser();
         
       },
       error: (error) => {
@@ -86,11 +85,16 @@ export class ProfileComponent implements OnInit {
   loadUser() {
     const userCurrent = this.userProfileService.currentUser;
     this.username = userCurrent?.UserName;
-    this.userService
-      .viewProfile(this.username)
-      .subscribe((res: ProfileResultService) => {
+    this.userService.viewProfile(this.username).subscribe({
+      next: (res: ProfileResultService) => {
         this.user = res.data;
         console.log(this.user);
+        this.loading = false;
+      },
+      error: () => {
+        this.userError = true; // Show NzResult on error
+        this.loading = false;
+      }
       });
   }
 }

@@ -9,6 +9,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { PostRetailListComponent } from './components/post-retail-list/post-retail-list.component';
 import { FilterPostRentalComponent } from './components/filter-post-rental/filter-post-rental.component';
 import { ShopComponent } from './components/shop/shop.component';
+import { ListMyOrderComponent } from './components/list-my-order/list-my-order.component';
+import { LayoutProfileComponent } from '../../components/core/layout-profile/layout-profile.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { ShopComponent } from './components/shop/shop.component';
     PostRetailListComponent,
     FilterPostRentalComponent,
     ShopComponent,
+    ListMyOrderComponent,
+    LayoutProfileComponent,
   ],
   imports: [CommonModule, SharedModule, CommonRoutingModule],
 })

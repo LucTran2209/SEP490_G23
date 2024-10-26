@@ -43,6 +43,7 @@
               nz-button
               nzType="default"
               nzDanger
+              type="reset"
               (click)="handleCancel()"
             >
               Hủy
@@ -61,7 +62,6 @@
               [nzMultiple]="true"
               nzListType="picture-card"
               [nzBeforeUpload]="beforeUpload"
-              [nzShowUploadList]="true"
               nzListType="picture-card"
             >
               <div>
@@ -71,7 +71,6 @@
             </nz-upload>
           </nz-form-item>
         </div>
-
         <div nz-col nzSpan="12">
           <p class="mb-2.5">Giá cả</p>
           <nz-form-item class="border-dashed border-2 p-5">

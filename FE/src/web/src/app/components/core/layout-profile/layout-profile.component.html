@@ -1,12 +1,13 @@
 <nz-layout class="inner-layout h-full">
-  <nz-sider nzWidth="300px" nzTheme="light">
-    <div class="flex justify-start p-3">
+  <nz-sider nzWidth="250px" nzTheme="light">
+    <div class="flex justify-start p-1 pt-5">
       <nz-avatar
         [nzSize]="60"
         nzSrc="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
       ></nz-avatar>
       <div class="mx-3">
-        <p class="font-bold text-lg">Nguyễn Văn A</p>
+        <!-- <p class="font-bold text-lg">Nguyễn Văn A</p> -->
+        <p class="font-medium text-lg px-3">{{ userName }}</p>
         <a nz-button nzType="link" nzBlock
           ><span
             class="text-lg pb-1"
@@ -19,9 +20,21 @@
       </div>
     </div>
     <ul nz-menu nzMode="inline" class="sider-menu">
-      <li nz-submenu nzOpen nzTitle="Tài Khoản Của Tôi" nzIcon="user">
+      <li
+        nz-submenu
+        [nzOpen]="isAccountOpen"
+        nzTitle="Tài Khoản Của Tôi"
+        nzIcon="user"
+      >
         <ul>
-          <li nz-menu-item nzSelected>Hồ Sơ</li>
+          <li
+            nz-menu-item
+            [routerLink]="['./account/profile']"
+            routerLinkActive="ant-menu-item-selected"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Hồ Sơ
+          </li>
           <li nz-menu-item>Đổi Mật Khẩu</li>
         </ul>
       </li>
@@ -35,13 +48,14 @@
         <span nz-icon nzType="bell" nzTheme="outline"></span>
         <span>Thông Báo</span>
       </li>
-      <li nz-menu-item>
+      <li
+        nz-menu-item
+        [routerLink]="['./list-my-order']"
+        routerLinkActive="ant-menu-item-selected"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <span nz-icon nzType="solution" nzTheme="outline"></span>
-        <span>Đơn Yêu Cầu Thuê Của Tôi</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="history" nzTheme="outline"></span>
-        <span>Lịch Sử Thuê Của Tôi</span>
+        <span>Danh Sách Thuê Của Tôi</span>
       </li>
     </ul>
   </nz-sider>

@@ -66,7 +66,7 @@
     </div>
   </div>
 </div>
-<div class="mt-20">
+<div class="mt-10 mx-20">
   <h1 class="font-bold text-center text-3xl">Duyệt từ các danh mục hàng đầu</h1>
   <div class="flex justify-center mt-2">
     <div class="flex justify-between">
@@ -74,10 +74,10 @@
       <div class="underline-title-second"></div>
     </div>
   </div>
-  <div class="flex justify-around flex-wrap">
+  <div class="flex justify-between flex-wrap mx-20">
     <div *ngFor="let item of items">
       <div
-        class="flex justify-between rounded-full item-wrapper p-1 pe-6 mt-10"
+        class="flex justify-between rounded-full item-wrapper p-1 mt-10 gap-3"
       >
         <span
           class="bg-red-200 text-red-600 p-5 rounded-full"
@@ -89,7 +89,7 @@
       </div>
     </div>
   </div>
-  <div class="mt-28">
+  <div class="mt-10">
     <h1 class="font-bold text-center text-3xl">Danh sách nổi bật</h1>
     <div class="flex justify-center mt-2 mb-5">
       <div class="flex justify-between">
@@ -97,7 +97,7 @@
         <div class="underline-title-second"></div>
       </div>
     </div>
-    <div class="container mx-auto px-4">
+    <div class="mx-20">
       <div class="flex justify-start flex-wrap mb-16">
         <div
           class="flex justify-between rounded-full item-wrapper p-1 pe-6 mt-10 bg-blue-500 text-white mx-3"
@@ -127,7 +127,10 @@
       </div>
       <div class="xl:columns-4 md:columns-2">
         <div *ngFor="let post of postList">
-          <app-post-card [post]="post"></app-post-card>
+          <app-post-card
+            [post]="post"
+            [routerLink]="['../post-detail']"
+          ></app-post-card>
         </div>
       </div>
       <div class="mt-14 flex justify-center">
@@ -137,8 +140,8 @@
       </div>
     </div>
   </div>
-  <div class="mt-28">
-    <div class="container mx-auto p-16 bg-zinc-200">
+  <div class="mt-10">
+    <div class="mx-20 p-16 bg-zinc-200">
       <div class="flex justify-between">
         <h1
           class="font-semibold text-start text-4xl w-2/5 px-2 h-20 tracking-wide leading-relaxed"

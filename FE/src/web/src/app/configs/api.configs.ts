@@ -55,11 +55,6 @@ export const UserSlug = {
     title: 'List User | ERMS',
     api: 'User/listuser',
   },
-  FilterUser: {
-    label: 'Filter User',
-    title: 'Filter User| ERMS',
-    api: 'User/listuser',
-  },
   GetUser: {
     label: 'View Profile',
     title: 'View Profile | ERMS',
@@ -88,11 +83,6 @@ export const PostSlug = {
     title: 'List Post | ERMS',
     api: 'api/Post/Listpost',
   },
-  FilterPost: {
-    label: 'Filter Post',
-    title: 'Filter Post| ERMS',
-    api: 'api/Post/Filterpost',
-  },
   GetPost: {
     label: 'View Post',
     title: 'View Post | ERMS',
@@ -120,11 +110,6 @@ export const ProductSlug = {
     title: 'List Product | ERMS',
     api: 'Product/list',
   },
-  FilterProduct: {
-    label: 'Filter Product',
-    title: 'Filter Product| ERMS',
-    api: 'api/Post/Filterpost',
-  },
   GetProduct: {
     label: 'View Product',
     title: 'View Product | ERMS',
@@ -139,5 +124,32 @@ export const ProductSlug = {
     label: 'Active Product',
     title: 'Active Product | ERMS',
     api: 'ActivePost',
+  },
+};
+export const OrderSlug = {
+  AddOrder: {
+    label: 'Add Order',
+    title: 'Add Order | ERMS',
+    api: 'api/Order',
+  },
+  ListOrder: {
+    label: 'List Order',
+    title: 'List Order | ERMS',
+    api: 'api/Order',
+  },
+  GetOrder: {
+    label: 'View Order',
+    title: 'View Order | ERMS',
+    api: 'api/Post/?postId =',
+  },
+  UpdateOrder: {
+    label: 'Update Order',
+    title: 'Update Order | ERMS',
+    api: 'Order/',
+  },
+  ActiveOrder: {
+    label: 'Active Order',
+    title: 'Active Order | ERMS',
+    api: 'ActiveOrder',
   },
 };
