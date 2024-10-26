@@ -5,7 +5,8 @@
         public Guid OrderId { get; set; }
         public Guid UserId { get; set; }
         public string? Address { get; set; }
-        public int NumberofRentalDays { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string? Note { get; set; }
         public double? TotalPrice { get; set; }
         public string? Status { get; set; }
