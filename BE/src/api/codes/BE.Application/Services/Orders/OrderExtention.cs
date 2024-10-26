@@ -32,7 +32,8 @@ public static class OrderExtention
             OrderId = order.Id,
             UserId = order.UserId,
             Address = order.Address,
-            NumberofRentalDays = (order.EndDate - order.StartDate).Days,
+            StartDate = order.StartDate,
+            EndDate = order.EndDate,
             Note = order.Note,
             Status = order.OrderStatuses
                           .OrderByDescending(os => os.CreatedDate) // Sắp xếp theo CreatedDate giảm dần
