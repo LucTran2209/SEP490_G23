@@ -5,6 +5,7 @@ using BE.Application.Extensions;
 using BE.Application.Services.Authentication;
 using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
+using BE.Domain.Entities;
 using BE.Domain.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,9 @@ namespace BE.Application.Services.Users
                 var user = inputDto.ToEntity();
                 user.Id = new Guid();
                 user.Password = AuthenExtention.HashPassword(user.Password!);
+                var userRoles = new List<UserRole>();
+                userRoles.Add(new UserRole() { UserId = user.Id, RoleId = Guid.Parse("dae936b7-3505-4c7e-813a-9221e658be61") });
+                user.UserRoles = userRoles;
                 await unitOfWork.UserRepository.AddAsync(user);
                 await unitOfWork.SaveChangesAsync();
 
