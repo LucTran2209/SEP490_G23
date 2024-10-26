@@ -38,12 +38,12 @@ public static class OrderExtention
             OrderStatuts = order.OrderStatuses
                 .Select(s => s.Id)
                 .FirstOrDefault(),
-            RentalShopId = order.OrderDetails
-                .Select(od => od.Product.RentalShopId)
+            RentalShopName = order.OrderDetails
+                .Select(od => od.Product.RentalShop.ShopName)
                 .FirstOrDefault(),
             DetailProducts = order.OrderDetails.Select(od => new DeatilOfProduct
             {
-                ProductId = od.ProductId,
+                ProductName = od.Product.ProductName,
                 Quantity = od.Quantity,
                 Price = od.Product.RentalPrice,
                 DepositPrice = od.Product.DepositPrice,

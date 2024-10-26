@@ -10,12 +10,12 @@
         public string? Note { get; set; }
         public double? TotalPrice { get; set; }
         public Guid OrderStatuts { get; set; }
-        public Guid RentalShopId { get; set; }
+        public string RentalShopName { get; set; }
         public List<DeatilOfProduct>? DetailProducts { get; set; } = new List<DeatilOfProduct>();
     }
     public class DeatilOfProduct
     {
-        public Guid ProductId { get; set; }
+        public string ProductName { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal DepositPrice { get; set; }
