@@ -14,8 +14,6 @@ namespace BE.Domain.Abstractions.UnitOfWork
 
         public IFeedbackRepository FeedbackRepository { get; }
 
-        public IFeedbackRepository FeedbackRepository { get; }
-
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         Task BeginTransactionAsync();
