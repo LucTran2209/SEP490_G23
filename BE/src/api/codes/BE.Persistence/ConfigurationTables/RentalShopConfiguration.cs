@@ -15,7 +15,7 @@ namespace BE.Persistence.ConfigurationTables
                    .IsRequired()
                    .HasMaxLength(100);
 
-            builder.Property(rs => rs.Address)
+            builder.Property(rs => rs.Address) 
                    .HasMaxLength(250);
 
             builder.HasOne(rs => rs.User)

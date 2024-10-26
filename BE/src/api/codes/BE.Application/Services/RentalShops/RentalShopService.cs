@@ -1,9 +1,11 @@
-﻿using BE.Application.Abstractions;
+﻿using AutoMapper;
+using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.Extensions;
 using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
+using BE.Domain.Entities;
 using BE.Domain.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -15,20 +17,37 @@ namespace BE.Application.Services.RentalShops
     {
         private readonly IValidator<CreateRentalShopInputDto> createValidator;
         private readonly IValidator<UpdateRentalShopInputDto> updateValidator;
+        private readonly IMapper _mapper;
+        private readonly IAzureService _azureService;
 
-        public RentalShopService(IUnitOfWork unitOfWork, IUser user, IValidator<CreateRentalShopInputDto> createValidator, IValidator<UpdateRentalShopInputDto> updateValidator)
+        public RentalShopService(
+            IUnitOfWork unitOfWork,
+            IUser user, IMapper mapper,
+            IValidator<CreateRentalShopInputDto> createValidator, 
+            IValidator<UpdateRentalShopInputDto> updateValidator,
+            IAzureService azureService)
             : base(unitOfWork, user)
         {
             this.createValidator = createValidator;
             this.updateValidator = updateValidator;
+            _mapper = mapper;
+            _azureService = azureService;
         }
 
         public async Task<ResultService> CreateAsync(CreateRentalShopInputDto inputDto)
         {
             await createValidator.ValidateAndThrowAsync(inputDto);
 
-            var rentalShop = inputDto.ToEntity();
+            var rentalShop = _mapper.Map<RentalShop>(inputDto);
+
+            rentalShop.ImageFont = await _azureService.UpLoadFileAsync(inputDto.ImageFont!);
+            rentalShop.ImageBack = await _azureService.UpLoadFileAsync(inputDto.ImageBack!);
+            rentalShop.BusinessLicenseFile = await _azureService.UpLoadFileAsync(inputDto.BusinessLicenseFile!);
+
             await unitOfWork.RentalShopRepository.AddAsync(rentalShop);
+
+            await unitOfWork.UserRepository.AddRole(new UserRole { UserId = (Guid)user.Id!, RoleId = Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff") });
+
             await unitOfWork.SaveChangesAsync();
 
             return new ResultService

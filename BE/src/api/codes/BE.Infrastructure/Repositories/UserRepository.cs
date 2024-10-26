@@ -70,5 +70,10 @@ namespace BE.Infrastructure.Repositories
 
             return user;
         }
+
+        public async Task AddRole(UserRole userRole)
+        {
+            await context.UserRoles.AddAsync(userRole);
+        }
     }
 }
