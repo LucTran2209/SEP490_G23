@@ -61,12 +61,24 @@
       <li
         nz-menu-item
         class="p-3 uppercase text-center menu-item"
-        [routerLink]="['./user/list-my-order']"
+        [routerLink]="['./user/order']"
       >
         Danh sách thuê của tôi
       </li>
-      <li nz-menu-item class="p-3 uppercase text-center menu-item">
+      <li
+        nz-menu-item
+        class="p-3 uppercase text-center menu-item"
+        *ngIf="userRole === USERROLE.RENTER"
+      >
         Đăng ký thành chủ thuê
+      </li>
+      <li
+        nz-menu-item
+        class="p-3 uppercase text-center menu-item"
+        *ngIf="userRole === USERROLE.LESSOR"
+        [routerLink]="['../lessor/shop']"
+      >
+        Cửa Hàng Của Tôi
       </li>
       <li
         nz-menu-item

@@ -50,9 +50,10 @@
       </li>
       <li
         nz-menu-item
-        [routerLink]="['./list-my-order']"
+        [routerLink]="['./order']"
         routerLinkActive="ant-menu-item-selected"
         [routerLinkActiveOptions]="{ exact: true }"
+        [nzSelected]="isOrderSlected"
       >
         <span nz-icon nzType="solution" nzTheme="outline"></span>
         <span>Danh Sách Thuê Của Tôi</span>

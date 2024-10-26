@@ -1,0 +1,42 @@
+<div class="mx-16 mt-3">
+  <div class="horizontal-timeline">
+    <nz-timeline [nzMode]="'custom'">
+      <!-- Step 1 -->
+      <nz-timeline-item [nzDot]="'1'" [nzColor]="'gray'" class="timeline-item">
+        <div class="text-center">
+          <p class="step-title">Đơn Đã Đặt</p>
+          <p class="step-date">22/10/2024</p>
+        </div>
+      </nz-timeline-item>
+
+      <!-- Step 2 - Active Step -->
+      <nz-timeline-item [nzDot]="'2'" [nzColor]="'blue'" class="timeline-item">
+        <div class="text-center">
+          <p class="step-title">Đã Đặt Cọc</p>
+          <p class="step-date">22/10/2024</p>
+        </div>
+      </nz-timeline-item>
+
+      <!-- Step 3 -->
+      <nz-timeline-item [nzDot]="'3'" [nzColor]="'gray'" class="timeline-item">
+        <div class="text-center">
+          <p class="step-title">Giao Thành Công</p>
+        </div>
+      </nz-timeline-item>
+
+      <!-- Step 4 -->
+      <nz-timeline-item [nzDot]="'4'" [nzColor]="'gray'" class="timeline-item">
+        <div class="text-center">
+          <p class="step-title">Trả Hàng Thành Công</p>
+        </div>
+      </nz-timeline-item>
+
+      <!-- Step 5 -->
+      <nz-timeline-item [nzDot]="'5'" [nzColor]="'gray'" class="timeline-item">
+        <div class="text-center">
+          <p class="step-title">Đã Hoàn Trả Cọc</p>
+        </div>
+      </nz-timeline-item>
+    </nz-timeline>
+  </div>
+</div>

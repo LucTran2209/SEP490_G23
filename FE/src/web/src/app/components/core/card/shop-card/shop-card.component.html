@@ -9,7 +9,9 @@
             nzType="shop"
             nzTheme="outline"
           ></p>
-          <p class="p-1 text-xl font-semibold mx-1.5">{{ shopName }}</p>
+          <p class="p-1 text-xl font-semibold mx-1.5">
+            {{ order.rentalShopName }}
+          </p>
         </div>
         <div class="flex">
           <button class="mx-5" nz-button nzType="primary" nzGhost>
@@ -19,22 +21,26 @@
         </div>
       </div>
       <p class="text-zinc-500 text-xl">
-        {{ time }}
+        {{ order.startDate | date : "dd/MM/yyyy" }}
       </p>
     </div>
   </div>
-  <div class="py-3 cursor-pointer">
-    <div class="flex justify-start gap-8">
+  <div
+    class="py-3 cursor-pointer"
+    *ngFor="let pro of order.detailProducts"
+    [routerLink]="['./order-detail']"
+  >
+    <div class="flex justify-start gap-8 mb-2">
       <img
         class="rounded object-cover"
-        src="https://cdn.tgdd.vn/Files/2016/10/25/904759/may-giat-mini-la-gi-nen-mua-hay-khong--19.jpg"
-        alt="anh san pham"
+        src="{{ pro.images[0] }}"
+        alt="{{ pro.productName }}"
         [width]="150"
         [height]="200"
       />
       <div>
         <h2 class="title font-semibold text-xl uppercase">
-          Máy giặt XQB30MJ102W
+          {{ pro.productName }}
         </h2>
         <div
           class="grid grid-cols-2 gap-10 text-zinc-500 text-base font-medium py-3"
@@ -42,14 +48,18 @@
           <div class="columns-2 gap-6">
             <p>GIÁ THUÊ:</p>
             <p>SỐ LƯỢNG:</p>
-            <p class="font-normal">200,000 VND</p>
-            <p class="font-normal">2</p>
+            <p class="font-normal w-32">
+              {{ pro.price | currency : "VND" : "" : "1.0-0" }} VND
+            </p>
+            <p class="font-normal w-32">{{ pro.quantity }}</p>
           </div>
           <div class="columns-2 gap-6">
             <p>GIÁ CỌC:</p>
             <p>THỜI GIAN:</p>
-            <p class="font-normal">200,000 VND</p>
-            <p class="font-normal">2 ngày</p>
+            <p class="font-normal w-32">
+              {{ pro.depositPrice | currency : "VND" : "" : "1.0-0" }} VND
+            </p>
+            <p class="font-normal w-32">{{ numberofRentalDays }} ngày</p>
           </div>
         </div>
       </div>

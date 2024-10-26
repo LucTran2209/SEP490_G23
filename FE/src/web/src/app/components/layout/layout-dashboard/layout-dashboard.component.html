@@ -7,30 +7,13 @@
 </app-navbar-headear>
 <nz-layout class="main-layout h-full">
   <nz-sider
+    style="width: 250px; min-width: 100px"
     nzCollapsible
     [(nzCollapsed)]="isSidebarCollapsed"
     [nzTrigger]="null"
     nzTheme="light"
   >
-    <!-- <ul nz-menu nzTheme="light" nzMode="inline">
-      <li nz-menu-item>
-        <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
-        <span>DashBoard</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="user" nzTheme="outline"></span>
-        <span>User</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="apartment" nzTheme="outline"></span>
-        <span>Role</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="team" nzTheme="outline"></span>
-        <span>Group</span>
-      </li>
-    </ul> -->
-    <ul nz-menu nzTheme="light" nzMode="inline">
+    <ul nz-menu nzTheme="light" nzMode="inline" class="mt-10">
       <!-- Admin Role -->
       <ng-container *ngIf="userRole === USERROLE.ADMIN">
         <li nz-menu-item>
@@ -49,6 +32,10 @@
 
       <!-- Lessor Role -->
       <ng-container *ngIf="userRole === USERROLE.LESSOR">
+        <li nz-menu-item [routerLink]="['../common/home']">
+          <span nz-icon nzType="home" nzTheme="outline"></span>
+          <span>Trang Chủ</span>
+        </li>
         <li nz-menu-item>
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thông Kê</span>
