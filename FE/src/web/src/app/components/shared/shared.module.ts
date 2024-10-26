@@ -64,6 +64,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { RouterModule } from '@angular/router';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { FormPostComponent } from '../core/form/form-post/form-post.component';
 import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
@@ -133,6 +134,7 @@ const ANTD_MODULES = [
   NzCommentModule,
   NzProgressModule,
   NzMessageModule,
+  NzTimelineModule,
 ];
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];

@@ -26,9 +26,11 @@ const routes: Routes = [
         ],
       },
       {
-
-        path: 'list-my-order',
-        component: ListMyOrderComponent,
+        path: 'order',
+        children: [
+          { path: '', component: ListMyOrderComponent },
+          // { path: 'order-detail', component: MyOrderDetailComponent },
+      ]
       },
     ]
   },

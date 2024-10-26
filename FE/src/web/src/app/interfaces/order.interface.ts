@@ -1,7 +1,9 @@
-export interface DeatilOfProduct{
-    productId: string;
+export interface DetailOfProduct{
+    productName: string;
     quantity: number;
     price: number;
+    depositPrice: number;
+    // numberofRentalDays?: number;
     images: string[];
 }
 export interface OrderByUserOutputDto {
@@ -11,9 +13,10 @@ export interface OrderByUserOutputDto {
     startDate: Date;
     endDate: Date;
     note?: string | null;
+    totalPrice?: number | null;
     orderStatus: string;
-    rentalShopId: string;
-    detailProducts?: DeatilOfProduct[] | null;
+    rentalShopName: string;
+    detailProducts?: DetailOfProduct[] | null;
 }
 export interface OrderResultService {
     statusCode: string;
