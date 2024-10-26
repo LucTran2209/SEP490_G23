@@ -55,17 +55,21 @@
       </div>
     </div>
   </div>
-  @if(isShowBtn){
   <div class="card-footer mt-3 flex justify-end gap-10">
-    <button class="px-5" nz-button nzType="primary" (click)="onClickBtn1()">
+    <button
+      *ngIf="isShowBtn1"
+      class="px-5"
+      nz-button
+      nzType="primary"
+      (click)="onClickBtn1()"
+    >
       {{ buttonName1 }}
     </button>
-    <button class="px-5" nz-button nzType="primary" nzGhost>
+    <button *ngIf="isShowBtn2" class="px-5" nz-button nzType="primary" nzGhost>
       {{ buttonName2 }}
     </button>
-    <button class="px-5" nz-button nzType="primary" nzGhost>
+    <button *ngIf="isShowBtn3" class="px-5" nz-button nzType="primary" nzGhost>
       {{ buttonName3 }}
     </button>
   </div>
-  }
 </nz-card>

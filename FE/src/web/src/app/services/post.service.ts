@@ -42,6 +42,13 @@ export class PostService {
           authorName: 'Trần Thị C',
           authorAddress: 'Đà Nẵng'
         },
+        // {
+        //   postId: 5,
+        //   postName: 'Máy giặt XQB30MJ102W',
+        //   postImg: 'https://mi360.vn/wp-content/uploads/2023/06/may-giat-mini-3kg-xiaomi-mijia-xqb30mj102w-mi-360-6.jpg',
+        //   authorName: 'Trần Thị C',
+        //   authorAddress: 'Đà Nẵng'
+        // },
       ]
     }
   };

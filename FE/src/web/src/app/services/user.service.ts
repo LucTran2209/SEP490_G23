@@ -198,13 +198,13 @@ export class UserService {
 
     return this.httpClient.get<UserResultService>(UserSlug.ListUser.api, params );
   }
-  searchUser(): Observable<UserResultService>{
+  // searchUser(): Observable<UserResultService>{
     // const params = {
     //   PageSize: pageSize.toString(),
     //   PageIndex: pageIndex.toString(),
     // };
-    return this.httpClient.get<UserResultService>(UserSlug.FilterUser.api);
-  }
+  //   return this.httpClient.get<UserResultService>(UserSlug.FilterUser.api);
+  // }
   viewProfile(userName: string): Observable<ProfileResultService>{
     return this.httpClient.get<ProfileResultService>(UserSlug.GetUser.api + userName);
   }

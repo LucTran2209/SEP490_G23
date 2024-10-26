@@ -67,7 +67,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { FormPostComponent } from '../core/form/form-post/form-post.component';
 import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
-import { LayoutProfileComponent } from '../core/layout-profile/layout-profile.component';
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
 import { FormProductComponent } from '../core/form/form-product/form-product.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -148,7 +147,6 @@ const SHARED_MODULES = [
   ViewMoreItemComponent,
   FormPostComponent,
   FormRentalRegistrationComponent,
-  LayoutProfileComponent,
   PostCardComponent,
   FormProductComponent,
   ShopCardComponent,

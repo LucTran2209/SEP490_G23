@@ -32,6 +32,8 @@ export class ProfileComponent implements OnInit {
   showAlert: boolean = false;
   alertType: 'success' | 'error' = 'success';
   alertMessage: string = '';
+  userError = false;
+  loading = true; 
   constructor(
     private userService: UserService,
     private userProfileService: UserProfileService,
@@ -83,11 +85,16 @@ export class ProfileComponent implements OnInit {
   loadUser() {
     const userCurrent = this.userProfileService.currentUser;
     this.username = userCurrent?.UserName;
-    this.userService
-      .viewProfile(this.username)
-      .subscribe((res: ProfileResultService) => {
+    this.userService.viewProfile(this.username).subscribe({
+      next: (res: ProfileResultService) => {
         this.user = res.data;
         console.log(this.user);
+        this.loading = false;
+      },
+      error: () => {
+        this.userError = true; // Show NzResult on error
+        this.loading = false;
+      }
       });
   }
 }
