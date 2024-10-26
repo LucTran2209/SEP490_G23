@@ -16,5 +16,6 @@ namespace BE.Domain.Entities
         public virtual SubCategory SubCategory { get; set; } = null!;
         public virtual RentalShop RentalShop { get; set; } = null!;
         public virtual ICollection<ProductImage>? ProductImages { get; set; }
+        public virtual ICollection<Feedback>? Feedbacks { get; set; }
     }
 }
