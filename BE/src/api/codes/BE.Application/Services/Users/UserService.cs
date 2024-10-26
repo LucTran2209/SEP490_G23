@@ -150,7 +150,8 @@ namespace BE.Application.Services.Users
             }
             else
             {
-                UserExtention.updateuser(inputDto, r);
+                var file = await _azureService.UpLoadFileAsync(inputDto.AvatarPersonal!);
+                UserExtention.updateuser(inputDto, r, file);
                 await unitOfWork.UserRepository.UpdateAsync(r);
                 await unitOfWork.SaveChangesAsync();
                 return new ResultService

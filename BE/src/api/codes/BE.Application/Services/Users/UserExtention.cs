@@ -23,7 +23,7 @@ namespace BE.Application.Services.Users
             user.IsActive = command.IsActive;
             return user;
         }
-        public static User updateuser(this UpadteUserInputDto command, User user)
+        public static User updateuser(this UpadteUserInputDto command, User user, string file)
         {
 
             user.Address = command.Address;
@@ -32,6 +32,7 @@ namespace BE.Application.Services.Users
             user.FullName = command.FullName;
             user.Gender = (bool)command.Gender;
             user.DateOfBirth = command.DateOfBirth;
+
             return user;
         }
         public static FindUserOutputDto FindUser(User user)
@@ -45,6 +46,7 @@ namespace BE.Application.Services.Users
             findUser.PhoneNumber = user.PhoneNumber;
             findUser.Address = user.Address;
             findUser.DateOfBirth = user.DateOfBirth;
+            findUser.AvatarPersonal = user.AvatarPersonal;
             findUser.ListRole = user.UserRoles?.Select(ur => ur.Role?.Name!).ToList() ?? new List<string>();
             return findUser;
         }
@@ -61,6 +63,7 @@ namespace BE.Application.Services.Users
                 Address = user.Address,
                 DateOfBirth = user.DateOfBirth,
                 IsActive = user.IsActive,
+                AvatarPersonal = user.AvatarPersonal,
                 ListRole = user.UserRoles?.Select(ur => ur.Role?.Name!).ToList()
             };
             return Users;
