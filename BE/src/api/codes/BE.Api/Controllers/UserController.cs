@@ -53,7 +53,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPut("updateprofile")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpadteUserInputDto inputDto)
+        public async Task<IActionResult> UpdateUser([FromForm] UpadteUserInputDto inputDto)
         {
             var output = await userService.UpadteUserAsync(inputDto);
             return Created(output.StatusCode, output);
