@@ -2,6 +2,7 @@
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.Extensions;
+using BE.Application.Services.Authentication;
 using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using BE.Domain.Interfaces;
@@ -63,6 +64,7 @@ namespace BE.Application.Services.Users
             {
                 var user = inputDto.ToEntity();
                 user.Id = new Guid();
+                user.Password = AuthenExtention.HashPassword(user.Password!);
                 await unitOfWork.UserRepository.AddAsync(user);
                 await unitOfWork.SaveChangesAsync();
 
