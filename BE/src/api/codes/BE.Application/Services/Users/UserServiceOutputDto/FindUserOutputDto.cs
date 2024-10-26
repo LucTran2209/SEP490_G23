@@ -10,6 +10,7 @@
         public string? Address { get; set; }
         public bool Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string? AvatarPersonal { get; set; }
         public List<string> ListRole { get; set; } = new List<string>();
     }
 }

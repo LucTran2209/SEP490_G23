@@ -1,4 +1,6 @@
-﻿namespace BE.Application.Services.Users.UserServiceInputDto
+﻿using Microsoft.AspNetCore.Http;
+
+namespace BE.Application.Services.Users.UserServiceInputDto
 {
     public class UpadteUserInputDto
     {
@@ -9,5 +11,6 @@
         public string Address { get; set; } = null!;
         public bool? Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public IFormFile? AvatarPersonal { get; set; }
     }
 }
