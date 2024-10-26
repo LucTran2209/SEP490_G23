@@ -30,10 +30,10 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<Order> GetAll()
         {
-            var query = context.Orders.Include(o => o.OrderDetails).ThenInclude(o => o.Product).ThenInclude(o => o.RentalShop)
-                                      .Include(o => o.OrderDetails).ThenInclude(o => o.Product).ThenInclude(o => o.ProductImages)
-                                      .Include(o => o.User)
+            var query = context.Orders.Include(o => o.User)
                                       .Include(o => o.OrderStatuses)
+                                      .Include(o => o.OrderDetails).ThenInclude(o => o.Product).ThenInclude(o => o.RentalShop)
+                                      .Include(o => o.OrderDetails).ThenInclude(o => o.Product).ThenInclude(o => o.ProductImages)
                                       .AsQueryable();
             return query;
         }
