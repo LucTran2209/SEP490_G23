@@ -10,7 +10,7 @@ import { NzResultStatusType } from 'ng-zorro-antd/result';
 })
 export class MessageResponseService {
   private errorCodeSubject = new BehaviorSubject<ErrorStatusCode>(
-    ErrorStatusCode.BAD_REQUEST
+    ErrorStatusCode.NOT_FOUND
   );
 
   errorCode$ = this.errorCodeSubject.asObservable();
