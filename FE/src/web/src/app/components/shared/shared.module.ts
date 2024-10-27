@@ -66,7 +66,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { FormPostComponent } from '../core/form/form-post/form-post.component';
 import { FormRentalRegistrationComponent } from '../core/form/form-rental-registration/form-rental-registration.component';
-import { LayoutProfileComponent } from '../layout/layout-profile/layout-profile.component';
 import { PostCardComponent } from '../core/card/post-card/post-card.component';
 import { FormProductComponent } from '../core/form/form-product/form-product.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -88,6 +87,9 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { RenterItemComponent } from '../renter-item/renter-item.component';
 import { SelectRadioPaymentMethodComponent } from '../select-radio-payment-method/select-radio-payment-method.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { FormOrderComponent } from '../core/form/form-order/form-order.component';
+import { HeaderTableComponent } from '../header-table/header-table.component';
+import { StatusLabelComponent } from '../status-label/status-label.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -135,6 +137,9 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  StatusLabelComponent,
+  HeaderTableComponent,
+  FormOrderComponent,
   SelectRadioPaymentMethodComponent,
   RenterItemComponent,
   InfoShopComponent,
