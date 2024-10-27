@@ -68,8 +68,6 @@ export class AuthService {
   ): Observable<boolean> {
     const data = route.data as RouteData;
     const roleCheck = this.userProfileService.roleCurrentUser;
-    console.log('object', roleCheck);
-   debugger
    const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
   
    const hasExpectedRole = expectedRole.some((r) => {
