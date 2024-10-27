@@ -32,7 +32,7 @@ namespace BE.Application.Services.Users
             user.FullName = command.FullName;
             user.Gender = (bool)command.Gender;
             user.DateOfBirth = command.DateOfBirth;
-
+            user.AvatarPersonal = file;
             return user;
         }
         public static FindUserOutputDto FindUser(User user)
