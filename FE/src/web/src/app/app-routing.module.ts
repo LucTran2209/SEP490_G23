@@ -10,7 +10,6 @@ import { ErrorComponent } from './features/error/error.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/common/home' },
   { path: 'base', component: AnonymousComponent },
-  { path: 'error', component: ErrorComponent },
   {
     path: 'admin',
     canActivate: [authGuard],
@@ -49,6 +48,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/lessor/lessor.module').then((m) => m.LessorModule),
   },
+  { path: '**', component: ErrorComponent },
 ];
 
 @NgModule({

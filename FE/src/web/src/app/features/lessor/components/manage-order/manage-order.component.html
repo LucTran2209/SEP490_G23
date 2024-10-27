@@ -1,0 +1,51 @@
+<div class="p-5 my-3 bg-white rounded-md">
+  <h3 class="text-xl text-[#111]">Danh sách yêu cầu thuê</h3>
+  <section class="py-3">
+    <app-form-order />
+  </section>
+</div>
+<div class="p-5 my-3 bg-white rounded-md">
+  <div class="flex items-center justify-start gap-x-2 pb-3">
+    <p class="font-medium">Dữ liệu hiển thị</p>
+    <app-header-table (handleChooseCell)="handleChooseViewCell($event)"/>
+  </div>
+  <section>
+    <nz-table
+      [nzCustomColumn]="customColumn"
+      [nzScroll]="{ x: '1150px' }"
+      #basicTable
+      [nzData]="listOfData"
+      [nzBordered]="true"
+      [nzPaginationPosition]="'bottom'"
+    >
+      <thead>
+        <tr>
+          <th nzCellControl="maDonHang">Mã đơn hàng</th>
+          <th nzCellControl="ngayTao">Ngày tạo</th>
+          <th nzCellControl="nguoiThue">Người thuê</th>
+          <th nzCellControl="soDienThoai">Số điện thoại</th>
+          <th nzCellControl="thoiGianThue">Thời gian thuê</th>
+          <th nzCellControl="giaCoc">Giá cọc</th>
+          <th nzCellControl="tongTien">Tổng tiền</th>
+          <th nzCellControl="noiDung">Nội dung</th>
+          <th nzCellControl="trangThaiDonHang">Trạng thái đơn hàng</th>
+          <th nzCellControl="trangThaiThanhToan">Trạng thái thanh toán</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="onSelectDetail(data)">
+          <td  nzCellControl="maDonHang">{{ data.maDonHang }}</td>
+          <td  nzCellControl="ngayTao">{{ data.ngayTao }}</td>
+          <td  nzCellControl="nguoiThue">{{ data.nguoiThue }}</td>
+          <td  nzCellControl="soDienThoai">{{ data.soDienThoai }}</td>
+          <td  nzCellControl="thoiGianThue">{{ data.thoiGianThue }}</td>
+          <td  nzCellControl="giaCoc">{{ data.giaCoc }} VND</td>
+          <td  nzCellControl="tongTien">{{ data.tongTien }} VND</td>
+          <td  nzCellControl="noiDung">{{ data.noiDung }}</td>
+          <td  nzCellControl="trangThaiDonHang">{{ data.trangThaiDonHang }}</td>
+          <td  nzCellControl="trangThaiThanhToan">{{ data.trangThaiThanhToan }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </section>
+</div>
