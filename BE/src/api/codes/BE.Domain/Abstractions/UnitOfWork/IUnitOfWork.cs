@@ -11,8 +11,9 @@ namespace BE.Domain.Abstractions.UnitOfWork
         public IOrderRepository OrderRepository { get; }
         public IOrderDeatilRepository OrderDeatilRepository { get; }
         public IOrderStatusRepository OrderStatusRepository { get; }
-
         public IFeedbackRepository FeedbackRepository { get; }
+        public ICategoryRepository CategoryRepository { get; }
+        public ISubCategoryRepository SubCategoryRepository { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

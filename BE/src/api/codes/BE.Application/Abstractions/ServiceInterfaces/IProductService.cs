@@ -9,5 +9,6 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> GetListProductAsync(GetListProductInputDto inputDto);
         Task<ResultService> UpdateProductAsync(UpdateProductInputDto inputDto, Guid id);
         Task<ResultService> DeleteProductAsync(Guid productId);
+        Task<ResultService> GetProductByIdAsync(Guid productId);
     }
 }

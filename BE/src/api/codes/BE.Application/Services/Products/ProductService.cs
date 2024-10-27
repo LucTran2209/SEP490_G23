@@ -88,6 +88,29 @@ namespace BE.Application.Services.Products
             };
         }
 
+        public async Task<ResultService> GetProductByIdAsync(Guid productId)
+        {
+            var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
+
+            if (product == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    Message = "Product not found."
+                };
+            }
+
+            var productDetail = product.ToListProductOutput();
+
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.OK.ToString(),
+                Message = "Product detail retrieved successfully.",
+                Datas = productDetail
+            };
+        }
+
         public async Task<ResultService> UpdateProductAsync(UpdateProductInputDto inputDto, Guid id)
         {
             await updateProductValidator.ValidateAndThrowAsync(inputDto);
