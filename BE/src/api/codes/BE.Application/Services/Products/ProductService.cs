@@ -90,11 +90,7 @@ namespace BE.Application.Services.Products
 
         public async Task<ResultService> GetProductByIdAsync(Guid productId)
         {
-            var product = await unitOfWork.ProductRepository
-                    .GetAll()
-                    .Include(p => p.ProductImages)
-                    .Include(p => p.RentalShop)
-                    .FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
 
             if (product == null)
             {

@@ -12,10 +12,12 @@ namespace BE.Infrastructure.Repositories
 
         public async Task<Product?> FindByIdAsync(Guid id)
         {
-            var product = await context.Products
-                                       .Include(p => p.RentalShop)
-                                       .FirstOrDefaultAsync(p => p.Id == id);
-            return product;
+            return await context.Products
+                .Include(p => p.RentalShop)
+                .Include(p => p.ProductImages)
+                .Include(p => p.SubCategory)
+                    .ThenInclude(sc => sc.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public IQueryable<Product> GetAll()
