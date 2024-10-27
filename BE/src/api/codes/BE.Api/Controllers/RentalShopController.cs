@@ -18,7 +18,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateRentalShopInputDto inputDto)
+        public async Task<IActionResult> CreateAsync([FromForm] CreateRentalShopInputDto inputDto)
         {
             var output = await rentalShopService.CreateAsync(inputDto);
             return Created(output.StatusCode, output);

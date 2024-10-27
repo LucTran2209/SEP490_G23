@@ -1,1 +1,144 @@
-<p>order-detail works!</p>
+<div class="p-5 my-3 bg-white rounded-md">
+  <h3 class="text-xl text-[#111]">Đơn thuê <strong>#123</strong></h3>
+</div>
+<div class="flex items-start gap-x-3">
+  <section
+    class="p-5 bg-white rounded-md min-w-[25%]"
+    style="min-height: calc(100vh - 80px)"
+  >
+    <h4 class="pb-3 text-lg font-medium">Thông tin đơn hàng</h4>
+    <table class="w-full">
+      <tbody>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Người thuê</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.nguoiThue }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Số điện thoại</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.soDienThoai }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Email</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.email }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Ngày tạo</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.ngayTao }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Thuê</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.thoiGianThue }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Mã đơn hàng</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.maDonHang }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">
+            Số lượng sản phẩm thuê
+          </td>
+          <td class="font-medium py-[4px]">
+            {{ orderDetail.quantityProduct }}
+          </td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Tiền cọc</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.giaCoc }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">Tổng tiền</td>
+          <td class="font-medium py-[4px]">{{ orderDetail.tongTien }}</td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">
+            Trạng thái thanh toán
+          </td>
+          <td class="font-medium py-[4px]">
+            <app-status-label
+              [label]="orderDetail.trangThaiThanhToan"
+              statusType="success"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="text-[14px] font-normal py-[4px] w-full">
+            Trạng thái đơn hàng
+          </td>
+          <td class="font-medium py-[4px]">
+            <app-status-label
+              [label]="orderDetail.trangThaiDonHang"
+              statusType="warning"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <section class="flex flex-col gap-2 pt-3">
+      <button nz-button class="w-full" nzType="primary">
+        Chấp nhận yêu cầu
+      </button>
+      <button nz-button class="w-full" nzType="default">Từ chối yêu cầu</button>
+    </section>
+  </section>
+  <section class="flex-1 p-5 bg-white rounded-md">
+    <h4 class="pb-3 text-lg font-medium">Chi tiết sản phẩm thuê</h4>
+    <nz-table
+      #basicTable
+      [nzBordered]="true"
+      [nzData]="listOfData"
+      [nzSize]="'middle'"
+    >
+      <thead>
+        <tr>
+          <th nzWidth="5%">
+            <label
+              nz-checkbox
+              [(ngModel)]="allChecked"
+              (ngModelChange)="onAllChecked($event)"
+            ></label>
+          </th>
+          <th nzWidth="20%">Sản phẩm</th>
+          <th nzWidth="50%">Thông tin thuê</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>
+            <label
+              nz-checkbox
+              [(ngModel)]="data.checked"
+              (ngModelChange)="onItemChecked()"
+            ></label>
+          </td>
+          <td>
+            <div class="gap-3 flex items-center">
+              <img
+                [src]="data.image"
+                alt="product"
+                class="w-[270px] h-[190px] object-cover rounded-sm"
+              />
+            </div>
+          </td>
+          <td>
+            <tr class="flex justify-start gap-x-5">
+              <td class="text-[14px] font-normal py-[4px] w-[40%]">Tên sản phẩm</td>
+              <td class="font-medium py-[4px]">{{ data.name }}</td>
+            </tr>
+             <tr class="flex justify-start gap-x-5">
+              <td class="text-[14px] font-normal py-[4px] w-[40%]">Số lượng:</td>
+              <td class="font-medium py-[4px]">
+                {{ data.deposit | currency : "VND" }}
+              </td>
+            </tr>
+             <tr class="flex justify-start gap-x-5">
+              <td class="text-[14px] font-normal py-[4px] w-[40%]">Tiền cọc:</td>
+              <td class="font-medium py-[4px]">
+                {{ data.rental | currency : "VND" }}
+              </td>
+            </tr>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </section>
+</div>
