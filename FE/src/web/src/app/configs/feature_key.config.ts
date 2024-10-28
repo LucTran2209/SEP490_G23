@@ -3,6 +3,7 @@ export const feature_key = {
   userFeature: 'feature_user',
   adminFeature: 'feature_admin',
   addressVNFeature: 'feature_addressVN',
+  registerLessorFeature: 'feature_registerLessor'
 } as const;
 
 export type FeatureKeyValues = (typeof feature_key)[keyof typeof feature_key];

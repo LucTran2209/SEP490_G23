@@ -12,13 +12,15 @@ import { catchError, Observable, of, retry, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { STRING } from '../utils/constant';
 import { getCookie, replaceCookie } from '../utils/cookie.helper';
+import { LoadingService } from '../services/loading.service';
 
 @Injectable()
 export class httpErrorInterceptor implements HttpInterceptor {
   constructor(
     private message: NzMessageService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private loadingSerivce: LoadingService,
   ) {}
 
   intercept(
@@ -67,6 +69,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     const {} = error;
     // console.log('>>> http-error interceptor: ',error);
     this.message.create('error', 'Đã xảy ra lỗi nội bộ. Vui lòng thử lại sau.');
+    this.loadingSerivce.setOtherLoading("error");
     return throwError(() => error);
   }
 

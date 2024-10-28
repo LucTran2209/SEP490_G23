@@ -40,7 +40,7 @@ export const StepRegisterLessor = {
   Step_register: {
     label: 'Step Register Lessor',
     title: 'Step Register Lessor | ERMS',
-    api: 'step-register-lessor',
+    api: 'RentalShop',
   },
 };
 

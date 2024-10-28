@@ -54,7 +54,6 @@ export class MessageResponseService {
   }
 
   setErrorCode(code: ErrorStatusCode): void {
-    debugger;
     this.errorCodeSubject.next(code);
   }
 
