@@ -33,13 +33,36 @@ namespace BE.Application.Services.Products
             _azureService = azureService;
         }
 
+        public async Task<ResultService> GetProductByIdAsync(Guid productId)
+        {
+            var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
+
+            if (product == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    Message = "Product not found."
+                };
+            }
+
+            var productDetail = product.ToListProductOutput();
+
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.OK.ToString(),
+                Message = "Product detail retrieved successfully.",
+                Datas = productDetail
+            };
+        }
+
         public async Task<ResultService> CreateAsync(CreateProductInputDto inputDto)
         {
             await createProductValidator.ValidateAndThrowAsync(inputDto);
 
             var product = inputDto.ToEntity();
 
-            await ConvertImageAsync(product, inputDto.Images);
+            await ConvertImageAsync(product, inputDto.Images, false);
 
             await unitOfWork.ProductRepository.AddAsync(product);
 
@@ -88,29 +111,6 @@ namespace BE.Application.Services.Products
             };
         }
 
-        public async Task<ResultService> GetProductByIdAsync(Guid productId)
-        {
-            var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
-
-            if (product == null)
-            {
-                return new ResultService
-                {
-                    StatusCode = HttpStatusCode.NotFound.ToString(),
-                    Message = "Product not found."
-                };
-            }
-
-            var productDetail = product.ToListProductOutput();
-
-            return new ResultService
-            {
-                StatusCode = HttpStatusCode.OK.ToString(),
-                Message = "Product detail retrieved successfully.",
-                Datas = productDetail
-            };
-        }
-
         public async Task<ResultService> UpdateProductAsync(UpdateProductInputDto inputDto, Guid id)
         {
             await updateProductValidator.ValidateAndThrowAsync(inputDto);
@@ -127,9 +127,10 @@ namespace BE.Application.Services.Products
             product.RentalPrice = inputDto.RentalPrice;
             product.DepositPrice = inputDto.DepositPrice;
 
-            await ConvertImageAsync(product, inputDto.Images);
+            await ConvertImageAsync(product, inputDto.Images, true);
 
             await unitOfWork.ProductRepository.UpdateAsync(product);
+
             await unitOfWork.SaveChangesAsync();
 
             return new ResultService
@@ -139,24 +140,29 @@ namespace BE.Application.Services.Products
             };
         }
 
-        private async Task ConvertImageAsync(Product product, List<IFormFile>? images)
+        private async Task ConvertImageAsync(Product product, List<IFormFile>? images, bool isUpdate)
         {
             var listUri = await _azureService.UpLoadFileAsync(images ?? new List<IFormFile>());
 
-            var productImages = new List<ProductImage>();
-
-            foreach (var item in listUri)
+            if (product.ProductImages?.Count > 0)
             {
-                var productImage = new ProductImage
-                {
-                    ProductId = product.Id,
-                    Link = item,
-                };
-
-                productImages.Add(productImage);
+                await unitOfWork.ProductImageRepository.RemoveRangeAsync(product.ProductImages?.ToList());
             }
 
-            product.ProductImages = productImages;
+            var productImages = listUri.Select(i => new ProductImage()
+            {
+                ProductId = product.Id,
+                Link = i,
+            }).ToList();
+
+            if (!isUpdate)
+            {
+                product.ProductImages = productImages;
+            }
+            else
+            {
+                await unitOfWork.ProductImageRepository.AddRangeAsync(productImages);
+            }
         }
     }
 }

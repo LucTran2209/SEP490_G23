@@ -7,6 +7,7 @@ namespace BE.Domain.Abstractions.UnitOfWork
         public IUserRepository UserRepository { get; }
 
         public IProductRepository ProductRepository { get; }
+        public IProductImageRepository ProductImageRepository { get; }
         public IRentalShopRepository RentalShopRepository { get; }
         public IOrderRepository OrderRepository { get; }
         public IOrderDeatilRepository OrderDeatilRepository { get; }
