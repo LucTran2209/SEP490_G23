@@ -26,7 +26,14 @@ namespace BE.Infrastructure.Repositories
 
             return user;
         }
+        public async Task<User?> GetsUserByUserIdAsync(Guid Id)
+        {
+            var user = await context.Users.Include(u => u.UserRoles!)
+                                            .ThenInclude(ur => ur.Role)
+                                            .FirstOrDefaultAsync(x => x.Id == Id);
 
+            return user;
+        }
         public IQueryable<User> GetAll()
         {
             var query = context.Users.Include(u => u.UserRoles!)

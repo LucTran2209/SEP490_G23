@@ -89,9 +89,9 @@ namespace BE.Application.Services.Users
                 };
             }
         }
-        public async Task<ResultService> GetUserByNameAsync(FindUserInputDto inputDto)
+        public async Task<ResultService> GetUserByIdAsync(FindUserInputDto inputDto)
         {
-            var r = await unitOfWork.UserRepository.GetsUserByUserNameAsync(inputDto.UserName);
+            var r = await unitOfWork.UserRepository.GetsUserByUserIdAsync(inputDto.Id);
             if (r != null)
             {
                 var data = UserExtention.FindUser(r);
