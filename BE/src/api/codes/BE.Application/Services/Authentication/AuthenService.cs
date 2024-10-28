@@ -211,11 +211,12 @@ namespace BE.Application.Services.Authentication
         {
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("UserId", user.Id.ToString()),
                 new Claim("Email", user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("FullName", user.FullName!),
-                new Claim("UserName", user.UserName!)
+                new Claim("UserName", user.UserName!),
+                new Claim("Avatar", user.AvatarPersonal ?? string.Empty),
             };
 
             if (user.UserRoles?.Count > 0)
