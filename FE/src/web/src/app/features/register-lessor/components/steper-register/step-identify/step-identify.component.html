@@ -1,23 +1,73 @@
 <label for="dropzone-file-front">
   <div class="p-3 flex justify-center items-center flex-col">
-    <img
-      src="../../../../../../assets/images/frontCard.webp"
-      alt=""
-      class="w-96 border border-gray-300 rounded-lg cursor-pointer hover:shadow-sm"
-    />
+    <div class="p-3 border shadow-md border-[#ddd] rounded-lg">
+      @if(!frontImagePreview){
+      <img
+        src="../../../../../../assets/images/frontCard.webp"
+        alt=""
+        class="w-96 border border-gray-300 rounded-lg cursor-pointer hover:shadow-sm"
+      />
+      } @else{
+      <img
+        [src]="frontImagePreview"
+        class="w-96 border border-gray-300 rounded-lg cursor-pointer hover:shadow-sm"
+        alt="front-card.png"
+      />
+      }
+    </div>
+
     <p class="pt-2 text-[#ccc] font-semibold">Ảnh căn cước mặt trước</p>
   </div>
-  <input type="file" name="" id="dropzone-file-front" class="hidden" />
+  <input
+    type="file"
+    name=""
+    accept="image/*"
+    (change)="onFileSelect($event, 'front')"
+    id="dropzone-file-front"
+    class="hidden"
+  />
 </label>
 
 <label for="dropzone-file-back">
   <div class="p-3 flex justify-center items-center flex-col">
-    <img
-      src="../../../../../../assets/images/backCard.webp"
-      alt=""
-      class="w-96 border border-gray-300 rounded-lg cursor-pointer hover:shadow-sm"
-    />
+    <div class="p-3 border shadow-md border-[#ddd] rounded-lg">
+      @if(!backImagePreview){
+      <img
+        src="../../../../../../assets/images/backCard.webp"
+        alt=""
+        class="w-96 border border-gray-300 rounded-lg cursor-pointer hover:shadow-sm"
+      />
+      } @else{
+      <img
+        [src]="backImagePreview"
+        class="w-96 border border-gray-300 rounded-lg cursor-pointer hover:shadow-sm"
+        alt="front-card.png"
+      />
+      }
+    </div>
     <p class="pt-2 text-[#ccc] font-semibold">Ảnh căn cước mặt sau</p>
   </div>
-  <input type="file" name="" id="dropzone-file-back" class="hidden" />
+  <input
+    type="file"
+    name=""
+    accept="image/*"
+    (change)="onFileSelect($event, 'back')"
+    id="dropzone-file-back"
+    class="hidden"
+  />
 </label>
+
+<div class="flex gap-x-3">
+  <button nz-button class="w-full" nzType="primary" (click)="goBack()">
+    <span>Trở lại</span>
+  </button>
+  <button
+    nz-button
+    class="w-full"
+    [disabled]="!isValidUploadImage()"
+    nzType="default"
+    (click)="onSubmit()"
+  >
+    <span>Tiếp tục</span>
+  </button>
+</div>

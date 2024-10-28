@@ -34,7 +34,7 @@ const routes: Routes = [
   {
     path: 'portal',
     canActivate: [authGuard],
-    data: { expectedRole: [USER_ROLE.LESSOR] },
+    data: { expectedRole: [USER_ROLE.RENTER] },
     loadChildren: () =>
       import('./features/register-lessor/register-lessor.module').then(
         (m) => m.RegisterLessorModule

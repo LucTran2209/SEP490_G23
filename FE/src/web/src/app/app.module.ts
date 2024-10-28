@@ -21,18 +21,18 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { AuthLayoutComponent } from './components/layout/auth-layout/auth-layout.component';
 import { LayoutDashboardComponent } from './components/layout/layout-dashboard/layout-dashboard.component';
 import { LayoutUserComponent } from './components/layout/layout-user/layout-user.component';
-import { AuthLayoutComponent } from './components/layout/auth-layout/auth-layout.component';
 import { SharedModule } from './components/shared/shared.module';
 import { AuthEffect } from './features/auth/state/auth.effects';
 import { authFeature } from './features/auth/state/auth.feature';
 import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
-// import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
+import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
-import { addressFeature } from './store/province/province.reducer';
 import { ProvinceEffect } from './store/province/province.effects';
+import { addressFeature } from './store/province/province.reducer';
 
 registerLocaleData(en);
 
@@ -67,8 +67,7 @@ registerLocaleData(en);
     },
     provideHttpClient(
       withFetch(),
-      // withInterceptors([httpRequestInterceptor, responseInterceptor])
-      withInterceptors([responseInterceptor])
+      withInterceptors([httpRequestInterceptor, responseInterceptor])
     ),
   ],
   bootstrap: [AppComponent],
