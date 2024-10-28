@@ -39,9 +39,9 @@ namespace BE.Api.Controllers
         }
 
         [HttpGet("viewprofile")]
-        public async Task<IActionResult> GetUserByUserNameAsync([FromQuery] FindUserInputDto inputDto)
+        public async Task<IActionResult> GetUserByUserIdAsync([FromQuery] FindUserInputDto inputDto)
         {
-            var output = await userService.GetUserByNameAsync(inputDto);
+            var output = await userService.GetUserByIdAsync(inputDto);
             return Created(output.StatusCode, output);
         }
 
