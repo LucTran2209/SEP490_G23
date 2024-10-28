@@ -9,7 +9,7 @@
         public string PhoneNumber { get; set; } = null!;
         public string Address { get; set; } = null!;
         public bool Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public bool IsActive { get; set; }
         public string? AvatarPersonal { get; set; }
         public List<string>? ListRole { get; set; } = new List<string>();

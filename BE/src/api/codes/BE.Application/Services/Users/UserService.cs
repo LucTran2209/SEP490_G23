@@ -116,17 +116,18 @@ namespace BE.Application.Services.Users
         {
             var r = unitOfWork.UserRepository.GetAll();
 
-            var query = r.Filter(inputDto.FullName, u => u.FullName.Contains(inputDto.FullName))
-                        .Filter(inputDto.Email, e => e.Email.Contains(inputDto.Email))
-                        .Filter(inputDto.PhoneNumber, p => p.PhoneNumber.Contains(inputDto.PhoneNumber))
-                        .Filter(inputDto.Address, ad => ad.Address.Contains(inputDto.Address))
+            var query = r.Filter(inputDto.FullName, u => u.FullName!.Contains(inputDto.FullName))
+                        .Filter(inputDto.Email, e => e.Email!.Contains(inputDto.Email))
+                        .Filter(inputDto.PhoneNumber, p => p.PhoneNumber!.Contains(inputDto.PhoneNumber))
+                        .Filter(inputDto.Address, ad => ad.Address!.Contains(inputDto.Address))
                         .Filter(inputDto.Gender, g => g.Gender == (inputDto.Gender.ToString().ToLower() == "male" ? true : false))
-                        .Filter(inputDto.DateOfBirth.ToString(), dob => dob.DateOfBirth.Date == inputDto.DateOfBirth.Value.Date);
+                        .Filter(inputDto.DateOfBirth.ToString(), dob => dob.DateOfBirth!.Value.Date == inputDto.DateOfBirth!.Value.Date);
 
             var res = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                                     .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
                                     .ToPageList(inputDto)
                                     .ToPageResult(await query.CountAsync(), inputDto, u => UserExtention.GetListUser(u));
+
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
