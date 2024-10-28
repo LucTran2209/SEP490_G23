@@ -12,7 +12,7 @@ namespace BE.Api.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Guid? Id => Guid.Parse(_httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        public Guid? Id => Guid.Parse(_httpContextAccessor?.HttpContext?.User.FindFirstValue("UserId")!);
 
         public string? UserName => _httpContextAccessor?.HttpContext?.User.FindFirstValue("UserName")!;
 

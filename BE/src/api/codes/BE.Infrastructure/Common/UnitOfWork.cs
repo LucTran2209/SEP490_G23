@@ -56,6 +56,9 @@ namespace BE.Infrastructure.Common
         public ISubCategoryRepository subCategoryRepository;
         public ISubCategoryRepository SubCategoryRepository => subCategoryRepository = new SubCategoryRepository(context);
 
+        public IProductImageRepository productImageRepository;
+        public IProductImageRepository ProductImageRepository => productImageRepository = new ProductImageRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
