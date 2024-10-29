@@ -205,8 +205,8 @@ export class UserService {
     // };
   //   return this.httpClient.get<UserResultService>(UserSlug.FilterUser.api);
   // }
-  viewProfile(userName: string): Observable<ProfileResultService>{
-    return this.httpClient.get<ProfileResultService>(UserSlug.GetUser.api + userName);
+  viewProfile(userId: string): Observable<ProfileResultService>{
+    return this.httpClient.get<ProfileResultService>(UserSlug.GetUser.api + userId);
   }
   updateProfile(data : UserUpdateInputDto): Observable<BaseResponseApi<null>>{
     return this.httpClient.put<BaseResponseApi<null>>(UserSlug.UpdateUser.api,  data);

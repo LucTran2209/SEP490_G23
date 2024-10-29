@@ -1,19 +1,22 @@
-export interface DeatilOfProduct{
-    productId: string;
+export interface DetailOfProduct{
+    productName: string;
     quantity: number;
     price: number;
+    depositPrice: number;
+    // numberofRentalDays?: number;
     images: string[];
 }
 export interface OrderByUserOutputDto {
     orderId: string;
     userId: string;
-    address?: string | null;
+    address: string;
     startDate: Date;
     endDate: Date;
-    note?: string | null;
+    note: string;
+    totalPrice: number;
     orderStatus: string;
-    rentalShopId: string;
-    detailProducts?: DeatilOfProduct[] | null;
+    rentalShopName: string;
+    detailProducts: DetailOfProduct[];
 }
 export interface OrderResultService {
     statusCode: string;

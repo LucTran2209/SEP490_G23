@@ -58,7 +58,7 @@ export const UserSlug = {
   GetUser: {
     label: 'View Profile',
     title: 'View Profile | ERMS',
-    api: 'User/viewprofile?UserName=',
+    api: 'User/viewprofile?Id=',
   },
   UpdateUser: {
     label: 'Update User',
@@ -153,3 +153,16 @@ export const OrderSlug = {
     api: 'ActiveOrder',
   },
 };
+export const CategorySlug = {
+  ListCategory: {
+    label: 'List Category',
+    title: 'List Category | ERMS',
+    api: 'api/Category',
+  },
+  ListSubCategory: {
+    label: 'List SubCategory',
+    title: 'List SubCategory | ERMS',
+    api: 'SubCategory',
+  }
+
+}

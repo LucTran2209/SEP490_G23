@@ -7,37 +7,29 @@
 </app-navbar-headear>
 <nz-layout class="main-layout h-full">
   <nz-sider
+    style="width: 250px; min-width: 100px"
     nzCollapsible
     [(nzCollapsed)]="isSidebarCollapsed"
     [nzTrigger]="null"
     nzTheme="light"
   >
-    <!-- <ul nz-menu nzTheme="light" nzMode="inline">
-      <li nz-menu-item>
-        <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
-        <span>DashBoard</span>
+    <ul nz-menu nzTheme="light" nzMode="inline" class="mt-10">
+      <li nz-menu-item [routerLink]="['../common/home']">
+        <span nz-icon nzType="home" nzTheme="outline"></span>
+        <span>Trang Chủ</span>
       </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="user" nzTheme="outline"></span>
-        <span>User</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="apartment" nzTheme="outline"></span>
-        <span>Role</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="team" nzTheme="outline"></span>
-        <span>Group</span>
-      </li>
-    </ul> -->
-    <ul nz-menu nzTheme="light" nzMode="inline">
       <!-- Admin Role -->
       <ng-container *ngIf="userRole === USERROLE.ADMIN">
         <li nz-menu-item>
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thống Kê</span>
         </li>
-        <li nz-menu-item>
+        <li
+          nz-menu-item
+          [routerLink]="['./manage-users']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <span nz-icon nzType="user" nzTheme="outline"></span>
           <span>Quản Lý Người Dùng</span>
         </li>
@@ -61,14 +53,19 @@
           <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
           <span>Danh Sách Người Thuê</span>
         </li>
-        <li nz-menu-item>
+        <li
+          nz-menu-item
+          [routerLink]="['./shop']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <span nz-icon nzType="shop" nzTheme="outline"></span>
           <span>Cửa Hàng</span>
         </li>
       </ng-container>
     </ul>
   </nz-sider>
-  <nz-content style="min-height: calc(100vh - 65px);">
+  <nz-content style="min-height: calc(100vh - 65px)">
     <router-outlet></router-outlet>
   </nz-content>
 </nz-layout>

@@ -12,10 +12,17 @@ export class OrderService {
 
   constructor(private http: HttpClient, private httpClient: AppHttpClientService) { }
 
-  listMyOrder(pageIndex: number, pageSize: number): Observable<OrderResultService>{
+  listMyOrder(pageIndex: number, pageSize: number, userId: string): Observable<OrderResultService>{
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
+      UserId: userId,
+    };
+    return this.httpClient.get<OrderResultService>(OrderSlug.ListOrder.api, params );
+  }
+  getOrder(orderId: string): Observable<OrderResultService>{
+    let params: any = {
+      OrderId: orderId,
     };
     return this.httpClient.get<OrderResultService>(OrderSlug.ListOrder.api, params );
   }

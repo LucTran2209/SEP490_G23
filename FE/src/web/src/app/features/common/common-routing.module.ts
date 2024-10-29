@@ -8,6 +8,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ProductRentalDetailComponent } from './components/product-rental-detail/product-rental-detail.component';
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
 import { OrderProcessComponent } from './components/order/order-process/order-process.component';
+import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
 
 
 const routes: Routes = [
@@ -26,9 +27,11 @@ const routes: Routes = [
         ],
       },
       {
-
-        path: 'list-my-order',
-        component: ListMyOrderComponent,
+        path: 'order',
+        children: [
+          { path: '', component: ListMyOrderComponent },
+          { path: 'order-detail', component: MyOrderDetailComponent },
+      ]
       },
     ]
   },

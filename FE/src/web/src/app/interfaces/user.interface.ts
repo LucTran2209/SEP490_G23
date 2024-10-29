@@ -8,6 +8,7 @@ export interface UserOutputDto {
   address: string;
   gender: boolean;  
   dateOfBirth: string;
+  avatarPersonal: string;
   isActive: boolean;
   listRole: [];
   }
@@ -21,7 +22,7 @@ export interface UserOutputDto {
     gender: boolean;  
     dateOfBirth: string;
     introduction: string;
-    avatarPersonal: string;
+    avatarPersonal: File | null;
     isActive: boolean;
     refreshToken: string;
   }
@@ -33,7 +34,7 @@ export interface UserOutputDto {
     address: string,
     gender: boolean,
     dateOfBirth: string
-
+    avatarPersonal?: File | null;
   }
   export interface ActiveUserInputDto{
     id: string;

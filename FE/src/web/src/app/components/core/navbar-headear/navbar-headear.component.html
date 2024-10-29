@@ -3,33 +3,79 @@
     <div class="flex justify-between items-center">
       <img class="logo m-1 ms-0" src="assets/images/logo.png" alt="main-logo" />
       <span
-        class="trigger"
+        class="trigger mt-5"
         nz-icon
         [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
         (click)="handleToggleSidebar()"
       ></span>
     </div>
-    <div>
-      <nz-badge [nzCount]="notificationCount">
-        <span
-          class="noffication text-lg"
-          nz-icon
-          nzType="bell"
-          nzTheme="outline"
-        ></span>
-      </nz-badge>
-      <nz-avatar
-        nzGap="4"
-        nzText="N"
-        nzSize="large"
-        style="
-          vertical-align: middle;
-          background-color: green;
-          margin-left: 40px;
-        "
-        (click)="onAvatarClick()"
-      ></nz-avatar>
-      
+    <div class="flex justify-between">
+      <div class="mt-1">
+        <nz-badge [nzCount]="notificationCount">
+          <span
+            class="noffication text-lg"
+            nz-icon
+            nzType="bell"
+            nzTheme="outline"
+          ></span>
+        </nz-badge>
+      </div>
+      <div nz-dropdown [nzDropdownMenu]="menu">
+        <nz-avatar
+          nzGap="4"
+          [nzSrc]="
+            avatarPersonal ? avatarPersonal : 'assets/images/default-avatar.jpg'
+          "
+          nzSize="large"
+          style="
+            vertical-align: middle;
+            background-color: green;
+            margin-left: 40px;
+          "
+        ></nz-avatar>
+      </div>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            [routerLink]="['../common/user/account/profile']"
+          >
+            Thông tin cá nhân
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            [routerLink]="['./user/order']"
+          >
+            Danh sách thuê của tôi
+          </li>
+
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            *ngIf="userRole === USERROLE.LESSOR"
+            [routerLink]="['../lessor/shop']"
+          >
+            Cửa Hàng Của Tôi
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            *ngIf="userRole === USERROLE.ADMIN"
+            [routerLink]="['../admin/manage-users']"
+          >
+            Thanh Tiến Trình
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            (click)="logout()"
+          >
+            Đăng xuất
+          </li>
+        </ul>
+      </nz-dropdown-menu>
     </div>
   </nz-header>
 </nz-layout>

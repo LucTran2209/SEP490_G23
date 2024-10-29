@@ -1,0 +1,102 @@
+<ng-container *ngIf="loading; else content">
+  <div class="flex justify-center w-full h-full">
+    <nz-spin class="w-full" nzTip="Vui Lòng Chờ Trong Giây Lát..."></nz-spin>
+  </div>
+</ng-container>
+<ng-template #content>
+  <div class="mx-5 mt-3">
+    <div class="w-full rounded overflow-hidden shadow-lg border-2">
+      <div class="px-16 py-10">
+        <div class="step-order py-10">
+          <nz-steps [nzCurrent]="currentStep">
+            <nz-step
+              nzTitle="Đơn Đã Đặt"
+              [nzStatus]="currentStep >= 0 ? 'finish' : 'wait'"
+            >
+            </nz-step>
+            <nz-step
+              nzTitle="Đã Đặt Cọc"
+              [nzStatus]="currentStep >= 1 ? 'finish' : 'wait'"
+            >
+            </nz-step>
+            <nz-step
+              nzTitle="Giao Thành Công"
+              [nzStatus]="currentStep >= 2 ? 'finish' : 'wait'"
+            >
+            </nz-step>
+            <nz-step
+              nzTitle="Trả Hàng"
+              [nzStatus]="currentStep >= 3 ? 'finish' : 'wait'"
+            >
+            </nz-step>
+            <nz-step
+              nzTitle="Hoàn Cọc"
+              [nzStatus]="currentStep >= 4 ? 'finish' : 'wait'"
+            >
+            </nz-step>
+          </nz-steps>
+        </div>
+        <app-shop-card [order]="order" [isInDetailView]="true"></app-shop-card>
+        <div class="flex justify-between p-6">
+          <!-- Địa chỉ -->
+          <div class="w-1/2 pr-8">
+            <h2 class="text-gray-400 font-semibold mb-2 text-lg">Địa Chỉ</h2>
+            <p class="text-black font-medium py-1">Nguyen Van A</p>
+            <p class="text-black py-1">013536846426</p>
+            <p class="text-black py-1">{{ order.address }}</p>
+          </div>
+
+          <!-- Thông tin chi tiết -->
+          <div class="w-1/2 pl-8 border-l border-gray-300">
+            <div class="flex justify-between mb-1">
+              <span class="text-gray-600">Giá thuê sản phẩm (1 ngày):</span>
+              <span class="text-black font-medium"
+                >{{
+                  totalDailyRent | currency : "VND" : "" : "1.0-0"
+                }}
+                VND</span
+              >
+            </div>
+            <!-- <div class="flex justify-between mb-1">
+              <span class="text-gray-600">Phí đặt cọc:</span>
+              <span class="text-black font-medium"
+                >{{
+                  totalDepositPrice | currency : "VND" : "" : "1.0-0"
+                }}
+                VND</span
+              >
+            </div> -->
+            <div class="flex justify-between mb-1">
+              <span class="text-gray-600">Thời gian thuê:</span>
+              <span class="text-black font-medium"
+                >{{ numberofRentalDays }} ngày</span
+              >
+            </div>
+            <div class="flex justify-between mb-1">
+              <span class="text-gray-600">Ngày yêu cầu:</span>
+              <span class="text-black font-medium">{{
+                order.startDate | date : "HH:mm dd/MM/yyyy"
+              }}</span>
+            </div>
+            <div class="flex justify-between mb-1">
+              <span class="text-gray-600">Ngày trả:</span>
+              <span class="text-black font-medium">{{
+                order.endDate | date : "HH:mm dd/MM/yyyy"
+              }}</span>
+            </div>
+            <div class="flex justify-between mb-1">
+              <span class="text-gray-600">Tổng tiền thuê:</span>
+              <span class="text-black font-medium">606,800 VND</span>
+            </div>
+            <div
+              class="flex justify-between mt-4 pt-4 border-t border-gray-300"
+            >
+              <span class="text-gray-600">Thành tiền:</span>
+              <span class="text-red-500 font-bold text-lg">806,800 VND</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

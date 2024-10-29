@@ -42,7 +42,7 @@ const routes: Routes = [
   },
   {
     path: 'lessor',
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     component: LayoutDashboardComponent,
     data: { expectedRole: [USER_ROLE.LESSOR] },
     loadChildren: () =>

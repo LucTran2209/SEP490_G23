@@ -14,6 +14,18 @@
       (ngSubmit)="submitForm()"
       novalidate
     >
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="avatarPersonal">
+          Avatar
+        </nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          nzErrorTip="Vui lòng chọn một tệp hình ảnh!"
+        >
+          <input nz-input type="file" (change)="onFileChange($event)" />
+        </nz-form-control>
+      </nz-form-item>
       <nz-form-item *ngIf="!isEditMode">
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="userName" nzRequired>
           Tên Người Dùng
@@ -100,10 +112,6 @@
           [nzXs]="24"
           nzErrorTip="Vui lòng nhập ngày sinh hoặc phải trên 18 tuổi!"
         >
-          <!-- <nz-date-picker
-            formControlName="dateOfBirth"
-            [nzFormat]="dateFormat"
-          ></nz-date-picker> -->
           <input
             nz-input
             type="date"
