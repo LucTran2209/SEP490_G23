@@ -17,6 +17,7 @@ import {
 import { UserService } from '../../../../services/user.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +27,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class ProfileComponent implements OnInit {
   user!: UserOutputDto;
   userInformation!: UserUpdateInputDto;
-  username: string = '';
+  userid: string = '';
   isVisible: boolean = false;
   title: string = '';
   showAlert: boolean = false;
@@ -38,11 +39,12 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private userProfileService: UserProfileService,
     private message: NzMessageService,
+    private router: Router,
   ) {}
   ngOnInit() {
-    
     this.title = 'Chỉnh sửa Hồ Sơ';
     this.loadUser();
+    
   }
   showEditProfile() {
     this.userInformation = {
@@ -52,9 +54,10 @@ export class ProfileComponent implements OnInit {
       phoneNumber: this.user.phoneNumber,
       address: this.user.address,
       gender: this.user.gender,
-      dateOfBirth: this.user.dateOfBirth
+      dateOfBirth: this.user.dateOfBirth,
+      avatarPersonal: null,
     }
-    console.log(this.userInformation);
+    // console.log(this.userInformation);
     this.isVisible = true;
   }
   handleCloseModal() {
@@ -67,7 +70,7 @@ export class ProfileComponent implements OnInit {
         this.message.success('Cập Nhật Hồ Sơ Thành Công!');
         this.handleCloseModal();
         this.loadUser();
-        
+        // window.location.reload();
       },
       error: (error) => {
         this.alertMessage = 'Cập Nhật Hồ Sơ Thất Bại!';
@@ -84,10 +87,12 @@ export class ProfileComponent implements OnInit {
   }
   loadUser() {
     const userCurrent = this.userProfileService.currentUser;
-    this.username = userCurrent?.UserName;
-    this.userService.viewProfile(this.username).subscribe({
+    this.userid = userCurrent?.UserId;
+    console.log(this.userid);
+    this.userService.viewProfile(this.userid).subscribe({
       next: (res: ProfileResultService) => {
         this.user = res.data;
+        this.userProfileService.setAvatar(this.user.avatarPersonal);
         console.log(this.user);
         this.loading = false;
       },

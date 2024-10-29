@@ -22,7 +22,7 @@ export class FormUserComponent{
     gender: true, 
     dateOfBirth: '',
     introduction: '',
-    avatarPersonal: '',
+    avatarPersonal: null,
     isActive: true,
     refreshToken: '',
   };
@@ -45,6 +45,7 @@ export class FormUserComponent{
       address: new FormControl(this.user.address, [Validators.required]),
       gender: new FormControl(this.user.gender, [Validators.required]),
       dateOfBirth: new FormControl(this.user.dateOfBirth, [Validators.required, ageValidator()]),
+      avatarPersonal: new FormControl(this.user.avatarPersonal),
     });
 
     if (!this.isEditMode) {
@@ -52,7 +53,6 @@ export class FormUserComponent{
       this.userForm.addControl('userName', new FormControl(this.user.userName, [Validators.required]));
       this.userForm.addControl('password', new FormControl('123456789'));
       this.userForm.addControl('introduction', new FormControl(this.user.introduction, []));
-      this.userForm.addControl('avatarPersonal', new FormControl(''));
       this.userForm.addControl('isActive', new FormControl(true));
       this.userForm.addControl('refreshToken', new FormControl(''));
     }
@@ -64,16 +64,24 @@ export class FormUserComponent{
   }
 
   populateForm(): void {
+    const dateOfBirth = new Date(this.userUpdate.dateOfBirth);
+    const isoString = dateOfBirth.toISOString().split('T')[0];
     this.userForm.patchValue({
       fullName: this.userUpdate.fullName,
       email: this.userUpdate.email,
       phoneNumber: this.userUpdate.phoneNumber,
       address: this.userUpdate.address,
       gender: this.userUpdate.gender,
-      dateOfBirth: this.userUpdate.dateOfBirth,
+      dateOfBirth: isoString, // or use a format you prefer
+      avatarPersonal: this.userUpdate.avatarPersonal,
     });
+    
     if (this.isEditMode) {
       this.userForm.removeControl('userName');
+      this.userForm.removeControl('password');
+      this.userForm.removeControl('isActive');
+      this.userForm.removeControl('introduction');
+      this.userForm.removeControl('refreshToken');
     }
   }
 
@@ -95,17 +103,30 @@ export class FormUserComponent{
       isActive: true,
     });
   }
+  // onFileChange(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input?.files && input.files.length > 0) {
+  //     const file = input.files[0];
+  //     this.userForm.patchValue({ avatarPersonal: file });
+  //   }
+  // }
+  onFileChange(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.userForm.patchValue({ avatarPersonal: file }); // Correctly patch the FormControl
+    } else {
+      this.userForm.patchValue({ avatarPersonal: null }); // Reset if no file is selected
+    }
+  }
   
-  submitForm(){
-    // Lắng nghe valueChanges và chuyển Date thành ISO string
-    this.userForm.get('dateOfBirth')?.valueChanges.subscribe((value: Date) => {
-      if (value) {
-        const isoString = value.toISOString(); // Chuyển thành ISO string
-        this.userForm.patchValue({ dateOfBirth: isoString }, { emitEvent: false });
-      }
-    });
-    const formValue = this.userForm.value;
-
+  submitForm() {
+    // Update dateOfBirth to ISO string format
+    const dateOfBirthControl = this.userForm.get('dateOfBirth');
+    if (dateOfBirthControl?.value) {
+      const isoString = new Date(dateOfBirthControl.value).toISOString();
+      dateOfBirthControl.setValue(isoString, { emitEvent: false });
+    }
+  
     if (this.userForm.invalid) {
       this.alertMessage = 'Thất Bại! Vui Lòng Điền Đúng Thông Tin';
       this.showAlert = true;
@@ -115,33 +136,37 @@ export class FormUserComponent{
       }, 5000);
       return;
     }
-  if (this.isEditMode) {
-    // update value
-    const updatedData: UserUpdateInputDto = {
-      id: this.userUpdate.id,
-      fullName: formValue.fullName,
-      email: formValue.email,
-      phoneNumber: formValue.phoneNumber,
-      address: formValue.address,
-      gender: formValue.gender,
-      dateOfBirth: formValue.dateOfBirth,
-    };
-    
-    this.updateUser.emit(updatedData);
-  } else {
-    // create value
-    const userData: UserInputDto = {
-      ...formValue,
-      userName: formValue.userName,
-      password: formValue.password,
-      introduction: formValue.introduction,
-      avatarPersonal: formValue.avatarPersonal,
-      isActive: formValue.isActive,
-      refreshToken: formValue.refreshToken,
-    };
-    
-    this.saveUser.emit(userData);
-  }
-    
+  
+    // Create FormData object
+    const formData = new FormData();
+  
+    // Append form values to FormData with capitalized keys
+    Object.entries(this.userForm.value).forEach(([key, value]) => {
+      // Capitalize the first letter of each key
+      const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+  
+      if (capitalizedKey === 'AvatarPersonal' && value) {
+        // Append file if AvatarPersonal is selected
+        formData.append(capitalizedKey, value as File, (value as File).name);
+        console.log(value);
+      } else if (value !== null && value !== undefined) {
+        // Append other fields as strings
+        formData.append(capitalizedKey, value.toString());
+      }
+    });
+  
+    if (this.isEditMode) {
+      // Emit update data with FormData
+      formData.append('Id', this.userUpdate.id); // Append the ID for updates
+      this.updateUser.emit(formData as unknown as UserUpdateInputDto); // Cast if needed
+    } else {
+      // Emit new user data with FormData
+      this.saveUser.emit(formData as unknown as UserInputDto); // Cast if needed
+    }
+  
+    this.userForm.reset({
+      password: '123456789',
+      isActive: true,
+    });
   }
 }

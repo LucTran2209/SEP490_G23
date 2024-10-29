@@ -9,14 +9,14 @@ export interface DetailOfProduct{
 export interface OrderByUserOutputDto {
     orderId: string;
     userId: string;
-    address?: string | null;
+    address: string;
     startDate: Date;
     endDate: Date;
-    note?: string | null;
-    totalPrice?: number | null;
+    note: string;
+    totalPrice: number;
     orderStatus: string;
     rentalShopName: string;
-    detailProducts?: DetailOfProduct[] | null;
+    detailProducts: DetailOfProduct[];
 }
 export interface OrderResultService {
     statusCode: string;

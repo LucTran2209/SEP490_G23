@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { DetailOfProduct, OrderByUserOutputDto } from '../../../../interfaces/order.interface';
 
 @Component({
@@ -14,11 +14,18 @@ export class ShopCardComponent {
   @Input() isShowBtn1: boolean = false;
   @Input() isShowBtn2: boolean = false;
   @Input() isShowBtn3: boolean = false;
+  @Input() isInDetailView: boolean = false;
   @Output() showFeedBack = new EventEmitter<void>();  
   numberofRentalDays: number = 0;
 
-  ngOnInit() {
-    this.calculateNumberOfRentalDays();
+  // ngOnInit() {
+  //   this.calculateNumberOfRentalDays();
+  // }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['order'] && this.order) {
+      // Chỉ tính số ngày thuê khi `order` đã có giá trị
+      this.calculateNumberOfRentalDays();
+    }
   }
   onClickBtn1(){
     this.showFeedBack.emit();
@@ -29,5 +36,6 @@ export class ShopCardComponent {
     
     const timeDiff = endDate.getTime() - startDate.getTime();
     this.numberofRentalDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+    console.log(this.numberofRentalDays);
   }
 }

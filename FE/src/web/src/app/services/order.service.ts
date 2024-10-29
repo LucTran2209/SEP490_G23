@@ -20,4 +20,10 @@ export class OrderService {
     };
     return this.httpClient.get<OrderResultService>(OrderSlug.ListOrder.api, params );
   }
+  getOrder(orderId: string): Observable<OrderResultService>{
+    let params: any = {
+      OrderId: orderId,
+    };
+    return this.httpClient.get<OrderResultService>(OrderSlug.ListOrder.api, params );
+  }
 }

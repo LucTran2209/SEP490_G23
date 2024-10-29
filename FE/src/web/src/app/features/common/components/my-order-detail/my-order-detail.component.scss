@@ -1,6 +1,6 @@
 .horizontal-timeline {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
   
   .nz-timeline {
@@ -36,4 +36,7 @@
   .step-date {
     font-size: 12px;
     color: #a0a0a0;
+  }
+  ::ng-deep .ant-steps-item-title {
+    font-size: 0.9vw;
   }

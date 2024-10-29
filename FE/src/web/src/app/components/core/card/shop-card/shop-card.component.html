@@ -28,7 +28,7 @@
   <div
     class="py-3 cursor-pointer"
     *ngFor="let pro of order.detailProducts"
-    [routerLink]="['./order-detail']"
+    [routerLink]="isInDetailView ? null : ['./order-detail']"
   >
     <div class="flex justify-start gap-8 mb-2">
       <img

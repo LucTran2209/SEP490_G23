@@ -44,7 +44,9 @@
   <div nz-dropdown [nzDropdownMenu]="menu">
     <nz-avatar
       nzGap="4"
-      nzText="N"
+      [nzSrc]="
+          avatarPersonal ? avatarPersonal : 'assets/images/default-avatar.jpg'
+        "
       nzSize="large"
       style="vertical-align: middle; background-color: green; margin-left: 40px"
     ></nz-avatar>
@@ -79,6 +81,14 @@
         [routerLink]="['../lessor/shop']"
       >
         Cửa Hàng Của Tôi
+      </li>
+      <li
+        nz-menu-item
+        class="p-3 uppercase text-center menu-item"
+        *ngIf="userRole === USERROLE.ADMIN"
+        [routerLink]="['../admin/manage-users']"
+      >
+        Thanh Tiến Trình
       </li>
       <li
         nz-menu-item

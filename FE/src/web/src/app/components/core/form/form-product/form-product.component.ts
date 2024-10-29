@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ProductInputDto, ProductOutputDto, ProductResultService, UpdateProductInputDto } from '../../../../interfaces/product.interface';
+import { CategoryService } from '../../../../services/category.service';
+import { Subcategory, SubCategoryResultService } from '../../../../interfaces/category.interface';
 
 @Component({
   selector: 'app-form-product',
@@ -32,11 +34,12 @@ export class FormProductComponent {
   @Input() alertMessage: string = '';
   @Input() alertType: 'success' | 'error' = 'success';
   @Output() saveProduct = new EventEmitter<FormData>();
-  @Output() updateProduct = new EventEmitter<UpdateProductInputDto>();
+  @Output() updateProduct = new EventEmitter<FormData>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   @Input() listOfControl: Array<{ id: number; controlInstance: string }> = [];
+  categories: Subcategory[] = [];
 
-  constructor(private msg: NzMessageService) {
+  constructor(private msg: NzMessageService, private categoryService: CategoryService) {
       this.productForm = new FormGroup({
         productName: new FormControl(this.product.productName, [Validators.required]),
         description: new FormControl(this.product.description, [Validators.required]),
@@ -54,13 +57,13 @@ export class FormProductComponent {
     this.isVisible = false;
     this.closeModal.emit();
     this.imageList = [];
-
+    this.resetForm();
   }
-
   handleCancel(): void {
     this.isVisible = false;
     this.closeModal.emit();
     this.imageList = [];
+    this.resetForm();
   }
   beforeUpload = (file: NzUploadFile): boolean => {
     const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -71,12 +74,24 @@ export class FormProductComponent {
   };
 
   ngOnInit(): void {
+    this.loadSubCategories();
   }
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['productUpdate'] && this.productUpdate) {
       this.isEditMode = true;
       this.populateForm();
     }
+  }
+  loadSubCategories(){
+    this.categoryService.listSubCategory().subscribe((res: SubCategoryResultService) => {
+      this.categories = res.data;
+    });
+  }
+  handleImageChange({ fileList }: { fileList: NzUploadFile[] }) {
+    this.imageList = fileList;
+    const imageFiles = fileList.map((file) => file.originFileObj).filter(Boolean);
+    this.productForm.get('images')?.setValue(imageFiles);
   }
 
   populateForm(): void {
@@ -91,54 +106,76 @@ export class FormProductComponent {
       images: this.productUpdate.images,
     });
     if (this.productUpdate.images && this.productUpdate.images.length) {
-      this.imageList = this.productUpdate.images.map((image: string | File, index: number) => {
-        if (typeof image === 'string') {
-          return {
-            uid: `${index}`,
-            name: `image-${index}.jpg`,
-            status: 'done',
-            url: image, // URL from the server
-          };
-        } else {
-          return {
-            uid: `${index}`,
-            name: image.name,
-            status: 'done',
-            originFileObj: image,
-            url: URL.createObjectURL(image) // Generate a Blob URL for the uploaded file
-          };
-        }
-      });
+    //   this.imageList = this.productUpdate.images.map((image: string | File, index: number) => {
+    //     if (typeof image === 'string') {
+    //       return {
+    //         uid: `${index}`,
+    //         name: `image-${index}.jpg`,
+    //         status: 'done',
+    //         url: image, // URL from the server
+    //       };
+    //     } else {
+    //       return {
+    //         uid: `${index}`,
+    //         name: image.name,
+    //         status: 'done',
+    //         originFileObj: image,
+    //         url: image.name
+    //       };
+    //     }
+    //   });
+    this.imageList = this.productUpdate.images.map((image: string | File, index: number) => {
+      if (typeof image === 'string') {
+        return {
+          uid: `${index}`,
+          name: `image-${index}.jpg`,
+          status: 'done',
+          url: image, // Set existing image URL
+        } as NzUploadFile;
+      } else {
+        return {
+          uid: `${index}`,
+          name: image.name,
+          status: 'done',
+          originFileObj: image,
+          url: (image as File).name,
+        } as NzUploadFile;
+      }
+    });
     }
     console.log(this.imageList);
   }
   submitForm(){
-    const formData = new FormData();
+    let formData = new FormData();
     if (this.isEditMode) {
       const formValue = this.productForm.value;
-      const updatedData: UpdateProductInputDto = {
-        productName: formValue.productName,
-        description: formValue.description,
-        quantity: formValue.quantity,
-        rentalPrice: formValue.rentalPrice,
-        depositPrice: formValue.depositPrice,
-        rentalLimitDays: formValue.rentalLimitDays,
-        evaluate: formValue.evaluate,
-        images: this.productUpdate.images
-      };
-      this.updateProduct.emit(updatedData);
+      Object.entries(formValue).forEach(([key, value]) => {
+        // Capitalize the key
+        const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+    
+        if (capitalizedKey === 'Images' && value) {
+          this.imageList.forEach((file: NzUploadFile) => {
+            if (file.originFileObj) {
+                formData.append('images', file.originFileObj);
+            }
+        });
+        } else if (capitalizedKey !== 'SubCategoryId' && capitalizedKey !== 'RentalShopId') {
+          // Append other fields, excluding 'SubCategoryId' and 'RentalShopId'
+          formData.append(capitalizedKey, value as string);
+        }
+      });
+      this.updateProduct.emit(formData);
     }else{
 
       
-      formData.append('productName', this.productForm.value.productName);
-      formData.append('description', this.productForm.value.description);
-      formData.append('quantity', this.productForm.value.quantity.toString());
-      formData.append('rentalPrice', this.productForm.value.rentalPrice.toString());
-      formData.append('depositPrice', this.productForm.value.depositPrice.toString());
-      formData.append('rentalLimitDays', this.productForm.value.rentalLimitDays.toString());
-      formData.append('evaluate', this.productForm.value.evaluate.toString());   
+      formData.append('ProductName', this.productForm.value.productName);
+      formData.append('Description', this.productForm.value.description);
+      formData.append('Quantity', this.productForm.value.quantity.toString());
+      formData.append('RentalPrice', this.productForm.value.rentalPrice.toString());
+      formData.append('DepositPrice', this.productForm.value.depositPrice.toString());
+      formData.append('RentalLimitDays', this.productForm.value.rentalLimitDays.toString());
       if(!this.isEditMode){
-        formData.append('subCategoryId', this.productForm.value.subCategoryId);
+        formData.append('SubCategoryId', this.productForm.value.subCategoryId);
       } 
       this.imageList.forEach((file: NzUploadFile) => {
         if (file.originFileObj) {

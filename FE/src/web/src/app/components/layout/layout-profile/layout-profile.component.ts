@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { UserProfileService } from '../../../services/user-profile.service';
+import { UserService } from '../../../services/user.service';
+import { ProfileResultService } from '../../../interfaces/user.interface';
 
 @Component({
   selector: 'app-layout-profile',
@@ -11,10 +13,12 @@ export class LayoutProfileComponent implements OnInit {
   isAccountOpen = false;
   isOrderSlected= false;
   userName: string = '';
+  avatarPersonal: string = '';
 
   constructor(
     private router: Router, 
-    private userProfileService: UserProfileService
+    private userProfileService: UserProfileService,
+    private userService: UserService,
   ) {
     this.router.events.subscribe(() => {
       this.checkActiveAccountRoute();
@@ -32,5 +36,6 @@ export class LayoutProfileComponent implements OnInit {
   ngOnInit(): void {
     const userCurrent = this.userProfileService.currentUser;
     this.userName = userCurrent?.UserName;
+    this.avatarPersonal = userCurrent.Avatar;
   }
 }

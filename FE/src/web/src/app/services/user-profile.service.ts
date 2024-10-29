@@ -33,4 +33,21 @@ export class UserProfileService {
   get roleCurrentUser(): string | string[] | undefined {
     return this.currentUser.Role;
   }
+  get UserId(): string {
+    return this.currentUser.UserId;
+  }
+  // Getter for avatar
+  get avatar(): string {
+    return this.currentUser.Avatar;
+  }
+  
+
+  // Method to update avatar URL
+  setAvatar(avatarUrl: string): void {
+    const user = this.currentUser;
+    if (user) {
+      user.Avatar = avatarUrl;
+      this.currentUser = user; // Trigger setter to save updated user to storage
+    }
+  }
 }

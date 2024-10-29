@@ -113,16 +113,25 @@ export class ProductService {
   createProduct(data: FormData): Observable<BaseResponseApi<null>>{
     return this.httpClient.post<BaseResponseApi<null>>(ProductSlug.AddProduct.api, data);
   }
-  updateProduct(id: string, data: UpdateProductInputDto): Observable<BaseResponseApi<null>>{
-    const formData: FormData = new FormData();
+  updateProduct(id: string, formData: FormData): Observable<BaseResponseApi<null>>{
+    // const formData: FormData = new FormData();
     
-    // Add dữ liệu vào formData
-    formData.append('ProductName', data.productName);
-    formData.append('Description', data.description);
-    formData.append('Quantity', data.quantity.toString());
-    formData.append('RentalPrice', data.rentalPrice.toString());
-    formData.append('DepositPrice', data.depositPrice.toString());
-    formData.append('RentalLimitDays', data.rentalLimitDays.toString());
+    // // Add dữ liệu vào formData
+    // formData.append('ProductName', data.productName);
+    // formData.append('Description', data.description);
+    // formData.append('Quantity', data.quantity.toString());
+    // formData.append('RentalPrice', data.rentalPrice.toString());
+    // formData.append('DepositPrice', data.depositPrice.toString());
+    // formData.append('RentalLimitDays', data.rentalLimitDays.toString());
+    // // Add images (as files) to formData
+    // if (data.images && data.images.length) {
+    //   data.images.forEach((image: File | string, index: number) => {
+    //     if (typeof image !== 'string') {
+    //       // Append each image file with a unique key
+    //       formData.append('Images', image, image.name);
+    //     }
+    //   });
+    // }
     return this.httpClient.put<BaseResponseApi<null>>(ProductSlug.UpdateProduct.api + id, formData);
   }
 }

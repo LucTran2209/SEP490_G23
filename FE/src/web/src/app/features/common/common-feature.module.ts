@@ -14,6 +14,7 @@ import { LayoutProfileComponent } from '../../components/layout/layout-profile/l
 import { OrderProcessComponent } from './components/order/order-process/order-process.component';
 import { PersonalInfoComponent } from './components/order/order-process/personal-info/personal-info.component';
 import { OrderInfoPersonalComponent } from './components/order/order-process/order-info-personal/order-info-personal.component';
+import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { OrderInfoPersonalComponent } from './components/order/order-process/ord
     OrderProcessComponent,
     PersonalInfoComponent,
     OrderInfoPersonalComponent,
-    ShopPersonalComponent
+    ShopPersonalComponent,
+    MyOrderDetailComponent,
   ],
   imports: [CommonModule, SharedModule, CommonRoutingModule],
 })

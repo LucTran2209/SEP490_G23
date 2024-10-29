@@ -1,4 +1,4 @@
-<div class="bg-light container">
+<div class="bg-light">
   <div class="row flex-nowrap">
     <div class="col py-3 m-3">
       <div class="card">
@@ -150,13 +150,17 @@
                 </span>
               </td>
               <td>
-                <div class="flex justify-start">
+                <div class="flex justify-start flex-wrap">
                   <img
-                    class="rounded-full w-12 h-12"
-                    src="https://cdn-icons-png.flaticon.com/512/1458/1458201.png"
+                    class="rounded-full w-9 h-9"
+                    [src]="
+                      user.avatarPersonal
+                        ? user.avatarPersonal
+                        : 'assets/images/default-avatar.jpg'
+                    "
                     alt="image-product"
                   />
-                  <span class="name text-secondary p-3 mt-3">
+                  <span class="name text-secondary p-3 mt-1">
                     {{ user.fullName }}
                   </span>
                 </div>
@@ -168,22 +172,22 @@
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  {{ user.address }}
+                  {{ user.address || "[CHƯA CÓ]" }}
                 </span>
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  {{ user.phoneNumber }}
+                  {{ user.phoneNumber || "[CHƯA CÓ]" }}
                 </span>
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  {{ user.gender ? "Nam" : "Nữ" }}
+                  {{ user.gender ? "Nam" : "Nữ" || "[CHƯA CÓ]" }}
                 </span>
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  {{ user.dateOfBirth | date : "dd/MM/yyyy" }}
+                  {{ user.dateOfBirth | date : "dd/MM/yyyy" || "[CHƯA CÓ]" }}
                 </span>
               </td>
               <td class="">

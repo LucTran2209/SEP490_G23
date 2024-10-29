@@ -78,6 +78,7 @@ export class ManagerShopComponent  implements OnInit{
     this.loadProducts(this.currentPage, this.pageSize); // Gọi lại hàm loadProducts với trang mới
 }
   handleCreateProduct(productData: FormData): void {
+    //chưa có get rentalshopId nên tự viết id trong database ở đây
       const rentalShopId = 'd9637a94-2ed5-4ecd-8e69-18d7ee0e04a9';
       productData.append('rentalShopId', rentalShopId);
       console.log('RentalShopId:', rentalShopId);
@@ -101,7 +102,7 @@ export class ManagerShopComponent  implements OnInit{
         }
       });
   }
-  handleUpdateProduct(product: UpdateProductInputDto){
+  handleUpdateProduct(product: FormData){
     this.productService.updateProduct(this.currentId, product).subscribe({
       next: (res) => {
         this.message.success('Cập nhật sản phẩm thành công!');

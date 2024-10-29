@@ -62,7 +62,8 @@
               [nzMultiple]="true"
               nzListType="picture-card"
               [nzBeforeUpload]="beforeUpload"
-              nzListType="picture-card"
+              [nzShowUploadList]="true"
+              (nzChange)="handleImageChange($event)"
             >
               <div>
                 <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
@@ -162,20 +163,9 @@
                     formControlName="subCategoryId"
                   >
                     <nz-option
-                      nzValue="bf354ba4-4b19-4d90-9f5a-90032254d1a5"
-                      nzLabel="Laptops"
-                    ></nz-option>
-                    <nz-option
-                      nzValue="40ef0621-7384-4467-a2d6-9a2d546a628a"
-                      nzLabel="Tables"
-                    ></nz-option>
-                    <nz-option
-                      nzValue="887f3350-c8a6-49a6-ad06-adad2fbbf6e0"
-                      nzLabel="Office Chairs"
-                    ></nz-option>
-                    <nz-option
-                      nzValue="8e3a34fd-8eb8-4244-9bc6-bd80b1104cb8"
-                      nzLabel="Mobile Phones"
+                      *ngFor="let subCategory of categories"
+                      [nzValue]="subCategory.id"
+                      [nzLabel]="subCategory.subCategoryName"
                     ></nz-option>
                   </nz-select>
                 </nz-form-control>

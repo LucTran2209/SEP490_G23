@@ -18,6 +18,7 @@ export class UserNavbarHeaderComponent implements OnInit {
   @Output() avatarClick = new EventEmitter<void>();
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
+  avatarPersonal: string = '';
 
 
   constructor(
@@ -29,6 +30,7 @@ export class UserNavbarHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.handleAssginInfo();
     this.checkRole();
+    this.avatarPersonal = this.userProfileService.avatar;
   }
 
   onAvatarClick(): void {
