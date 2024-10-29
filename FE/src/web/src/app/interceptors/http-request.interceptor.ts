@@ -1,20 +1,35 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { finalize, switchMap, throwError, timer } from 'rxjs';
+import { MessageResponseService } from '../services/message-response.service';
+import { AuthSlug, CategorySlug } from '../configs/api.configs';
 
 // Danh sách các URL không muốn đính kèm token
 const ignoredUrls: string[] = [
-  '/public-api/login',
-  '/public-api/register',
-  '/health-check',
+  AuthSlug.Login.api,
+  AuthSlug.ForgotPassWord.api,
+  AuthSlug.Register.api,
+  CategorySlug.ListCategory.api,
+  CategorySlug.ListSubCategory.api,
   'https://esgoo.net/api-tinhthanh/'
 ];
 
 export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.token;
-
+  const messageResponse  = inject(MessageResponseService);
   const shouldIgnore = ignoredUrls.some(url => req.url.includes(url));
+  if (!token && !shouldIgnore && authService.isTokenExpired()) {
+    messageResponse.handleError('Hết phiên token vui lòng đăng nhập lại', 401);
+
+    return timer(3000).pipe(
+      switchMap(() => {
+        authService.logout();
+        return throwError(() => new Error('Token expired, please log in again.'));
+      })
+    );
+  }
 
   const clonedRequest = !shouldIgnore && token
     ? req.clone({

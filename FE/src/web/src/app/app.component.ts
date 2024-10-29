@@ -10,11 +10,11 @@ import { StatusProcess } from './interfaces/anonymous.interface';
 })
 export class AppComponent implements OnInit{
   loading$?: Observable<StatusProcess>;
-  constructor(private loadingService: LoadingService,) {
+  constructor(private loadingService: LoadingService) {
     this.loading$ = this.loadingService.status$;
-  
   }
 
   ngOnInit(): void {
+    console.log(">>> line 18 app component");
   }
 }

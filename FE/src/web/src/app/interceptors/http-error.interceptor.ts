@@ -8,10 +8,8 @@ import {
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { catchError, Observable, of, retry, switchMap, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { STRING } from '../utils/constant';
-import { getCookie, replaceCookie } from '../utils/cookie.helper';
 import { LoadingService } from '../services/loading.service';
 
 @Injectable()
@@ -30,8 +28,6 @@ export class httpErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((errorRes: HttpErrorResponse) => {
         const { status, headers, ok, error } = errorRes;
-        console.log('>>> line 21:', errorRes);
-        console.log('>>> chcek error:');
         if (status === 500) return this.handleApiError(req, next, errorRes);
         if (status === 400) return this.handleBadRequest(req, next, errorRes);
         if (status === 401) return this.handleUnauthorized(req, next, errorRes);
@@ -58,6 +54,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
   ) {
     this.message.create('error', 'Bạn không có quyền truy cập vào hệ thống');
     this.authService.endSession();
+    this.loadingSerivce.setOtherLoading("error");
     return throwError(() => error);
   }
 
@@ -78,6 +75,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
     error: HttpErrorResponse
   ) {
+    this.loadingSerivce.setOtherLoading("error");
     return throwError(() => error);
   }
 
@@ -87,10 +85,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     error: HttpErrorResponse
   ) {
     const {} = error;
-    // this.message.create(
-    //   'error',
-    //   'Đã xảy ra lỗi phần máy chủ. Vui lòng thử lại sau.'
-    // );
+    this.loadingSerivce.setOtherLoading("error");
 
     console.warn(error);
 
@@ -102,6 +97,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
     error: HttpErrorResponse
   ) {
+    this.loadingSerivce.setOtherLoading("error");
     return throwError(() => error);
   }
 
@@ -110,6 +106,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
     error: HttpErrorResponse
   ) {
+    this.loadingSerivce.setOtherLoading("error");
     return throwError(() => error);
   }
 
@@ -118,30 +115,8 @@ export class httpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
     error: HttpErrorResponse
   ) {
+    this.loadingSerivce.setOtherLoading("error");
     return throwError(() => error);
-    return this.checkAuth().pipe(
-      switchMap(() => {
-        return next.handle(request).pipe(retry(1));
-      })
-    );
   }
 
-  private checkAuth(): Observable<null> {
-    const accessToken = getCookie(STRING.ACCESS_TOKEN);
-    const isValid = this.authService.isTokenExpired(accessToken || '');
-
-    if (!isValid) {
-      return this.authService.renewToken().pipe(
-        switchMap((res) => {
-          // replaceCookie(STRING.ACCESS_TOKEN, res.data, null);
-          return of(null);
-        }),
-        catchError((error) => {
-          this.authService.endSession();
-          return throwError(error);
-        })
-      );
-    }
-    return of(null);
-  }
 }
