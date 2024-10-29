@@ -82,8 +82,9 @@ export class SteperRegisterComponent {
         return;
       }
 
+      const addressTest = `${address.address_province.name}-${address.address_district.name}-${address.address_ward.name}`
       const formData = new FormData();
-      formData.append('userId', `${this.userCurrent._id}`); ///fixed line 86
+      formData.append('userId', this.userCurrent._id);
       formData.append('shopName', shopName);
       formData.append('imageFont', imageFront, imageFront.name);
       formData.append('imageBack', imageBack, imageBack.name);
@@ -92,11 +93,11 @@ export class SteperRegisterComponent {
       formData.append('email', email);
       formData.append('description', description);
       formData.append('rentalScale', rentalScale.toString());
-      formData.append('address', `${address.address_province}-${address.address_district}-${address.address_ward}`);
+      formData.append('address', addressTest);
       formData.append('isActive', isActive.toString());
       formData.append('businessLicenseFile', businessLicense, businessLicense.name);
 
-      console.log('FormData:', formData);
+      console.log('FormData:', typeof formData);
 
       this.store.dispatch(renterShop({ formData }));
     }

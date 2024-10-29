@@ -1,8 +1,7 @@
 import { Province } from './province.interface';
 
 export interface BaseResponseApi<T> {
-  statusCode: number;
-  // statusCode: string;
+  statusCode: number | string;
   data: T;
   message: string;
 }

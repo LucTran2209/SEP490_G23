@@ -18,7 +18,7 @@ export const stepInfoTax = createAction(
     STEP_INFO_TAX, props<{content: IRequestRegisterLessor_Step3}>()
 )
 export const renterShop = createAction(
-    INIT_RENTERSHOP, props<{formData: FormData}>()
+    INIT_RENTERSHOP, props<{formData: any}>()
 )
 export const renterShop_success = createAction(
     RENTERSHOP_SUCCESS, props<{message: string}>()

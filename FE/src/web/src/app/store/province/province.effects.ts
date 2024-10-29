@@ -78,6 +78,22 @@ export class ProvinceEffect {
     }
   );
 
+  processSuccess$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(
+        ProvinceActions.getProvince_success,
+        ProvinceActions.getDistrict_success,
+        ProvinceActions.getWardOrCommume_success
+      ),
+      tap((data) => {
+       
+      })
+    ),
+    {
+      dispatch: false,
+    }
+  );
+
   processFailure$ = createEffect(() =>
     this.action$.pipe(
       ofType(
@@ -88,6 +104,9 @@ export class ProvinceEffect {
       tap((err) => {
         console.log('error:', err);
       })
-    )
+    ),
+    {
+      dispatch: false,
+    }
   );
 }
