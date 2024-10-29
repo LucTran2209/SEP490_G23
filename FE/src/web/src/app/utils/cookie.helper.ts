@@ -45,13 +45,16 @@ const replaceCookie = (
   expireTime: number | null,
   path: string
 ) => {
+  let name = cookieName.startsWith(cookiePrf)
+    ? cookieName
+    : `${cookiePrf}${cookieName}`;
   const date = expireTime ? new Date(expireTime * 1000) : new Date();
   if (!expireTime) {
     date.setTime(date.getTime() + 365 * 24 * 60 * 60 * 1000); //test 1 year
   }
 
   /** Tạo cookie */
-  document.cookie = `${cookieName}=${cookieValue};expires=${date.toUTCString()}; domain=${
+  document.cookie = `${name}=${cookieValue};expires=${date.toUTCString()}; domain=${
     environment.baseDomain
   }; path=${path ?? '/'}`;
 };

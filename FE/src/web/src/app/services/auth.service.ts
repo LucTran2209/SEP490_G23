@@ -67,13 +67,11 @@ export class AuthService {
     url: any
   ): Observable<boolean> {
     const data = route.data as RouteData;
-    const roleCheck = this.userProfileService.roleCurrentUser;
+    const roleCheck: string[] = ([] as string[]).concat(
+      this.userProfileService.roleCurrentUser ?? []
+    );
    const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
-  
-   const hasExpectedRole = expectedRole.some((r) => {
-     return roleCheck?.includes(r);
-   });
-   console.log(hasExpectedRole, "hasExpectedRole");
+   const hasExpectedRole =  expectedRole.length === roleCheck?.length && expectedRole.every((val, index) => val === roleCheck[index]);
     return this.isAuthenticated$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
@@ -93,63 +91,34 @@ export class AuthService {
 
   /**
    *
-   * @param otpcode
-   */
-  checkOtpCode(otpcode: string): Observable<boolean> {
-    let savecodefirst = getCookie(STRING.OTPCODE);
-    if (savecodefirst) {
-      let decodeotpcode = decodeBase64(savecodefirst);
-      if (otpcode === decodeotpcode) {
-        return of(true);
-      }
-    } else {
-      return of(false);
-    }
-    return of(false);
-  }
-  /**
-   *
    * @param token
    * @returns
    * @description
    */
   decodedTokenToGiveInfo(token: string) {
     let decoded = jwtDecode<IPayLoad>(token);
-    console.log('line 128', decoded);
     return decoded;
   }
 
-  /**
-   *
-   * @param token
-   */
-  isTokenExpired(token: string | null): boolean {
-    if (!token) {
-      return true;
+  isTokenExpired(): boolean {
+    if (!this.token) {
+      return true; 
     }
     try {
-      const expiry = jwtDecode(token).exp;
-      if (expiry) {
-        return Math.floor(new Date().getTime() / 1000) <= expiry;
+      const { exp } = jwtDecode(this.token);
+      if (exp) {
+        const currentTime = Math.floor(new Date().getTime() / 1000); 
+        return currentTime >= exp;
       }
+      return true; 
     } catch (error) {
-      return true;
+      console.error('Invalid token:', error); 
+      return true; 
     }
-    return true;
   }
 
   startSession(accessToken: string, refreshToken: string): void {
     const userPayLoad = this.decodedTokenToGiveInfo(accessToken);
-
-    // const roleId =
-    //   Array.isArray(userPayLoad.roleId) && userPayLoad.roleId.length > 0
-    //     ? userPayLoad.roleId[0]
-    //     : userPayLoad.roleId;
-
-    // const redirectUrl =
-    //   roleId !== undefined
-    //     ? MappingLinkAfterLoginByRoles[roleId as USER_ROLE] ?? '/common/home'
-    //     : '/common/home';
 
     replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
@@ -169,7 +138,6 @@ export class AuthService {
     });
   }
 
-  //logout with user
   endSession(): void {
     removeAllCookies();
     window.localStorage.clear();
@@ -221,11 +189,6 @@ export class AuthService {
     );
   }
 
-  renewToken(): Observable<BaseResponseApi<string>> {
-    return this.httpClient.post(AuthSlug.RenewToken.api, {
-      refreshToken: getCookie(STRING.REFRESH_TOKEN),
-    });
-  }
   //test
   // changepassword(data: IChangePassword): Observable<ResultService>{
   //   return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});

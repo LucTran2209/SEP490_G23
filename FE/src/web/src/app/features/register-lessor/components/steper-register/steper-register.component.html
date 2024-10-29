@@ -1,5 +1,5 @@
 <section class="h-screen flex flex-col items-center justify-center">
-  <div class="border-2 border-slate-400 rounded-md p-6">
+  <div class="p-6 min-w-[700px]">
     <div class="">
       <p class="text-gray-500 text-lg font-semibold text-center uppercase py-3">
         Hoàn thành các bước sau để trở thành người cho thuê
@@ -23,34 +23,19 @@
     </div>
     <div class="steps-content">
       <ng-container *ngTemplateOutlet="stepProcess"></ng-container>
-
-      <div class="steps-action">
-        @if (current > 0) {
-        <button nz-button nzType="default" (click)="pre()">
-          <span>Previous</span>
-        </button>
-        } @if (current < 2) {
-        <button nz-button nzType="default" (click)="next()">
-          <span>Next</span>
-        </button>
-        } @if (current === 2) {
-        <button nz-button nzType="primary" (click)="done()">
-          <span>Done</span>
-        </button>
-        }
-      </div>
     </div>
   </div>
 </section>
 
 <ng-template #stepProcess>
   @if (current === 0) {
-  <app-step-info />
+  <app-step-info  (nextStep)="next()"/>
+  
 
   } @if (current === 1) {
-  <app-step-identify />
+  <app-step-identify  (nextStep)="next()" (prevStep)="pre()" />
 
   } @if (current === 2) {
-  <app-step-tax />
+  <app-step-tax (nextStep)="done()" (prevStep)="pre()" />
   }
 </ng-template>

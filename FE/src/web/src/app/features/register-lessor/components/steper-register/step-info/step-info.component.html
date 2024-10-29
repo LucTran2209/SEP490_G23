@@ -1,29 +1,48 @@
-<form nz-form>
+<form nz-form [formGroup]="formInfoRegisterLessor" (ngSubmit)="onSubmit()">
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzRequired>́Tên chủ cho thuê</nz-form-label>
-    <nz-form-control [nzSpan]="24" nzValidatingTip="Validating...">
+    <nz-form-control [nzSpan]="24"  nzErrorTip="Hãy nhập tên đại diện thuê!">
       <input
         nz-input
-        formControlName="userName"
-        placeholder="async validate try to write JasonWood"
+        formControlName="shopName"
+        placeholder="Nhập tên chủ cho thuê"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>Email</nz-form-label>
+    <nz-form-control [nzSpan]="24" nzErrorTip="Hãy nhập email!">
+      <input
+        nz-input
+        formControlName="email"
+        placeholder="Nhập email"
+        type="email"  
       />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzRequired>Số điện thoại</nz-form-label>
-    <nz-form-control [nzSpan]="24">
-      <input nz-input formControlName="mobile" placeholder="mobile" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSpan]="24" nzRequired>E-mail</nz-form-label>
-    <nz-form-control [nzSpan]="24">
+    <nz-form-control [nzSpan]="24" [nzErrorTip]="phoneNumberErrorTpl">
       <input
         nz-input
-        formControlName="email"
-        placeholder="email"
-        type="email"
+        formControlName="phoneNumber"
+        placeholder="Nhập số điện thoại"
       />
     </nz-form-control>
+  </nz-form-item>
+  <ng-template #phoneNumberErrorTpl let-control>
+    <ng-container *ngIf="control.hasError('required')">
+      Số điện thoại là bắt buộc.
+    </ng-container>
+    <ng-container *ngIf="control.hasError('pattern')">
+      Số điện thoại phải là 10 hoặc 11 chữ số.
+    </ng-container>
+    
+  </ng-template>
+  
+  <nz-form-item>
+    <button nz-button class="w-full" type="submit" [disabled]="!formInfoRegisterLessor.valid" nzType="default">
+      <span>Tiếp tục</span>
+    </button>
   </nz-form-item>
 </form>

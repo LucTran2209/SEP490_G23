@@ -1,59 +1,43 @@
-// import { HttpInterceptorFn } from '@angular/common/http';
-// import { inject } from '@angular/core';
-// import { Store } from '@ngrx/store';
-// import * as AuthActions from '../features/auth/state/auth.actions';
-// import { Router } from '@angular/router';
-// import { catchError, switchMap, throwError, take } from 'rxjs';
-// import { AuthService } from '../services/auth.service';
-// import { selectAccessToken } from '../features/auth/state/auth.feature';
-// import { NzMessageService } from 'ng-zorro-antd/message';
-// import { AuthSlug, UserSlug } from '../configs/api.configs';
-// import { getApi } from '../utils/anonymous.helper';
-// import { SVGcommon } from '../configs/svg-icon';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { finalize, switchMap, throwError, timer } from 'rxjs';
+import { MessageResponseService } from '../services/message-response.service';
+import { AuthSlug, CategorySlug } from '../configs/api.configs';
 
-// /**
-//  * @description: some of api don't need token on header
-//  */
-// const NOT_PROTECTED_URL = [...getApi(AuthSlug), ...SVGcommon, ...getApi(UserSlug)];
+// Danh sách các URL không muốn đính kèm token
+const ignoredUrls: string[] = [
+  AuthSlug.Login.api,
+  AuthSlug.ForgotPassWord.api,
+  AuthSlug.Register.api,
+  CategorySlug.ListCategory.api,
+  CategorySlug.ListSubCategory.api,
+  'https://esgoo.net/api-tinhthanh/'
+];
 
-// /**
-//  *
-//  * @param req : some of url to give data source from backend and focus on jwt expire
-//  * if it's expire, redirect to home page and logout user and ohterwhise
-//  * @param next
-//  * @returns
-//  */
-// export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
-//   const authService = inject(AuthService);
-//   const store = inject(Store);
-//   const messageNZ = inject(NzMessageService);
-//   console.log('req url', req.url);
-//   const isSkipApi = NOT_PROTECTED_URL.every((url) => !req.url.includes(url));
+export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const token = authService.token;
+  const messageResponse  = inject(MessageResponseService);
+  const shouldIgnore = ignoredUrls.some(url => req.url.includes(url));
+  if (!token && !shouldIgnore && authService.isTokenExpired()) {
+    messageResponse.handleError('Hết phiên token vui lòng đăng nhập lại', 401);
 
-//   if (!isSkipApi) {
-//     return next(req);
-//   }
+    return timer(3000).pipe(
+      switchMap(() => {
+        authService.logout();
+        return throwError(() => new Error('Token expired, please log in again.'));
+      })
+    );
+  }
 
-//   const token$ = store.select(selectAccessToken);
-//   console.log('line 24', NOT_PROTECTED_URL);
-//   return token$.pipe(
-//     take(1),
-//     switchMap((token) => {
-//       if (authService.isTokenExpired(token)) {
-//         messageNZ.info('Bạn đã hết phiên đăng nhập vui lòng đăng nhập lại');
-//         store.dispatch(AuthActions.logout());
-//         return throwError(
-//           () => new Error('Token expired, redirecting to login page.')
-//         );
-//       }
+  const clonedRequest = !shouldIgnore && token
+    ? req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    : req;
 
-//       const clonedRequest = req.clone({
-//         setHeaders: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-
-//       return next(clonedRequest);
-//     })
-//   );
-// };
+  return next(clonedRequest);
+};
