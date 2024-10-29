@@ -59,12 +59,13 @@ export class AppHttpClientService {
   post<T>(
     uri: string,
     data: null | IDummy = null,
-    configs: any = {}
+    configs: any = {},
+    isFormData: boolean = false
   ): Observable<T> {
     return this.httpClient
       .post<T>(this.prefixUri(uri), data, {
         reportProgress: configs.reportProgress,
-        headers: this.generateHttpHeaders(configs.headers, configs.isMultiPart),
+        headers: this.generateHttpHeaders(configs.headers, isFormData),
       })
       .pipe(
         catchError((err) => {

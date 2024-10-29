@@ -67,13 +67,11 @@ export class AuthService {
     url: any
   ): Observable<boolean> {
     const data = route.data as RouteData;
-    const roleCheck = this.userProfileService.roleCurrentUser;
+    const roleCheck: string[] = ([] as string[]).concat(
+      this.userProfileService.roleCurrentUser ?? []
+    );
    const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
-  
-   const hasExpectedRole = expectedRole.some((r) => {
-     return roleCheck?.includes(r);
-   });
-   console.log(hasExpectedRole, "hasExpectedRole");
+   const hasExpectedRole =  expectedRole.length === roleCheck?.length && expectedRole.every((val, index) => val === roleCheck[index]);
     return this.isAuthenticated$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {

@@ -1,9 +1,9 @@
-// src/app/step-tax/step-tax.component.ts
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { StatusProcess } from '../../../../../interfaces/anonymous.interface';
 import { Province } from '../../../../../interfaces/province.interface';
 import { IRequestRegisterLessor_Step3 } from '../../../../../interfaces/register-lessor.interface';
@@ -29,10 +29,12 @@ import {
 @Component({
   selector: 'app-step-tax',
   templateUrl: './step-tax.component.html',
-  styleUrls: ['./step-tax.component.scss'], 
+  styleUrls: ['./step-tax.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StepTaxComponent implements OnInit {
-  // Observables
+export class StepTaxComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   getListProvince$?: Observable<Province[]>;
   getListDistrict$?: Observable<Province[]>;
   getListWard$?: Observable<Province[]>;
@@ -40,7 +42,6 @@ export class StepTaxComponent implements OnInit {
   statusDistrict$?: Observable<StatusProcess>;
   statusWard$?: Observable<StatusProcess>;
 
-  // FormGroup definition with strict typing
   formTax: FormGroup<{
     rentalScale: FormControl<string>;
     address_ward: FormControl<object | string>;
@@ -50,7 +51,6 @@ export class StepTaxComponent implements OnInit {
     description: FormControl<string>;
   }>;
 
-  // File storage
   uploadedFiles: File[] = [];
 
   @Output() nextStep = new EventEmitter<void>();
@@ -68,6 +68,11 @@ export class StepTaxComponent implements OnInit {
   ngOnInit(): void {
     this.initializeStateSubscriptions();
     this.resetAddressOnChange();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createForm(): FormGroup {
@@ -102,34 +107,26 @@ export class StepTaxComponent implements OnInit {
       this.store.select(selectDescription),
       this.store.select(selectBusinessLicense),
       this.store.select(selectRentalScale),
-    ]).subscribe(([address, taxNumber, description, businessLicense, rentalScale]) => {
-      if (address) {
-        this.loadDistricts(address.address_province.id);
-        this.loadWards(address.address_district.id);
-        this.formTax.patchValue({
-          address_province: address.address_province,
-          address_district: address.address_district,
-          address_ward: address.address_ward,
-          taxCode: taxNumber,
-          description: description,
-          rentalScale: String(rentalScale)
-        });
-        this.uploadedFiles = businessLicense ? [businessLicense] : [];
-      }
-    });
-  }
+    ])
+      .pipe(takeUntil(this.destroy$)) // Clean up on component destroy
+      .subscribe(([address, taxNumber, description, businessLicense, rentalScale]) => {
+        if (address) {
+          this.formTax.patchValue({
+            address_province: address.address_province,
+            address_district: address.address_district,
+            address_ward: address.address_ward,
+            taxCode: taxNumber,
+            description: description,
+            rentalScale: String(rentalScale),
+          }, { emitEvent: false }); // Prevent triggering valueChanges
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.uploadedFiles = Array.from(input.files);
-    }
+          this.uploadedFiles = businessLicense ? [businessLicense] : [];
+        }
+      });
   }
-
-  removeFile(index: number): void {
-    this.uploadedFiles.splice(index, 1);
+  goBack(): void {
+    this.prevStep.emit();
   }
-
   onSubmit(): void {
     if (this.formTax.invalid || this.uploadedFiles.length === 0) {
       this.validateForm();
@@ -137,6 +134,7 @@ export class StepTaxComponent implements OnInit {
     }
 
     const { address_district, address_province, address_ward, description, taxCode, rentalScale } = this.formTax.value;
+
     this.store.dispatch(
       stepInfoTax({
         content: {
@@ -152,8 +150,15 @@ export class StepTaxComponent implements OnInit {
     this.nextStep.emit();
   }
 
-  goBack(): void {
-    this.prevStep.emit();
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.uploadedFiles = Array.from(input.files);
+    }
+  }
+
+  removeFile(index: number): void {
+    this.uploadedFiles.splice(index, 1);
   }
 
   compareFn = (o1: any, o2: any) => (o1?.id === o2?.id);
@@ -170,28 +175,24 @@ export class StepTaxComponent implements OnInit {
     this.store.dispatch(ProvinceActions.getWardOrCommume({ id }));
   }
 
-  onProvinceChange(value: string): void {
-    this.loadDistricts(value);
-  }
-
-  onDistrictChange(value: string): void {
-    this.loadWards(value);
-  }
-
   private resetAddressOnChange(): void {
-    this.formTax.get('address_province')?.valueChanges.subscribe((province: any) => {
-      if (province) {
-        this.loadDistricts(province.id);
-        this.resetDistrictAndWard();
-      }
-    });
+    this.formTax.get('address_province')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((province: any) => {
+        if (province) {
+          this.loadDistricts(province.id);
+          this.resetDistrictAndWard();
+        }
+      });
 
-    this.formTax.get('address_district')?.valueChanges.subscribe((district : any) => {
-      if (district) {
-        this.loadWards(district.id);
-        this.resetWard();
-      }
-    });
+    this.formTax.get('address_district')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((district: any) => {
+        if (district) {
+          this.loadWards(district.id);
+          this.resetWard();
+        }
+      });
   }
 
   private resetDistrictAndWard(): void {
@@ -207,7 +208,7 @@ export class StepTaxComponent implements OnInit {
   }
 
   private validateForm(): void {
-    Object.values(this.formTax.controls).forEach(control => {
+    Object.values(this.formTax.controls).forEach((control) => {
       if (control.invalid) {
         control.markAsDirty();
         control.updateValueAndValidity({ onlySelf: true });
