@@ -121,6 +121,44 @@ namespace BE.Application.Services.RentalShops
             };
         }
 
+        public async Task<ResultService> GetRentalShopDetailByIdAsync(Guid id)
+        {
+            var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(id);
+
+            if (rentalShop == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    Message = "Rental shop not found."
+                };
+            }
+
+            var result = new
+            {
+                rentalShop.Id,
+                rentalShop.ShopName,
+                rentalShop.Address,
+                rentalShop.PhoneNumber,
+                rentalShop.Email,
+                rentalShop.IsActive,
+                rentalShop.Description,
+                Products = rentalShop.Products?.Select(p => new
+                {
+                    p.Id,
+                    p.ProductName,
+                    p.RentalPrice
+                }).ToList()
+            };
+
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.OK.ToString(),
+                Message = "Rental shop detail retrieved successfully.",
+                Datas = result
+            };
+        }
+
 
     }
 }
