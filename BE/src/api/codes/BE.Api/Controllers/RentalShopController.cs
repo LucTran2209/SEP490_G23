@@ -31,6 +31,14 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRentalShopDetailByIdAsync(Guid id)
+        {
+            var output = await rentalShopService.GetRentalShopDetailByIdAsync(id);
+            return Ok(output);
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateRentalShopInputDto inputDto)
         {
