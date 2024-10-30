@@ -1,5 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Products.ProductServiceInputDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -18,14 +19,6 @@ namespace BE.Api.Controllers
             this.productService = productService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromForm] CreateProductInputDto inputDto)
-        {
-            var output = await productService.CreateAsync(inputDto);
-            return Created(output.StatusCode, output);
-        }
-
-  
         [HttpGet("list")]
         public async Task<IActionResult> GetListAsync([FromQuery] GetListProductInputDto inputDto)
         {
@@ -45,13 +38,32 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateProductInputDto inputDto)
+        [HttpGet("/rentalshop/{rentalShopId}")]
+        public async Task<IActionResult> GetListProductByRentalShopId([FromQuery] GetListProductByRetalShopIdInputDto inputDto, Guid rentalShopId)
         {
-            var output = await productService.UpdateProductAsync(inputDto,id);
+            var output = await productService.GetListProductByRentalShopIdAsync(inputDto, rentalShopId);
+
+            if (output.StatusCode == HttpStatusCode.NotFound.ToString())
+            {
+                return NotFound(output);
+            }
+
             return Ok(output);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromForm] CreateProductInputDto inputDto)
+        {
+            var output = await productService.CreateAsync(inputDto);
+            return Created(output.StatusCode, output);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateProductInputDto inputDto)
+        {
+            var output = await productService.UpdateProductAsync(inputDto, id);
+            return Ok(output);
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)

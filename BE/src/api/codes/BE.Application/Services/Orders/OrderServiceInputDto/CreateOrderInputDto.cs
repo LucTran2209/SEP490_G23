@@ -10,6 +10,7 @@ namespace BE.Application.Services.Orders.OrderServiceInputDto
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal? TotalPrice { get; set; }
+        public int PaymentType { get; set; }
         public string? Note { get; set; }
         public virtual List<OrderDetailDto>? OrderDetails { get; set; }
 

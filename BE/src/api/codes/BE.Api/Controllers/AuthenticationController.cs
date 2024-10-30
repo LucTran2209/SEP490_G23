@@ -9,6 +9,7 @@ namespace BE.Api.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationService authenticationService;
+
         public AuthenticationController(IAuthenticationService authenticationService)
         {
             this.authenticationService = authenticationService;
@@ -17,8 +18,8 @@ namespace BE.Api.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> LoginByUserNamePassword([FromBody] LoginByUserNamePasswordInputDto inputDto)
         {
-            var result =  await authenticationService.LoginByUserNamePasswordAsync(inputDto);
-            
+            var result = await authenticationService.LoginByUserNamePasswordAsync(inputDto);
+
             return Ok(result);
         }
 

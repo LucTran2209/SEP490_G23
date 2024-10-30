@@ -26,8 +26,6 @@ public static class Extensions
         services.AddHttpContextAccessor();
         services.AddTransient(s => s.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new ClaimsPrincipal());
 
-        
-
         return services;
     }
 
@@ -77,7 +75,6 @@ public static class Extensions
         store.Add(certificate);
         store.Close();
         return certificate;
-
     }
 
     private static X509Certificate2 GetX509Certificate(
@@ -107,7 +104,7 @@ public static class Extensions
                 certificate = null;
             }
 
-            if(certificate != null) return certificate;
+            if (certificate != null) return certificate;
         }
 
         using var algorithm = RSA.Create(keySizeInBits: 2048);

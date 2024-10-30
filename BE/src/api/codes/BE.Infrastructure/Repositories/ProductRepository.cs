@@ -8,7 +8,9 @@ namespace BE.Infrastructure.Repositories
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
-        public ProductRepository(ApplicationDbContext context) : base(context) { }
+        public ProductRepository(ApplicationDbContext context) : base(context)
+        {
+        }
 
         public async Task<Product?> FindByIdAsync(Guid id)
         {
@@ -42,6 +44,28 @@ namespace BE.Infrastructure.Repositories
         {
             context.Products.Remove(entity);
             return Task.CompletedTask;
+        }
+
+        public IQueryable<Product> GetListProductByRetalShopId(Guid rentalShopId)
+        {
+            var query = context.Products
+                .Include(p => p.SubCategory)
+                    .ThenInclude(sc => sc.Category)
+                .Include(p => p.ProductImages)
+                .AsQueryable();
+
+            return query;
+        }
+
+        public async Task<Product?> GetProductDetail(Guid productId)
+        {
+            var product = await context.Products
+                .Include(p => p.SubCategory)
+                    .ThenInclude(sc => sc.Category)
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            return product;
         }
     }
 }

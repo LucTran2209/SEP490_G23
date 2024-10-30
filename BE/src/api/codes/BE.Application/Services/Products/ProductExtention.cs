@@ -1,11 +1,14 @@
-﻿using BE.Application.Services.Products.ProductServiceInputDto;
+﻿using AutoMapper;
+using BE.Application.Services.Products.ProductServiceInputDto;
 using BE.Application.Services.Products.ProductServiceOutputDto;
 using BE.Domain.Entities;
 
 namespace BE.Application.Services.Products
 {
     public static class ProductExtention
-    {      
+    {
+        private static readonly IMapper? _mapper;
+
         public static Product ToEntity(this CreateProductInputDto inputDto)
         {
             return new Product
@@ -13,10 +16,10 @@ namespace BE.Application.Services.Products
                 ProductName = inputDto.ProductName,
                 Description = inputDto.Description,
                 Quantity = inputDto.Quantity,
-                SubCategoryId = inputDto.SubCategoryId, 
+                SubCategoryId = inputDto.SubCategoryId,
                 RentalShopId = inputDto.RentalShopId,
-                RentalPrice = inputDto.RentalPrice,     
-                DepositPrice = inputDto.DepositPrice,   
+                RentalPrice = inputDto.RentalPrice,
+                DepositPrice = inputDto.DepositPrice,
                 RentalLimitDays = inputDto.RentalLimitDays,
                 Evaluate = inputDto.Evaluate
             };
@@ -27,9 +30,9 @@ namespace BE.Application.Services.Products
             product.ProductName = inputDto.ProductName;
             product.Description = inputDto.Description;
             product.Quantity = inputDto.Quantity;
-            product.RentalPrice = inputDto.RentalPrice;    
-            product.DepositPrice = inputDto.DepositPrice;   
-            product.RentalLimitDays = inputDto.RentalLimitDays; 
+            product.RentalPrice = inputDto.RentalPrice;
+            product.DepositPrice = inputDto.DepositPrice;
+            product.RentalLimitDays = inputDto.RentalLimitDays;
             product.Evaluate = inputDto.Evaluate;
             //product.Images = inputDto.Images; => To do
 
@@ -52,6 +55,12 @@ namespace BE.Application.Services.Products
                 Evaluate = product.Evaluate,
                 Images = product.ProductImages?.Select(pi => pi.Link).ToList()
             };
+        }
+
+
+        public static GetListProductByRentalShopIdOuptDto ToList(this Product product)
+        {
+            return _mapper.Map<GetListProductByRentalShopIdOuptDto>(product);
         }
     }
 }
