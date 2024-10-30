@@ -46,7 +46,6 @@ export class AuthService {
 
   constructor(
     private httpClient: AppHttpClientService,
-    private http: HttpClient,
     private router: Router,
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
@@ -71,7 +70,7 @@ export class AuthService {
       this.userProfileService.roleCurrentUser ?? []
     );
    const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
-   const hasExpectedRole =  expectedRole.length === roleCheck?.length && expectedRole.every((val, index) => val === roleCheck[index]);
+   const hasExpectedRole =  expectedRole.some((val, index) => roleCheck.includes(val));
     return this.isAuthenticated$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {

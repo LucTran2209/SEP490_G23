@@ -29,7 +29,7 @@
       ></span>
       <p class="text-sm mx-2 mt-1.5">{{ product.evaluate }}</p>
     </div>
-    @if(user && user.Role === 'Lessor'){
+    @if(user && user.Role?.includes('Lessor')){
     <button nz-button nzGhost nzType="primary" (click)="onEditClick()">
       Chỉnh Sửa
     </button>
