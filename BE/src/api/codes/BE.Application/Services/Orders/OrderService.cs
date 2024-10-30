@@ -3,6 +3,7 @@ using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.Extensions;
+using BE.Application.Services.Orders.OrderOutputDto;
 using BE.Application.Services.Orders.OrderServiceInputDto;
 using BE.Domain.Abstractions.Enums;
 using BE.Domain.Abstractions.UnitOfWork;
@@ -117,7 +118,7 @@ namespace BE.Application.Services.Orders
             var res = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                                  .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
                                  .ToPageList(inputDto)
-                                 .ToPageResult(await query.CountAsync(), inputDto, o => OrderExtention.ToOrderOutputDto(o));
+                                 .ToPageResult(await query.CountAsync(), inputDto, o => _mapper.Map<ListOrderByUserOutputDto>(o));
 
             return new ResultService
             {

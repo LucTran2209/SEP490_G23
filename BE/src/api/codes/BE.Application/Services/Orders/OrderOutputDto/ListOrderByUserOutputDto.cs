@@ -1,24 +1,63 @@
-﻿namespace BE.Application.Services.Orders.OrderOutputDto
+﻿using BE.Domain.Abstractions.Enums;
+using BE.Domain.Abstractions;
+using BE.Domain.Entities;
+using AutoMapper;
+using BE.Application.Services.Products.ProductServiceOutputDto;
+
+namespace BE.Application.Services.Orders.OrderOutputDto
 {
     public class ListOrderByUserOutputDto
     {
-        public Guid OrderId { get; set; }
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public string? Address { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public decimal? TotalPrice { get; set; }
         public string? Note { get; set; }
-        public double? TotalPrice { get; set; }
-        public string? Status { get; set; }
-        public string RentalShopName { get; set; }
-        public List<DeatilOfProduct>? DetailProducts { get; set; } = new List<DeatilOfProduct>();
+        public int PaymentType { get; set; }
+        public virtual User? User { get; set; }
+        public virtual List<OrderDetailDto>? OrderDetails { get; set; }
+        public virtual List<OrderStatusDto>? OrderStatuses { get; set; }
+
+        public class Mapping : Profile
+        {
+            public Mapping()
+            {
+                CreateMap<Order, ListOrderByUserOutputDto>();
+                CreateMap<Product, ProductDto>();
+                CreateMap<RentalShop, RentalShopDto>();
+                CreateMap<OrderDetail, OrderDetailDto>();
+                CreateMap<OrderStatus, OrderStatusDto>();
+            }
+        }
     }
-    public class DeatilOfProduct
+
+    public class OrderDetailDto
     {
-        public string ProductName { get; set; }
+        public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid OrderId { get; set; }
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public decimal DepositPrice { get; set; }
-        public List<string> Images { get; set; } = new List<string>();
+        public virtual GetListProductByRentalShopIdOuptDto? Product { get; set; }
+    }
+
+    public class OrderStatusDto
+    {
+        public Guid Id { get; set; }
+        public Guid OrderId { get; set; }
+        public string? Message { get; set; }
+        public RequestStatus Status { get; set; }
+        public string? FileAttach { get; set; }
+    }
+
+    public class ProductDto : GetListProductByRentalShopIdOuptDto
+    {
+        public RentalShopDto? RentalShop { get; set; }
+    }
+    public class RentalShopDto
+    {
+        public Guid Id { get; set;}
+        public Guid Name { get; set; }
     }
 }

@@ -25,36 +25,5 @@ public static class OrderExtention
         os.FileAttach = file;
         return os;
     }
-    public static ListOrderByUserOutputDto ToOrderOutputDto(Order order)
-    {
-        var o = new ListOrderByUserOutputDto()
-        {
-            OrderId = order.Id,
-            UserId = order.UserId,
-            Address = order.Address,
-            StartDate = order.StartDate,
-            EndDate = order.EndDate,
-            Note = order.Note,
-            Status = order.OrderStatuses
-                          .OrderByDescending(os => os.CreatedDate) // Sắp xếp theo CreatedDate giảm dần
-                          .Select(os => os.Status.ToString())      // Lấy tên trạng thái
-                          .FirstOrDefault() ?? "Order",
-            RentalShopName = order.OrderDetails
-                                    .Select(od => od.Product.RentalShop.ShopName)
-                                    .FirstOrDefault(),
-            DetailProducts = order.OrderDetails.Select(od => new DeatilOfProduct
-            {
-                ProductName = od.Product.ProductName,
-                Quantity = od.Quantity,
-                Price = od.Product.RentalPrice,
-                DepositPrice = od.Product.DepositPrice,
-                Images = od.Product.ProductImages?.Select(pi => pi.Link ?? string.Empty).ToList()
-                     ?? new List<string>()
-            }
-            ).ToList()
-        };
-        o.TotalPrice = o.DetailProducts.Sum(dp => (double)(dp.Price * dp.Quantity));
-        return o;
-    }
 }
 
