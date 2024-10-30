@@ -84,9 +84,7 @@ export class SteperRegisterComponent {
 
       const addressTest = `${address.address_province.name}-${address.address_district.name}-${address.address_ward.name}`
       const formData = new FormData();
-      const U_id = "fc649812-e572-4828-b813-46c2631807a9";
-      // formData.append('userId', this.userCurrent._id); 
-      formData.append('userId', U_id); 
+      formData.append('userId', this.userCurrent.UserId); 
       formData.append('shopName', shopName);
       formData.append('imageFont', imageFront, imageFront.name);
       formData.append('imageBack', imageBack, imageBack.name);
