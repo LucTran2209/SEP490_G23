@@ -5,7 +5,6 @@ import { finalize, switchMap, throwError, timer } from 'rxjs';
 import { MessageResponseService } from '../services/message-response.service';
 import { AuthSlug, CategorySlug } from '../configs/api.configs';
 
-// Danh sách các URL không muốn đính kèm token
 const ignoredUrls: string[] = [
   AuthSlug.Login.api,
   AuthSlug.ForgotPassWord.api,
