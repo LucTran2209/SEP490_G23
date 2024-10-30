@@ -11,7 +11,7 @@ namespace BE.Api.Extensions
     {
         public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpContextAccessor();  
+            services.AddHttpContextAccessor();
             services.AddScoped<IUser, CurrentUserService>();
 
             services.Configure<JwtOption>(configuration.GetSection("JWT"));

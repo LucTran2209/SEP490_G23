@@ -1,6 +1,4 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.Services.Authentication.AuthenServiceInputDto;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Api.Controllers

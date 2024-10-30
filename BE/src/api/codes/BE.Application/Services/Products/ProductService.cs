@@ -1,8 +1,10 @@
-﻿using BE.Application.Abstractions;
+﻿using AutoMapper;
+using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Common.Results;
 using BE.Application.Extensions;
 using BE.Application.Services.Products.ProductServiceInputDto;
+using BE.Application.Services.Products.ProductServiceOutputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using BE.Domain.Entities;
 using BE.Domain.Interfaces;
@@ -17,12 +19,13 @@ namespace BE.Application.Services.Products
     {
         private readonly IValidator<CreateProductInputDto> createProductValidator;
         private readonly IValidator<UpdateProductInputDto> updateProductValidator;
-
+        private readonly IMapper _mapper;
         private readonly IAzureService _azureService;
 
         public ProductService(
             IUnitOfWork unitOfWork,
             IUser user,
+            IMapper mapper,
             IAzureService azureService,
             IValidator<CreateProductInputDto> createProductValidator,
             IValidator<UpdateProductInputDto> updateProductValidator)
@@ -31,11 +34,12 @@ namespace BE.Application.Services.Products
             this.createProductValidator = createProductValidator;
             this.updateProductValidator = updateProductValidator;
             _azureService = azureService;
+            _mapper = mapper;
         }
 
         public async Task<ResultService> GetProductByIdAsync(Guid productId)
         {
-            var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
+            var product = await unitOfWork.ProductRepository.GetProductDetail(productId);
 
             if (product == null)
             {
@@ -46,48 +50,13 @@ namespace BE.Application.Services.Products
                 };
             }
 
-            var productDetail = product.ToListProductOutput();
+            var productDetail = _mapper.Map<GetListProductByRentalShopIdOuptDto>(product);
 
             return new ResultService
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "Product detail retrieved successfully.",
                 Datas = productDetail
-            };
-        }
-
-        public async Task<ResultService> CreateAsync(CreateProductInputDto inputDto)
-        {
-            await createProductValidator.ValidateAndThrowAsync(inputDto);
-
-            var product = inputDto.ToEntity();
-
-            await ConvertImageAsync(product, inputDto.Images, false);
-
-            await unitOfWork.ProductRepository.AddAsync(product);
-
-            await unitOfWork.SaveChangesAsync();
-
-            return new ResultService
-            {
-                StatusCode = HttpStatusCode.Created.ToString(),
-                Message = "Product created successfully."
-            };
-        }
-
-        public async Task<ResultService> DeleteProductAsync(Guid productId)
-        {
-            var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
-            if (product == null)
-                return new ResultService { StatusCode = HttpStatusCode.NotFound.ToString(), Message = "Product not found." };
-
-            await unitOfWork.ProductRepository.DeleteAsync(product);
-            await unitOfWork.SaveChangesAsync();
-
-            return new ResultService
-            {
-                StatusCode = HttpStatusCode.OK.ToString(),
-                Message = "Product deleted successfully."
             };
         }
 
@@ -108,6 +77,49 @@ namespace BE.Application.Services.Products
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "Success",
                 Datas = products
+            };
+        }
+
+        public async Task<ResultService> GetListProductByRentalShopIdAsync(
+            GetListProductByRetalShopIdInputDto inputDto,
+            Guid rentalShopId)
+        {
+            var queryListProductInShop = unitOfWork.ProductRepository.GetListProductByRetalShopId(rentalShopId);
+
+            queryListProductInShop = queryListProductInShop
+                .Filter(inputDto.Search, p => p.ProductName!.Contains(inputDto.Search))
+                .Filter(inputDto.Search, p => p.Description == null ? p.Description!.Contains(inputDto.Search) : false);
+
+            var products = await queryListProductInShop.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
+                            .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
+                            .ToPageList(inputDto)
+                            .ToPageResult(await queryListProductInShop.CountAsync(),
+                                                inputDto, p => _mapper.Map<GetListProductByRentalShopIdOuptDto>(p));
+
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.OK.ToString(),
+                Message = "Success",
+                Datas = products
+            };
+        }
+
+        public async Task<ResultService> CreateAsync(CreateProductInputDto inputDto)
+        {
+            await createProductValidator.ValidateAndThrowAsync(inputDto);
+
+            var product = inputDto.ToEntity();
+
+            await ConvertImageAsync(product, inputDto.Images, false);
+
+            await unitOfWork.ProductRepository.AddAsync(product);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.Created.ToString(),
+                Message = "Product created successfully."
             };
         }
 
@@ -137,6 +149,22 @@ namespace BE.Application.Services.Products
             {
                 StatusCode = HttpStatusCode.OK.ToString(),
                 Message = "Product updated successfully."
+            };
+        }
+
+        public async Task<ResultService> DeleteProductAsync(Guid productId)
+        {
+            var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
+            if (product == null)
+                return new ResultService { StatusCode = HttpStatusCode.NotFound.ToString(), Message = "Product not found." };
+
+            await unitOfWork.ProductRepository.DeleteAsync(product);
+            await unitOfWork.SaveChangesAsync();
+
+            return new ResultService
+            {
+                StatusCode = HttpStatusCode.OK.ToString(),
+                Message = "Product deleted successfully."
             };
         }
 

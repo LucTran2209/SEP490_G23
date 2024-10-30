@@ -1,10 +1,8 @@
-
 using BE.Api.Extensions;
 using BE.Api.Middlewares;
 using BE.Application.DependencyInjections;
 using BE.Persistence.DependencyInjections;
 using BE.Persistence.Extensions;
-
 
 namespace BE.Api
 {
