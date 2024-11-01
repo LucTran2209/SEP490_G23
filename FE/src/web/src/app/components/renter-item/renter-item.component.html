@@ -1,20 +1,29 @@
-<div class="flex justify-between items-center border border-gray-300 rounded-lg p-3">
-    <div class="flex-1 flex gap-2 items-center">
-      <img [src]="imageBaseURl" alt="" width="150" height="90" class="" />
-      <div class="flex flex-col justify-between gap-y-5">
-        <p class="text-[#B8ACAC] font-medium">Máy giặt XQB30MJ102W</p>
-        <p class="">
-          100.000 VND <br />
-          <span class="text-[#1890FF]">1 ngày</span>
-        </p>
-      </div>
+@if((productDetail$ | async); as item){
+<div
+  class="flex justify-between items-center border border-gray-300 rounded-lg p-3"
+>
+  <div class="flex-1 flex gap-2 items-center">
+  @if(item.productImages && item.productImages.length !== 0){
+    <img [src]="'assets/images/6306486.jpg' " alt="" class="w-[100px] h-[100px] object-cover rounded-md border border-solid border-[#ededed] shadow-md">
+  }@else {
+    <img [src]="'assets/images/6306486.jpg' " alt="" class="w-[100px] h-[100px] object-cover rounded-md border border-solid border-[#ededed] shadow-md">
+  }
+    <div class="flex flex-col justify-between gap-y-5">
+      <p class="text-[#B8ACAC] font-medium">{{ item.productName }}</p>
+      <p class="">
+        {{ rentalPriceActual$ | async | currency : "VND" }} <br />
+        <span class="text-[#1890FF]">{{ numberDay$ | async }} ngày</span>
+      </p>
     </div>
-    <nz-input-number
-     class=""
-      [(ngModel)]="demoValue"
-      [nzMin]="1"
-      [nzMax]="10"
-      [nzStep]="1"
-      nzCompact
-    ></nz-input-number>
   </div>
+  <nz-input-number
+    class=""
+    [(ngModel)]="demoValue"
+    (ngModelChange)="handleRequestQuantity($event)"
+    [nzMin]="1"
+    [nzMax]="100"
+    [nzStep]="1"
+    nzCompact
+  ></nz-input-number>
+</div>
+}

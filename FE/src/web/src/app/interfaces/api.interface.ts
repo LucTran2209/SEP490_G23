@@ -6,6 +6,12 @@ export interface BaseResponseApi<T> {
   message: string;
 }
 
+export interface BaseResponseApiV2<T> {
+  statusCode: number | string;
+  data: BaseResponseRecords<T>;
+  message: string;
+}
+
 export interface BaseResponseRecords<T> {
   pageIndex: number;
   pageSize: number;

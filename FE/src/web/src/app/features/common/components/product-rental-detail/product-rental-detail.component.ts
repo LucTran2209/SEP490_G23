@@ -1,30 +1,45 @@
-import { Component } from '@angular/core';
-import { PostOutputDto, PostResultService } from '../../../../interfaces/post.interface';
-import { PostService } from '../../../../services/post.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { ProductItemResponse } from '../../../../interfaces/product.interface';
+import { FeatureAppState } from '../../../../store/app.state';
+import { getDetailProductRental } from '../../state/product/product-detail.actions';
+import { selectData } from '../../state/product/product-detail.reducer';
 
 @Component({
   selector: 'app-product-rental-detail',
   templateUrl: './product-rental-detail.component.html',
-  styleUrl: './product-rental-detail.component.scss'
+  styleUrl: './product-rental-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRentalDetailComponent {
-  postList: PostOutputDto[] = [];
-  isVisible : boolean = false;
-  title: string = 'Biểu Mẫu Đăng Ký Cho Thuê';
-  
-  constructor(private postService: PostService) {}
-  ngOnInit(): void{
-    this.loadPosts();
-  }
-  loadPosts(){
-    this.postService.listPost().subscribe((res: PostResultService) =>{
-      this.postList = res.datas.list;
-    });
-  }
-  ShowRentalForm(){
+  isVisible: boolean = false;
+  productDetail$?: Observable<ProductItemResponse>;
+
+
+  showRentalForm() {
     this.isVisible = true;
   }
-  handleCloseModal(){
+  handleCloseModal() {
     this.isVisible = false;
+  }
+
+  selectStateFromNgRx(){
+    this.productDetail$ = this.store.select(selectData);
+  }
+
+  dispatchActionNessarray(){
+    const param = this.router.snapshot.paramMap.get("id");
+    if(param){
+      this.store.dispatch(getDetailProductRental({productId: param}));
+    }
+  }
+
+  constructor(private router: ActivatedRoute, private store: Store<FeatureAppState>) {}
+
+  ngOnInit(): void {
+    this.dispatchActionNessarray();
+    this.selectStateFromNgRx();
   }
 }

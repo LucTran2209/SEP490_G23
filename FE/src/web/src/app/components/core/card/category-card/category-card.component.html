@@ -1,0 +1,10 @@
+<div 
+(click)="onNavigate()"
+class=" flex flex-col gap-y-6 cursor-pointer justify-center items-center bg-white p-5 rounded-lg transition-all ease-linear duration-100 border-2 border-solid border-[#ededed] hover:border-2 hover:border-[#0F6CF8]">
+    <div ngClass="rounded-full w-16 h-16 flex justify-center items-center" [ngStyle]="{ 'background-color': '#0F6CF8' }">
+        <p class="text-[30px] uppercase text-white">{{firstWord()}}</p>
+    </div>
+    <p class="font-medium uppercase text-[20px] text-center text-ellipsis overflow-hidden whitespace-nowrap max-w-full">
+        {{categoriesItem?.categoryName}}
+    </p>
+</div>

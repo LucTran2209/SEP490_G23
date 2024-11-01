@@ -2,9 +2,9 @@
   <nz-tab nzTitle="Thuê theo ngày">
     <nz-range-picker
       nzInline
-      [nzRenderExtraFooter]="btnOk"
       class="mb-3"
       ngModel
+      [nzDisabledDate]="disabledDate"
       (ngModelChange)="onDateRangeChange($event)"
     ></nz-range-picker>
     <div class="flex justify-between items-center pb-3">
@@ -62,7 +62,3 @@
     </div>
   </nz-tab> -->
 </nz-tabset>
-
-<ng-template #btnOk>
-  <button nz-button nzType="primary" (click)="chooseOption1()">Chọn</button>
-</ng-template>

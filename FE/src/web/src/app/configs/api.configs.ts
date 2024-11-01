@@ -125,6 +125,16 @@ export const ProductSlug = {
     title: 'Active Product | ERMS',
     api: 'ActivePost',
   },
+  RentalShopProduct: {
+    label: 'Active Product',
+    title: 'List rental shop product | ERMS',
+    api: 'rentalshop',
+  },
+  GetDetailProduct: {
+    label: 'Get Detail Product',
+    title: 'detail shop product | ERMS',
+    api: 'Product',
+  }
 };
 export const OrderSlug = {
   AddOrder: {

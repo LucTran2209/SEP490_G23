@@ -1,15 +1,30 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import {
+  combineLatest,
+  delay,
+  filter,
+  Observable,
+  Subscription,
+  tap,
+} from 'rxjs';
+import { selectData } from '../../../../features/common/state/product/product-detail.reducer';
+import {
+  ProductItemResponse,
+  ProductRentalOrderProcess,
+} from '../../../../interfaces/product.interface';
+import { MessageResponseService } from '../../../../services/message-response.service';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
-import { filter, Subscription } from 'rxjs';
-interface IProductShortSearch {
-  id: string | number;
-  productName: string;
-  rentalPrice: number;
-  depositPrice: number;
-  rentalLimitDays: number;
-  images: string;
-}
+import { StorageService } from '../../../../services/storage.service';
+import { FeatureAppState } from '../../../../store/app.state';
+import { LocalStorageKey } from '../../../../utils/constant';
+import {
+  selectDepositActualPriceById,
+  selectNumberOfDaysById,
+  selectQuantityRequestById,
+  selectRentalActualPriceById,
+} from '../../../../features/common/state/rental/rental.selectors';
 
 @Component({
   selector: 'app-form-rental-product',
@@ -17,104 +32,142 @@ interface IProductShortSearch {
   styleUrl: './form-rental-product.component.scss',
 })
 export class FormRentalProductComponent implements OnInit, OnDestroy {
+  productIdParam?: string;
   isConfirmLoading = false;
   isVisible = false;
-  currentRoute?: string;
-  inputValue?: string;
-  options: Array<IProductShortSearch> = [];
-  tags: IProductShortSearch[] = [];
+  inputNote?: string;
+  productRentalDetail$?: Observable<ProductItemResponse>;
+
+  rentalPriceActual$?: Observable<string | number>;
+  depositPriceActual$?: Observable<string | number>;
+  //ngRx
+
+  //ngRx
 
   //date time
-  rangePickerTime: Date[] = [];
-  selectedTimeStart: any;
-  selectedTimeEnd: any;
-  rentalDays: number = 0;
+  rangePickerTime$?: Observable<Date[]>;
+  selectedTimeStart$?: Observable<any>;
+  selectedTimeEnd$?: Observable<any>;
+  rentalDays$?: Observable<number>;
+  //date time
+
+  //subscription
   private routeSubscription?: Subscription;
-  //date time
 
-  sliceTagName(tag: string): string {
-    const isLongTag = tag.length > 20;
-    return isLongTag ? `${tag.slice(0, 20)}...` : tag;
-  }
-
-  handleCloseTag(removedTag: {}): void {
-    this.tags = this.tags.filter((tag) => tag !== removedTag);
-  }
-
-  onSearchProductShort(e: Event): void {
-    const value = (e.target as HTMLInputElement).value;
-    this.options = new Array(this.getRandomInt(5, 15))
-      .join('.')
-      .split('.')
-      .map((_item, idx) => ({
-        id: idx + 1,
-        productName: `${value}${idx}`,
-        depositPrice: 20000,
-        images:
-          'https://cdn.tgdd.vn/Files/2014/12/06/586947/y-nghia-cua-toc-do-quay-vat-tren-may-giat-6.jpg',
-        rentalLimitDays: 12,
-        rentalPrice: 30000,
-      }));
-  }
-
-  onSelectProduct(e: IProductShortSearch) {
-    this.tags.push(e);
-  }
-
-  private getRandomInt(max: number, min: number = 0): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
+  // modal
   showModal(): void {
     this.isVisible = true;
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
+  // modal
 
-  handlePickerTimer() {}
+  /**
+   *
+   */
+  onChooseRental() {
+    if (this.productIdParam) {
+      combineLatest([
+        this.store.select(selectData),
+        this.store.select(selectRentalActualPriceById(this.productIdParam)),
+        this.store.select(selectDepositActualPriceById(this.productIdParam)),
+        this.store.select(selectQuantityRequestById(this.productIdParam)),
+        this.store.select(selectNumberOfDaysById(this.productIdParam)),
+        this.rentalTimerService.rangePickerTime$,
+      ])
+        .pipe(
+          tap(() => {
+            this.ToasMS.showSuccess(
+              'Bạn sẽ được chuyển hướng tới trang tạo đơn thuê!'
+            );
+          }),
+          delay(1000)
+        )
+        .subscribe(
+          ([
+            productDetail,
+            rentalActualPrice,
+            depositActualPrice,
+            quantityRequest,
+            numberOfDay,
+            datePickTime,
+          ]) => {
+            if (
+              productDetail &&
+              rentalActualPrice &&
+              depositActualPrice &&
+              quantityRequest &&
+              numberOfDay &&
+              datePickTime
+            ) {
+              const processOrder: ProductRentalOrderProcess = {
+                note: this.inputNote ?? '',
+                numberOfDay: numberOfDay,
+                paymentMethod: 0,
+                quantityRequest: Number(quantityRequest),
+                productId: productDetail.id,
+                rentalPriceRequest: Number(rentalActualPrice),
+                depositPriceRequest: Number(depositActualPrice),
+                productName: productDetail.productName,
+                productImages: productDetail.productImages?.[0] ?? null,
+                timeEnd: datePickTime[0],
+                timeStart: datePickTime[1],
+              };
+              this.storageService.set(
+                LocalStorageKey.orderProcess,
+                JSON.stringify(processOrder)
+              );
+              this.router.navigate(['/common/order-process']);
+            }
+          }
+        );
+    }
+  }
+
+  selectStateFromNgRx() {
+    this.productRentalDetail$ = this.store.select(selectData);
+    this.rangePickerTime$ = this.rentalTimerService.rangePickerTime$;
+    this.selectedTimeStart$ = this.rentalTimerService.timeStart$;
+    this.selectedTimeEnd$ = this.rentalTimerService.timeEnd$;
+    this.rentalDays$ = this.rentalTimerService.rentalDays$;
+    if (this.productIdParam) {
+      this.rentalPriceActual$ = this.store
+        .select(selectRentalActualPriceById(this.productIdParam))
+        .pipe(filter((value): value is string | number => value !== undefined));
+
+      this.depositPriceActual$ = this.store
+        .select(selectDepositActualPriceById(this.productIdParam))
+        .pipe(filter((value): value is string | number => value !== undefined));
+    }
+  }
+
+  dispatchActionNessarray() {}
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private rentalTimerService: RentalTimerService
+    private rentalTimerService: RentalTimerService,
+    private store: Store<FeatureAppState>,
+    private storageService: StorageService,
+    private ToasMS: MessageResponseService
   ) {}
 
   ngOnInit(): void {
-    this.currentRoute = this.route.snapshot.url[0].path;
-
-    //datetime
-    this.rentalTimerService.rangePickerTime$.subscribe((dates) => {
-      this.rangePickerTime = dates;
-    });
-
-    this.rentalTimerService.timeStart$.subscribe((time) => {
-      this.selectedTimeStart = time;
-      console.log('object timeStart',time);
-    });
-
-    this.rentalTimerService.timeEnd$.subscribe((time) => {
-      this.selectedTimeEnd = time;
-      console.log('object timeEnd',time);
-    });
-
-    this.rentalTimerService.rentalDays$.subscribe((days) => {
-      this.rentalDays = days;
-    });
-    //datetime
+    this.productIdParam = this.route.snapshot.paramMap.get('id') ?? '';
+    this.dispatchActionNessarray();
+    this.selectStateFromNgRx();
 
     //unsubscrib
     this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.rentalTimerService.clearState(); 
+        this.rentalTimerService.clearState();
       });
   }
 

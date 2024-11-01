@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-info-shop',
@@ -6,9 +6,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './info-shop.component.scss',
 })
 export class InfoShopComponent {
-
+  @Input() isOpen?: boolean;
   @Output() handleRentalMoreProduct = new EventEmitter();
-  rentalMoreProduct() {
-    this.handleRentalMoreProduct.emit();
+  rentalMoreProduct(val: boolean) {
+    this.handleRentalMoreProduct.emit(val);
   }
 }
