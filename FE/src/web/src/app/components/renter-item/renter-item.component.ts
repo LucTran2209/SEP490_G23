@@ -6,15 +6,15 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { debounceTime, Observable, Subject } from 'rxjs';
+import { selectData } from '../../features/common/state/product/product-detail.reducer';
 import { setQuantityRequest } from '../../features/common/state/rental/rental.actions';
 import {
   selectNumberOfDaysById,
-  selectProductRentalById,
-  selectRentalActualPriceById,
+  selectRentalActualPriceById
 } from '../../features/common/state/rental/rental.selectors';
 import { ProductItemResponse } from '../../interfaces/product.interface';
 import { FeatureAppState } from '../../store/app.state';
-import { selectData } from '../../features/common/state/product/product-detail.reducer';
+
 
 @Component({
   selector: 'app-renter-item',
