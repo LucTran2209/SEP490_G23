@@ -1,8 +1,7 @@
-﻿using BE.Domain.Abstractions.Enums;
-using BE.Domain.Abstractions;
+﻿using AutoMapper;
+using BE.Application.Common.Dtos;
+using BE.Domain.Abstractions.Enums;
 using BE.Domain.Entities;
-using AutoMapper;
-using BE.Application.Services.Products.ProductServiceOutputDto;
 
 namespace BE.Application.Services.Orders.OrderOutputDto
 {
@@ -39,7 +38,7 @@ namespace BE.Application.Services.Orders.OrderOutputDto
         public Guid ProductId { get; set; }
         public Guid OrderId { get; set; }
         public int Quantity { get; set; }
-        public virtual GetListProductByRentalShopIdOuptDto? Product { get; set; }
+        public ProductDto? Product { get; set; }
     }
 
     public class OrderStatusDto
@@ -49,15 +48,5 @@ namespace BE.Application.Services.Orders.OrderOutputDto
         public string? Message { get; set; }
         public RequestStatus Status { get; set; }
         public string? FileAttach { get; set; }
-    }
-
-    public class ProductDto : GetListProductByRentalShopIdOuptDto
-    {
-        public RentalShopDto? RentalShop { get; set; }
-    }
-    public class RentalShopDto
-    {
-        public Guid Id { get; set;}
-        public Guid Name { get; set; }
     }
 }

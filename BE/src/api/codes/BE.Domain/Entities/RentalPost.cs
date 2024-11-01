@@ -11,7 +11,7 @@ namespace BE.Domain.Entities
         public decimal? RentPrice { get; set; }
         public PostStatus Status { get; set; }
         public Guid? ProductId { get; set; }
-            
+
         public virtual Product? Product { get; set; }
         public virtual ICollection<RentalContract>? RentalContracts { get; set; }
     }

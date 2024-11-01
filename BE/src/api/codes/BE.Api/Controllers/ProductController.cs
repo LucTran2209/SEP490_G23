@@ -1,6 +1,5 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Products.ProductServiceInputDto;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -30,6 +29,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> GetProductByIdAsync(Guid id)
         {
             var output = await productService.GetProductByIdAsync(id);
+
             if (output.StatusCode == HttpStatusCode.NotFound.ToString())
             {
                 return NotFound(output);
@@ -38,7 +38,7 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
 
-        [HttpGet("/rentalshop/{rentalShopId}")]
+        [HttpGet("Shop/{rentalShopId}/")]
         public async Task<IActionResult> GetListProductByRentalShopId([FromQuery] GetListProductByRetalShopIdInputDto inputDto, Guid rentalShopId)
         {
             var output = await productService.GetListProductByRentalShopIdAsync(inputDto, rentalShopId);

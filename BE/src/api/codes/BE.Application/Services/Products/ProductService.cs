@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
+using BE.Application.Common.Dtos;
 using BE.Application.Common.Results;
 using BE.Application.Extensions;
 using BE.Application.Services.Products.ProductServiceInputDto;
@@ -50,7 +51,7 @@ namespace BE.Application.Services.Products
                 };
             }
 
-            var productDetail = _mapper.Map<GetListProductByRentalShopIdOuptDto>(product);
+            var productDetail = _mapper.Map<ProductDto>(product);
 
             return new ResultService
             {
@@ -62,15 +63,14 @@ namespace BE.Application.Services.Products
 
         public async Task<ResultService> GetListProductAsync(GetListProductInputDto inputDto)
         {
-            var query = unitOfWork.ProductRepository.GetAll();
-            query = query
-                .Filter(inputDto.ProductName, p => p.ProductName.Contains(inputDto.ProductName ?? string.Empty))
-                .Filter(inputDto.Description, p => p.Description.Contains(inputDto.Description ?? string.Empty));
+            var query = unitOfWork.ProductRepository.GetAll()
+                .Filter(inputDto.ProductName, p => p.ProductName!.Contains(inputDto.ProductName ?? string.Empty))
+                .Filter(inputDto.Description, p => p.Description == null ? p.Description!.Contains(inputDto.Description ?? string.Empty) : false);
 
             var products = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                 .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
                 .ToPageList(inputDto)
-                .ToPageResult(await query.CountAsync(), inputDto, p => p.ToListProductOutput());
+                .ToPageResult(await query.CountAsync(), inputDto, p => _mapper.Map<GetListProductOutputDto>(p));
 
             return new ResultService
             {
@@ -78,11 +78,10 @@ namespace BE.Application.Services.Products
                 Message = "Success",
                 Datas = products
             };
+
         }
 
-        public async Task<ResultService> GetListProductByRentalShopIdAsync(
-            GetListProductByRetalShopIdInputDto inputDto,
-            Guid rentalShopId)
+        public async Task<ResultService> GetListProductByRentalShopIdAsync(GetListProductByRetalShopIdInputDto inputDto, Guid rentalShopId)
         {
             var queryListProductInShop = unitOfWork.ProductRepository.GetListProductByRetalShopId(rentalShopId);
 
@@ -93,8 +92,7 @@ namespace BE.Application.Services.Products
             var products = await queryListProductInShop.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                             .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
                             .ToPageList(inputDto)
-                            .ToPageResult(await queryListProductInShop.CountAsync(),
-                                                inputDto, p => _mapper.Map<GetListProductByRentalShopIdOuptDto>(p));
+                            .ToPageResult(await queryListProductInShop.CountAsync(), inputDto, p => _mapper.Map<GetListProductByRentalShopIdOutputDto>(p));
 
             return new ResultService
             {

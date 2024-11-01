@@ -8,20 +8,19 @@ namespace BE.Infrastructure.Repositories
 {
     public class RentalShopRepository : BaseRepository, IRentalShopRepository
     {
-        public RentalShopRepository(ApplicationDbContext context) : base(context) { }
+        public RentalShopRepository(ApplicationDbContext context) : base(context)
+        {
+        }
 
         public async Task<RentalShop?> FindByIdAsync(Guid id)
         {
-            var rentalShop = await context.RentalShops
-                                          .Include(rs => rs.Products)
-                                          .FirstOrDefaultAsync(rs => rs.Id == id);
-            return rentalShop;
+            return await context.RentalShops.Include(rs => rs.Products)
+                                            .FirstOrDefaultAsync(rs => rs.Id == id);
         }
 
         public IQueryable<RentalShop> GetAll()
         {
-            var query = context.RentalShops.Include(rs => rs.Products).AsQueryable();
-            return query;
+            return context.RentalShops.Include(rs => rs.Products).AsQueryable();
         }
 
         public async Task AddAsync(RentalShop entity)
@@ -39,6 +38,11 @@ namespace BE.Infrastructure.Repositories
         {
             context.RentalShops.Remove(entity);
             return Task.CompletedTask;
+        }
+
+        public async Task<RentalShop?> GetRentalShopByIdAsync(Guid id)
+        {
+            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.UserId == id || rs.Id == id);
         }
     }
 }

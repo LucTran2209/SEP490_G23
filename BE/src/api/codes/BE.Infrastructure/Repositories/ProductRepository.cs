@@ -24,7 +24,12 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<Product> GetAll()
         {
-            var query = context.Products.Include(p => p.RentalShop).Include(p => p.ProductImages).AsQueryable();
+            var query = context.Products
+                .Include(p => p.SubCategory)
+                    .ThenInclude(sc => sc.Category)
+                .Include(p => p.RentalShop)
+                .Include(p => p.ProductImages)
+                .AsQueryable();
 
             return query;
         }
@@ -60,6 +65,7 @@ namespace BE.Infrastructure.Repositories
         public async Task<Product?> GetProductDetail(Guid productId)
         {
             var product = await context.Products
+                .Include(p => p.RentalShop)
                 .Include(p => p.SubCategory)
                     .ThenInclude(sc => sc.Category)
                 .Include(p => p.ProductImages)
