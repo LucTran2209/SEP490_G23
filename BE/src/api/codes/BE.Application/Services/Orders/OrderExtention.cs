@@ -1,5 +1,4 @@
-﻿using BE.Application.Services.Orders.OrderOutputDto;
-using BE.Application.Services.Orders.OrderServiceInputDto;
+﻿using BE.Application.Services.Orders.OrderServiceInputDto;
 using BE.Domain.Entities;
 
 public static class OrderExtention
@@ -26,4 +25,3 @@ public static class OrderExtention
         return os;
     }
 }
-

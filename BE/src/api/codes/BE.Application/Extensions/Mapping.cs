@@ -14,10 +14,7 @@ namespace BE.Application.Extensions
             CreateMap<OrderDetail, OrderDetailDto>().ReverseMap();
             CreateMap<OrderStatus, OrderStatusDto>().ReverseMap();
 
-            CreateMap<RentalShop, RentalShopDto>()
-                .ForMember(dest => dest.ImageFont, opt => opt.Ignore())
-                .ForMember(dest => dest.ImageBack, opt => opt.Ignore())
-                .ForMember(dest => dest.BusinessLicenseFile, opt => opt.Ignore());
+            CreateMap<RentalShop, RentalShopDto>();
 
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<ProductImage, ProductImageDto>().ReverseMap();
