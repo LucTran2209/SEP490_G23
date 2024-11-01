@@ -17,13 +17,6 @@ namespace BE.Api.Controllers
             this.rentalShopService = rentalShopService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromForm] CreateRentalShopInputDto inputDto)
-        {
-            var output = await rentalShopService.CreateAsync(inputDto);
-            return Created(output.StatusCode, output);
-        }
-
         [HttpGet("list")]
         public async Task<IActionResult> GetListAsync([FromQuery] GetListRentalShopInputDto inputDto)
         {
@@ -32,12 +25,18 @@ namespace BE.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRentalShopDetailByIdAsync(Guid id)
+        public async Task<IActionResult> GetRentalShopDetailAsync(Guid id)
         {
             var output = await rentalShopService.GetRentalShopDetailByIdAsync(id);
             return Ok(output);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromForm] CreateRentalShopInputDto inputDto)
+        {
+            var output = await rentalShopService.CreateAsync(inputDto);
+            return Created(output.StatusCode, output);
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateRentalShopInputDto inputDto)

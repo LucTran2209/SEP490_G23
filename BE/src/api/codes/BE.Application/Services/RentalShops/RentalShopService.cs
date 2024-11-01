@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BE.Application.Abstractions;
 using BE.Application.Abstractions.ServiceInterfaces;
+using BE.Application.Common.Dtos;
 using BE.Application.Common.Results;
 using BE.Application.Extensions;
 using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
+using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
 using BE.Domain.Abstractions.UnitOfWork;
 using BE.Domain.Entities;
 using BE.Domain.Interfaces;
@@ -23,7 +25,7 @@ namespace BE.Application.Services.RentalShops
         public RentalShopService(
             IUnitOfWork unitOfWork,
             IUser user, IMapper mapper,
-            IValidator<CreateRentalShopInputDto> createValidator, 
+            IValidator<CreateRentalShopInputDto> createValidator,
             IValidator<UpdateRentalShopInputDto> updateValidator,
             IAzureService azureService)
             : base(unitOfWork, user)
@@ -123,7 +125,7 @@ namespace BE.Application.Services.RentalShops
 
         public async Task<ResultService> GetRentalShopDetailByIdAsync(Guid id)
         {
-            var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(id);
+            var rentalShop = await unitOfWork.RentalShopRepository.GetRentalShopByIdAsync(id);
 
             if (rentalShop == null)
             {
@@ -134,22 +136,7 @@ namespace BE.Application.Services.RentalShops
                 };
             }
 
-            var result = new
-            {
-                rentalShop.Id,
-                rentalShop.ShopName,
-                rentalShop.Address,
-                rentalShop.PhoneNumber,
-                rentalShop.Email,
-                rentalShop.IsActive,
-                rentalShop.Description,
-                Products = rentalShop.Products?.Select(p => new
-                {
-                    p.Id,
-                    p.ProductName,
-                    p.RentalPrice
-                }).ToList()
-            };
+            var result = _mapper.Map<GetRentalShopDetailByIdOuputDto>(rentalShop);
 
             return new ResultService
             {
@@ -158,7 +145,5 @@ namespace BE.Application.Services.RentalShops
                 Datas = result
             };
         }
-
-
     }
 }

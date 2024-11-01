@@ -38,29 +38,5 @@ namespace BE.Application.Services.Products
 
             return product;
         }
-
-        public static ListProductOutputDto ToListProductOutput(this Product product)
-        {
-            return new ListProductOutputDto
-            {
-                Id = product.Id,
-                ProductName = product.ProductName,
-                Description = product.Description,
-                Quantity = product.Quantity,
-                SubCategoryId = product.SubCategoryId,
-                RentalShopName = product.RentalShop?.ShopName ?? "N/A",
-                RentalPrice = product.RentalPrice,
-                DepositPrice = product.DepositPrice,
-                RentalLimitDays = product.RentalLimitDays,
-                Evaluate = product.Evaluate,
-                Images = product.ProductImages?.Select(pi => pi.Link).ToList()
-            };
-        }
-
-
-        public static GetListProductByRentalShopIdOuptDto ToList(this Product product)
-        {
-            return _mapper.Map<GetListProductByRentalShopIdOuptDto>(product);
-        }
     }
 }

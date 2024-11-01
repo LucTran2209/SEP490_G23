@@ -5,9 +5,9 @@ namespace BE.Domain.Entities
 {
     public class OrderStatus : EntityAuditBase
     {
-        public Guid OrderId { get; set; }  // Liên kết đến đơn hàng
+        public Guid OrderId { get; set; }
         public string? Message { get; set; }
-        public RequestStatus Status { get; set; }  // Enum lưu trạng thái đơn hàng
+        public RequestStatus Status { get; set; }
         public string? FileAttach { get; set; }
         public virtual Order Order { get; set; } = null!;
     }
