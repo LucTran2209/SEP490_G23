@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BE.Application.Common.Dtos;
-using BE.Domain.Abstractions.Enums;
 using BE.Domain.Entities;
 
 namespace BE.Application.Services.Orders.OrderServiceOutputDto
@@ -30,23 +29,5 @@ namespace BE.Application.Services.Orders.OrderServiceOutputDto
                 CreateMap<OrderStatus, OrderStatusDto>();
             }
         }
-    }
-
-    public class OrderDetailDto
-    {
-        public Guid Id { get; set; }
-        public Guid ProductId { get; set; }
-        public Guid OrderId { get; set; }
-        public int Quantity { get; set; }
-        public ProductDto? Product { get; set; }
-    }
-
-    public class OrderStatusDto
-    {
-        public Guid Id { get; set; }
-        public Guid OrderId { get; set; }
-        public string? Message { get; set; }
-        public RequestStatus Status { get; set; }
-        public string? FileAttach { get; set; }
     }
 }

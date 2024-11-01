@@ -7,7 +7,7 @@ namespace BE.Application.Extensions
     public class Mapping : Profile
     {
         public Mapping()
-        { 
+        {
             CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
 
