@@ -40,19 +40,19 @@
               }
             ],
             "styles": [
-             "src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
               "budgets": [
-       {
-          "type": "initial",
-          "maximumWarning": "2mb",
-          "maximumError": "5mb"
-       }
-    ],
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ],
               "outputHashing": "all"
             },
             "development": {
