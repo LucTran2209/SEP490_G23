@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { ProductOutputDto } from '../../../../interfaces/product.interface';
-import { GlobalState } from '../../../../store/app.state';
 import { IPayLoad } from '../../../../interfaces/account.interface';
+import { ProductItemResponse, ProductOutputDto } from '../../../../interfaces/product.interface';
 import { StorageService } from '../../../../services/storage.service';
 import { LocalStorageKey } from '../../../../utils/constant';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
@@ -12,24 +11,30 @@ import { LocalStorageKey } from '../../../../utils/constant';
   styleUrl: './product-card.component.scss'
 })
 export class ProductCardComponent implements OnInit {
-  @Input() product!: ProductOutputDto;
+  @Input() product!: ProductOutputDto | ProductItemResponse; // Union Type
   currentIndex: number = 0;
-  @Output() editProduct = new EventEmitter<ProductOutputDto>();  
+  @Output() editProduct = new EventEmitter<ProductOutputDto | ProductItemResponse>();  
+  user?: IPayLoad;
+  
+
   onEditClick(): void {
-    this.editProduct.emit();
-  }
-  get currentImage(): string {
-    return this.product.images[this.currentIndex];
-  }
-  nextImage(): void {
-    this.currentIndex = (this.currentIndex + 1) % this.product.images.length;
+    this.editProduct.emit(this.product);
   }
 
-  // Reset to the first image when hover ends
-  resetImage(): void {
-    this.currentIndex = 0; // Optionally, reset to the first image
+  get currentImage(): string {
+    return 'images' in this.product ? this.product.images[this.currentIndex] : this.product.productImages[this.currentIndex].link;
   }
-  user?: IPayLoad;
+
+  nextImage(): void {
+    if ('images' in this.product && this.product.images.length > 0) {
+      this.currentIndex = (this.currentIndex + 1) % this.product.images.length;
+    }
+  }
+
+  resetImage(): void {
+    this.currentIndex = 0;
+  }
+
 
   handleAssginInfo() {
     const userData = this.storageService.get(LocalStorageKey.currentUser);
@@ -38,14 +43,14 @@ export class ProductCardComponent implements OnInit {
     }
   }
 
-
-  constructor(private storageService: StorageService) {}
-
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.handleAssginInfo();
+  onNavigate(){
+    this.router.navigate(['/common/product-detail',this.product.productName,'.i',`${this.product.id}`])
   }
 
+  constructor(private storageService: StorageService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.handleAssginInfo();
+  }
   
 }

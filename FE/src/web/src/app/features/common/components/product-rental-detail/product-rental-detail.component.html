@@ -1,6 +1,6 @@
-<div class="m-10">
+<div class="m-10" *ngIf="productDetail$ | async as productDetail">
     <div>
-      <h1 class="font-bold text-4xl mb-6">Máy giặt XQB30MJ102W</h1>
+      <h1 class="font-bold text-4xl mb-6">{{productDetail.productName}}</h1>
       <div class="mb-10 flex justify-start gap-4">
         <div class="flex justify-start">
           <span
@@ -9,7 +9,7 @@
             nzTheme="fill"
             class="text-yellow-300 text-2xl"
           ></span>
-          <p class="pt-1.5 px-3 text-lg font-light">4.9 (3000)</p>
+          <p class="pt-1.5 px-3 text-lg font-light">0.0 ({{productDetail.evaluate}})</p>
         </div>
         <p class="pt-1.5 text-base">Hà Nội</p>
       </div>
@@ -29,7 +29,7 @@
     <div class="mt-12">
       <nz-tabset>
         <nz-tab nzTitle="Tổng Quan">
-          <h1 class="font-bold text-2xl mb-6 px-10 mt-3">Máy giặt XQB30MJ102W</h1>
+          <h1 class="font-bold text-2xl mb-6 px-10 mt-3">{{productDetail.productName}}</h1>
           <div class="grid grid-flow-row-dense grid-cols-3 px-10">
             <div class="first-wrapper">
               <div class="price-wrapper">
@@ -39,10 +39,14 @@
                   nzSrc="assets/images/image-group-demo.png"
                 ></nz-avatar>
                 <span class="font-bold mx-2">Giá cho thuê</span>
-                <ul class="list-disc px-5 pt-3">
+                <!-- <ul class="list-disc px-5 pt-3">
                   <li class="py-1 text-wrap">Theo giờ: 1.000.0000 VND/giờ</li>
                   <li class="py-1 text-wrap">Theo ngày: 24.000.000 VND/ngày</li>
                   <li class="py-1 text-wrap">Theo tuần: 100.000.000 VND/tuần</li>
+                </ul> -->
+                <ul class="list-disc px-5 pt-3">
+                  <li class="py-1 text-wrap">rentalPrice:{{productDetail.rentalPrice | currency: "VND"}}</li>
+                  <li class="py-1 text-wrap">depositPrice: {{productDetail.depositPrice | currency: "VND"}}</li>
                 </ul>
               </div>
               <div class="time-wrapper mt-6">
@@ -52,7 +56,7 @@
                   nzSrc="assets/images/image-group-demo.png"
                 ></nz-avatar>
                 <span class="font-bold mx-2">Thời gian cho thuê</span>
-                <p class="py-1 pt-3">** Khung giờ cho thuê:</p>
+                <!-- <p class="py-1 pt-3">** Khung giờ cho thuê:</p>
                 <ul class="list-disc px-5">
                   <li class="py-1 text-wrap">
                     Cho thuê từ [Giờ bắt đầu] đến [Giờ kết thúc].
@@ -60,9 +64,10 @@
                   <li class="py-1 text-wrap">
                     Có thể thuê linh hoạt theo yêu cầu trong khung giờ quy định.
                   </li>
-                </ul>
+                </ul> -->
+                <p>rentalLimitDays: {{productDetail.rentalLimitDays}}</p>
               </div>
-              <div class="size-wrapper mt-6">
+              <!-- <div class="size-wrapper mt-6">
                 <nz-avatar
                   nzGap="4"
                   [nzSize]="'large'"
@@ -82,10 +87,10 @@
                     Trọng lượng bao bì (nếu có): 400 kg/lb
                   </li>
                 </ul>
-              </div>
+              </div> -->
             </div>
             <div class="second-wrapper">
-              <div class="deposit-wrapper">
+              <!-- <div class="deposit-wrapper">
                 <nz-avatar
                   nzGap="4"
                   [nzSize]="'large'"
@@ -100,8 +105,8 @@
                     Thời gian tối đa cho đặt trước: 20 tuần
                   </li>
                 </ul>
-              </div>
-              <div class="status-wrapper mt-6">
+              </div> -->
+              <!-- <div class="status-wrapper mt-6">
                 <nz-avatar
                   nzGap="4"
                   [nzSize]="'large'"
@@ -120,8 +125,8 @@
                     Không có hư hỏng hoặc dấu hiệu sử dụng vượt mức cho phép.
                   </li>
                 </ul>
-              </div>
-              <div class="capacity-wrapper mt-6">
+              </div> -->
+              <!-- <div class="capacity-wrapper mt-6">
                 <nz-avatar
                   nzGap="4"
                   [nzSize]="'large'"
@@ -140,7 +145,7 @@
                     xếp hạng năng lượng nếu có]
                   </li>
                 </ul>
-              </div>
+              </div> -->
             </div>
             <div class="third-wrapper">
             <app-form-rental-product/>
@@ -148,24 +153,7 @@
             <div class="fourth-wrapper col-span-2 mt-5">
               <i class="font-bold mx-2 text-lg">****Mô Tả****:</i>
               <p class="p-2">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus inventore eos enim sit doloremque, saepe aperiam
-                accusamus explicabo minus. Doloremque expedita ullam nam dicta
-                ipsam beatae assumenda hic eius quis? Sed quo nobis fugit quasi,
-                quam unde doloremque modi ad ex nostrum deleniti exercitationem
-                ullam quis reprehenderit! Nihil quam eos vero optio, rerum,
-                praesentium quos, sit unde atque necessitatibus harum! Repellendus
-                quod mollitia odio facilis veniam nisi! Ad quam, cum odit
-                temporibus eligendi assumenda, sint nulla ea, sunt numquam vero
-                atque vel quas at dolor. Totam, veniam voluptas! Alias,
-                necessitatibus! Delectus eligendi harum nulla quia, culpa est sed
-                maxime deserunt ipsa repudiandae eaque explicabo saepe provident
-                nisi quae enim, laborum aliquid porro, consequatur veritatis ex.
-                Laborum eum tempore sit modi? Perspiciatis dignissimos vitae
-                doloribus quasi quisquam, provident ab! Odio culpa voluptates
-                harum, aliquid modi eveniet illum reiciendis asperiores eaque
-                architecto? Veniam provident enim necessitatibus nam porro? Alias
-                laudantium odio quisquam.
+                {{productDetail.description}}
               </p>
             </div>
           </div>
@@ -176,9 +164,7 @@
       <div class="col-span-2">
         <i class="font-bold mx-2 text-lg">****Đánh Giá****:</i>
         <p class="p-2">
-          <app-comment></app-comment>
-          <app-comment></app-comment>
-          <app-comment></app-comment>
+          <!-- <app-comment></app-comment> -->
         </p>
       </div>
       <nz-card style="width: 400px; height: 300px" class="m-10">
@@ -194,9 +180,7 @@
         </div>
       </div>
       <div class="xl:columns-4 md:columns-2">
-        <div *ngFor="let post of postList">
-          <app-post-card [post]="post"></app-post-card>
-        </div>
+      <!--  -->
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@
       [nzRenderExtraFooter]="btnOk"
       class="mb-3"
       ngModel
+      [nzDisabledDate]="disabledDate"
       (ngModelChange)="onDateRangeChange($event)"
     ></nz-range-picker>
     <div class="flex justify-between items-center pb-3">
@@ -64,5 +65,5 @@
 </nz-tabset>
 
 <ng-template #btnOk>
-  <button nz-button nzType="primary" (click)="chooseOption1()">Chọn</button>
+  <button nz-button nzType="primary">Chọn</button>
 </ng-template>

@@ -109,7 +109,7 @@
       </div>
       <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
         <nz-col
-          *ngFor="let product of productList"
+          *ngFor="let product of (productListShopFilter$ | async)"
           [nzXs]="24"
           [nzSm]="12"
           [nzMd]="8"

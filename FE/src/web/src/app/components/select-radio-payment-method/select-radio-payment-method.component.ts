@@ -9,7 +9,7 @@ import { OptionRadio } from '../../configs/anonymous.config';
 
 export class SelectRadioPaymentMethodComponent {
   @Input() options?: OptionRadio[] = mockRadioOption;
-  @Input() selectedValue: string = '';
+  @Input() selectedValue: string = '1';
   @Output() selectionChange = new EventEmitter<string>();
 
   onValueChange(value: string): void {
@@ -21,12 +21,12 @@ export class SelectRadioPaymentMethodComponent {
 const mockRadioOption: OptionRadio[] = [
   {
     label: "Thanh toán 1 lần",
-    value: "1",
+    value: "0",
     icon: "credit-card"
   },
   {
     label: "Thanh toán cọc trước",
-    value: "2",
+    value: "1",
     icon: "pound-circle"
   }
 ]

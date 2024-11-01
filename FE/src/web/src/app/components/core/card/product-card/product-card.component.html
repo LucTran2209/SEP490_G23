@@ -1,4 +1,4 @@
-<nz-card class="mt-4" [nzCover]="nzAvatar">
+<nz-card class="mt-4 cursor-pointer" [nzCover]="nzAvatar" (click)="onNavigate()">
   <nz-card-meta
     nzTitle="{{ product.productName }}"
     nzDescription="GIÁ THUÊ: {{ product.rentalPrice | number }} VND"

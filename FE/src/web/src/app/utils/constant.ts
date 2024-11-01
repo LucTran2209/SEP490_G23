@@ -57,7 +57,12 @@ export const LocalStorageKey = {
   currentUser: 'current_user',
   breadCrumb: 'bread_crumb',
   prevBreadcrumb: 'prev_bread_crumb',
+  orderProcess: "order_process",
+
 };
+export const Sessionkey = {
+  orderProcess: "order_process",
+}
 
 export const REGEX = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
