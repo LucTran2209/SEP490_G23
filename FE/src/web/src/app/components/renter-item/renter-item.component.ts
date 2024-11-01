@@ -1,25 +1,29 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
-import { debounceTime, filter, map, Observable, Subject } from 'rxjs';
-import { ProductItemResponse } from '../../interfaces/product.interface';
-import { FeatureAppState } from '../../store/app.state';
+import { debounceTime, Observable, Subject } from 'rxjs';
+import { setQuantityRequest } from '../../features/common/state/rental/rental.actions';
 import {
   selectNumberOfDaysById,
+  selectProductRentalById,
   selectRentalActualPriceById,
 } from '../../features/common/state/rental/rental.selectors';
-import { setQuantityRequest } from '../../features/common/state/rental/rental.actions';
+import { ProductItemResponse } from '../../interfaces/product.interface';
+import { FeatureAppState } from '../../store/app.state';
+import { selectData } from '../../features/common/state/product/product-detail.reducer';
 
-type TypeProductRentalCommon = Pick<
-  ProductItemResponse,
-  'productImages' | 'productName'
->;
 @Component({
   selector: 'app-renter-item',
   templateUrl: './renter-item.component.html',
   styleUrl: './renter-item.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RenterItemComponent implements OnInit {
-  @Input() productRentalCommon?: TypeProductRentalCommon | null;
+  productDetail$?: Observable<ProductItemResponse>;
   @Input() pId?: string;
   rentalPriceActual$?: Observable<string | number | undefined>;
   numberDay$?: Observable<string | number | undefined>;
@@ -31,12 +35,14 @@ export class RenterItemComponent implements OnInit {
   }
 
   selectStateFromNgRx() {
+    this.productDetail$ = this.store.select(selectData);
     if (this.pId) {
-      this.rentalPriceActual$ = this.store
-        .select(selectRentalActualPriceById(String(this.pId)))
-
-      this.numberDay$ = this.store
-        .select(selectNumberOfDaysById(String(this.pId)))
+      this.rentalPriceActual$ = this.store.select(
+        selectRentalActualPriceById(String(this.pId))
+      );
+      this.numberDay$ = this.store.select(
+        selectNumberOfDaysById(String(this.pId))
+      );
     }
   }
 

@@ -90,10 +90,11 @@ import { ProductCarouseComponent } from '../product-carouse/product-carouse.comp
 import { RatingProccessProductComponent } from '../rating-proccess-product/rating-proccess-product.component';
 import { RentalPeriodComponent } from '../rental-period/rental-period.component';
 import { RenterItemComponent } from '../renter-item/renter-item.component';
-import { SelectRadioPaymentMethodComponent } from '../select-radio-payment-method/select-radio-payment-method.component';
 import { StatusLabelComponent } from '../status-label/status-label.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { ViewMoreItemComponent } from '../view-more-item/view-more-item.component';
+import { SelectRadioPaymentMethodComponent } from '../core/radio/select-radio-payment-method/select-radio-payment-method.component';
+import { SelectRadioRentalDayComponent } from '../core/radio/select-radio-rental-day/select-radio-rental-day.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -147,6 +148,7 @@ const SHARED_MODULES = [
   HeaderTableComponent,
   FormOrderComponent,
   SelectRadioPaymentMethodComponent,
+  SelectRadioRentalDayComponent,
   RenterItemComponent,
   InfoShopComponent,
   RentalPeriodComponent,

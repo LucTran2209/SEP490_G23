@@ -124,7 +124,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
                 rentalPriceRequest: Number(rentalActualPrice),
                 depositPriceRequest: Number(depositActualPrice),
                 productName: productDetail.productName,
-                productImages: productDetail.productImages[0],
+                productImages: productDetail.productImages?.[0] ?? null,
                 timeEnd: datePickTime[0],
                 timeStart: datePickTime[1],
               };

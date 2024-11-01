@@ -15,8 +15,11 @@ export class OrderProcessComponent implements OnInit{
   typeMethodPayment: string | number = 0;
   currentUser?: IPayLoad;
   ngOnInit(): void {
-  this.orderProcess = JSON.parse(this.storageService.get(LocalStorageKey.orderProcess) || "") as ProductRentalOrderProcess;    
-  this.currentUser = JSON.parse(this.storageService.get(LocalStorageKey.currentUser) || "") as IPayLoad;
+    const orderProcessData = this.storageService.get(LocalStorageKey.orderProcess);
+    const currentUserData = this.storageService.get(LocalStorageKey.currentUser);
+    
+    this.orderProcess = orderProcessData ? JSON.parse(orderProcessData) as ProductRentalOrderProcess : undefined;
+    this.currentUser = currentUserData ? JSON.parse(currentUserData) as IPayLoad : undefined;
 }
 
   onChoosePaymentMethod(val: string){

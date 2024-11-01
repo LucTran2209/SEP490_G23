@@ -1,28 +1,34 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { IPayLoad } from '../../../../interfaces/account.interface';
-import { ProductItemResponse, ProductOutputDto } from '../../../../interfaces/product.interface';
+import {
+  ProductItemResponse,
+  ProductOutputDto,
+} from '../../../../interfaces/product.interface';
 import { StorageService } from '../../../../services/storage.service';
 import { LocalStorageKey } from '../../../../utils/constant';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.scss'
+  styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent implements OnInit {
   @Input() product!: ProductOutputDto | ProductItemResponse; // Union Type
   currentIndex: number = 0;
-  @Output() editProduct = new EventEmitter<ProductOutputDto | ProductItemResponse>();  
+  @Output() editProduct = new EventEmitter<
+    ProductOutputDto | ProductItemResponse
+  >();
   user?: IPayLoad;
-  
 
   onEditClick(): void {
     this.editProduct.emit(this.product);
   }
 
-  get currentImage(): string {
-    return 'images' in this.product ? this.product.images[this.currentIndex] : this.product.productImages[this.currentIndex].link;
+  get currentImage() {
+    return 'images' in this.product
+      ? this.product.images[this.currentIndex]
+      : this.product.productImages?.[this.currentIndex].link;
   }
 
   nextImage(): void {
@@ -35,7 +41,6 @@ export class ProductCardComponent implements OnInit {
     this.currentIndex = 0;
   }
 
-
   handleAssginInfo() {
     const userData = this.storageService.get(LocalStorageKey.currentUser);
     if (userData) {
@@ -43,8 +48,13 @@ export class ProductCardComponent implements OnInit {
     }
   }
 
-  onNavigate(){
-    this.router.navigate(['/common/product-detail',this.product.productName,'.i',`${this.product.id}`])
+  onNavigate() {
+    this.router.navigate([
+      '/common/product-detail',
+      this.product.productName,
+      '.i',
+      `${this.product.id}`,
+    ]);
   }
 
   constructor(private storageService: StorageService, private router: Router) {}
@@ -52,5 +62,4 @@ export class ProductCardComponent implements OnInit {
   ngOnInit(): void {
     this.handleAssginInfo();
   }
-  
 }

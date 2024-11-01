@@ -1,105 +1,100 @@
-<!-- <nz-layout> -->
-<nz-header class="flex justify-between items-center leading-6 bg-white">
-  <img class="logo w-[130px] h-[55px]" src="assets/images/logo.png" alt="main-logo" />
-  <div>
-    <nz-input-group
-      class="w-96 rounded-full "
-      [nzSuffix]="suffixIconSearch"
-    >
-      <input
-        class="p-1 "
-        type="text"
-        nz-input
-        placeholder="Bạn cần thuê sản phẩm gì?"
-      />
-    </nz-input-group>
-    <ng-template #suffixIconSearch>
-      <span class="pe-1.5 text-lg" nz-icon nzType="search"></span>
-    </ng-template>
-  </div>
+  <nz-header class="flex justify-between items-center leading-6 bg-white">
+    <img class="logo w-[130px] h-[55px]" src="assets/images/logo.png" alt="main-logo" />
+    <div>
+      <nz-input-group class="w-96 rounded-full" [nzSuffix]="suffixIconSearch">
+        <input
+          class="p-1"
+          type="text"
+          nz-input
+          placeholder="Bạn cần thuê sản phẩm gì?"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <span class="pe-1.5 text-lg" nz-icon nzType="search"></span>
+      </ng-template>
+    </div>
 
-  @if(!user){
-  <div>
-    <button
-      nz-button
-      nzType="primary"
-      (click)="onRedirect('/auth/login')"
-      nzGhost
-      class="m-2"
-    >
-      Đăng Nhập
-    </button>
-    <button
-      nz-button
-      nzType="primary"
-      nzGhost
-      class="m-2"
-      (click)="onRedirect('/auth/register')"
-    >
-      Đăng Ký
-    </button>
-  </div>
-
-  }@else{
-  <div nz-dropdown [nzDropdownMenu]="menu">
-    <nz-avatar
-      nzGap="4"
-      [nzSrc]="
-          avatarPersonal ? avatarPersonal : 'assets/images/default-avatar.jpg'
-        "
-      nzSize="large"
-      style="vertical-align: middle; background-color: green; margin-left: 40px"
-    ></nz-avatar>
-  </div>
-  <nz-dropdown-menu #menu="nzDropdownMenu">
-    <ul nz-menu>
-      <li
-        nz-menu-item
-        class="p-3 uppercase text-center menu-item"
-        [routerLink]="['./user/account/profile']"
-      >
-        Thông tin cá nhân
-      </li>
-      <li
-        nz-menu-item
-        class="p-3 uppercase text-center menu-item"
-        [routerLink]="['./user/order']"
-      >
-        Danh sách thuê của tôi
-      </li>
-      <li
-        nz-menu-item
-        class="p-3 uppercase text-center menu-item"
-        *ngIf="userRole === USERROLE.RENTER"
-      >
-        Đăng ký thành chủ thuê
-      </li>
-      <li
-        nz-menu-item
-        class="p-3 uppercase text-center menu-item"
-        *ngIf="userRole === USERROLE.LESSOR"
-        [routerLink]="['../lessor/shop']"
-      >
-        Cửa Hàng Của Tôi
-      </li>
-      <li
-        nz-menu-item
-        class="p-3 uppercase text-center menu-item"
-        *ngIf="userRole === USERROLE.ADMIN"
-        [routerLink]="['../admin/manage-users']"
-      >
-        Thanh Tiến Trình
-      </li>
-      <li
-        nz-menu-item
-        class="p-3 uppercase text-center menu-item"
-        (click)="logout()"
-      >
-        Đăng xuất
-      </li>
-    </ul>
-  </nz-dropdown-menu>
-  }
-</nz-header>
-<!-- </nz-layout> -->
-<app-nav-menu></app-nav-menu>
+    <ng-container *ngIf="!user">
+      <div>
+        <button
+          nz-button
+          nzType="primary"
+          (click)="onRedirect('/auth/login')"
+          nzGhost
+          class="m-2"
+        >
+          Đăng Nhập
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          nzGhost
+          class="m-2"
+          (click)="onRedirect('/auth/register')"
+        >
+          Đăng Ký
+        </button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="user">
+      <div nz-dropdown [nzDropdownMenu]="menu">
+        <nz-avatar
+          nzGap="4"
+          [nzSrc]="
+              avatarPersonal ? avatarPersonal : 'assets/images/default-avatar.jpg'
+            "
+          nzSize="large"
+          class="align-middle bg-green-500 ml-10"
+        ></nz-avatar>
+      </div>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            [routerLink]="['./user/account/profile']"
+          >
+            Thông tin cá nhân
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            [routerLink]="['./user/order']"
+          >
+            Danh sách thuê của tôi
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            *ngIf="userRole === USERROLE.RENTER"
+          >
+            Đăng ký thành chủ thuê
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            *ngIf="userRole === USERROLE.LESSOR"
+            [routerLink]="['../lessor/shop']"
+          >
+            Cửa Hàng Của Tôi
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            *ngIf="userRole === USERROLE.ADMIN"
+            [routerLink]="['../admin/manage-users']"
+          >
+            Thanh Tiến Trình
+          </li>
+          <li
+            nz-menu-item
+            class="p-3 uppercase text-center menu-item"
+            (click)="logout()"
+          >
+            Đăng xuất
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+    </ng-container>
+  </nz-header>
+  <app-nav-menu></app-nav-menu>

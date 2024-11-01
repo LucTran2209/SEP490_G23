@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { OptionRadio } from '../../configs/anonymous.config';
+import { OptionRadio } from '../../../../configs/anonymous.config';
 
 @Component({
   selector: 'app-select-radio-payment-method',

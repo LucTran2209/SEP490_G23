@@ -51,6 +51,7 @@ export class ProductDetailEffects {
       this.action$.pipe(
         ofType(ProductDetailActions.getDetailProductRental_success),
         tap(({data}) => {
+          this.loadingService.setOtherLoading('loaded');
            // set init price
           this.store.dispatch(
             RentalProduct.setInit({
@@ -61,7 +62,6 @@ export class ProductDetailEffects {
             })
           )
           // set init price
-          this.loadingService.setOtherLoading('loaded');
         })
       ),
     { dispatch: false }

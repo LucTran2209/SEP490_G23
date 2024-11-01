@@ -1,60 +1,66 @@
-<nz-card class="p-2 bg-gray-50 min-w-[480px] h-full">
-  <nz-card-meta
-    [nzTitle]="titleForm"
-    [nzDescription]="descriptionForm"
-  ></nz-card-meta>
-  <!-- Main content container -->
-  <div>
-    <app-renter-item
-      [productRentalCommon]="productRentalDetail$ | async"
-      [pId]="productIdParam"
-    />
-    <!-- Rental details section -->
-    <div class="mb-3">
-      <p class="text-[20px] font-medium">Thời gian thuê</p>
-      <app-rental-period (handleOpenPeriod)="showModal()"></app-rental-period>
-    </div>
-    <div class="flex justify-between items-center">
-      <p class="text-[15px] font-semibold">Đơn giá cọc</p>
-      <p class="text-[20px]">
-        {{ depositPriceActual$ | async | currency : "VND" }}
-      </p>
-    </div>
-    <div class="flex justify-between items-center">
-      <p class="text-[15px] font-semibold">Đơn giá thuê</p>
-      <p class="text-[20px]">
-        {{ rentalPriceActual$ | async | currency : "VND" }} / ngày
-      </p>
-    </div>
-    <div class="mb-3">
-      <nz-textarea-count [nzMaxCharacterCount]="  100">
-        <textarea
-          rows="4"
-          placeholder="ghi chú"
-          nz-input
-          [(ngModel)]="inputNote"
-        ></textarea>
-      </nz-textarea-count>
-    </div>
-    <button
-      nz-button
-      class="w-full bg-orange-500 h-12 text-white rounded-md hover:border-orange-600"
-      (click)="onChooseRental()"
-    >
-      Chọn thuê
-    </button>
+<div class="h-full border-none">
+  <!-- header -->
+  <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+    <span class="text-red-500 font-bold">* &nbsp;</span>Giá thuê theo ngày
   </div>
-</nz-card>
-
-<!-- Templates for title and description -->
-<ng-template #titleForm>
-  <h4 class="font-medium">Thuê sản phẩm</h4>
-</ng-template>
-<ng-template #descriptionForm>
-  <p class="text-[20px] italic text-[#B3B3B3]">
-    {{ (productRentalDetail$ | async)?.productName }}
-  </p>
-</ng-template>
+  <!-- Main content container -->
+  <div class="pb-3">
+    <app-renter-item [pId]="productIdParam" />
+  </div>
+  <!-- Rental details section -->
+  <div class="pb-3">
+    <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+      <span class="text-red-500 font-bold">* &nbsp;</span>Thời gian thuê
+    </div>
+    <app-rental-period (handleOpenPeriod)="showModal()"></app-rental-period>
+  </div>
+   <!-- chọn ngày thuê có sẵn -->
+   <div class="pb-3">
+    <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+      <span class="text-red-500 font-bold">* &nbsp;</span> Chọn thời gian thuê tiêu chuẩn
+    </div>
+    <app-select-radio-rental-day/>
+  </div>
+  <!-- voucher -->
+  <div class="pb-3">
+    <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+      <span class="text-red-500 font-bold">* &nbsp;</span> Chọn mã giảm giá
+    </div>
+  </div>
+  <div class="flex justify-between items-center">
+    <div class="leading-5 capitalize text-[#000] pb-3 font-medium">
+      <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá cọc
+    </div>
+    <p class="text-[20px]">
+      {{ depositPriceActual$ | async | currency : "VND" }}
+    </p>
+  </div>
+  <div class="flex justify-between items-center">
+    <div class="leading-5 capitalize text-[#000] pb-3 font-medium">
+      <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá thuê
+    </div>
+    <p class="text-[20px]">
+      {{ rentalPriceActual$ | async | currency : "VND" }} / ngày
+    </p>
+  </div>
+  <div class="mb-3">
+    <nz-textarea-count [nzMaxCharacterCount]="100">
+      <textarea
+        rows="4"
+        placeholder="ghi chú"
+        nz-input
+        [(ngModel)]="inputNote"
+      ></textarea>
+    </nz-textarea-count>
+  </div>
+  <button
+    nz-button
+    class="w-full bg-[#0A66EB] h-12 text-white rounded-md hover:border-blue-600"
+    (click)="onChooseRental()"
+  >
+    Chọn thuê
+  </button>
+</div>
 
 <!-- Modal for rental time selection -->
 <nz-modal
@@ -65,7 +71,7 @@
   (nzOnCancel)="handleCancel()"
 >
   <ng-container *nzModalContent>
-    <app-picker-timer></app-picker-timer> 
+    <app-picker-timer></app-picker-timer>
   </ng-container>
   <ng-container *nzModalFooter>
     <div class="flex justify-between items-center">

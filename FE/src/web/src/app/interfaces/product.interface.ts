@@ -59,7 +59,7 @@ export interface ProductRentalOrderProcess {
   timeEnd: Date;
   note: string,
   paymentMethod: number,
-  productImages: ProductImage;
+  productImages: ProductImage | null;
   productName: string;
   quantityRequest: number;
   rentalPriceRequest: number;
@@ -76,6 +76,6 @@ export interface ProductItemResponse {
   depositPrice: string | number;
   rentalLimitDays: string | number;
   evaluate: string | number;
-  subCategory: Subcategory;
-  productImages: ProductImage[];
+  subCategory?: Subcategory;
+  productImages?: ProductImage[];
 }

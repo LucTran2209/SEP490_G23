@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { selectData } from '../../state/product/product-detail.reducer';
   selector: 'app-product-rental-detail',
   templateUrl: './product-rental-detail.component.html',
   styleUrl: './product-rental-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRentalDetailComponent {
   isVisible: boolean = false;
