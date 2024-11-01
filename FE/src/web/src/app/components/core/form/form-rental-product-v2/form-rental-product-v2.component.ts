@@ -1,31 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, Observable, Subscription } from 'rxjs';
+import { RentalTimerService } from '../../../../services/rental-timer.service';
+import { FeatureAppState } from '../../../../store/app.state';
+import { Store } from '@ngrx/store';
+import { StorageService } from '../../../../services/storage.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
+import { ProductItemResponse } from '../../../../interfaces/product.interface';
+import { selectDepositActualPriceById, selectRentalActualPriceById } from '../../../../features/common/state/rental/rental.selectors';
+
+
+interface IProductShortSearch {
+  id: string | number;
+  productName: string;
+  rentalPrice: number;
+  depositPrice: number;
+  rentalLimitDays: number;
+  images: string;
+}
+
 
 @Component({
   selector: 'app-form-rental-product-v2',
   templateUrl: './form-rental-product-v2.component.html',
   styleUrl: './form-rental-product-v2.component.scss'
 })
-export class FormRentalProductV2Component   {
+export class FormRentalProductV2Component   implements OnInit, OnDestroy {
+  productIdParam?: string;
   isConfirmLoading = false;
   isVisible = false;
-  currentRoute?: string;
-  inputNote?: string;
+  inputValue?: string;
   options: Array<IProductShortSearch> = [];
   tags: IProductShortSearch[] = [];
-  productRentalDetail$?: Observable<ProductItemResponse>;
-  rentalPriceActual$?: Observable<number>;
-  depositPriceActual$?: Observable<number>;
-  
-  //ngRx
+  productRentalDetailArray$?: Observable<ProductItemResponse[]>;
 
-  //ngRx 
-
-
+  rentalPriceActual$?: Observable<string | number>;
+  depositPriceActual$?: Observable<string | number>;
   //date time
   rangePickerTime$?: Observable<Date[]>;
-  selectedTimeStart: any;
-  selectedTimeEnd: any;
-  rentalDays: number = 0;
+  selectedTimeStart$?: Observable<any>;
+  selectedTimeEnd$?: Observable<any>;
+  rentalDays$?: Observable<number>;
+
+   //subscription
   private routeSubscription?: Subscription;
   //date time
 
@@ -61,85 +78,40 @@ export class FormRentalProductV2Component   {
   private getRandomInt(max: number, min: number = 0): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  // modal
+
   showModal(): void {
     this.isVisible = true;
   }
 
   handleOk(): void {
+    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
+    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 
-  // modal
-
-  /**
-   *
-   */
-  onChooseRental() {
-   
-  }
-
-  onChooseRentalOption1(){
-    combineLatest([
-      this.store.select(selectData),
-      this.store.select(selectRentalActualPrice),
-      this.store.select(selectDepositActualPrice),
-      this.store.select(selectQuantityRequest),
-      this.store.select(selectNumberOfDays),
-      this.rentalTimerService.rangePickerTime$,
-    ])
-      .pipe(
-        tap(() => {
-          this.ToasMS.showSuccess(
-            'Bạn sẽ được chuyển hướng tới trang tạo đơn thuê!'
-          );
-        }),
-        delay(1000)
-      )
-      .subscribe(
-        ([
-          productDetail,
-          rentalActualPrice,
-          depositActualPrice,
-          quantityRequest,
-          numberOfDay,
-          datePickTime,
-        ]) => {
-          const processOrder: ProductRentalOrderProcess = {
-            note: this.inputNote ?? '',
-            numberOfDay,
-            paymentMethod: 0,
-            quantityRequest,
-            productId: productDetail.id,
-            rentalPriceRequest: rentalActualPrice,
-            depositPriceRequest: depositActualPrice,
-            productName: productDetail.productName,
-            productImages: productDetail.productImages[0],
-            timeEnd: datePickTime[0],
-            timeStart: datePickTime[1],
-          };
-          this.storageService.set(
-            LocalStorageKey.orderProcess,
-            JSON.stringify(processOrder)
-          );
-          this.router.navigate(['/common/order-process']);
-        }
-      );
-  }
-  
-  onChooseRentalOption2(){
-    console.log('>>> line 162');
+  // on choose more
+  onChooseRentalMore(){
+    
   }
 
   selectStateFromNgRx() {
-    this.productRentalDetail$ = this.store.select(selectData);
-    this.rentalPriceActual$ = this.store.select(selectRentalActualPrice);
-    this.depositPriceActual$ = this.store.select(selectDepositActualPrice);
     this.rangePickerTime$ = this.rentalTimerService.rangePickerTime$;
+    this.selectedTimeStart$ = this.rentalTimerService.timeStart$;
+    this.selectedTimeEnd$ = this.rentalTimerService.timeEnd$;
+    this.rentalDays$ = this.rentalTimerService.rentalDays$;
+    if (this.productIdParam) {
+      this.rentalPriceActual$ = this.store
+        .select(selectRentalActualPriceById(this.productIdParam))
+        .pipe(filter((value): value is string | number => value !== undefined));
+
+      this.depositPriceActual$ = this.store
+        .select(selectDepositActualPriceById(this.productIdParam))
+        .pipe(filter((value): value is string | number => value !== undefined));
+    }
   }
 
   dispatchActionNessarray() {}
@@ -154,29 +126,16 @@ export class FormRentalProductV2Component   {
   ) {}
 
   ngOnInit(): void {
-    this.currentRoute = this.route.snapshot.paramMap.get("id") ?? '';
+    this.productIdParam = this.route.snapshot.paramMap.get('id') ?? '';
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
 
-    this.rentalTimerService.timeStart$.subscribe((time) => {
-      this.selectedTimeStart = time;
-      console.log('object timeStart', time);
-    });
-
-    this.rentalTimerService.timeEnd$.subscribe((time) => {
-      this.selectedTimeEnd = time;
-      console.log('object timeEnd', time);
-    });
-
-    this.rentalTimerService.rentalDays$.subscribe((days) => {
-      this.rentalDays = days;
-    });
 
     //unsubscrib
     this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.rentalTimerService.clearState();
+        this.rentalTimerService.clearState(); 
       });
   }
 

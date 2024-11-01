@@ -1,4 +1,3 @@
-<nz-card class="p-2 bg-gray-50 min-w-[480px]">
   <form class="flex items-center pb-3">
     <label for="simple-search" class="sr-only">Tìm kiếm</label>
     <div class="relative w-full">
@@ -28,8 +27,8 @@
         class="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
         placeholder="Tìm kiếm sản phẩm thuê..."
         required
-        />
-        <!-- (input)="onSearchProductShort($event)" -->
+      />
+      <!-- (input)="onSearchProductShort($event)" -->
     </div>
   </form>
   <!-- tag found product search  -->
@@ -41,25 +40,12 @@
   >
     {{ sliceTagName(tagItem.productName) }}
   </nz-tag>
-  } 
+  }
   <!-- tag found product search  -->
-
   <div class="">
-    @if(tags.length === 0){
+    @if(tags.length === 0 && (productRentalDetailArray$ | async)?.length === 0){
     <div class="flex justify-center items-center">
       <img src="assets/images/6931683-Photoroom.png" alt="" class="w-[250px]" />
-    </div>
-    } @else if (tags.length !== 0){
-    <div class="">
-      <div class="flex justify-between items-center pb-2">
-        <p class="font-medium">Mục</p>
-        <p class="font-medium">Số lượng</p>
-      </div>
-      <section *ngFor="let tagItem of tags; track: tagItem">
-        @for (tagItem of tags; track tagItem) {
-        <app-renter-item />
-        }
-      </section>
     </div>
     }
     <!-- header -->
@@ -109,22 +95,18 @@
     </div>
     <div class="mb-3">
       <nz-textarea-count [nzMaxCharacterCount]="100">
-        <textarea
-          rows="4"
-          placeholder="ghi chú"
-          nz-input
-          ></textarea>
-        </nz-textarea-count>
-        <!-- [(ngModel)]="inputNote" -->
+        <textarea rows="4" placeholder="ghi chú" nz-input></textarea>
+      </nz-textarea-count>
+      <!-- [(ngModel)]="inputNote" -->
     </div>
     <button
       nz-button
       class="w-full bg-[#0A66EB] h-12 text-white rounded-md hover:border-blue-600"
+      (click)="onChooseRentalMore()"
     >
       Chọn thuê
     </button>
   </div>
-</nz-card>
 
 <nz-modal
   [(nzVisible)]="isVisible"
@@ -139,18 +121,18 @@
   <ng-container *nzModalFooter>
     <div class="flex justify-between items-center">
       <div class="font-semibold text-start">
+        @if((rangePickerTime$ | async); as rangePickerTime) {
         <p>
-          <!-- 12:00 21/10 -->
-          {{ selectedTimeStart.value }}
+          {{ (selectedTimeStart$ | async).value }}
           {{ rangePickerTime[0] | date : "dd/MM/yyyy" }}
           <span nz-icon nzType="minus" nzTheme="outline"></span>
-          <!-- 12:00 30/10 -->
-          {{ selectedTimeEnd.value }}
+          {{ (selectedTimeEnd$ | async).value }}
           {{ rangePickerTime[1] | date : "dd/MM/yyyy" }}
         </p>
+        }
         <p>
           Thời gian thuê:
-          <span class="text-[#0F6CF8]">{{ rentalDays }} ngày</span>
+          <span class="text-[#0F6CF8]">{{ rentalDays$ | async }} ngày</span>
         </p>
       </div>
       <button

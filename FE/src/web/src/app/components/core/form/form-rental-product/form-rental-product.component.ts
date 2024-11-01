@@ -25,14 +25,6 @@ import {
   selectQuantityRequestById,
   selectRentalActualPriceById,
 } from '../../../../features/common/state/rental/rental.selectors';
-interface IProductShortSearch {
-  id: string | number;
-  productName: string;
-  rentalPrice: number;
-  depositPrice: number;
-  rentalLimitDays: number;
-  images: string;
-}
 
 @Component({
   selector: 'app-form-rental-product',
@@ -44,7 +36,6 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   isConfirmLoading = false;
   isVisible = false;
   inputNote?: string;
-  options: Array<IProductShortSearch> = [];
   productRentalDetail$?: Observable<ProductItemResponse>;
 
   rentalPriceActual$?: Observable<string | number>;
