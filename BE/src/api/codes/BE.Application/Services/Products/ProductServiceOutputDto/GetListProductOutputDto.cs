@@ -8,7 +8,7 @@ namespace BE.Application.Services.Products.ProductServiceOutputDto
     {
         public SubCategoryDto? SubCategory { get; set; }
         public RentalShopDto? RentalShop { get; set; }
-        public List<ProductImageDto>? ProductImages { get; set; }
+        public List<string>? Images { get; set; }
 
         public class Mapping : Profile
         {
