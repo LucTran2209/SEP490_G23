@@ -49,6 +49,8 @@ export class PickerTimerComponent implements OnInit {
       });
     });
 
+    console.log(">>> line 52", dates);
+
     this.rentalTimerService.setRangePickerTime(dates);
   }
 
