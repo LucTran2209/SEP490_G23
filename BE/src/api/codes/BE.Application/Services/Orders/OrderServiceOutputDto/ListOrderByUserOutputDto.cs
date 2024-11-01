@@ -3,7 +3,7 @@ using BE.Application.Common.Dtos;
 using BE.Domain.Abstractions.Enums;
 using BE.Domain.Entities;
 
-namespace BE.Application.Services.Orders.OrderOutputDto
+namespace BE.Application.Services.Orders.OrderServiceOutputDto
 {
     public class ListOrderByUserOutputDto
     {

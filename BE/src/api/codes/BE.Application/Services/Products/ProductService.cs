@@ -51,7 +51,7 @@ namespace BE.Application.Services.Products
                 };
             }
 
-            var productDetail = _mapper.Map<ProductDto>(product);
+            var productDetail = _mapper.Map<ProductDetailOutputDto>(product);
 
             return new ResultService
             {
