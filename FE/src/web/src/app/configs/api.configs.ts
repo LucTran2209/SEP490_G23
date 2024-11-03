@@ -110,6 +110,11 @@ export const ProductSlug = {
     title: 'List Product | ERMS',
     api: 'Product/list',
   },
+  ListProductByShopId: {
+    label: 'List Product By Shop Id',
+    title: 'List Product By Shop Id | ERMS',
+    api: 'Product/Shop/',
+  },
   GetProduct: {
     label: 'View Product',
     title: 'View Product | ERMS',
@@ -173,6 +178,14 @@ export const CategorySlug = {
     label: 'List SubCategory',
     title: 'List SubCategory | ERMS',
     api: 'SubCategory',
+  }
+
+}
+export const RentalShopSlug = {
+  GetRentalShop: {
+    label: 'Get Rental Shop',
+    title: 'Get Rental Shop | ERMS',
+    api: 'RentalShop/',
   }
 
 }

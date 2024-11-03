@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit {
         this.message.success('Cập Nhật Hồ Sơ Thành Công!');
         this.handleCloseModal();
         this.loadUser();
-        // window.location.reload();
+        window.location.reload();
       },
       error: (error) => {
         this.alertMessage = 'Cập Nhật Hồ Sơ Thất Bại!';
@@ -86,19 +86,18 @@ export class ProfileComponent implements OnInit {
     });
   }
   loadUser() {
-    const userCurrent = this.userProfileService.currentUser;
-    this.userid = userCurrent?.UserId;
+    this.userid = this.userProfileService.UserId;
     console.log(this.userid);
     this.userService.viewProfile(this.userid).subscribe({
       next: (res: ProfileResultService) => {
+        this.loading = false;
         this.user = res.data;
         this.userProfileService.setAvatar(this.user.avatarPersonal);
         console.log(this.user);
-        this.loading = false;
       },
       error: () => {
-        this.userError = true; // Show NzResult on error
         this.loading = false;
+        this.userError = true; // Show NzResult on error
       }
       });
   }
