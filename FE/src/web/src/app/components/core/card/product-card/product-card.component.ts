@@ -26,9 +26,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   get currentImage() {
-    return 'images' in this.product
-      ? this.product.images[this.currentIndex]
-      : this.product.productImages?.[this.currentIndex].link;
+    return this.product.images[this.currentIndex]
   }
 
   nextImage(): void {

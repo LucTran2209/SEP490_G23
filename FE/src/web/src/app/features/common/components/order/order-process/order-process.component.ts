@@ -33,7 +33,6 @@ export class OrderProcessComponent implements OnInit{
         userId: this.currentUser.UserId,
         endDate: this.orderProcess.timeEnd.toString(),
         note: this.orderProcess.note,
-        paymentType: Number(this.typeMethodPayment),
         startDate: this.orderProcess.timeStart.toString(),
         totalPrice: this.orderProcess.rentalPriceRequest, 
         orderDetails: [

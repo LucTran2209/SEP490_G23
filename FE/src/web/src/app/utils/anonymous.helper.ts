@@ -87,4 +87,15 @@ export function generateRandomColor(): string {
   return color;
 }
 
-
+export const cleanParams = (params: {
+  [key: string]: any;
+}): { [key: string]: any } => {
+  const clearnParams: { [key: string]: any } = {};
+  Object.keys(params).forEach((key) => {
+    const value = params[key];
+    if (value !== null && value !== undefined && value !== '') {
+      clearnParams[key] = value;
+    }
+  });
+  return clearnParams
+};

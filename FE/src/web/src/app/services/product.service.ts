@@ -10,6 +10,7 @@ import {
   ProductResultService,
 } from '../interfaces/product.interface';
 import { AppHttpClientService } from './app-http-client.service';
+import { cleanParams } from '../utils/anonymous.helper';
 
 @Injectable({
   providedIn: 'root',
@@ -88,12 +89,13 @@ export class ProductService {
    * @returns 
    */
   listProductShopCommon(
-    params: any,
+    filters: any,
     id: string | number
   ): Observable<BaseResponseApiV2<ProductItemResponse>> {
+    const cleanedParams = cleanParams(filters); 
     return this.httpClient.get<BaseResponseApiV2<ProductItemResponse>>(
       `${ProductSlug.RentalShopProduct.api}/${id}`,
-      params
+      cleanedParams
     );
   }
 }

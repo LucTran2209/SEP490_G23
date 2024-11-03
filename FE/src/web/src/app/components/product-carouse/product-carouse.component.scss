@@ -1,8 +1,44 @@
-  .thumbnail-image {
-    transition: border 0.3s;
-  }
-  
-  .thumbnail-image:hover {
-    border-color: blue;
-  }
-  
+.thumbnail-image {
+  transition: border 0.3s;
+}
+
+.thumbnail-image:hover {
+  border-color: blue;
+}
+::ng-deep .slick-prev {
+  z-index: 200;
+  left: 0px !important;
+}
+::ng-deep .slick-next {
+  z-index: 100;
+  right: 0px !important;
+}
+::ng-deep .slick-dots{
+  display: none !important;
+}
+
+::ng-deep .slick-next, .slick-prev {
+  height: 45px;
+  width: 45px;
+}
+::ng-deep .slick-list {
+  max-height: 700px !important;
+}
+
+::ng-deep .ant-carousel .slick-dots {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  left: 0;
+  z-index: 15;
+  display: flex !important;
+  justify-content: center;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0;
+  list-style: none;
+}
+
+// test slick carousel
+
+// test slick carousel

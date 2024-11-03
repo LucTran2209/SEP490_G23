@@ -33,7 +33,6 @@ import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
 import { ProvinceEffect } from './store/province/province.effects';
 import { addressFeature } from './store/province/province.reducer';
-
 registerLocaleData(en);
 
 @NgModule({

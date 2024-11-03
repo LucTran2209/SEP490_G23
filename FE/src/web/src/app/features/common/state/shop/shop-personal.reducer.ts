@@ -7,41 +7,38 @@ export interface RentalShopProductState {
   message: string | null;
   status: StatusProcess;
   shopId: string;
-  data: ProductItemResponse[];
+  productItemResponse: ProductItemResponse[];
   pageIndex: number;
   pageSize: number;
   totalCount: number;
-  params: any;
 }
 
 const intialState: RentalShopProductState = {
-  data: [],
-  message: '',
-  pageIndex: 0,
+  pageIndex: 1,
+  pageSize: 10,
   totalCount: 0,
+  productItemResponse: [],
+  message: '',
   shopId: '',
-  pageSize: 0,
   status: 'idle',
-  params: null,
 };
 
 export const rentalShopProductReducer = createReducer(
   intialState,
   on(RentalShopProductActions.getListProductRentalShop, (state, action) => ({
     ...state,
-    params: action.params,
     shopId: action.shopId,
     status: 'loading' as StatusProcess,
   })),
   on(
     RentalShopProductActions.getListProductRentalShop_success,
-    (state, action) => ({
+    (state, { productData, pageIndex, pageSize, totalCount }) => ({
       ...state,
       status: 'loaded' as StatusProcess,
-      data: action.data,
-      pageIndex: action.pageIndex ?? 0,
-      pageSize: action.pageSize ?? 0,
-      totalCount: action.totalCount ?? 0,
+      pageIndex,
+      pageSize,
+      totalCount,
+      productItemResponse: productData,
     })
   ),
   on(
@@ -61,12 +58,12 @@ export const featureRentalShopProduct = createFeature({
 
 export const {
   name,
-  selectData,
   selectFeature_rentalShopProductState,
-  selectMessage,
+  selectProductItemResponse,
   selectPageIndex,
   selectPageSize,
-  selectParams,
-  selectStatus,
+  selectShopId,
   selectTotalCount,
+  selectMessage,
+  selectStatus,
 } = featureRentalShopProduct;

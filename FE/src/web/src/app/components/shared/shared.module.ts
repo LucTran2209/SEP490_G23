@@ -91,10 +91,17 @@ import { RatingProccessProductComponent } from '../rating-proccess-product/ratin
 import { RentalPeriodComponent } from '../rental-period/rental-period.component';
 import { RenterItemComponent } from '../renter-item/renter-item.component';
 import { StatusLabelComponent } from '../status-label/status-label.component';
+import { CardStaticComponent } from '../core/card/card-static/card-static.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { ViewMoreItemComponent } from '../view-more-item/view-more-item.component';
 import { SelectRadioPaymentMethodComponent } from '../core/radio/select-radio-payment-method/select-radio-payment-method.component';
 import { SelectRadioRentalDayComponent } from '../core/radio/select-radio-rental-day/select-radio-rental-day.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { ConfimOrderProcessComponent } from '../modal/confim-order-process/confim-order-process.component';
+import { PriceListComponent } from '../price-list/price-list.component';
+import { SelectRadioCollateralComponent } from '../core/radio/select-radio-collateral/select-radio-collateral.component';
+import { UploadListComponent } from '../core/upload/upload-list/upload-list.component';
+
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -143,6 +150,11 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  CardStaticComponent,
+  SelectRadioCollateralComponent,
+  UploadListComponent,
+  PriceListComponent,
+  ConfimOrderProcessComponent,
   CategoryCardComponent,
   StatusLabelComponent,
   HeaderTableComponent,
@@ -197,6 +209,7 @@ const SHARED_MODULES = [
     RouterModule,
     ...ANTD_MODULES,
     ...MATERIAL_MODULES,
+    SlickCarouselModule,
   ],
   exports: [
     CommonModule,
@@ -205,6 +218,7 @@ const SHARED_MODULES = [
     ...ANTD_MODULES,
     ...MATERIAL_MODULES,
     ...SHARED_MODULES,
+    SlickCarouselModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

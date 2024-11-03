@@ -1,0 +1,19 @@
+::ng-deep .ant-modal-header {
+  text-align: center !important;
+}
+
+::ng-deep .ant-modal-content,
+::ng-deep .ant-modal-header {
+  border-radius: 6px !important;
+}
+
+::ng-deep .ant-modal {
+  top: 70px !important;
+}
+::ng-deep .ant-modal-body {
+  overflow-y: auto;
+  max-height: 80vh;
+}
+::ng-deep .ant-modal-wrap {
+  overflow: hidden;
+}
