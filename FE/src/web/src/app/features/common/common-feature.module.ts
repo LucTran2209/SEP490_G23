@@ -15,6 +15,7 @@ import { OrderProcessComponent } from './components/order/order-process/order-pr
 import { PersonalInfoComponent } from './components/order/order-process/personal-info/personal-info.component';
 import { OrderInfoPersonalComponent } from './components/order/order-process/order-info-personal/order-info-personal.component';
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
+import { HowitorderComponent } from './static/howitorder/howitorder.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MyOrderDetailComponent } from './components/my-order-detail/my-order-de
     OrderInfoPersonalComponent,
     ShopPersonalComponent,
     MyOrderDetailComponent,
+    HowitorderComponent,
   ],
   imports: [CommonModule, SharedModule, CommonRoutingModule],
 })

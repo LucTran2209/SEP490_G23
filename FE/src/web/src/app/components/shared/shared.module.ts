@@ -91,6 +91,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { FormOrderComponent } from '../core/form/form-order/form-order.component';
 import { HeaderTableComponent } from '../header-table/header-table.component';
 import { StatusLabelComponent } from '../status-label/status-label.component';
+import { CardStaticComponent } from '../core/card/card-static/card-static.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -139,6 +140,7 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  CardStaticComponent,
   StatusLabelComponent,
   HeaderTableComponent,
   FormOrderComponent,

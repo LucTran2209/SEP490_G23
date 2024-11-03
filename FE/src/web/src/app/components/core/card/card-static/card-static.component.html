@@ -1,0 +1,16 @@
+<div class="relative border-4 border-[#93cbff] rounded-lg bg-blue-50 p-6 min-h-[280px]">
+  <div
+    class="label_card absolute -top-[3px] -right-[4px] text-[1.25rem] w-[46px] h-[70px] font-semibold flex justify-center pt-[15px] rounded-lg text-white pad bg-blue-700"
+  >
+    {{ obj?.key }}.
+  </div>
+  <div class="mb-3">
+    @if (obj?.iconContent) {
+    <span nz-icon [nzType]="obj?.iconContent || ''" class="text-2xl" nzTheme="outline"></span>
+    }
+  </div>
+  <h6 class="mb-3 font-semibold text-[1.5rem]">{{ obj?.title }}</h6>
+  <p class="font-light line-clamp-3 text-[1rem]">
+    {{obj?.content}}
+  </p>
+</div>

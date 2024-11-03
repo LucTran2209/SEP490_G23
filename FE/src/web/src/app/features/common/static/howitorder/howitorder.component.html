@@ -1,0 +1,76 @@
+<div class="container">
+  <div
+    class="relative bg-[url('/assets/images/bg-1.1.png')] h-[40vh] min-h-[450px] rounded-lg mt-[80px] bg-cover"
+  >
+    <div class="absolute inset-0 bg-black opacity-35 rounded-lg"></div>
+    <div
+      class="text-[#f7fbff] text-center font-semibold text-[3.5rem] relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+    >
+      Hưỡng dẫn đặt thuê sản phẩm & Quy chế
+    </div>
+  </div>
+  <div class="py-[80px] grid grid-cols-5 gap-4">
+    <div class="col-span-1">
+      <ul nz-menu>
+        @for (item of menuSatic; track $index;) {
+        <li
+          nz-menu-item
+          [nzSelected]="$index === 0"
+          (click)="onViewTabLeft($index, item.slug)"
+          class="border-t border-solid border-t-[#ededed]"
+        >
+          {{ item.label }}
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="col-span-4">
+      @switch (tabLeftChoose) { @case (0) {
+      <ng-container *ngTemplateOutlet="common"></ng-container>
+      } @case (1) {
+      <ng-container *ngTemplateOutlet="rentalProduct"></ng-container>
+      } @case (2) {
+      <ng-container *ngTemplateOutlet="rentalProduct_payment"></ng-container>
+      } @case (3) {
+      <ng-container *ngTemplateOutlet="operating_regulations"></ng-container>
+      } @default {
+      <ng-container *ngTemplateOutlet="common"></ng-container>
+      } }
+    </div>
+  </div>
+</div>
+
+<ng-template #common>
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="font-bold text-[2rem]">
+      {{
+        tabChoose === 0
+          ? " Quy trình cho thuê sản phẩm / thiết bị"
+          : " Quy trình thuê sản phẩm / thiết bị"
+      }}
+    </h3>
+    <nz-tabset
+      [nzSelectedIndex]="tabChoose"
+      (nzSelectChange)="chooseTab($event)"
+    >
+      <nz-tab nzTitle="Bên cho thuê"></nz-tab>
+      <nz-tab nzTitle="Bên thuê"></nz-tab>
+    </nz-tabset>
+  </div>
+  @if(tabChoose === 0){
+  <div class="grid grid-cols-3 gap-4">
+    @for (itemCommonProcess of commonProcessRental_lessor; track $index) {
+    <card-static [obj]="itemCommonProcess" />
+    }
+  </div>
+  }@else {
+  <div class="grid grid-cols-3 gap-4">
+    @for (itemCommonProcess of commonProcessRental_renter; track $index) {
+    <card-static [obj]="itemCommonProcess" />
+    }
+  </div>
+  }
+</ng-template>
+<ng-template #rentalProduct> </ng-template>
+<ng-template #rentalProduct_payment></ng-template>
+<ng-template #operating_regulations></ng-template>

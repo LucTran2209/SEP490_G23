@@ -9,12 +9,17 @@ import { ProductRentalDetailComponent } from './components/product-rental-detail
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
 import { OrderProcessComponent } from './components/order/order-process/order-process.component';
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
+import { HowitorderComponent } from './static/howitorder/howitorder.component';
 
 
 const routes: Routes = [
   {
     path: 'home',
     component: HomePageComponent,
+  },
+  {
+    path: 'howitorder',
+    component: HowitorderComponent,
   },
   {
     path: 'user',
