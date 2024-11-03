@@ -1,0 +1,9 @@
+.left_content::-webkit-scrollbar,
+.right-content::-webkit-scrollbar {
+  display: none;
+}
+
+.left_content, .right-content {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}

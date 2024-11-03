@@ -78,4 +78,24 @@ export const convertCurrency = (
   return `${convert} ${noUnit ? '' : unit ? unit : 'VND'}`;
 };
 
+export function generateRandomColor(): string {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
+export const cleanParams = (params: {
+  [key: string]: any;
+}): { [key: string]: any } => {
+  const clearnParams: { [key: string]: any } = {};
+  Object.keys(params).forEach((key) => {
+    const value = params[key];
+    if (value !== null && value !== undefined && value !== '') {
+      clearnParams[key] = value;
+    }
+  });
+  return clearnParams
+};

@@ -1,15 +1,29 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import {
+  combineLatest,
+  delay,
+  filter,
+  Observable,
+  Subscription,
+  tap,
+} from 'rxjs';
+import { selectData } from '../../../../features/common/state/product/product-detail.reducer';
+import {
+  selectDepositActualPriceById,
+  selectNumberOfDaysById,
+  selectQuantityRequestById,
+  selectRentalActualPriceById,
+} from '../../../../features/common/state/rental/rental.selectors';
+import { ProductItemResponse } from '../../../../interfaces/product.interface';
+import { MessageResponseService } from '../../../../services/message-response.service';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
-import { filter, Subscription } from 'rxjs';
-interface IProductShortSearch {
-  id: string | number;
-  productName: string;
-  rentalPrice: number;
-  depositPrice: number;
-  rentalLimitDays: number;
-  images: string;
-}
+import { StorageService } from '../../../../services/storage.service';
+import { FeatureAppState } from '../../../../store/app.state';
+import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
+import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
 
 @Component({
   selector: 'app-form-rental-product',
@@ -17,104 +31,96 @@ interface IProductShortSearch {
   styleUrl: './form-rental-product.component.scss',
 })
 export class FormRentalProductComponent implements OnInit, OnDestroy {
+  productIdParam?: string;
   isConfirmLoading = false;
   isVisible = false;
-  currentRoute?: string;
-  inputValue?: string;
-  options: Array<IProductShortSearch> = [];
-  tags: IProductShortSearch[] = [];
+  productRentalDetail$?: Observable<ProductItemResponse>;
+
+  rentalPriceActual$?: Observable<string | number>;
+  depositPriceActual$?: Observable<string | number>;
+  //ngRx
+
+  //ngRx
 
   //date time
-  rangePickerTime: Date[] = [];
-  selectedTimeStart: any;
-  selectedTimeEnd: any;
-  rentalDays: number = 0;
+  rangePickerTime$?: Observable<Date[]>;
+  selectedTimeStart$?: Observable<any>;
+  selectedTimeEnd$?: Observable<any>;
+  rentalDays$?: Observable<number>;
+  //date time
+
+  //subscription
   private routeSubscription?: Subscription;
-  //date time
 
-  sliceTagName(tag: string): string {
-    const isLongTag = tag.length > 20;
-    return isLongTag ? `${tag.slice(0, 20)}...` : tag;
+  handleOkOrderProcess(): void {
+    console.log('Đã xác nhận đơn hàng!');
   }
 
-  handleCloseTag(removedTag: {}): void {
-    this.tags = this.tags.filter((tag) => tag !== removedTag);
+  handleCancelProcess(): void {
+    console.log('Đã hủy quá trình xác nhận đơn hàng!');
   }
 
-  onSearchProductShort(e: Event): void {
-    const value = (e.target as HTMLInputElement).value;
-    this.options = new Array(this.getRandomInt(5, 15))
-      .join('.')
-      .split('.')
-      .map((_item, idx) => ({
-        id: idx + 1,
-        productName: `${value}${idx}`,
-        depositPrice: 20000,
-        images:
-          'https://cdn.tgdd.vn/Files/2014/12/06/586947/y-nghia-cua-toc-do-quay-vat-tren-may-giat-6.jpg',
-        rentalLimitDays: 12,
-        rentalPrice: 30000,
-      }));
+  // modal
+
+  /**
+   *
+   */
+  onChooseRental(titleTemplate: TemplateRef<any>) {
+    this.modal.create({
+      nzTitle: titleTemplate,
+      nzContent: ConfimOrderProcessComponent,
+      nzFooter: null,
+      nzWidth: 820,
+      nzData: {
+        productRentalDetail$: this.productRentalDetail$,
+      },
+    });
   }
 
-  onSelectProduct(e: IProductShortSearch) {
-    this.tags.push(e);
+  onChooseDateCustom() {
+    this.modal.create({
+      nzTitle: 'Thời gian',
+      nzContent: PickerTimerComponent,
+      nzFooter: null,
+      nzWidth: 700,
+    });
   }
 
-  private getRandomInt(max: number, min: number = 0): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  // modal
+
+  selectStateFromNgRx() {
+    this.productRentalDetail$ = this.store.select(selectData);
+    if (this.productIdParam) {
+      this.rentalPriceActual$ = this.store
+        .select(selectRentalActualPriceById(this.productIdParam))
+        .pipe(filter((value): value is string | number => value !== undefined));
+
+      this.depositPriceActual$ = this.store
+        .select(selectDepositActualPriceById(this.productIdParam))
+        .pipe(filter((value): value is string | number => value !== undefined));
+    }
   }
 
-  showModal(): void {
-    this.isVisible = true;
-  }
-
-  handleOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
-  }
-
-  handleCancel(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible = false;
-  }
-
-  handlePickerTimer() {}
+  dispatchActionNessarray() {}
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private rentalTimerService: RentalTimerService
+    private rentalTimerService: RentalTimerService,
+    private store: Store<FeatureAppState>,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
-    this.currentRoute = this.route.snapshot.url[0].path;
-
-    //datetime
-    this.rentalTimerService.rangePickerTime$.subscribe((dates) => {
-      this.rangePickerTime = dates;
-    });
-
-    this.rentalTimerService.timeStart$.subscribe((time) => {
-      this.selectedTimeStart = time;
-      console.log('object timeStart',time);
-    });
-
-    this.rentalTimerService.timeEnd$.subscribe((time) => {
-      this.selectedTimeEnd = time;
-      console.log('object timeEnd',time);
-    });
-
-    this.rentalTimerService.rentalDays$.subscribe((days) => {
-      this.rentalDays = days;
-    });
-    //datetime
+    this.productIdParam = this.route.snapshot.paramMap.get('id') ?? '';
+    this.dispatchActionNessarray();
+    this.selectStateFromNgRx();
 
     //unsubscrib
     this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.rentalTimerService.clearState(); 
+        this.rentalTimerService.clearState();
       });
   }
 

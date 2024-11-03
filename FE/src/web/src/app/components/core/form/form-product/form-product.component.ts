@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { ProductInputDto, ProductOutputDto, ProductResultService, UpdateProductInputDto } from '../../../../interfaces/product.interface';
-import { CategoryService } from '../../../../services/category.service';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Subcategory, SubCategoryResultService } from '../../../../interfaces/category.interface';
+import { ProductInputDto, UpdateProductInputDto } from '../../../../interfaces/product.interface';
+import { CategoryService } from '../../../../services/category.service';
 
 @Component({
   selector: 'app-form-product',

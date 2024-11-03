@@ -1,0 +1,142 @@
+<form class="flex items-center pb-3">
+  <label for="simple-search" class="sr-only">Tìm kiếm</label>
+  <div class="relative w-full">
+    <div
+      class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+    >
+      <svg
+        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 18 20"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2"
+        />
+      </svg>
+    </div>
+    <input
+      type="text"
+      [nzAutocomplete]="auto"
+      id="simple-search"
+      class="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+      placeholder="Tìm kiếm sản phẩm thuê..."
+      required
+      (input)="onSearchProductShort($event)"
+    />
+  </div>
+</form>
+<!-- tag found product search  -->
+@for (tagItem of tags; track tagItem) {
+<nz-tag
+  [nzColor]="'blue'"
+  [nzMode]="'closeable'"
+  (nzOnClose)="handleCloseTag(tagItem)"
+>
+  {{ sliceTagName(tagItem.productName) }}
+</nz-tag>
+}
+<!-- tag found product search  -->
+<div class="">
+  @if ((tags?.length === 0 || tags === undefined) && (!productRentalDetailArray$ || (productRentalDetailArray$ | async)?.length === 0)) {
+  <div class="flex justify-center items-center">
+    <img src="assets/images/6931683-Photoroom.png" alt="" class="w-[250px]" />
+  </div>
+  } @else {
+  <div class="h-full border-none">
+    <!-- header -->
+    <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+      <span class="text-red-500 font-bold">* &nbsp;</span>Giá thuê theo ngày
+    </div>
+    <!-- Main content container -->
+    <div class="pb-3">
+      <app-renter-item [pId]="productIdParam" />
+    </div>
+    <!-- Rental details section -->
+    <div class="pb-3">
+      <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+        <span class="text-red-500 font-bold">* &nbsp;</span>Thời gian thuê
+      </div>
+      <app-rental-period
+        (handleOpenPeriod)="onChooseDateCustom()"
+      ></app-rental-period>
+    </div>
+    <!-- chọn ngày thuê có sẵn -->
+    <div class="pb-3">
+      <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+        <span class="text-red-500 font-bold">* &nbsp;</span> Chọn thời gian thuê
+        tiêu chuẩn
+      </div>
+      <app-select-radio-rental-day />
+    </div>
+    <!-- voucher -->
+    <div class="pb-3">
+      <div
+        class="leading-5 capitalize flex items-center justify-between font-thin text-[#000] pb-3"
+      >
+        <p>
+          <span class="text-red-500 font-bold">* &nbsp;</span> Chọn mã giảm giá
+        </p>
+        <span
+          nz-icon
+          nzType="gift"
+          nzTheme="outline"
+          class="text-lg cursor-pointer"
+        ></span>
+      </div>
+    </div>
+    <div class="flex justify-between items-center">
+      <div class="leading-5 capitalize text-[#000] pb-3 font-medium">
+        <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá cọc
+      </div>
+      <p class="text-[20px]">
+        {{ depositPriceActual$ | async | currency : "VND" }}
+      </p>
+    </div>
+    <div class="flex justify-between items-center">
+      <div class="leading-5 capitalize text-[#000] pb-3 font-medium">
+        <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá thuê
+      </div>
+      <p class="text-[20px]">
+        {{ rentalPriceActual$ | async | currency : "VND" }} / ngày
+      </p>
+    </div>
+    <button
+      nz-button
+      class="w-full bg-[#0A66EB] h-12 text-white rounded-md hover:border-blue-600"
+      (click)="onChooseRental(modalTitle)"
+    >
+      Chọn thuê
+    </button>
+  </div>
+  }
+</div>
+  <!-- header confirm order proccess -->
+  <ng-template #modalTitle>
+    <h3 class="font-medium">Xác nhận đơn thuê sản phẩm</h3>
+  </ng-template>
+  <!-- header confirm order proccess -->
+
+  <nz-autocomplete #auto>
+    @for (option of options; track option.productName) {
+    <nz-auto-option class="global-search-item" [nzValue]="option.productName">
+      <div class="flex gap-2 items-center" (click)="onSelectProduct(option)">
+        <img [src]="option.images" alt="" width="150" height="90" class="" />
+        <div class="flex flex-col justify-between gap-y-5">
+          <p class="text-[#B8ACAC]">{{ option.productName }}</p>
+          <p class="">
+            {{ option.depositPrice }} VND <br />
+            <span class="text-[#1890FF]"
+              >{{ option.rentalLimitDays }} ngày</span
+            >
+          </p>
+        </div>
+      </div>
+    </nz-auto-option>
+    }
+  </nz-autocomplete>

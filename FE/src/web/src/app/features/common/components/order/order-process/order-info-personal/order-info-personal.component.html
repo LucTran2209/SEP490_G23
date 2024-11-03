@@ -1,4 +1,4 @@
-<nz-table #basicTable [nzData]="listOfData" [nzFrontPagination]="false">
+<nz-table #basicTable [nzData]="listProductRentalProcess || []" [nzFrontPagination]="false">
   <thead>
     <tr>
       <th>Sản phẩm</th>
@@ -13,13 +13,13 @@
     <tr>
       <td>
         <div class="flex items-center gap-x-2">
-          <img [src]="data.image" alt="image.png" class="w-[100px]"/>
+          <img [src]="data.images[0]" alt="image.png" class="w-[100px]"/>
           <p>{{ data.productName }}</p>
         </div>
       </td>
       <td>
         <nz-input-number
-          [(ngModel)]="demoValue"
+          [(ngModel)]="data.quantityRequest"
           [nzMin]="1"
           [nzMax]="10"
           [nzStep]="1"
@@ -27,15 +27,14 @@
         ></nz-input-number>
       </td>
       <td>
-        <span>{{ data.rentalPrice }}</span>
+        <span>{{ data.rentalPriceRequest }}</span>
       </td>
       <td>
-        <span>{{ data.depositPrice }}</span>
+        <span>{{ data.depositPriceRequest }}</span>
       </td>
       <td>
        <div class="flex justify-center items-center gap-x-11">
-        <span>{{ data.total }}</span>
-        <!-- <span class="cursor-pointer" nz-icon nzType="delete" nzTheme="outline"></span> -->
+        <span>{{ data.rentalPriceRequest + data.depositPriceRequest }}</span>
        </div>
       </td>
     </tr>
@@ -43,7 +42,7 @@
   </tbody>
 </nz-table>
 <div>
-    <p>Tổng tiền thuê: <span class="font-medium"> 1.800.000 VND</span></p>
-    <p>Phí đặt cọc <span class="font-medium">200.000 VND</span></p>
-    <p>Tổng cộng <span class="font-medium">2.000.000 VND</span></p>
+    <p>Tổng tiền thuê: <span class="font-medium"> {{calTotalPriceRental | currency: "VND"}}</span></p>
+    <p>Phí đặt cọc <span class="font-medium">{{calTotalPriceDeposit | currency: "VND"}}</span></p>
+    <p>Tổng cộng <span class="font-medium">{{calTotalPriceDeposit + calTotalPriceRental | currency: "VND"}}</span></p>
 </div>

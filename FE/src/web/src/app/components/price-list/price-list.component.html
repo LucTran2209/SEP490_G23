@@ -1,0 +1,87 @@
+<h3 class="font-semibold text-lg mb-2">Bảng tính giá</h3>
+<ng-container *ngIf="allProductRental$ | async as allProductRental">
+  
+  <!-- Deposit Price Section -->
+  <div class="mb-2">
+    <h6 class="text-base font-medium leading-6 my-3">
+      <span class="text-red-500">* &nbsp;</span>Giá cọc
+    </h6>
+    <table class="w-full">
+      <tbody>
+        <tr *ngFor="let order of allProductRental">
+          <td>
+            <p>{{ order.productName }}</p>
+          </td>
+          <td>
+            <p>đ{{ order.depositPrice }} x {{ order.quantityRequest }} (số lượng)</p>
+          </td>
+          <td class="text-end">
+            <p class="font-semibold">đ{{ order.depositActualPrice }}</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Rental Price Section -->
+  <div class="mb-2">
+    <h6 class="text-base font-medium leading-6 my-3">
+      <span class="text-red-500">* &nbsp;</span>Giá thuê
+    </h6>
+    <table class="w-full">
+      <tbody>
+        <tr *ngFor="let order of allProductRental">
+          <td>
+            <p>{{ order.productName }}</p>
+          </td>
+          <td>
+            <p>đ{{ order.rentalPrice }}</p>
+          </td>
+          <td class="text-end">
+            <p class="font-semibold">đ{{ order.rentalActualPrice }}</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Discount Code Section -->
+  <!-- <div class="mb-2">
+    <h6 class="text-base font-medium leading-6 my-3">
+      <span class="text-red-500">* &nbsp;</span>Mã giảm giá
+    </h6>
+    <table class="w-full">
+      <tbody>
+        <tr>
+          <td>
+            <p>Máy giặt XQB30MJ102W</p>
+          </td>
+          <td>
+            <p>Mã MI75W</p>
+          </td>
+          <td class="text-end text-red-500">
+            <p class="font-semibold">-đ80000</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>Máy giặt XQB30MJ102W</p>
+          </td>
+          <td>
+            <p>Mã MI75W</p>
+          </td>
+          <td class="text-end text-red-500">
+            <p class="font-semibold">-đ80000</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+
+  <!-- Total Price Section -->
+  <div class="flex justify-between items-center">
+    <h6 class="font-semibold text-base my-3">Thành tiền</h6>
+    <p class="font-semibold">đ{{ calculateTotalAmount(allProductRental) }}</p>
+  </div>
+
+</ng-container>

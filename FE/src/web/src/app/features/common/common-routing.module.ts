@@ -41,11 +41,11 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'product-list',
+    path: 'product-list/:slug/caid/:id',
     component: ProductRentalListComponent,
   },
   {
-    path: 'product-detail/:slug.i./:id',
+    path: 'product-detail/:slug./.i/:id',
     component: ProductRentalDetailComponent,
   },
   {

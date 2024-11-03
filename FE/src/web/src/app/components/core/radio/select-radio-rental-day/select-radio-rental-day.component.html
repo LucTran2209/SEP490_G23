@@ -1,0 +1,7 @@
+<nz-radio-group 
+class="flex flex-wrap items-center justify-start gap-3"
+nzButtonStyle="solid" nzSize="large" (ngModelChange)="onChooseDayAvaiable($event)">
+  @for (item of groupOption; track $index) {
+    <label nz-radio-button [nzValue]="item.value">{{item.label}}</label>
+  }
+</nz-radio-group>

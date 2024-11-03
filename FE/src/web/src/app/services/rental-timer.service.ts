@@ -36,12 +36,17 @@ export class RentalTimerService {
 
   private calculateRentalDays(dates: Date[]) {
     if (dates.length === 2 && dates[0] && dates[1]) {
-      const diffTime = Math.abs(dates[1].getTime() - dates[0].getTime());
-      const rentalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const rentalDays = this.convertRentalDays(dates);
       this.rentalDaysSubject.next(rentalDays);
     } else {
       this.rentalDaysSubject.next(0);
     }
+  }
+
+  convertRentalDays(dates: Date[]): number{
+    const diffTime = Math.abs(dates[1].getTime() - dates[0].getTime());
+    const rentalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return rentalDays;
   }
 
   clearState() {

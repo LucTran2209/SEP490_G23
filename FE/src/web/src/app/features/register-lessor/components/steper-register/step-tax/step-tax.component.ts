@@ -150,14 +150,11 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     this.nextStep.emit();
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.uploadedFiles = Array.from(input.files);
-    }
+  onSelectedFile(files: File[]){
+    this.uploadedFiles.push(...files);
   }
 
-  removeFile(index: number): void {
+  onRemoveAFile(index: number){
     this.uploadedFiles.splice(index, 1);
   }
 

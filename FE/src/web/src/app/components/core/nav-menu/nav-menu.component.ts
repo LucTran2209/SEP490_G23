@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { CategoryOutputDto, CategoryResultService } from '../../../interfaces/category.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-menu',
@@ -10,16 +11,18 @@ import { CategoryOutputDto, CategoryResultService } from '../../../interfaces/ca
 export class NavMenuComponent implements OnInit{
   @Output() getClassName: EventEmitter<void> = new EventEmitter<void>();
   categoryList: CategoryOutputDto[] = [];
-  handlegetClassName() {
-    // console.log(e.target.id, e.target.className);
-    this.getClassName.emit();
-  }
+
   constructor(
     private categoryService: CategoryService,
+    private router: Router
   ) {}
   
   ngOnInit(): void {
       this.loadCategory();
+  }
+
+  onNavigate(val: CategoryOutputDto){
+    this.router.navigate(['/common/product-list',val.categoryName,'caid',val.id]);
   }
   loadCategory(){
     this.categoryService.listCategory().subscribe((res : CategoryResultService) =>{
