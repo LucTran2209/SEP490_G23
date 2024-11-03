@@ -3,15 +3,13 @@
     <nz-range-picker
       nzInline
       class="mb-3"
-      ngModel
+      [(ngModel)]="rangeDatePicker"
       [nzDisabledDate]="disabledDate"
-      (ngModelChange)="onDateRangeChange($event)"
     ></nz-range-picker>
     <div class="flex justify-between items-center pb-3">
       <nz-select
         class="flex-1"
-        ngModel
-        (ngModelChange)="onChangeTimeStart($event)"
+        [(ngModel)]="timePickerTo"
         nzAllowClear
         nzPlaceHolder="Chọn thời gian bắt đầu"
       >
@@ -24,8 +22,7 @@
       </div>
       <nz-select
         class="flex-1"
-        ngModel
-        (ngModelChange)="onChangeTimeEnd($event)"
+        [(ngModel)]="timePickerEnd"
         nzAllowClear
         nzPlaceHolder="Chọn thời gian kết thúc"
       >
@@ -35,30 +32,9 @@
       </nz-select>
     </div>
   </nz-tab>
-  <!-- <nz-tab nzTitle="Thuê theo giờ">
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <label for="">Ngày bắt đầu</label>
-        <nz-date-picker
-          class="w-full"
-          ngModel
-          (ngModelChange)="onDatePickerChange($event)"
-        ></nz-date-picker>
-      </div>
-      <div class="flex flex-col gap-y-2">
-        <label for="">Giờ thuê</label>
-        <nz-select
-          class=""
-          [(ngModel)]="selectedTimeEnd"
-          (ngModelChange)="onChangeTimeEnd($event)"
-          nzAllowClear
-          nzPlaceHolder="Giờ nhận xe"
-        >
-          @for (option of timeChooseEnd; track option) {
-          <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
-          }
-        </nz-select>
-      </div>
-    </div>
-  </nz-tab> -->
 </nz-tabset>
+<div class="flex justify-between items-center">
+  <button nz-button nzType="primary" (click)="handleOkPickTime()">
+    Tiếp tục
+  </button>
+</div>

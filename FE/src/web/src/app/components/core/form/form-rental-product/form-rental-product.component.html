@@ -12,7 +12,7 @@
     <div class="leading-5 capitalize font-thin text-[#000] pb-3">
       <span class="text-red-500 font-bold">* &nbsp;</span>Thời gian thuê
     </div>
-    <app-rental-period (handleOpenPeriod)="showModal()"></app-rental-period>
+    <app-rental-period (handleOpenPeriod)="onChooseDateCustom()"></app-rental-period>
   </div>
    <!-- chọn ngày thuê có sẵn -->
    <div class="pb-3">
@@ -23,8 +23,9 @@
   </div>
   <!-- voucher -->
   <div class="pb-3">
-    <div class="leading-5 capitalize font-thin text-[#000] pb-3">
-      <span class="text-red-500 font-bold">* &nbsp;</span> Chọn mã giảm giá
+    <div class="leading-5 capitalize flex items-center justify-between font-thin text-[#000] pb-3">
+      <p><span class="text-red-500 font-bold">* &nbsp;</span> Chọn mã giảm giá</p>
+      <span nz-icon nzType="gift" nzTheme="outline" class="text-lg cursor-pointer"></span>
     </div>
   </div>
   <div class="flex justify-between items-center">
@@ -43,61 +44,18 @@
       {{ rentalPriceActual$ | async | currency : "VND" }} / ngày
     </p>
   </div>
-  <div class="mb-3">
-    <nz-textarea-count [nzMaxCharacterCount]="100">
-      <textarea
-        rows="4"
-        placeholder="ghi chú"
-        nz-input
-        [(ngModel)]="inputNote"
-      ></textarea>
-    </nz-textarea-count>
-  </div>
   <button
     nz-button
     class="w-full bg-[#0A66EB] h-12 text-white rounded-md hover:border-blue-600"
-    (click)="onChooseRental()"
+    (click)="onChooseRental(modalTitle)"
   >
     Chọn thuê
   </button>
 </div>
 
-<!-- Modal for rental time selection -->
-<nz-modal
-  [(nzVisible)]="isVisible"
-  [nzWidth]="700"
-  nzTitle="Thời gian"
-  (nzOnOk)="handleOk()"
-  (nzOnCancel)="handleCancel()"
->
-  <ng-container *nzModalContent>
-    <app-picker-timer></app-picker-timer>
-  </ng-container>
-  <ng-container *nzModalFooter>
-    <div class="flex justify-between items-center">
-      <div class="font-semibold text-start">
-        @if((rangePickerTime$ | async); as rangePickerTime) {
-        <p>
-          {{ (selectedTimeStart$ | async).value }}
-          {{ rangePickerTime[0] | date : "dd/MM/yyyy" }}
-          <span nz-icon nzType="minus" nzTheme="outline"></span>
-          {{ (selectedTimeEnd$ | async).value }}
-          {{ rangePickerTime[1] | date : "dd/MM/yyyy" }}
-        </p>
-        }
-        <p>
-          Thời gian thuê:
-          <span class="text-[#0F6CF8]">{{ rentalDays$ | async }} ngày</span>
-        </p>
-      </div>
-      <button
-        nz-button
-        nzType="primary"
-        (click)="handleOk()"
-        [nzLoading]="isConfirmLoading"
-      >
-        Tiếp tục
-      </button>
-    </div>
-  </ng-container>
-</nz-modal>
+
+<!-- header confirm order proccess -->
+<ng-template #modalTitle>
+  <h3 class="font-medium">Xác nhận đơn thuê sản phẩm</h3>
+</ng-template>
+<!-- header confirm order proccess -->

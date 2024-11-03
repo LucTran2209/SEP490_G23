@@ -3,8 +3,8 @@
   class="flex justify-between items-center border border-gray-300 rounded-lg p-3"
 >
   <div class="flex-1 flex gap-2 items-center">
-  @if(item.productImages && item.productImages.length !== 0){
-    <img [src]="'assets/images/6306486.jpg' " alt="" class="w-[100px] h-[100px] object-cover rounded-md border border-solid border-[#ededed] shadow-md">
+  @if(item.images && item.images.length !== 0){
+    <img [src]="item.images[0]" alt="" class="w-[100px] h-[100px] object-cover rounded-md border border-solid border-[#ededed] shadow-md">
   }@else {
     <img [src]="'assets/images/6306486.jpg' " alt="" class="w-[100px] h-[100px] object-cover rounded-md border border-solid border-[#ededed] shadow-md">
   }

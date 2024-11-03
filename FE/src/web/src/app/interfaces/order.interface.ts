@@ -35,7 +35,6 @@ export interface OrderCreateRequest {
   startDate: string;
   endDate: string;
   totalPrice: number;
-  paymentType: number;
   note: string;
   orderDetails: {
     productId: string;

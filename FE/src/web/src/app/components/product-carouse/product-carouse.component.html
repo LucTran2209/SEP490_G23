@@ -1,12 +1,22 @@
-<div class="flex justify-between items-center gap-x-2 max-h-[700px] overflow-hidden">
-  <div class="max-w-[150px] min-w-[150px]" *ngIf="images.length > 0">
-    <nz-carousel nzDotPosition="left" class="">
-      <div *ngFor="let image of images" (click)="onSelectImage(image)" class="">
-        <img [src]="image" class="thumbnail-image rounded-lg  object-cover cursor-pointer mb-2 border border-solid border-[#ededed] w-64 h-full hover:border-2 hover:border-[#0A66EB]" />
-      </div>
-    </nz-carousel>
+
+<div class="">
+  <div class="pb-3">
+    <img class="w-full object-cover max-h-[540px] min-h-[540px]" src="{{ selectedImage }}" alt="" />
   </div>
-  <div class="self-stretch">
-    <img [src]="selectedImage || 'assets/images/6306486.jpg'" class="h-[700px] shadow-lg object-cover rounded-lg w-full" />
-  </div>
+  <ngx-slick-carousel
+    class="carousel"
+    #slickModal="slick-carousel"
+    [config]="slideConfig"
+    (breakpoint)="breakpoint($event)"
+    (afterChange)="afterChange($event)"
+    (beforeChange)="beforeChange($event)"
+  >
+    <div ngxSlickItem *ngFor="let slide of images; let index as $index" class="mx-1 cursor-pointer" (click)="onSelectImage(slide)">
+      <img
+        [src]="slide"
+        alt=""
+        class="h-[200px] object-cover"
+      />
+    </div>
+  </ngx-slick-carousel>
 </div>

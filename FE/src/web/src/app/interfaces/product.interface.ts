@@ -1,4 +1,5 @@
 import { Subcategory, SubcategoryOutputDto } from './category.interface';
+import { RentalShopInfo } from './rental-shop.interface';
 
 export interface ProductOutputDto {
   id: string;
@@ -57,9 +58,8 @@ export interface ProductRentalOrderProcess {
   numberOfDay: number;
   timeStart: Date;
   timeEnd: Date;
-  note: string,
-  paymentMethod: number,
-  productImages: ProductImage | null;
+  note: string;
+  images: string[];
   productName: string;
   quantityRequest: number;
   rentalPriceRequest: number;
@@ -77,5 +77,6 @@ export interface ProductItemResponse {
   rentalLimitDays: string | number;
   evaluate: string | number;
   subCategory?: Subcategory;
-  productImages?: ProductImage[];
+  rentalShop: RentalShopInfo;
+  images: string[];
 }

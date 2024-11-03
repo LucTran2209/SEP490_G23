@@ -1,17 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 import * as RentalActions from './rental.actions';
 
-
-
 export interface OrderState {
   productId: string | number;
-  rentalPrice:  string | number;
-  rentalActualPrice:  string | number;
-  depositPrice:  string | number;
-  depositActualPrice:  string | number;
+  productName: string;
+  rentalPrice: string | number;
+  rentalActualPrice: string | number;
+  depositPrice: string | number;
+  depositActualPrice: string | number;
   numberOfDays: number;
-  quantityRequest:  string | number;
-  quantityAvailable:  string | number;
+  quantityRequest: string | number;
+  quantityAvailable: string | number;
   isBoundQuantity: boolean;
 }
 export interface RentalOrderState {
@@ -26,7 +25,7 @@ const checkProductRentalExist = (
   pid: string | number
 ) => {
   const existingOrderIndex = orders.findIndex(
-    (order) => (order.productId === pid)
+    (order) => order.productId === pid
   );
   return existingOrderIndex;
 };
@@ -34,9 +33,11 @@ const checkProductRentalExist = (
 export const rentalOrderReducer = createReducer(
   initialState,
 
+  on(RentalActions.resetRentalProduct, () => initialState),
   //set init product rental order
   on(RentalActions.setInit, (state, action) => {
-    const { depositPrice, pid, quantityAvailable, rentalPrice } = action;
+    const { depositPrice, pid, quantityAvailable, rentalPrice, productName } =
+      action;
     const existingOrderIndex = checkProductRentalExist(state.orders, pid);
     if (existingOrderIndex !== -1) {
       const updatedOrder = {
@@ -64,6 +65,7 @@ export const rentalOrderReducer = createReducer(
         numberOfDays: 1,
         quantityRequest: 1,
         isBoundQuantity: false,
+        productName: productName,
       };
 
       return { ...state, orders: [...state.orders, newOrder] };
@@ -120,7 +122,3 @@ export const rentalOrderReducer = createReducer(
     return { ...state, orders: updatedOrders };
   })
 );
-
-
-
-

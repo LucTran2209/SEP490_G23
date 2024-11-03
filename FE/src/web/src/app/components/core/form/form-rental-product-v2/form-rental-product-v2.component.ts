@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, Observable, Subscription } from 'rxjs';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
@@ -31,16 +31,12 @@ export class FormRentalProductV2Component   implements OnInit, OnDestroy {
   isVisible = false;
   inputValue?: string;
   options: Array<IProductShortSearch> = [];
-  tags: IProductShortSearch[] = [];
+  tags?: IProductShortSearch[];
   productRentalDetailArray$?: Observable<ProductItemResponse[]>;
 
   rentalPriceActual$?: Observable<string | number>;
   depositPriceActual$?: Observable<string | number>;
   //date time
-  rangePickerTime$?: Observable<Date[]>;
-  selectedTimeStart$?: Observable<any>;
-  selectedTimeEnd$?: Observable<any>;
-  rentalDays$?: Observable<number>;
 
    //subscription
   private routeSubscription?: Subscription;
@@ -52,8 +48,18 @@ export class FormRentalProductV2Component   implements OnInit, OnDestroy {
   }
 
   handleCloseTag(removedTag: {}): void {
-    this.tags = this.tags.filter((tag) => tag !== removedTag);
+    this.tags = this.tags?.filter((tag) => tag !== removedTag);
   }
+  
+  
+  onChooseRental(headerTef: TemplateRef<any>){
+
+  }
+
+  onChooseDateCustom(){
+
+  }
+
 
   onSearchProductShort(e: Event): void {
     const value = (e.target as HTMLInputElement).value;
@@ -72,7 +78,7 @@ export class FormRentalProductV2Component   implements OnInit, OnDestroy {
   }
 
   onSelectProduct(e: IProductShortSearch) {
-    this.tags.push(e);
+    this.tags?.push(e);
   }
 
   private getRandomInt(max: number, min: number = 0): number {
@@ -99,10 +105,6 @@ export class FormRentalProductV2Component   implements OnInit, OnDestroy {
   }
 
   selectStateFromNgRx() {
-    this.rangePickerTime$ = this.rentalTimerService.rangePickerTime$;
-    this.selectedTimeStart$ = this.rentalTimerService.timeStart$;
-    this.selectedTimeEnd$ = this.rentalTimerService.timeEnd$;
-    this.rentalDays$ = this.rentalTimerService.rentalDays$;
     if (this.productIdParam) {
       this.rentalPriceActual$ = this.store
         .select(selectRentalActualPriceById(this.productIdParam))

@@ -10,10 +10,12 @@
         <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
       </nz-breadcrumb>
     </div>
-    <div class="flex justify-center items-center gap-x-5">
+    <div class="flex justify-center items-stretch gap-x-5">
       <!-- left side -->
-      <div class="w-[60%] place-self-end">
-        <app-product-carouse></app-product-carouse>
+      <div class="w-[60%]">
+        <app-product-carouse
+          [images]="productDetail.images"
+        ></app-product-carouse>
       </div>
 
       <!-- right side -->
@@ -41,172 +43,120 @@
       </div>
     </div>
 
-    <div class="flex justify-start mt-12">
+    <div class="flex justify-start pb-6">
       <nz-avatar
         nzGap="4"
         [nzSize]="64"
         nzSrc="assets/images/image-group-demo.png"
       ></nz-avatar>
       <div class="mx-3">
-        <h1 class="mt-2 font-bold uppercase">VD GROUP VN</h1>
+        <h1 class="mt-2 font-bold uppercase" >
+          <a (click)="navigateToShop(productDetail.rentalShop.userId)">{{ productDetail.rentalShop.shopName }}</a>
+        </h1>
         <button class="mt-2" nz-button nzType="primary" nzGhost>
           Chat Ngay
         </button>
       </div>
     </div>
-    <div class="mt-12">
-      <nz-tabset>
-        <nz-tab nzTitle="Tổng Quan">
-          <h1 class="font-bold text-2xl mb-6 px-10 mt-3">
-            {{ productDetail.productName }}
-          </h1>
-          <!-- dashboard description product rental -->
-          <div class="">
-            <div class="first-wrapper">
-              <div class="price-wrapper">
-                <nz-avatar
-                  nzGap="4"
-                  [nzSize]="'large'"
-                  nzSrc="assets/images/image-group-demo.png"
-                ></nz-avatar>
-                <span class="font-bold mx-2">Giá cho thuê</span>
-                <!-- <ul class="list-disc px-5 pt-3">
-                  <li class="py-1 text-wrap">Theo giờ: 1.000.0000 VND/giờ</li>
-                  <li class="py-1 text-wrap">Theo ngày: 24.000.000 VND/ngày</li>
-                  <li class="py-1 text-wrap">Theo tuần: 100.000.000 VND/tuần</li>
-                </ul> -->
-                <ul class="list-disc px-5 pt-3">
-                  <li class="py-1 text-wrap">
-                    rentalPrice:{{
-                      productDetail.rentalPrice | currency : "VND"
-                    }}
-                  </li>
-                  <li class="py-1 text-wrap">
-                    depositPrice:
-                    {{ productDetail.depositPrice | currency : "VND" }}
-                  </li>
-                </ul>
-              </div>
-              <div class="time-wrapper mt-6">
-                <nz-avatar
-                  nzGap="4"
-                  [nzSize]="'large'"
-                  nzSrc="assets/images/image-group-demo.png"
-                ></nz-avatar>
-                <span class="font-bold mx-2">Thời gian cho thuê</span>
-                <!-- <p class="py-1 pt-3">** Khung giờ cho thuê:</p>
-                <ul class="list-disc px-5">
-                  <li class="py-1 text-wrap">
-                    Cho thuê từ [Giờ bắt đầu] đến [Giờ kết thúc].
-                  </li>
-                  <li class="py-1 text-wrap">
-                    Có thể thuê linh hoạt theo yêu cầu trong khung giờ quy định.
-                  </li>
-                </ul> -->
-                <p>rentalLimitDays: {{ productDetail.rentalLimitDays }}</p>
-              </div>
-              <!-- <div class="size-wrapper mt-6">
-                <nz-avatar
-                  nzGap="4"
-                  [nzSize]="'large'"
-                  nzSrc="assets/images/image-group-demo.png"
-                ></nz-avatar>
-                <span class="font-bold mx-2">Kích thước và trọng lượng</span>
-                <p class="py-1 pt-3">** Kích thước:</p>
-                <ul class="list-disc px-5">
-                  <li class="py-1 text-wrap">Chiều dài: 100 cm/inch</li>
-                  <li class="py-1 text-wrap">Chiều rộng: 100 cm/inch</li>
-                  <li class="py-1 text-wrap">Chiều cao: 300 cm/inch</li>
-                </ul>
-                <p class="py-1 pt-3">** Trọng lượng:</p>
-                <ul class="list-disc px-5">
-                  <li class="py-1 text-wrap">Trọng lượng sản phẩm: 30 kg/lb</li>
-                  <li class="py-1 text-wrap">
-                    Trọng lượng bao bì (nếu có): 400 kg/lb
-                  </li>
-                </ul>
-              </div> -->
-            </div>
-            <div class="second-wrapper">
-              <!-- <div class="deposit-wrapper">
-                <nz-avatar
-                  nzGap="4"
-                  [nzSize]="'large'"
-                  nzSrc="assets/images/image-group-demo.png"
-                ></nz-avatar>
-                <span class="font-bold mx-2">Thời gian cho đặt trước</span>
-                <ul class="list-disc px-5 pt-3">
-                  <li class="py-1 text-wrap">
-                    Thời gian tối thiểu để đặt trước: 20 giờ /ngày
-                  </li>
-                  <li class="py-1 text-wrap">
-                    Thời gian tối đa cho đặt trước: 20 tuần
-                  </li>
-                </ul>
-              </div> -->
-              <!-- <div class="status-wrapper mt-6">
-                <nz-avatar
-                  nzGap="4"
-                  [nzSize]="'large'"
-                  nzSrc="assets/images/image-group-demo.png"
-                ></nz-avatar>
-                <span class="font-bold mx-2">Tình trạng thiết bị</span>
-                <p class="py-1 pt-3">** Tình trạng hiện tại:</p>
-                <ul class="list-disc px-5">
-                  <li class="py-1 text-wrap">
-                    Mới | Cũ | Hơi Cũ - 80% | 90% | 100%
-                  </li>
-                  <li class="py-1 text-wrap">
-                    Thiết bị đã được kiểm tra và bảo trì định kỳ.
-                  </li>
-                  <li class="py-1 text-wrap">
-                    Không có hư hỏng hoặc dấu hiệu sử dụng vượt mức cho phép.
-                  </li>
-                </ul>
-              </div> -->
-              <!-- <div class="capacity-wrapper mt-6">
-                <nz-avatar
-                  nzGap="4"
-                  [nzSize]="'large'"
-                  nzSrc="assets/images/image-group-demo.png"
-                ></nz-avatar>
-                <span class="font-bold mx-2">Công suất (nêú có)</span>
-                <p class="py-1 pt-3">** Công suất:</p>
-                <ul class="list-disc px-5">
-                  <li class="py-1 text-wrap">Công suất tối đa: [Số Watt]</li>
-                  <li class="py-1 text-wrap">Điện áp: [Số Volt]</li>
-                </ul>
-                <p class="py-1 pt-3">** Hiệu suất:</p>
-                <ul class="list-disc px-5">
-                  <li class="py-1 text-wrap">
-                    Hiệu suất năng lượng: [Thông tin về tiêu thụ điện năng hoặc
-                    xếp hạng năng lượng nếu có]
-                  </li>
-                </ul>
-              </div> -->
-            </div>
-            <div class="fourth-wrapper col-span-2 mt-5">
-              <i class="font-bold mx-2 text-lg">****Mô Tả****:</i>
-              <p class="p-2">
-                {{ productDetail.description }}
-              </p>
-            </div>
+    <div class="pb-6">
+      <h1 class="font-medium text-2xl mt-3">
+        Thông tin sản phẩm
+        <span class="capitalize">{{ productDetail.productName }}</span>
+      </h1>
+      <div class="grid grid-cols-5 p-5">
+        <div class="">
+          <h3 class="font-bold">Giá cho thuê</h3>
+          <div>
+            rentalPrice:{{ productDetail.rentalPrice | currency : "VND" }}
           </div>
-        </nz-tab>
-      </nz-tabset>
-    </div>
-    <div class="mt-12 grid grid-flow-row-dense grid-cols-3 px-10">
-      <div class="col-span-2">
-        <i class="font-bold mx-2 text-lg">****Đánh Giá****:</i>
-        <p class="p-2">
-          <!-- <app-comment></app-comment> -->
-        </p>
+          <div>
+            depositPrice: {{ productDetail.depositPrice | currency : "VND" }}
+          </div>
+        </div>
+        <div class="">
+          <span class="font-bold mx-2">Thời gian cho thuê</span>
+          <p>rentalLimitDays: {{ productDetail.rentalLimitDays }}</p>
+        </div>
       </div>
-      <nz-card style="width: 400px; height: 300px" class="m-10">
-        <app-rating-proccess-product></app-rating-proccess-product>
-      </nz-card>
     </div>
-    <div class="mt-12">
+    <div class="pb-6">
+      <div class="flex items-center justify-start gap-x-2 mb-5">
+        <h1 class="font-medium text-2xl">Tài sản thế chấp</h1>
+        <span
+          nz-icon
+          nzType="question-circle"
+          class="text-2xl"
+          nzTheme="outline"
+        ></span>
+      </div>
+      <div
+        class="flex gap-10 items-start py-4 px-6 bg-[#fef7f4] border-l-4 border-solid border-[#f26a3b] rounded-lg"
+      >
+        <p>Không yêu cầu khách thuê thế chấp Tiền mặt hoặc Xe máy</p>
+      </div>
+    </div>
+    <div class="pb-6">
+      <h1 class="font-medium text-2xl mt-3">Điều khoản</h1>
+      <div class="p-5">
+        <h4 class="font-thin pb-3">
+          <span class="text-red-500">* &nbsp;</span>Quy định khác:
+        </h4>
+        <ul class="font-thin list-disc flex flex-col gap-y-4">
+          <li>Sử dụng thiết bị đúng mục đích.</li>
+          <li>
+            Không sử dụng thiết bị thuê vào các hoạt động phi pháp hoặc trái
+            pháp luật
+          </li>
+          <li>Không sử dụng thiết bị thuê để cầm cố, thế chấp</li>
+          <li>Không làm bẩn, vẽ bậy, hoặc xả rác lên thiết bị</li>
+          <li>
+            Không sử dụng thiết bị để chứa hàng hóa dễ cháy nổ hoặc quốc cấm
+          </li>
+          <li>
+            Không sử dụng thiết bị để chứa thực phẩm hoặc các vật liệu nặng mùi
+          </li>
+          <li>
+            Khi hoàn trả thiết bị, nếu thiết bị bẩn hoặc có mùi, khách hàng vui
+            lòng vệ sinh thiết bị hoặc gửi phụ thu phí vệ sinh
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="pb-6">
+      <h1 class="font-medium text-2xl">Vị trí thuê khả dụng</h1>
+     
+      <div class="flex items-center justify-between p-5">
+        <p class="flex justify-start items-center text-lg gap-x-3">
+            <span nz-icon style="color: black">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM11.9998 20.9988C11.1898 20.0588 6.0498 14.0188 6.0498 10.0188C6.0498 6.73884 8.7198 4.06885 11.9998 4.06885C15.2798 4.06885 17.9498 6.73884 17.9498 10.0188C17.9498 13.3988 14.1198 18.5988 11.9998 20.9988Z"
+                  fill="black"
+                ></path>
+                <path
+                  d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM8.87981 10.0188C8.87981 8.29884 10.2798 6.89885 11.9998 6.89885C13.7198 6.89885 15.1198 8.29884 15.1198 10.0188C15.1198 11.7388 13.7198 13.1389 11.9998 13.1389C10.2798 13.1389 8.87981 11.7388 8.87981 10.0188Z"
+                  fill="black"
+                ></path>
+              </svg>
+            </span>
+            Hà Nội 
+          </p>
+          <p class="flex justify-between items-center text-lg gap-x-3"> Xem Bản đồ <span nz-icon nzType="arrow-right" nzTheme="outline"></span></p>
+      </div>
+    </div>
+    <div class="pb-6">
+      <h1 class="font-medium text-2xl mt-3">Đánh Giá</h1>
+      <div class="py-3 px-5">
+        <app-comment></app-comment>
+      </div>
+    </div>
+    <div class="">
       <h1 class="font-bold text-center text-3xl">Đồ Thuê Liên Quan</h1>
       <div class="flex justify-center mt-2 mb-5">
         <div class="flex justify-between">

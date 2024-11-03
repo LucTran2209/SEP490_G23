@@ -6,17 +6,15 @@ import {
   Output,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
-import { FeatureAppState } from '../../../../../store/app.state';
 import { combineLatest, Subscription } from 'rxjs';
+import { FeatureAppState } from '../../../../../store/app.state';
+import { stepInfoCard } from '../../../state/register_lessor.actions';
 import {
   selectImageBack,
   selectImageFileBack,
   selectImageFileFront,
   selectImageFront,
 } from '../../../state/register_lessor.reducer';
-import { stepInfoCard } from '../../../state/register_lessor.actions';
-import { IRequestRegisterLessor_Step2 } from '../../../../../interfaces/register-lessor.interface';
 
 @Component({
   selector: 'app-step-identify',

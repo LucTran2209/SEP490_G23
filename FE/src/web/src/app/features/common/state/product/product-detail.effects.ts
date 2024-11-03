@@ -58,7 +58,8 @@ export class ProductDetailEffects {
               pid: data.id,
               depositPrice: data.depositPrice,
               quantityAvailable: data.quantity,
-              rentalPrice: data.rentalPrice
+              rentalPrice: data.rentalPrice,
+              productName: data.productName
             })
           )
           // set init price

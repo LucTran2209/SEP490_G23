@@ -7,6 +7,7 @@ export const setInit = createAction(
     depositPrice: string | number;
     quantityAvailable: string | number;
     pid: number | string;
+    productName: string;
   }>()
 );
 
@@ -24,3 +25,5 @@ export const checkIsQuantityExceed = createAction(
   `[Rental] Set check quantity have exceed the limit?`,
   props<{ pid: string | number }>()
 );
+
+export const resetRentalProduct = createAction('[Rental] reset rental product');

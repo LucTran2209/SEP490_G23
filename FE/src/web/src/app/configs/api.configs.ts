@@ -128,7 +128,7 @@ export const ProductSlug = {
   RentalShopProduct: {
     label: 'Active Product',
     title: 'List rental shop product | ERMS',
-    api: 'rentalshop',
+    api: 'Product/Shop',
   },
   GetDetailProduct: {
     label: 'Get Detail Product',

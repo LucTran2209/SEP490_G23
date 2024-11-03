@@ -1,11 +1,14 @@
-<div class="flex h-screen overflow-hiddepon">
+<div class="flex h-screen overflow-hidden">
   <!-- left hand -->
   <div
     class="left_content overflow-y-scroll p-4 h-full"
     [ngClass]="{ 'w-3/4': visible, 'w-full': !visible }"
   >
     <div class="pb-3">
-      <app-info-shop (handleRentalMoreProduct)="open($event)"  [isOpen]="visible"/>
+      <app-info-shop
+        (handleRentalMoreProduct)="open($event)"
+        [isOpen]="visible"
+      />
     </div>
     <div
       class="grid grid-cols-10 gap-4 pb-3 bg-white rounded-lg border border-solid border-[#e5e7eb] p-5"
@@ -51,15 +54,17 @@
             </nz-button-group>
           </div>
           <nz-pagination
-            [nzPageIndex]="2"
-            [nzTotal]="50"
+            [nzPageIndex]="pageIndex$ | async"
+            [nzTotal]="pageTotal$ | async"
             nzSimple
-          ></nz-pagination>
+            (nzPageIndexChange)="onPageIndexChange($event)"
+          >
+          </nz-pagination>
         </div>
         <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
           <!-- *ngFor="let product of productListShopFilter$ | async" -->
           <nz-col
-            *ngFor="let product of productList"
+            *ngFor="let product of productListShopFilter$ | async"
             [nzXs]="24"
             [nzSm]="12"
             [nzMd]="8"
@@ -86,17 +91,3 @@
     <a class="font-medium" [routerLink]="[item.href]">{{ item.label }}</a>
   </div>
 </ng-template>
-
-<!-- <nz-drawer
-  [nzVisible]="visible"
-  [nzBodyStyle]="{ overflow: 'auto' }"
-  [nzWidth]="720"
-  [nzMaskClosable]="false"
-  nzPlacement="right"
-  nzTitle="Thuê nhiều sản phẩm từ VD GROUP VN"
-  (nzOnClose)="close()"
->
-  <ng-container *nzDrawerContent>
-    <app-form-rental-product />
-  </ng-container>
-</nz-drawer> -->

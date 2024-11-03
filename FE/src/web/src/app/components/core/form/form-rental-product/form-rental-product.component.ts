@@ -1,6 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import {
   combineLatest,
   delay,
@@ -11,20 +12,18 @@ import {
 } from 'rxjs';
 import { selectData } from '../../../../features/common/state/product/product-detail.reducer';
 import {
-  ProductItemResponse,
-  ProductRentalOrderProcess,
-} from '../../../../interfaces/product.interface';
-import { MessageResponseService } from '../../../../services/message-response.service';
-import { RentalTimerService } from '../../../../services/rental-timer.service';
-import { StorageService } from '../../../../services/storage.service';
-import { FeatureAppState } from '../../../../store/app.state';
-import { LocalStorageKey } from '../../../../utils/constant';
-import {
   selectDepositActualPriceById,
   selectNumberOfDaysById,
   selectQuantityRequestById,
   selectRentalActualPriceById,
 } from '../../../../features/common/state/rental/rental.selectors';
+import { ProductItemResponse } from '../../../../interfaces/product.interface';
+import { MessageResponseService } from '../../../../services/message-response.service';
+import { RentalTimerService } from '../../../../services/rental-timer.service';
+import { StorageService } from '../../../../services/storage.service';
+import { FeatureAppState } from '../../../../store/app.state';
+import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
+import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
 
 @Component({
   selector: 'app-form-rental-product',
@@ -35,7 +34,6 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   productIdParam?: string;
   isConfirmLoading = false;
   isVisible = false;
-  inputNote?: string;
   productRentalDetail$?: Observable<ProductItemResponse>;
 
   rentalPriceActual$?: Observable<string | number>;
@@ -54,88 +52,44 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   //subscription
   private routeSubscription?: Subscription;
 
-  // modal
-  showModal(): void {
-    this.isVisible = true;
+  handleOkOrderProcess(): void {
+    console.log('Đã xác nhận đơn hàng!');
   }
 
-  handleOk(): void {
-    this.isVisible = false;
+  handleCancelProcess(): void {
+    console.log('Đã hủy quá trình xác nhận đơn hàng!');
   }
 
-  handleCancel(): void {
-    this.isVisible = false;
-  }
   // modal
 
   /**
    *
    */
-  onChooseRental() {
-    if (this.productIdParam) {
-      combineLatest([
-        this.store.select(selectData),
-        this.store.select(selectRentalActualPriceById(this.productIdParam)),
-        this.store.select(selectDepositActualPriceById(this.productIdParam)),
-        this.store.select(selectQuantityRequestById(this.productIdParam)),
-        this.store.select(selectNumberOfDaysById(this.productIdParam)),
-        this.rentalTimerService.rangePickerTime$,
-      ])
-        .pipe(
-          tap(() => {
-            this.ToasMS.showSuccess(
-              'Bạn sẽ được chuyển hướng tới trang tạo đơn thuê!'
-            );
-          }),
-          delay(1000)
-        )
-        .subscribe(
-          ([
-            productDetail,
-            rentalActualPrice,
-            depositActualPrice,
-            quantityRequest,
-            numberOfDay,
-            datePickTime,
-          ]) => {
-            if (
-              productDetail &&
-              rentalActualPrice &&
-              depositActualPrice &&
-              quantityRequest &&
-              numberOfDay &&
-              datePickTime
-            ) {
-              const processOrder: ProductRentalOrderProcess = {
-                note: this.inputNote ?? '',
-                numberOfDay: numberOfDay,
-                paymentMethod: 0,
-                quantityRequest: Number(quantityRequest),
-                productId: productDetail.id,
-                rentalPriceRequest: Number(rentalActualPrice),
-                depositPriceRequest: Number(depositActualPrice),
-                productName: productDetail.productName,
-                productImages: productDetail.productImages?.[0] ?? null,
-                timeEnd: datePickTime[0],
-                timeStart: datePickTime[1],
-              };
-              this.storageService.set(
-                LocalStorageKey.orderProcess,
-                JSON.stringify(processOrder)
-              );
-              this.router.navigate(['/common/order-process']);
-            }
-          }
-        );
-    }
+  onChooseRental(titleTemplate: TemplateRef<any>) {
+    this.modal.create({
+      nzTitle: titleTemplate,
+      nzContent: ConfimOrderProcessComponent,
+      nzFooter: null,
+      nzWidth: 820,
+      nzData: {
+        productRentalDetail$: this.productRentalDetail$,
+      },
+    });
   }
+
+  onChooseDateCustom() {
+    this.modal.create({
+      nzTitle: 'Thời gian',
+      nzContent: PickerTimerComponent,
+      nzFooter: null,
+      nzWidth: 700,
+    });
+  }
+
+  // modal
 
   selectStateFromNgRx() {
     this.productRentalDetail$ = this.store.select(selectData);
-    this.rangePickerTime$ = this.rentalTimerService.rangePickerTime$;
-    this.selectedTimeStart$ = this.rentalTimerService.timeStart$;
-    this.selectedTimeEnd$ = this.rentalTimerService.timeEnd$;
-    this.rentalDays$ = this.rentalTimerService.rentalDays$;
     if (this.productIdParam) {
       this.rentalPriceActual$ = this.store
         .select(selectRentalActualPriceById(this.productIdParam))
@@ -154,8 +108,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
     private router: Router,
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
-    private storageService: StorageService,
-    private ToasMS: MessageResponseService
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {

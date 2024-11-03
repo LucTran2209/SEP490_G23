@@ -4,40 +4,10 @@
       >́Giấy phép đăng ký kinh doanh</nz-form-label
     >
     <nz-form-control [nzSpan]="24" class="relative">
-      <label for="business_license_file">
-        <p
-          class="py-2 px-3 text-white bg-[#1890FF] inline-block cursor-pointer"
-        >
-          Tải Giáy phép đăng ký kinh doanh
-          <span nz-icon nzType="upload" nzTheme="outline"></span>
-        </p>
-        <input
-          type="file"
-          name=""
-          accept=".pdf" 
-          id="business_license_file"
-          class="hidden"
-          (change)="onFileSelected($event)"
-        />
-      </label>
-      <ul class="file-list">
-        <li
-          *ngFor="let file of uploadedFiles; let i = index"
-          class="text-sm text-[#1890FF] py-3 flex items-center justify-between"
-        >
-          <span>
-            <span nz-icon nzType="paper-clip" nzTheme="outline"></span> &nbsp;
-            <span>{{ file.name }}</span>
-          </span>
-          <span
-            nz-icon
-            nzType="delete"
-            nzTheme="outline"
-            class="cursor-pointer"
-            (click)="removeFile(i)"
-          ></span>
-        </li>
-      </ul>
+      <app-upload-list title="Tải Giáy phép đăng ký kinh doanh" boundTypeFile=".pdf"
+      (listFiles)="onSelectedFile($event)"
+      (removeAFile)="onRemoveAFile($event)"
+      />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
