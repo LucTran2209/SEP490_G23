@@ -56,20 +56,25 @@
         <div nz-col nzSpan="12" class="px-3">
           <p class="mb-2.5">Ảnh thiết bị</p>
           <nz-form-item>
-            <nz-upload
-              [(nzFileList)]="imageList"
-              [nzLimit]="5"
-              [nzMultiple]="true"
-              nzListType="picture-card"
-              [nzBeforeUpload]="beforeUpload"
-              [nzShowUploadList]="true"
-              (nzChange)="handleImageChange($event)"
+            <nz-form-control
+              nzErrorTip="Please upload at least one image."
+              [nzValidateStatus]="imagesControl.status"
             >
-              <div>
-                <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
-                <div>Drag and drop upload</div>
-              </div>
-            </nz-upload>
+              <nz-upload
+                [(nzFileList)]="imageList"
+                [nzLimit]="5"
+                [nzMultiple]="true"
+                nzListType="picture-card"
+                [nzBeforeUpload]="beforeUpload"
+                [nzShowUploadList]="true"
+                (nzChange)="handleImageChange($event)"
+              >
+                <div>
+                  <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
+                  <div>Drag and drop upload</div>
+                </div>
+              </nz-upload>
+            </nz-form-control>
           </nz-form-item>
         </div>
         <div nz-col nzSpan="12">
@@ -115,7 +120,7 @@
               <!-- Rent Limit Field -->
               <nz-form-item>
                 <nz-form-label nzFor="rentalLimitDays" nzSpan="6"
-                  >Giới hạn cho thuê</nz-form-label
+                  >Giới hạn ngày thuê</nz-form-label
                 >
                 <nz-form-control nzSpan="18">
                   <nz-input-number

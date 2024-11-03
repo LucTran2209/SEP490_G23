@@ -2,17 +2,17 @@ import { Subcategory, SubcategoryOutputDto } from './category.interface';
 import { RentalShopInfo } from './rental-shop.interface';
 
 export interface ProductOutputDto {
-  id: string;
-  productName: string;
-  description: string;
-  quantity: number;
-  subCategoryId: string;
-  rentalShopName: string;
-  rentalPrice: number;
-  depositPrice: number;
-  rentalLimitDays: number;
-  evaluate: number;
-  images: string[];
+    id: string;
+    productName: string;
+    description: string;
+    quantity: number;
+    rentalPrice: number;
+    depositPrice: number;
+    rentalLimitDays: number;
+    evaluate: number;
+    images: string[];
+    subCategory: SubcategoryOutputDto;
+    
 }
 export interface ProductInputDto {
   productName: string;

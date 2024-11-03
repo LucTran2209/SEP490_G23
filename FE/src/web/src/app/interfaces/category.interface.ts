@@ -1,6 +1,7 @@
-export interface SubcategoryOutputDto {
-  id: string;
-  subCategoryName: string;
+export interface SubcategoryOutputDto{
+    id: string;
+    subCategoryName: string;
+    description?: string;
 }
 export interface CategoryOutputDto {
   id: string;

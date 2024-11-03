@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderByUserOutputDto, OrderResultService } from '../../../../interfaces/order.interface';
 import { OrderService } from '../../../../services/order.service';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-order-detail',
@@ -21,10 +23,18 @@ export class MyOrderDetailComponent implements OnInit {
   }
   constructor(
     private orderService: OrderService,
+    private location: Location,
+    private route: ActivatedRoute,
   ){}
+  goBack(): void {
+    this.location.back();
+  }
   ngOnInit(){
-    this.orderId = '5613ff49-0d6a-40ff-9bb1-d2278031c602';
-    this.loadOrder(this.orderId);
+    // this.route.paramMap.subscribe(params => {
+    //   this.orderId = params.get('id') || '';
+    // });
+    // // this.orderId = '5613ff49-0d6a-40ff-9bb1-d2278031c602';
+    // this.loadOrder(this.orderId);
     
   }
   loadOrder(orderId: string){
@@ -60,4 +70,5 @@ export class MyOrderDetailComponent implements OnInit {
     const timeDiff = endDate.getTime() - startDate.getTime();
     this.numberofRentalDays = Math.floor(timeDiff / (1000 * 3600 * 24));
   }
+
 }

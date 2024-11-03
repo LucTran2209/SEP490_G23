@@ -52,6 +52,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { environment } from '../../../environments/environment.development';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
 import { ErrorComponent } from '../../features/error/error.component';
@@ -147,6 +148,8 @@ const ANTD_MODULES = [
   NzProgressModule,
   NzMessageModule,
   NzTimelineModule,
+  NzTypographyModule,
+  
 ];
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
