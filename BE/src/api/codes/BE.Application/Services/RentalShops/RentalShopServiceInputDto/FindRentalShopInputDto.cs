@@ -3,6 +3,5 @@
     public class FindRentalShopInputDto
     {
         public string? ShopName { get; set; }
-
     }
 }

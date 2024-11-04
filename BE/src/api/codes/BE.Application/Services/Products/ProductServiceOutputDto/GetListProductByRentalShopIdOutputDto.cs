@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using BE.Application.Common.Dtos;
-using BE.Domain.Entities;
+﻿using BE.Application.Common.Dtos;
 
 namespace BE.Application.Services.Products.ProductServiceOutputDto
 {
@@ -8,6 +6,7 @@ namespace BE.Application.Services.Products.ProductServiceOutputDto
     {
         public SubCategoryDto? SubCategory { get; set; }
         public List<string>? Images { get; set; }
+
         public class Mapping : Profile
         {
             public Mapping()

@@ -15,7 +15,7 @@ public static class QueryableExtensions
         string methordName = orderByDesc ? nameof(Enumerable.OrderByDescending) : nameof(Enumerable.OrderBy);
         return CallOrderedQueryable(query, methordName, propertyName, comparer);
     }
-
+     
     public static IOrderedQueryable<T> ThenBy<T>(this IOrderedQueryable<T> query, string? propertyName, bool thenByDesc = false, IComparer<object> comparer = null)
     {
         if (string.IsNullOrWhiteSpace(propertyName))

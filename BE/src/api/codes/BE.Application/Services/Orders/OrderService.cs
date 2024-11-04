@@ -1,17 +1,5 @@
-﻿using AutoMapper;
-using BE.Application.Abstractions;
-using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.Common.Results;
-using BE.Application.Extensions;
-using BE.Application.Services.Orders.OrderServiceInputDto;
+﻿using BE.Application.Services.Orders.OrderServiceInputDto;
 using BE.Application.Services.Orders.OrderServiceOutputDto;
-using BE.Domain.Abstractions.Enums;
-using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities;
-using BE.Domain.Interfaces;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace BE.Application.Services.Orders
 {
@@ -45,13 +33,10 @@ namespace BE.Application.Services.Orders
                 FileAttach = null
             };
 
-            order.OrderStatuses = new List<OrderStatus>();
-
-            order.OrderStatuses.Add(orderStatus);
-
             await unitOfWork.OrderRepository.AddAsync(order);
 
             await unitOfWork.SaveChangesAsync();
+
             return new ResultService
             {
                 StatusCode = HttpStatusCode.Created.ToString(),
@@ -75,11 +60,12 @@ namespace BE.Application.Services.Orders
                 Message = "created successfully."
             };
         }
+
         public async Task<ResultService> ListOrderAsync(GetListOrderByUserInputDto inputDto)
         {
             var orders = unitOfWork.OrderRepository.GetAll();
             var query = orders
-                .Filter(inputDto.Address, o => o.Address.Contains(inputDto.Address));
+                .Filter(inputDto.Address, o => o.RecipientAddress!.Contains(inputDto.Address ?? string.Empty));
             if (inputDto.OrderId.ToString() != Guid.Empty.ToString())
             {
                 query = query.Filter(inputDto.OrderId.ToString(), o => o.Id == inputDto.OrderId);

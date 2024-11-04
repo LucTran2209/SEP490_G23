@@ -1,9 +1,5 @@
-﻿using BE.Application.Abstractions;
-using BE.Application.Services.Authentication.AuthenServiceInputDto;
-using BE.Domain.Interfaces;
+﻿using BE.Application.Services.Authentication.AuthenServiceInputDto;
 using BE.Persistence;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace BE.Application.Services.Authentication.Validators
 {
@@ -25,8 +21,6 @@ namespace BE.Application.Services.Authentication.Validators
                 {
                     return !await context.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
                 }).WithMessage("UserName has existed");
-
-
         }
     }
 }

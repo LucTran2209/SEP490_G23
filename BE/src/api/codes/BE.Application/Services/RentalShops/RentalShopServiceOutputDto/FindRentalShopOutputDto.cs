@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BE.Application.Services.RentalShops.RentalShopServiceOutputDto
+﻿namespace BE.Application.Services.RentalShops.RentalShopServiceOutputDto
 {
     public class FindRentalShopOutputDto
     {

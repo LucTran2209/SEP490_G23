@@ -1,8 +1,5 @@
-﻿using BE.Application.Abstractions;
-using BE.Application.Services.Users.UserServiceInputDto;
-using BE.Domain.Interfaces;
+﻿using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Persistence;
-using FluentValidation;
 
 namespace BE.Application.Services.Users.Validators
 {
@@ -39,6 +36,7 @@ namespace BE.Application.Services.Users.Validators
                 .WithMessage("Date of Birth must be a valid past date in the format: dd/MM/yyyy");
         }
     }
+
     public class UpdateUserValidator : ValidatorBase<UpadteUserInputDto>
     {
         public UpdateUserValidator(ApplicationDbContext context, IUser user) : base(context, user)
@@ -64,9 +62,9 @@ namespace BE.Application.Services.Users.Validators
             RuleFor(u => u.DateOfBirth)
                 .NotEmpty().WithMessage("Date of Birth is required")
                 .WithMessage("Date of Birth must be a valid past date in the format: dd/MM/yyyy");
-
         }
     }
+
     public class ActiveUserValidator : ValidatorBase<ActiveUserInputDto>
     {
         public ActiveUserValidator(ApplicationDbContext context, IUser user) : base(context, user)
@@ -75,5 +73,4 @@ namespace BE.Application.Services.Users.Validators
                 .NotEmpty().WithMessage("Active is True or False");
         }
     }
-
 }

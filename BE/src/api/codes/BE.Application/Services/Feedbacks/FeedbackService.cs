@@ -1,12 +1,4 @@
-﻿using BE.Application.Abstractions;
-using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.Common.Results;
-using BE.Application.Services.Feedbacks.FeedbackServiceInputDto;
-using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Interfaces;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
+﻿using BE.Application.Services.Feedbacks.FeedbackServiceInputDto;
 
 namespace BE.Application.Services.Feedbacks
 {
@@ -16,10 +8,10 @@ namespace BE.Application.Services.Feedbacks
         private readonly IAzureService _azureService;
 
         public FeedbackService(
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
             IUser user,
             IAzureService azureService,
-            IValidator<CreateFeedbackInputDto> createFeedbackValidator) 
+            IValidator<CreateFeedbackInputDto> createFeedbackValidator)
             : base(unitOfWork, user)
         {
             this.createFeedbackValidator = createFeedbackValidator;

@@ -40,7 +40,7 @@ namespace BE.Infrastructure.Common
 
         public IFeedbackRepository feedbackRepository;
         public IFeedbackRepository FeedbackRepository => feedbackRepository = new FeedbackRepository(context);
-     
+
         public IOrderRepository orderRepository;
         public IOrderRepository OrderRepository => orderRepository = new OrderRepository(context);
 
@@ -129,8 +129,7 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking hasTrace)
                         {
-                            hasTrace.CreatedBy = Guid.Empty;// user.Id ?? Guid.Empty;
-                            hasTrace.CreatedByName = "admin"; // user.UserName ?? string.Empty;
+                            hasTrace.CreatedBy = user.Id ?? Guid.Empty;
                         }
 
                         break;
@@ -142,8 +141,7 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking trace)
                         {
-                            trace.CreatedBy = Guid.Empty; // user.Id ?? Guid.Empty;
-                            trace.CreatedByName = "admin"; // user.UserName ?? string.Empty;
+                            trace.CreatedBy = user.Id ?? Guid.Empty;
                         }
 
                         break;

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using BE.Domain.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace BE.Application.Services.RentalShops.RentalShopServiceInputDto
 {

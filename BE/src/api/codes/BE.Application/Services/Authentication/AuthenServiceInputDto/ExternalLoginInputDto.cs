@@ -2,6 +2,6 @@
 {
     public class ExternalLoginInputDto
     {
-        public required string Credential { get; set; }
+        public string Credential { get; set; }
     }
 }

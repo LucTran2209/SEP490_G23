@@ -1,18 +1,9 @@
-﻿using AutoMapper;
-using BE.Application.Abstractions;
-using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.Common.Results;
-using BE.Application.DependencyInjections;
+﻿using BE.Application.DependencyInjections;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
 using BE.Application.Services.Authentication.AuthenServiceOutputDto;
-using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities;
-using BE.Domain.Interfaces;
-using FluentValidation;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 

@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using BE.Domain.Entities;
-
-namespace BE.Application.Services.Authentication.AuthenServiceInputDto
+﻿namespace BE.Application.Services.Authentication.AuthenServiceInputDto
 {
     public class RegisterInputDto
     {

@@ -1,7 +1,5 @@
-﻿using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.DependencyInjections;
+﻿using BE.Application.DependencyInjections;
 using Microsoft.Extensions.Options;
-using System.Net;
 using System.Net.Mail;
 
 namespace BE.Application.Services.ExternalServices

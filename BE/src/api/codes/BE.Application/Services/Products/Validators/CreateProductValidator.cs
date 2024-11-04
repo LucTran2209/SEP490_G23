@@ -1,5 +1,4 @@
 ﻿using BE.Application.Services.Products.ProductServiceInputDto;
-using FluentValidation;
 
 namespace BE.Application.Services.Products.Validators
 {
