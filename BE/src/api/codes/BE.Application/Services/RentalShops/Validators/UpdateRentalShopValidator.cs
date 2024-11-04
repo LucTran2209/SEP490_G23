@@ -1,5 +1,4 @@
 ﻿using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
-using FluentValidation;
 
 namespace BE.Application.Services.RentalShops.Validators
 {

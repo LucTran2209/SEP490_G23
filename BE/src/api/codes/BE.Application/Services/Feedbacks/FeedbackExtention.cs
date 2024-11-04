@@ -1,6 +1,5 @@
 ﻿using BE.Application.Services.Feedbacks.FeedbackServiceInputDto;
 using BE.Application.Services.Feedbacks.FeedbackServiceOutputDto;
-using BE.Domain.Entities;
 
 namespace BE.Application.Services.Feedbacks
 {
@@ -11,7 +10,7 @@ namespace BE.Application.Services.Feedbacks
             return new Feedback
             {
                 ProductId = inputDto.ProductId,
-                UserName = inputDto.UserName,  
+                UserName = inputDto.UserName,
                 Rating = inputDto.Rating,
                 Comment = inputDto.Comment
             };
@@ -27,6 +26,5 @@ namespace BE.Application.Services.Feedbacks
                 Comment = feedback.Comment,
             };
         }
-
     }
 }

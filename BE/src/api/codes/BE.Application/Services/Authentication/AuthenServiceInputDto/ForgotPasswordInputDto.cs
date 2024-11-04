@@ -2,6 +2,6 @@
 {
     public class ForgotPasswordInputDto
     {
-        public required string Email { get; set; }
+        public string Email { get; set; }
     }
 }

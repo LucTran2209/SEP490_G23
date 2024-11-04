@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace BE.Application.Services.Products.ProductServiceInputDto
 {
@@ -12,8 +11,8 @@ namespace BE.Application.Services.Products.ProductServiceInputDto
         public Guid RentalShopId { get; set; }
         public decimal RentalPrice { get; set; }
         public decimal DepositPrice { get; set; }
-        public int RentalLimitDays { get; set; } 
+        public int RentalLimitDays { get; set; }
         public decimal Evaluate { get; set; }
-        public List<IFormFile>? Images { get; set; }     
+        public List<IFormFile>? Images { get; set; }
     }
 }

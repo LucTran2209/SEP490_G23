@@ -1,6 +1,5 @@
 ﻿using BE.Application.Services.Users.UserServiceInputDto;
 using BE.Application.Services.Users.UserServiceOutputDto;
-using BE.Domain.Entities;
 
 namespace BE.Application.Services.Users
 {
@@ -23,9 +22,9 @@ namespace BE.Application.Services.Users
             user.IsActive = command.IsActive;
             return user;
         }
+
         public static User updateuser(this UpadteUserInputDto command, User user, string file)
         {
-
             user.Address = command.Address;
             user.Email = command.Email;
             user.PhoneNumber = command.PhoneNumber;
@@ -35,6 +34,7 @@ namespace BE.Application.Services.Users
             user.AvatarPersonal = file;
             return user;
         }
+
         public static FindUserOutputDto FindUser(User user)
         {
             var findUser = new FindUserOutputDto();
@@ -50,6 +50,7 @@ namespace BE.Application.Services.Users
             findUser.ListRole = user.UserRoles?.Select(ur => ur.Role?.Name!).ToList() ?? new List<string>();
             return findUser;
         }
+
         public static GetListUserOutputDto GetListUser(this User user)
         {
             var Users = new GetListUserOutputDto

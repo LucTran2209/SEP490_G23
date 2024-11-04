@@ -1,9 +1,5 @@
-﻿using BE.Application.Abstractions;
-using BE.Application.Services.Authentication.AuthenServiceInputDto;
-using BE.Domain.Interfaces;
+﻿using BE.Application.Services.Authentication.AuthenServiceInputDto;
 using BE.Persistence;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace BE.Application.Services.Authentication.Validators
 {
@@ -17,9 +13,9 @@ namespace BE.Application.Services.Authentication.Validators
                 {
                     var currentUser = await context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
 
-                    if (currentUser == null)  return false; 
+                    if (currentUser == null) return false;
 
-                    bool isCorrectPass =  AuthenExtention.VerifyPassword(password, currentUser.Password!);
+                    bool isCorrectPass = AuthenExtention.VerifyPassword(password, currentUser.Password!);
 
                     return isCorrectPass;
                 }).WithMessage("Current Password is not correct!");

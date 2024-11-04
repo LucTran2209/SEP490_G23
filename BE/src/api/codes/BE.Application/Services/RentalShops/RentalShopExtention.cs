@@ -1,6 +1,5 @@
 ﻿using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
 using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
-using BE.Domain.Entities;
 
 namespace BE.Application.Services.RentalShops
 {
@@ -19,6 +18,7 @@ namespace BE.Application.Services.RentalShops
                 Description = inputDto.Description
             };
         }
+
         public static RentalShop UpdateEntity(this CreateRentalShopInputDto inputDto, RentalShop rentalShop)
         {
             rentalShop.ShopName = inputDto.ShopName;

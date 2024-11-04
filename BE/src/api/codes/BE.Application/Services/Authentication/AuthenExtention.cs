@@ -12,7 +12,6 @@
         public static bool VerifyPassword(string providedPassword, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
-        }    
+        }
     }
 }
-

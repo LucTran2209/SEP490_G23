@@ -2,8 +2,11 @@
 {
     public enum RequestStatus
     {
+        Order,
         Approved,
         Rejected,
-        Order,
+        Cancel,
+        Transit,
+        Completed,
     }
 }

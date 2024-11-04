@@ -1,8 +1,6 @@
-﻿using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.DependencyInjections;
+﻿using BE.Application.DependencyInjections;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic.FileIO;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -40,8 +38,8 @@ namespace BE.Application.Services.ExternalServices
 
         public async Task<List<string>> UpLoadFileAsync(List<IFormFile> files)
         {
-            if (files.Count == 0) return new List<string>(); 
-           
+            if (files.Count == 0) return new List<string>();
+
             List<string> blobUris = new List<string>();
 
             foreach (var file in files)

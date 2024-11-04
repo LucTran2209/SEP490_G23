@@ -1,15 +1,5 @@
-﻿using BE.Application.Abstractions;
-using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.Common.Results;
-using BE.Application.Extensions;
-using BE.Application.Services.Authentication;
+﻿using BE.Application.Services.Authentication;
 using BE.Application.Services.Users.UserServiceInputDto;
-using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities;
-using BE.Domain.Interfaces;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace BE.Application.Services.Users
 {
@@ -89,6 +79,7 @@ namespace BE.Application.Services.Users
                 };
             }
         }
+
         public async Task<ResultService> GetUserByIdAsync(FindUserInputDto inputDto)
         {
             var r = await unitOfWork.UserRepository.GetsUserByUserIdAsync(inputDto.Id);

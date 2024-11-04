@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using BE.Application.Services.Products.ProductServiceInputDto;
-using BE.Application.Services.Products.ProductServiceOutputDto;
-using BE.Domain.Entities;
+﻿using BE.Application.Services.Products.ProductServiceInputDto;
 
 namespace BE.Application.Services.Products
 {

@@ -1,9 +1,5 @@
-﻿using BE.Application.Abstractions;
-using BE.Application.Services.Authentication.AuthenServiceInputDto;
-using BE.Domain.Interfaces;
+﻿using BE.Application.Services.Authentication.AuthenServiceInputDto;
 using BE.Persistence;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace BE.Application.Services.Authentication.Validators
 {

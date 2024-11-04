@@ -1,17 +1,5 @@
-﻿using AutoMapper;
-using BE.Application.Abstractions;
-using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.Common.Dtos;
-using BE.Application.Common.Results;
-using BE.Application.Extensions;
-using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
+﻿using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
 using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
-using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities;
-using BE.Domain.Interfaces;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace BE.Application.Services.RentalShops
 {
