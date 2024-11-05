@@ -592,8 +592,12 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Kết thúc thuê thiết bị</p>
           <p class="text-lg">
+<<<<<<< HEAD
             {{ (selectedTimeEnd$ | async).value }} -
             {{ time[1] | date : "dd/MM/yyyy" }}
+=======
+              {{(selectedTimeEnd$ | async).value}} - {{time[1] | date: "dd/MM/yyyy"}}
+>>>>>>> 058ec107d752a5e031683b7db934c8106548f9b5
           </p>
         </div>
       </div>
