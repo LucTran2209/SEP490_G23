@@ -13,6 +13,12 @@ import {
   styleUrl: './product-carouse.component.scss',
 })
 export class ProductCarouseComponent implements OnInit, OnChanges {
+  slideConfig = {
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    dots: false,
+    infinite: false,
+  };
   @Input() images: string[] = [];
 
   selectedImage?: string;
@@ -36,16 +42,6 @@ export class ProductCarouseComponent implements OnInit, OnChanges {
     }
   }
 
-  // test slick
-  slides = [342, 453, 846, 855, 234, 564, 744, 243];
-
-  slideConfig = {
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    dots: false,
-    infinite: false,
-  };
-
   breakpoint(e: any) {
     console.log('breakpoint');
   }
@@ -57,7 +53,6 @@ export class ProductCarouseComponent implements OnInit, OnChanges {
   beforeChange(e: any) {
     console.log('beforeChange');
   }
-  // test slick
 }
 
 /**

@@ -1,14 +1,20 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, Observable, Subscription } from 'rxjs';
-import { RentalTimerService } from '../../../../services/rental-timer.service';
-import { FeatureAppState } from '../../../../store/app.state';
 import { Store } from '@ngrx/store';
-import { StorageService } from '../../../../services/storage.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { filter, Observable, Subscription } from 'rxjs';
+import { OrderState } from '../../../../features/common/state/rental/rental.reducers';
+import {
+  selectAllProductRental,
+  selectTotalAllProductDepositPrice,
+  selectTotalAllProductRentalPrice,
+} from '../../../../features/common/state/rental/rental.selectors';
 import { MessageResponseService } from '../../../../services/message-response.service';
-import { ProductItemResponse } from '../../../../interfaces/product.interface';
-import { selectDepositActualPriceById, selectRentalActualPriceById } from '../../../../features/common/state/rental/rental.selectors';
-
+import { RentalTimerService } from '../../../../services/rental-timer.service';
+import { StorageService } from '../../../../services/storage.service';
+import { FeatureAppState } from '../../../../store/app.state';
+import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
+import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
 
 interface IProductShortSearch {
   id: string | number;
@@ -19,26 +25,24 @@ interface IProductShortSearch {
   images: string;
 }
 
-
 @Component({
   selector: 'app-form-rental-product-v2',
   templateUrl: './form-rental-product-v2.component.html',
-  styleUrl: './form-rental-product-v2.component.scss'
+  styleUrl: './form-rental-product-v2.component.scss',
 })
-export class FormRentalProductV2Component   implements OnInit, OnDestroy {
-  productIdParam?: string;
+export class FormRentalProductV2Component implements OnInit, OnDestroy {
   isConfirmLoading = false;
   isVisible = false;
   inputValue?: string;
   options: Array<IProductShortSearch> = [];
   tags?: IProductShortSearch[];
-  productRentalDetailArray$?: Observable<ProductItemResponse[]>;
+  productRentalDetailArray$?: Observable<OrderState[]>;
 
-  rentalPriceActual$?: Observable<string | number>;
-  depositPriceActual$?: Observable<string | number>;
+  rentalPriceActualAll$?: Observable<string | number>;
+  depositPriceActualAll$?: Observable<string | number>;
   //date time
 
-   //subscription
+  //subscription
   private routeSubscription?: Subscription;
   //date time
 
@@ -50,16 +54,27 @@ export class FormRentalProductV2Component   implements OnInit, OnDestroy {
   handleCloseTag(removedTag: {}): void {
     this.tags = this.tags?.filter((tag) => tag !== removedTag);
   }
-  
-  
-  onChooseRental(headerTef: TemplateRef<any>){
 
+  onChooseRental(titleTemplate: TemplateRef<any>) {
+    this.modal.create({
+      nzTitle: titleTemplate,
+      nzContent: ConfimOrderProcessComponent,
+      nzFooter: null,
+      nzWidth: 820,
+      nzData: {
+        productRentalDetailArray$: this.productRentalDetailArray$
+      },
+    });
   }
 
-  onChooseDateCustom(){
-
+  onChooseDateCustom() {
+    this.modal.create({
+      nzTitle: 'Thời gian',
+      nzContent: PickerTimerComponent,
+      nzFooter: null,
+      nzWidth: 700,
+    });
   }
-
 
   onSearchProductShort(e: Event): void {
     const value = (e.target as HTMLInputElement).value;
@@ -100,20 +115,16 @@ export class FormRentalProductV2Component   implements OnInit, OnDestroy {
   }
 
   // on choose more
-  onChooseRentalMore(){
-    
-  }
+  onChooseRentalMore() {}
 
   selectStateFromNgRx() {
-    if (this.productIdParam) {
-      this.rentalPriceActual$ = this.store
-        .select(selectRentalActualPriceById(this.productIdParam))
-        .pipe(filter((value): value is string | number => value !== undefined));
-
-      this.depositPriceActual$ = this.store
-        .select(selectDepositActualPriceById(this.productIdParam))
-        .pipe(filter((value): value is string | number => value !== undefined));
-    }
+    this.rentalPriceActualAll$ = this.store.select(
+      selectTotalAllProductRentalPrice()
+    );
+    this.depositPriceActualAll$ = this.store.select(
+      selectTotalAllProductDepositPrice()
+    );
+    this.productRentalDetailArray$ = this.store.select(selectAllProductRental);
   }
 
   dispatchActionNessarray() {}
@@ -124,20 +135,19 @@ export class FormRentalProductV2Component   implements OnInit, OnDestroy {
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
     private storageService: StorageService,
-    private ToasMS: MessageResponseService
+    private ToasMS: MessageResponseService,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
-    this.productIdParam = this.route.snapshot.paramMap.get('id') ?? '';
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
-
 
     //unsubscrib
     this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.rentalTimerService.clearState(); 
+        this.rentalTimerService.clearState();
       });
   }
 

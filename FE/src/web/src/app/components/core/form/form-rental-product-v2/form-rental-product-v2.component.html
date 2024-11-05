@@ -54,8 +54,10 @@
       <span class="text-red-500 font-bold">* &nbsp;</span>Giá thuê theo ngày
     </div>
     <!-- Main content container -->
-    <div class="pb-3">
-      <app-renter-item [pId]="productIdParam" />
+    <div class="pb-3 flex flex-col w-full gap-y-2">
+      @for (item of productRentalDetailArray$ | async; track $index) {
+        <app-renter-item [pId]="item.productId.toString()" />
+      }
     </div>
     <!-- Rental details section -->
     <div class="pb-3">
@@ -95,7 +97,7 @@
         <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá cọc
       </div>
       <p class="text-[20px]">
-        {{ depositPriceActual$ | async | currency : "VND" }}
+        {{ depositPriceActualAll$ | async | currency : "VND" }} 
       </p>
     </div>
     <div class="flex justify-between items-center">
@@ -103,7 +105,8 @@
         <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá thuê
       </div>
       <p class="text-[20px]">
-        {{ rentalPriceActual$ | async | currency : "VND" }} / ngày
+        {{ rentalPriceActualAll$ | async | currency : "VND" }}  
+        / ngày
       </p>
     </div>
     <button

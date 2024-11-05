@@ -1,7 +1,10 @@
-
 <div class="">
   <div class="pb-3">
-    <img class="w-full object-cover max-h-[540px] min-h-[540px]" src="{{ selectedImage }}" alt="" />
+    <img
+      class="w-full object-cover max-h-[540px] min-h-[540px] shadow-sm border border-solid border-[#ededed]"
+      src="{{ selectedImage }}"
+      alt=""
+    />
   </div>
   <ngx-slick-carousel
     class="carousel"
@@ -11,12 +14,13 @@
     (afterChange)="afterChange($event)"
     (beforeChange)="beforeChange($event)"
   >
-    <div ngxSlickItem *ngFor="let slide of images; let index as $index" class="mx-1 cursor-pointer" (click)="onSelectImage(slide)">
-      <img
-        [src]="slide"
-        alt=""
-        class="h-[200px] object-cover"
-      />
+    <div
+      ngxSlickItem
+      *ngFor="let slide of images; let index; as: $index"
+      class="mx-1 cursor-pointer shadow-lg"
+      (click)="onSelectImage(slide)"
+    >
+        <img [src]="slide" alt="" class="h-[100px] w-full object-cover hover:border-2 hover:border-solid hover:border-[#1890FF]" />
     </div>
   </ngx-slick-carousel>
 </div>

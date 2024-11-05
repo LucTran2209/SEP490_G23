@@ -1,26 +1,19 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import {
-  combineLatest,
-  delay,
   filter,
   Observable,
-  Subscription,
-  tap,
+  Subscription
 } from 'rxjs';
 import { selectData } from '../../../../features/common/state/product/product-detail.reducer';
 import {
   selectDepositActualPriceById,
-  selectNumberOfDaysById,
-  selectQuantityRequestById,
-  selectRentalActualPriceById,
+  selectRentalActualPriceById
 } from '../../../../features/common/state/rental/rental.selectors';
 import { ProductItemResponse } from '../../../../interfaces/product.interface';
-import { MessageResponseService } from '../../../../services/message-response.service';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
-import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
 import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';

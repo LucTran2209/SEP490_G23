@@ -1,8 +1,9 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { ProductItemResponse } from '../../../../interfaces/product.interface';
 import * as ProductDetailActions from './product-detail.actions';
 import { feature_key } from '../../../../configs/feature_key.config';
+import { createEntityAdapter } from '@ngrx/entity';
 export interface ProductDetailState {
   message: string | null;
   status: StatusProcess;
@@ -75,6 +76,14 @@ export const productDetailReducer = createReducer(
 export const featureProductDetail = createFeature({
   name: feature_key['productDetailFeature'],
   reducer: productDetailReducer,
+  extraSelectors: ({ selectData }) => ({
+   selectIsInitialState: createSelector(
+    selectData,
+    (q) => {
+      return JSON.stringify(q) === JSON.stringify(intialState.data)
+    }
+   )
+  }),
 });
 
 export const {
@@ -82,4 +91,5 @@ export const {
   selectFeature_productDetailState,
   selectMessage,
   selectStatus,
+  selectIsInitialState
 } = featureProductDetail;

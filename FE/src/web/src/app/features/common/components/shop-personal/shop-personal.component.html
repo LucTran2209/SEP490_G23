@@ -1,4 +1,4 @@
-<div class="flex h-screen overflow-hidden">
+<div class="flex h-screen overflow-hidden" [ngClass]="{ container: !visible }">
   <!-- left hand -->
   <div
     class="left_content overflow-y-scroll p-4 h-full"
@@ -28,7 +28,7 @@
       </div>
       <div class="col-span-8">
         <div
-          class="bg-[#e5e7eb] flex justify-between items-center p-3 rounded-sm"
+          class="bg-[#e5e7eb] flex justify-between items-center flex-wrap p-3 rounded-sm"
         >
           <div class="flex items-center gap-3">
             <p>Sắp xếp theo</p>
@@ -53,13 +53,15 @@
               </nz-select>
             </nz-button-group>
           </div>
-          <nz-pagination
-            [nzPageIndex]="pageIndex$ | async"
-            [nzTotal]="pageTotal$ | async"
-            nzSimple
-            (nzPageIndexChange)="onPageIndexChange($event)"
-          >
-          </nz-pagination>
+          <div class="inline-block">
+            <nz-pagination
+              [nzPageIndex]="pageIndex$ | async"
+              [nzTotal]="pageTotal$ | async"
+              nzSimple
+              (nzPageIndexChange)="onPageIndexChange($event)"
+            >
+            </nz-pagination>
+          </div>
         </div>
         <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
           <!-- *ngFor="let product of productListShopFilter$ | async" -->

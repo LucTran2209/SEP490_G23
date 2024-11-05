@@ -16,6 +16,15 @@ export const selectProductRentalById = (id: string) =>
     orders.find((order) => order.productId === id)
   );
 
+export const selectTotalAllProductRentalPrice = () =>
+  createSelector(selectAllProductRental, (orders: OrderState[]) =>
+    orders.reduce((acc, init) => Number(init.rentalActualPrice) + acc, 0)
+  );
+export const selectTotalAllProductDepositPrice = () =>
+  createSelector(selectAllProductRental, (orders: OrderState[]) =>
+    orders.reduce((acc, init) => Number(init.depositActualPrice) + acc, 0)
+  );
+
 export const selectDepositPriceById = (id: string) =>
   createSelector(selectProductRentalById(id), (order) => order?.depositPrice);
 

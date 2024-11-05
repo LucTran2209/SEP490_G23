@@ -1,0 +1,23 @@
+::ng-deep .slick-prev {
+  left: -10px !important;
+}
+
+::ng-deep .slick-next {
+    right: -16px !important;
+}
+
+::ng-deep .slick-prev:before,
+::ng-deep .slick-next:before {
+    font-size: 25px;
+    line-height: 1;
+    color: #f6f6f6;
+    opacity: 1;
+    padding: 6px;
+}
+
+::ng-deep .slick-prev:before,
+::ng-deep .slick-next::before {
+  background: #f6f6f6;
+  border-radius: 9999px;
+  border: 1px solid #d8dae5;
+}

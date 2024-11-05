@@ -8,6 +8,7 @@ export const setInit = createAction(
     quantityAvailable: string | number;
     pid: number | string;
     productName: string;
+    images: string[]
   }>()
 );
 
