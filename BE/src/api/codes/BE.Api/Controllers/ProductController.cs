@@ -52,7 +52,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromForm] CreateProductInputDto inputDto)
+        public async Task<IActionResult> AddAsync([FromForm] CreateProductInputDto inputDto)
         {
             var output = await productService.CreateAsync(inputDto);
             return Created(output.StatusCode, output);

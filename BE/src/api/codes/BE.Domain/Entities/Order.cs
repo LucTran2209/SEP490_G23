@@ -17,7 +17,9 @@ namespace BE.Domain.Entities
         public decimal TotalRentPrice { get; set; }
         public decimal TotalDepositPrice { get; set; }
         public string? Note { get; set; }
-        public PaymentType PaymentType { get; set; }
+        public MortgagePaperType MortgagePaperType { get; set; }
+        public string? MortgagePaperImageFont {  get; set; }
+        public string? MortgagePaperImageBack {  get; set; }
 
         public virtual User? User { get; set; }
         public virtual Voucher? Voucher { get; set; }

@@ -1,8 +1,8 @@
 ﻿namespace BE.Domain.Abstractions.Enums
 {
-    public enum PaymentType
+    public enum MortgagePaperType
     {
-        Cash = 0,
-        Transfer = 1,
+        CitizenIdentification = 0,
+        LicenseDriver = 1,
     }
 }
