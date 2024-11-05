@@ -30,15 +30,24 @@ export interface OrderResultService {
 }
 
 export interface OrderCreateRequest {
+  id: null;
+  voucherId?: string | null;
+  code: string;
+  recipientName: string;
+  recipientPhoneNumber: string;
+  recipientEmail: string;
+  recipientAddress: string;
+  totalRentPrice: number;
+  totalDepositPrice: number;
+  paymentType: 0;
   userId: string;
-  address: string;
   startDate: string;
   endDate: string;
-  totalPrice: number;
   note: string;
   orderDetails: {
+    id: string | null;
     productId: string;
     orderId: string | null;
     quantity: number;
-  }[]
+  }[];
 }

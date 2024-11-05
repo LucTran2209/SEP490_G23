@@ -11,3 +11,7 @@
     font-size: 12px;
 
 }
+
+::ng-deep .ant-card-body {
+    padding: 7px;
+}

@@ -87,6 +87,12 @@ export function generateRandomColor(): string {
   return color;
 }
 
+/**
+ * 
+ * @param params 
+ * @returns 
+ * @description filter field requried not null, so if it null, we'll skip that field
+ */
 export const cleanParams = (params: {
   [key: string]: any;
 }): { [key: string]: any } => {
@@ -99,3 +105,11 @@ export const cleanParams = (params: {
   });
   return clearnParams
 };
+
+
+export const generateCodeOrder = (): string => {
+  const randValue = new Uint32Array(1);
+  crypto.getRandomValues(randValue);
+  const ordeCode = randValue[0].toString(16).padStart(8,'0').toUpperCase();
+  return ordeCode;
+}

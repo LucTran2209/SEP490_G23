@@ -5,6 +5,7 @@ export interface OrderState {
   productId: string | number;
   productName: string;
   rentalPrice: string | number;
+  images: string[],
   rentalActualPrice: string | number;
   depositPrice: string | number;
   depositActualPrice: string | number;
@@ -36,7 +37,7 @@ export const rentalOrderReducer = createReducer(
   on(RentalActions.resetRentalProduct, () => initialState),
   //set init product rental order
   on(RentalActions.setInit, (state, action) => {
-    const { depositPrice, pid, quantityAvailable, rentalPrice, productName } =
+    const { depositPrice, pid, quantityAvailable, rentalPrice, productName, images} =
       action;
     const existingOrderIndex = checkProductRentalExist(state.orders, pid);
     if (existingOrderIndex !== -1) {
@@ -66,6 +67,7 @@ export const rentalOrderReducer = createReducer(
         quantityRequest: 1,
         isBoundQuantity: false,
         productName: productName,
+        images: images
       };
 
       return { ...state, orders: [...state.orders, newOrder] };
