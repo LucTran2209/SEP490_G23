@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ProductItemResponse } from '../../../interfaces/product.interface';
 import { RentalTimerService } from '../../../services/rental-timer.service';
 import { OrderService } from '../../../services/order.service';
+import { OrderState } from '../../../features/common/state/rental/rental.reducers';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -14,6 +15,7 @@ export class ConfimOrderProcessComponent implements OnInit {
   nzModalData: any = inject(NZ_MODAL_DATA);
   inputNote: string = '';
  productRentalDetail$?: Observable<ProductItemResponse>;
+ productRentalDetailArray$?: Observable<OrderState[]>
   //date time
   rangePickerTime$?: Observable<Date[]>;
   selectedTimeStart$?: Observable<any>;
@@ -83,6 +85,7 @@ export class ConfimOrderProcessComponent implements OnInit {
   constructor(private modalRef: NzModalRef, private rentalTimerService: RentalTimerService, private orderService: OrderService) {}
   ngOnInit(): void {
     this.productRentalDetail$ = this.nzModalData.productRentalDetail$;
+   this.productRentalDetailArray$ = this.nzModalData.productRentalDetailArray$;
     this.rangePickerTime$ = this.rentalTimerService.rangePickerTime$;
     this.selectedTimeStart$ = this.rentalTimerService.timeStart$;
     this.selectedTimeEnd$ = this.rentalTimerService.timeEnd$;

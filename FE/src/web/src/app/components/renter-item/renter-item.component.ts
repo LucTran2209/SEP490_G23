@@ -6,13 +6,14 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { debounceTime, Observable, Subject } from 'rxjs';
-import { selectData } from '../../features/common/state/product/product-detail.reducer';
+import { selectIsInitialState } from '../../features/common/state/product/product-detail.reducer';
 import { setQuantityRequest } from '../../features/common/state/rental/rental.actions';
+import { OrderState } from '../../features/common/state/rental/rental.reducers';
 import {
   selectNumberOfDaysById,
+  selectProductRentalById,
   selectRentalActualPriceById
 } from '../../features/common/state/rental/rental.selectors';
-import { ProductItemResponse } from '../../interfaces/product.interface';
 import { FeatureAppState } from '../../store/app.state';
 
 
@@ -23,7 +24,8 @@ import { FeatureAppState } from '../../store/app.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RenterItemComponent implements OnInit {
-  productDetail$?: Observable<ProductItemResponse>;
+  productRentalFollowId$?: Observable<OrderState | undefined>;
+  isInitialStateProductDetail$?: Observable<boolean>;
   @Input() pId?: string;
   rentalPriceActual$?: Observable<string | number | undefined>;
   numberDay$?: Observable<string | number | undefined>;
@@ -35,7 +37,7 @@ export class RenterItemComponent implements OnInit {
   }
 
   selectStateFromNgRx() {
-    this.productDetail$ = this.store.select(selectData);
+    this.isInitialStateProductDetail$ = this.store.select(selectIsInitialState);
     if (this.pId) {
       this.rentalPriceActual$ = this.store.select(
         selectRentalActualPriceById(String(this.pId))
@@ -43,6 +45,7 @@ export class RenterItemComponent implements OnInit {
       this.numberDay$ = this.store.select(
         selectNumberOfDaysById(String(this.pId))
       );
+      this.productRentalFollowId$ = this.store.select(selectProductRentalById(String(this.pId)));
     }
   }
 

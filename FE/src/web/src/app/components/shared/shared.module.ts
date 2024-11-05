@@ -101,6 +101,7 @@ import { ConfimOrderProcessComponent } from '../modal/confim-order-process/confi
 import { PriceListComponent } from '../price-list/price-list.component';
 import { SelectRadioCollateralComponent } from '../core/radio/select-radio-collateral/select-radio-collateral.component';
 import { UploadListComponent } from '../core/upload/upload-list/upload-list.component';
+import { ProductRelatedComponent } from '../product-related/product-related.component';
 
 registerLocaleData(en);
 
@@ -150,6 +151,7 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  ProductRelatedComponent,
   CardStaticComponent,
   SelectRadioCollateralComponent,
   UploadListComponent,

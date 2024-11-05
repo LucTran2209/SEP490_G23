@@ -14,8 +14,6 @@ import { FeatureAppState } from '../../store/app.state';
   styleUrl: './price-list.component.scss',
 })
 export class PriceListComponent implements OnInit {
-  @Input() productDetails?: ProductItemResponse[];
-
   rentalPrice$?: Observable<number>;
   depositPrice$?: Observable<number>;
   allProductRental$?: Observable<OrderState[]>;
