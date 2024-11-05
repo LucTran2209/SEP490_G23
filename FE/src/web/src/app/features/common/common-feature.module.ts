@@ -14,9 +14,6 @@ import { ProductRentalListComponent } from './components/product-rental-list/pro
 import { ProfileComponent } from './components/profile/profile.component';
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
 import { LayoutProfileComponent } from '../../components/layout/layout-profile/layout-profile.component';
-import { OrderProcessComponent } from './components/order/order-process/order-process.component';
-import { PersonalInfoComponent } from './components/order/order-process/personal-info/personal-info.component';
-import { OrderInfoPersonalComponent } from './components/order/order-process/order-info-personal/order-info-personal.component';
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
 import { HowitorderComponent } from './static/howitorder/howitorder.component';
 import { ProductDetailEffects } from './state/product/product-detail.effects';
@@ -36,9 +33,6 @@ import { filterFeatures } from '../../store/filters/filter.reducers';
     ProductRentalDetailComponent,
     ProductRentalListComponent,
     ProductRentalListComponent,
-    OrderProcessComponent,
-    PersonalInfoComponent,
-    OrderInfoPersonalComponent,
     ShopPersonalComponent,
     MyOrderDetailComponent,
     HowitorderComponent,

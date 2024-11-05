@@ -151,7 +151,6 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
-  ProductRelatedComponent,
   CardStaticComponent,
   SelectRadioCollateralComponent,
   UploadListComponent,
@@ -200,6 +199,7 @@ const SHARED_MODULES = [
   FormFeedbackComponent,
   FeelbackCardComponent,
   FormRentalProductV2Component,
+  ProductRelatedComponent
 ];
 
 @NgModule({

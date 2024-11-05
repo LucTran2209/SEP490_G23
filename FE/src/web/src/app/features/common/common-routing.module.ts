@@ -7,7 +7,6 @@ import { LayoutProfileComponent } from '../../components/layout/layout-profile/l
 import { ProfileComponent } from './components/profile/profile.component';
 import { ProductRentalDetailComponent } from './components/product-rental-detail/product-rental-detail.component';
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
-import { OrderProcessComponent } from './components/order/order-process/order-process.component';
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
 import { HowitorderComponent } from './static/howitorder/howitorder.component';
 
@@ -51,10 +50,6 @@ const routes: Routes = [
   {
     path: 'shop/:id',
     component: ShopPersonalComponent,
-  },
-  {
-    path: 'order-process',
-    component: OrderProcessComponent,
   },
 ];
 
