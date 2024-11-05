@@ -1,7 +1,4 @@
-﻿using BE.Domain.Abstractions.Enums;
-using BE.Domain.Entities;
-
-namespace BE.Application.Common.Dtos
+﻿namespace BE.Application.Common.Dtos
 {
     public class OrderDto
     {
@@ -18,8 +15,10 @@ namespace BE.Application.Common.Dtos
         public decimal TotalRentPrice { get; set; }
         public decimal TotalDepositPrice { get; set; }
         public string? Note { get; set; }
-        public PaymentType PaymentType { get; set; }
-       
+        public MortgagePaperType MortgagePaperType { get; set; }
+        public string? MortgagePaperImageFont { get; set; }
+        public string? MortgagePaperImageBack { get; set; }
+
         //    public virtual User? User { get; set; }
         //    public virtual Voucher? Voucher { get; set; }
         //    public virtual ICollection<OrderDetail>? OrderDetails { get; set; }

@@ -25,6 +25,9 @@ namespace BE.Application.Services.Orders
 
             var order = _mapper.Map<Order>(inputDto);
 
+            order.MortgagePaperImageFont = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageFont!);
+            order.MortgagePaperImageBack = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageBack!);
+
             var orderStatus = new OrderStatus()
             {
                 OrderId = order.Id,
@@ -46,7 +49,12 @@ namespace BE.Application.Services.Orders
 
         public async Task<ResultService> CreateOrderStatusAsync(CreateOrderStatusInputDto inputDto)
         {
-            var file = await _azureService.UpLoadFileAsync(inputDto.FileAttach!);
+            var file = string.Empty;
+
+            if (inputDto.FileAttach != null)
+            {
+                file = await _azureService.UpLoadFileAsync(inputDto.FileAttach);
+            }
 
             var orderStatus = OrderExtention.CreateOrderStatus(inputDto, file);
 
@@ -104,7 +112,7 @@ namespace BE.Application.Services.Orders
             var res = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                                  .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
                                  .ToPageList(inputDto)
-                                 .ToPageResult(await query.CountAsync(), inputDto, o => _mapper.Map<ListOrderByUserOutputDto>(o));
+                                 .ToPageResult(await query.CountAsync(), inputDto, o => _mapper.Map<GetListOrderByUserOutputDto>(o));
 
             return new ResultService
             {

@@ -18,14 +18,14 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertAsync([FromBody] CreateOrderInputDto inputDto)
+        public async Task<IActionResult> AddAsync([FromForm] CreateOrderInputDto inputDto)
         {
             var output = await orderService.CreateAsync(inputDto);
             return Created(output.StatusCode, output);
         }
 
         [HttpPost("orderstatus")]
-        public async Task<IActionResult> InsertOrderStatusAsync([FromForm] CreateOrderStatusInputDto inputDto)
+        public async Task<IActionResult> AddOrderStatusAsync([FromForm] CreateOrderStatusInputDto inputDto)
         {
             var output = await orderService.CreateOrderStatusAsync(inputDto);
             return Created(output.StatusCode, output);

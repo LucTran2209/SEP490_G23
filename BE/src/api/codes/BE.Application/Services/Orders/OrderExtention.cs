@@ -7,7 +7,7 @@ public static class OrderExtention
         var os = new OrderStatus();
         os.Id = Guid.NewGuid();
         os.OrderId = inputDto.OrderId;
-        os.Message = inputDto.MessageStatus;
+        os.Message = inputDto.Message;
         os.Status = inputDto.Status;
         os.FileAttach = file;
         return os;

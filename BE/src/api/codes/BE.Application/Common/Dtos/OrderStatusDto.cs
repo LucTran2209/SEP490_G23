@@ -1,5 +1,4 @@
-﻿using BE.Domain.Abstractions.Enums;
-using BE.Domain.Entities;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace BE.Application.Common.Dtos
 {
@@ -9,6 +8,6 @@ namespace BE.Application.Common.Dtos
         public Guid OrderId { get; set; }
         public string? Message { get; set; }
         public RequestStatus Status { get; set; }
-        public string? FileAttach { get; set; }
+        public IFormFile? FileAttach { get; set; }
     }
 }

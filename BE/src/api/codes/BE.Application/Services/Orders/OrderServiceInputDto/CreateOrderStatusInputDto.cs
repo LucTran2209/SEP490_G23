@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BE.Application.Common.Dtos;
 
 namespace BE.Application.Services.Orders.OrderServiceInputDto
 {
-    public class CreateOrderStatusInputDto
+    public class CreateOrderStatusInputDto : OrderStatusDto
     {
-        public Guid OrderId { get; set; }
-        public string? MessageStatus { get; set; }
-        public RequestStatus Status { get; set; }
-        public IFormFile? FileAttach { get; set; }
     }
 }
