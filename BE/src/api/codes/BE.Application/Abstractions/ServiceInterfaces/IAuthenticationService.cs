@@ -1,5 +1,4 @@
-﻿using BE.Application.Common.Results;
-using BE.Application.Services.Authentication.AuthenServiceInputDto;
+﻿using BE.Application.Services.Authentication.AuthenServiceInputDto;
 
 namespace BE.Application.Abstractions.ServiceInterfaces
 {
@@ -12,5 +11,7 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> ChangePasswordAsync(ChangePasswordInputDto inputDto);
         Task<ResultService> ResetPassword(ResetPasswordInputDto inputDto);
         Task<ResultService> LogoutAsync();
+        Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto);
+        Task<ResultService> ComfirmVerifyEmailAsync(ComfirmVerifyEmailInputDto inputDto);
     }
 }

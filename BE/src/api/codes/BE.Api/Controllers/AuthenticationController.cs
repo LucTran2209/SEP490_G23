@@ -54,5 +54,17 @@ namespace BE.Api.Controllers
 
             return Ok(result);
         }
+        [HttpPost("VerifyEmail")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailInputDto inputDto)
+        {
+            var result = await authenticationService.VerifyEmailAsync(inputDto);
+            return Ok(result);
+        }
+        [HttpPost("ComfirmVerifyEmailAsync")]
+        public async Task<IActionResult> ComfirmVerifyEmailAsync([FromBody] ComfirmVerifyEmailInputDto inputDto)
+        {
+            var result = await authenticationService.ComfirmVerifyEmailAsync(inputDto);
+            return Ok(result);
+        }
     }
 }
