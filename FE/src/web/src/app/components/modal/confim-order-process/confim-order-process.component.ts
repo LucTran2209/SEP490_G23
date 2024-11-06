@@ -1,48 +1,43 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import {
   catchError,
   combineLatest,
-  delay,
   filter,
   map,
   Observable,
-  of,
-  tap,
+  of
 } from 'rxjs';
-import { ProductItemResponse } from '../../../interfaces/product.interface';
-import { RentalTimerService } from '../../../services/rental-timer.service';
-import { OrderService } from '../../../services/order.service';
+import { createOrder } from '../../../features/common/state/order/order.actions';
+import { resetRentalProduct } from '../../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../../features/common/state/rental/rental.reducers';
-import {
-  Form,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { LocalStorageKey, REGEX } from '../../../utils/constant';
-import { MyValidators } from '../../../utils/validators';
-import { IPayLoad } from '../../../interfaces/account.interface';
-import { StorageService } from '../../../services/storage.service';
-import { Router } from '@angular/router';
-import { MessageResponseService } from '../../../services/message-response.service';
-import { Store } from '@ngrx/store';
-import { FeatureAppState } from '../../../store/app.state';
 import {
   selectAllProductRental,
   selectTotalAllProductDepositPrice,
   selectTotalAllProductRentalPrice,
 } from '../../../features/common/state/rental/rental.selectors';
+import { IPayLoad } from '../../../interfaces/account.interface';
 import { OrderCreateRequest } from '../../../interfaces/order.interface';
+import { ProductItemResponse } from '../../../interfaces/product.interface';
+import { MessageResponseService } from '../../../services/message-response.service';
+import { OrderService } from '../../../services/order.service';
+import { RentalTimerService } from '../../../services/rental-timer.service';
+import { StorageService } from '../../../services/storage.service';
+import { FeatureAppState } from '../../../store/app.state';
 import { generateCodeOrder } from '../../../utils/anonymous.helper';
+import { LocalStorageKey } from '../../../utils/constant';
+import { MyValidators } from '../../../utils/validators';
 
 @Component({
   selector: 'app-confim-order-process',
   templateUrl: './confim-order-process.component.html',
   styleUrl: './confim-order-process.component.scss',
 })
-export class ConfimOrderProcessComponent implements OnInit {
+export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
+  userCurrent?: IPayLoad;
   nzModalData: any = inject(NZ_MODAL_DATA);
   productRentalDetail$?: Observable<ProductItemResponse>;
   productRentalDetailArray$?: Observable<OrderState[]>;
@@ -69,7 +64,10 @@ export class ConfimOrderProcessComponent implements OnInit {
   };
   // config autoTip
   //form
-  userCurrent?: IPayLoad;
+  // radio
+  parentSelectedValue: string = '';
+  listFiles?: File[];
+  // radio
 
   initForm(): FormGroup {
     return (this.infoOrderCommonForm = this.formbuilder.group({
@@ -102,7 +100,6 @@ export class ConfimOrderProcessComponent implements OnInit {
       return;
     }
     if (this.infoOrderCommonForm.valid) {
-      console.log('on r');
       this.mergeAllDataReq();
       this.modalRef.triggerOk();
     } else {
@@ -113,68 +110,17 @@ export class ConfimOrderProcessComponent implements OnInit {
         }
       });
     }
-    // callAPI
-    // if (this.productIdParam) {
-    //   combineLatest([
-    //     this.store.select(selectData),
-    //     this.store.select(selectRentalActualPriceById(this.productIdParam)),
-    //     this.store.select(selectDepositActualPriceById(this.productIdParam)),
-    //     this.store.select(selectQuantityRequestById(this.productIdParam)),
-    //     this.store.select(selectNumberOfDaysById(this.productIdParam)),
-    //     this.rentalTimerService.rangePickerTime$,
-    //   ])
-    //     .pipe(
-    //       tap(() => {
-    //         this.ToasMS.showSuccess(
-    //           'Bạn sẽ được chuyển hướng tới trang tạo đơn thuê!'
-    //         );
-    //       }),
-    //       delay(1000)
-    //     )
-    //     .subscribe(
-    //       ([
-    //         productDetail,
-    //         rentalActualPrice,
-    //         depositActualPrice,
-    //         quantityRequest,
-    //         numberOfDay,
-    //         datePickTime,
-    //       ]) => {
-    //         if (
-    //           productDetail &&
-    //           rentalActualPrice &&
-    //           depositActualPrice &&
-    //           quantityRequest &&
-    //           numberOfDay &&
-    //           datePickTime
-    //         ) {
-    //           const processOrder: any = {
-    //             numberOfDay: numberOfDay,
-    //             quantityRequest: Number(quantityRequest),
-    //             productId: productDetail.id,
-    //             rentalPriceRequest: Number(rentalActualPrice),
-    //             depositPriceRequest: Number(depositActualPrice),
-    //             productName: productDetail.productName,
-    //             timeEnd: datePickTime[0],
-    //             timeStart: datePickTime[1],
-    //             images: productDetail.images
-    //           };
-
-    //           console.log('>>>> line 134', processOrder);
-    //         }
-    //       }
-    //     );
-    // }
   }
 
-  mergeAllDataReq(): any {
-    combineLatest([
+  mergeAllDataReq(): void {
+   combineLatest([
       this.store.select(selectAllProductRental),
       this.store.select(selectTotalAllProductDepositPrice()),
       this.store.select(selectTotalAllProductRentalPrice()),
       this.rentalTimerService.rangePickerTime$,
       of(this.userCurrent),
       of(this.infoOrderCommonForm),
+      of(this.listFiles),
     ])
       .pipe(
         map(
@@ -185,6 +131,7 @@ export class ConfimOrderProcessComponent implements OnInit {
             datePickTime,
             userCurrent,
             infoOrderCommonForm,
+            listFiles,
           ]) => {
             if (
               rentalProductAll &&
@@ -192,7 +139,8 @@ export class ConfimOrderProcessComponent implements OnInit {
               depositPriceAll !== null &&
               datePickTime &&
               userCurrent &&
-              infoOrderCommonForm?.valid
+              infoOrderCommonForm?.valid &&
+              listFiles?.length !== 0
             ) {
               return [
                 rentalProductAll,
@@ -201,6 +149,7 @@ export class ConfimOrderProcessComponent implements OnInit {
                 datePickTime,
                 userCurrent,
                 infoOrderCommonForm,
+                listFiles,
               ];
             } else {
               return null;
@@ -216,52 +165,69 @@ export class ConfimOrderProcessComponent implements OnInit {
             number,
             Date[],
             IPayLoad,
-            FormGroup
+            FormGroup,
+            File[]
           ] => result !== null
         ),
-        tap(() => {
-          console.log('tạo đơn 162');
-        }),
         catchError((error) => {
           console.error('error create order', error.message);
           return of(null);
         })
       )
       .subscribe((res) => {
-        console.log('wer', res);
         if (res) {
-          let orderDetails = res?.[0].map((item) => ({
-            id: null,
+          const formData = new FormData();
+          const formValues = res[5].value;
+          const orderDetails = res[0].map((item) => ({
+            id: null as string | null,
             productId: item.productId.toString(),
-            orderId: null,
+            orderId: null as string | null,
             quantity: Number(item.quantityRequest),
           }));
-
-          let reqCreateOrder: OrderCreateRequest = {
-            id: null,
-            userId: res?.[4].UserId,
-            voucherId: null,
+          const orderCreateRequest: OrderCreateRequest = {
+            userId: res[4].UserId || '',
             code: generateCodeOrder(),
-            recipientAddress: res[5].get('recipientAddress')?.value,
-            recipientEmail: res[5].get('recipientEmail')?.value,
-            recipientName: res[5].get('recipientName')?.value,
-            recipientPhoneNumber: res[5].get('recipientPhoneNumber')?.value,
-            note: res[5].get('note')?.value,
-            paymentType: 0,
-            endDate: res[3][0].toString(),
-            startDate: res[3][1].toString(),
-            totalDepositPrice: res[2],
-            totalRentPrice: res[1],
-            orderDetails
+            note: formValues.note,
+            recipientAddress: formValues.recipientAddress,
+            recipientEmail: formValues.recipientEmail,
+            recipientName: formValues.recipientName,
+            recipientPhoneNumber: formValues.recipientPhoneNumber,
+            orderDetails: orderDetails,
+            voucherId: '',
+            totalDepositPrice: Number(res[1]),
+            totalRentPrice: Number(res[2]),
+            startDate: res[3][0].toDateString(),
+            endDate: res[3][1].toDateString(),
+            mortgagePaperType: this.parentSelectedValue,
+            mortgagePaperImageFont: res[6][0],
+            mortgagePaperImageBack: res[6][1],
           };
-
-          console.log('>>> line 258', reqCreateOrder);
+          Object.entries(orderCreateRequest).forEach(([key, value]) => {
+            const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+            if (
+              capitalizedKey === 'MortgagePaperImageFont' ||
+              capitalizedKey === 'MortgagePaperImageBack'
+            ) {
+              formData.append(capitalizedKey, value);
+            } else {
+              formData.append(capitalizedKey, value as string);
+            }
+          });
+          this.store.dispatch(createOrder({ formData }));
         }
       });
   }
 
   onCancelClick(): void {
     this.modalRef.triggerCancel();
+  }
+
+  onSelectCollateral(val: string): void {
+    console.log('Selected Collateral:', val);
+  }
+
+  handleFileList(files: File[]): void {
+    this.listFiles = files;
   }
 
   constructor(
@@ -283,8 +249,14 @@ export class ConfimOrderProcessComponent implements OnInit {
     this.selectedTimeStart$ = this.rentalTimerService.timeStart$;
     this.selectedTimeEnd$ = this.rentalTimerService.timeEnd$;
     this.rentalDays$ = this.rentalTimerService.rentalDays$;
-    this.userCurrent = JSON.parse(
-      this.storageService.get(LocalStorageKey.currentUser) || ''
-    ) as IPayLoad;
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+      ? (JSON.parse(
+          this.storageService.get(LocalStorageKey.currentUser)!
+        ) as IPayLoad)
+      : undefined;
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(resetRentalProduct())
   }
 }

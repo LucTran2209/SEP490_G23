@@ -33,6 +33,12 @@ import { responseInterceptor } from './interceptors/response.interceptor';
 import { metaReducers } from './store';
 import { ProvinceEffect } from './store/province/province.effects';
 import { addressFeature } from './store/province/province.reducer';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { environment } from '../environments/environment.development';
 registerLocaleData(en);
 
 @NgModule({
@@ -68,6 +74,11 @@ registerLocaleData(en);
       withFetch(),
       withInterceptors([httpRequestInterceptor, responseInterceptor])
     ),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    provideDatabase(() => getDatabase()),
+    provideMessaging(() => getMessaging()),
+    provideStorage(() => getStorage()),
   ],
   bootstrap: [AppComponent],
 })

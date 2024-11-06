@@ -1,6 +1,6 @@
 <nz-radio-group
   class="w-full"
-  [(ngModel)]="selectedValue"
+  ngModel
   nzName="radioMethodPay"
   (ngModelChange)="onValueChange($event)"
   nzSize="large"
@@ -23,9 +23,21 @@
 </nz-radio-group>
 <div class="mt-3" *ngIf="selectedValue">
   <app-upload-list
-    title="Tải Giáy phép đăng ký kinh doanh"
-    boundTypeFile=".pdf"
+    title="Tải Giáy tờ thế chấp"
+    boundTypeFile="image/*"
     (listFiles)="onSelectedFile($event)"
     (removeAFile)="onRemoveAFile($event)"
   />
+
+  <ul class=" py-3 flex items-center justify-start gap-x-2">
+    <li
+      *ngFor="let file of uploadedFiles; let i = index"
+      class=""
+    >
+      <div class="border border-solid border-[#ededed] rounded-md p-3 shadow-md">
+        <img *ngIf="filePreviews[i]" [src]="filePreviews[i]" alt="Preview" class="preview-image w-[100px] h-[100px] object-contain" />
+      </div>
+    </li>
+  </ul>
+
 </div>

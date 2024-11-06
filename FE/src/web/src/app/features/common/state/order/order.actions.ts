@@ -7,10 +7,16 @@ export const CREATE_ORDER_PRODUCT_RENTAL_SUCCESS =
   '[order process create] create order success';
 export const CREATE_ORDER_PRODUCT_RENTAL_FAILURE =
   '[order process create] create order failure';
-
-export const createOrder = createAction(CREATE_ORDER_PRODUCT_RENTAL_INIT);
+export const RESET_ORDER_PRODUCT_RENTAL =
+  '[Order process reset] Reset Order State';
+export const resetOrderState = createAction(RESET_ORDER_PRODUCT_RENTAL);
+export const createOrder = createAction(
+  CREATE_ORDER_PRODUCT_RENTAL_INIT,
+  props<{ formData: any }>()
+);
 export const createOrder_success = createAction(
-  CREATE_ORDER_PRODUCT_RENTAL_SUCCESS
+  CREATE_ORDER_PRODUCT_RENTAL_SUCCESS,
+  props<{ message: string }>()
 );
 export const createOrder_failure = createAction(
   CREATE_ORDER_PRODUCT_RENTAL_FAILURE,

@@ -16,7 +16,7 @@
   >
     <div
       ngxSlickItem
-      *ngFor="let slide of images; let index; as: $index"
+      *ngFor="let slide of images; let i = index"
       class="mx-1 cursor-pointer shadow-lg"
       (click)="onSelectImage(slide)"
     >

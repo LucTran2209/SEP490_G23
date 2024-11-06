@@ -6,8 +6,9 @@ export const feature_key = {
   registerLessorFeature: 'feature_registerLessor',
   rentalShopProductFeature: 'feature_rentalShopProduct',
   productDetailFeature: 'feature_productDetail',
-  rentalProductFeature: 'feature_rentalProductFeaturet',
+  rentalProductFeature: 'feature_rentalProductFeature',
   filtersFeature: "feature_filter",
+  orderProductFeature: "feature_orderProduct",
 } as const;
 
 export type FeatureKeyValues = (typeof feature_key)[keyof typeof feature_key];

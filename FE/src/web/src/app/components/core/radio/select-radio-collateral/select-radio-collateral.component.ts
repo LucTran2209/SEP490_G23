@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { OptionRadio } from '../../../../configs/anonymous.config';
 
 @Component({
@@ -9,20 +9,38 @@ import { OptionRadio } from '../../../../configs/anonymous.config';
 export class SelectRadioCollateralComponent {
   @Input() options?: OptionRadio[] = mockRadioOption;
   @Input() selectedValue: string = "";
-  @Output() selectionChange = new EventEmitter<string>();
-  uploadedFiles: File[] = [];
+  
+  @Output() selectedValueChange = new EventEmitter<string>();
+  @Output() listFileCollateral = new EventEmitter<File[]>();
 
+  uploadedFiles: File[] = [];
+  filePreviews: string[] = [];
 
   onValueChange(value: string): void {
-    this.selectionChange.emit(value);
+    this.selectedValue = value;
+    this.selectedValueChange.emit(value);
   }
 
-  onSelectedFile(files: File[]){
-    this.uploadedFiles.push(...files);
+  onSelectedFile(files: File[]): void {
+    this.uploadedFiles.push(...files); 
+    this.generateFilePreviews(files); 
+    this.listFileCollateral.emit(this.uploadedFiles); 
   }
 
-  onRemoveAFile(index: number){
+  onRemoveAFile(index: number): void {
     this.uploadedFiles.splice(index, 1);
+    this.filePreviews.splice(index, 1); 
+    this.listFileCollateral.emit(this.uploadedFiles);
+  }
+
+  private generateFilePreviews(files: File[]): void {
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.filePreviews.push(e.target.result);
+      };
+      reader.readAsDataURL(file); 
+    });
   }
 }
 

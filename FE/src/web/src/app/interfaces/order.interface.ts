@@ -30,20 +30,21 @@ export interface OrderResultService {
 }
 
 export interface OrderCreateRequest {
-  id: null;
-  voucherId?: string | null;
+  userId: string;
+  voucherId: string | null;
   code: string;
   recipientName: string;
   recipientPhoneNumber: string;
   recipientEmail: string;
   recipientAddress: string;
-  totalRentPrice: number;
-  totalDepositPrice: number;
-  paymentType: 0;
-  userId: string;
   startDate: string;
   endDate: string;
+  totalRentPrice: number;
+  totalDepositPrice: number;
   note: string;
+  mortgagePaperType: string;
+  mortgagePaperImageFont: File;
+  mortgagePaperImageBack: File;
   orderDetails: {
     id: string | null;
     productId: string;
