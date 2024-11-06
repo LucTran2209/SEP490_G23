@@ -12,6 +12,7 @@ import { ageValidator } from '../../../../utils/form-validators';
 export class FormUserComponent{
   dateFormat = 'dd/MM/yyyy';
   userForm: FormGroup;
+  avatarPreview: string | ArrayBuffer | null = null; // Changed to match base64 string or null
   @Input() user: UserInputDto = {
     userName: '',
     password: '123456789',
@@ -66,17 +67,36 @@ export class FormUserComponent{
   populateForm(): void {
     const dateOfBirth = new Date(this.userUpdate.dateOfBirth);
     const isoString = dateOfBirth.toISOString().split('T')[0];
+    
     this.userForm.patchValue({
       fullName: this.userUpdate.fullName,
       email: this.userUpdate.email,
       phoneNumber: this.userUpdate.phoneNumber,
       address: this.userUpdate.address,
       gender: this.userUpdate.gender,
-      dateOfBirth: isoString, // or use a format you prefer
-      avatarPersonal: this.userUpdate.avatarPersonal,
+      dateOfBirth: isoString, // Format for date
+      avatarPersonal: this.userUpdate.avatarPersonal ?? null, // Ensure it's null if undefined
     });
-    
+
+    // Check if avatarPersonal is a string or a File and convert it accordingly
+    if (this.userUpdate.avatarPersonal) {
+        if (typeof this.userUpdate.avatarPersonal === 'string') {
+            this.avatarPreview = this.userUpdate.avatarPersonal; // Use as is if it's a base64 string
+        } else if (this.userUpdate.avatarPersonal instanceof File) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                this.avatarPreview = reader.result; // Set the base64 string for preview
+            };
+            reader.readAsDataURL(this.userUpdate.avatarPersonal); // Read the file as a data URL
+        } else {
+            this.avatarPreview = null; // Default to null for unexpected types
+        }
+    } else {
+        this.avatarPreview = null; // Set preview to null if there's no avatar
+    }
+
     if (this.isEditMode) {
+      // Remove unnecessary controls for edit mode
       this.userForm.removeControl('userName');
       this.userForm.removeControl('password');
       this.userForm.removeControl('isActive');
@@ -110,15 +130,26 @@ export class FormUserComponent{
   //     this.userForm.patchValue({ avatarPersonal: file });
   //   }
   // }
-  onFileChange(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.userForm.patchValue({ avatarPersonal: file }); // Correctly patch the FormControl
+  async onFileChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (input?.files && input.files.length > 0) {
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      // Convert file to Blob for form
+      const blob = new Blob([file], { type: file.type });
+      this.userForm.patchValue({ avatarPersonal: blob });
+
+      // Generate a URL for the image preview
+      reader.onload = () => {
+        this.avatarPreview = reader.result; // Set preview URL
+      };
+      reader.readAsDataURL(file); // Read file as Data URL
     } else {
-      this.userForm.patchValue({ avatarPersonal: null }); // Reset if no file is selected
+      this.userForm.patchValue({ avatarPersonal: null });
+      this.avatarPreview = null; // Reset preview
     }
   }
-  
   submitForm() {
     // Update dateOfBirth to ISO string format
     const dateOfBirthControl = this.userForm.get('dateOfBirth');
@@ -145,12 +176,17 @@ export class FormUserComponent{
       // Capitalize the first letter of each key
       const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
   
-      if (capitalizedKey === 'AvatarPersonal' && value) {
-        // Append file if AvatarPersonal is selected
-        formData.append(capitalizedKey, value as File, (value as File).name);
-        console.log(value);
+      // if (capitalizedKey === 'AvatarPersonal' && value) {
+      //   // Append file if AvatarPersonal is selected
+      //   formData.append(capitalizedKey, value as File, (value as File).name);
+      //   console.log(value);
+      // } else if (value !== null && value !== undefined) {
+      //   // Append other fields as strings
+      //   formData.append(capitalizedKey, value.toString());
+      // }
+      if (capitalizedKey === 'AvatarPersonal' && value instanceof Blob) {
+        formData.append(capitalizedKey, value, 'avatar.jpg');
       } else if (value !== null && value !== undefined) {
-        // Append other fields as strings
         formData.append(capitalizedKey, value.toString());
       }
     });

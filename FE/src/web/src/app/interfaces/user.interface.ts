@@ -34,7 +34,7 @@ export interface UserOutputDto {
     address: string,
     gender: boolean,
     dateOfBirth: string
-    avatarPersonal?: File | null;
+    avatarPersonal?: File | string;
   }
   export interface ActiveUserInputDto{
     id: string;

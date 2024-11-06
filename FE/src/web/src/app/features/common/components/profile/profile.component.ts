@@ -16,8 +16,12 @@ import {
 } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
+import { ImageFileService } from '../../../../services/image-file.service';
+import { LoadingService } from '../../../../services/loading.service';
+import { Observable } from 'rxjs';
+import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { MessageResponseService } from '../../../../services/message-response.service';
 
 @Component({
   selector: 'app-profile',
@@ -34,19 +38,29 @@ export class ProfileComponent implements OnInit {
   alertType: 'success' | 'error' = 'success';
   alertMessage: string = '';
   userError = false;
-  loading = true; 
+  loading$?: Observable<StatusProcess>;
   constructor(
     private userService: UserService,
     private userProfileService: UserProfileService,
-    private message: NzMessageService,
     private router: Router,
-  ) {}
+    private imageFileService: ImageFileService,
+    private loadingService: LoadingService,
+    private messageService: MessageResponseService,
+  ) {
+    this.loading$ = this.loadingService.status$;
+  }
   ngOnInit() {
+    this.loadingService.setLoading();
     this.title = 'Chỉnh sửa Hồ Sơ';
     this.loadUser();
     
   }
-  showEditProfile() {
+  async showEditProfile() {
+      const response = await fetch(this.user.avatarPersonal);
+      const blob = await response.blob();
+      const fileName = 'avatar.png'; // Đặt tên cho file tải về
+      const avatar = new File([blob], fileName, { type: blob.type });
+    
     this.userInformation = {
       id: this.user.id,
       fullName: this.user.fullName,
@@ -55,9 +69,9 @@ export class ProfileComponent implements OnInit {
       address: this.user.address,
       gender: this.user.gender,
       dateOfBirth: this.user.dateOfBirth,
-      avatarPersonal: null,
+      avatarPersonal: avatar,
     }
-    // console.log(this.userInformation);
+    console.log(this.userInformation);
     this.isVisible = true;
   }
   handleCloseModal() {
@@ -67,10 +81,12 @@ export class ProfileComponent implements OnInit {
     console.log(this.userInformation);
     this.userService.updateProfile(user).subscribe({
       next: (response) => {
-        this.message.success('Cập Nhật Hồ Sơ Thành Công!');
+        this.messageService.showSuccess('Cập Nhật Hồ Sơ Thành Công!');
         this.handleCloseModal();
         this.loadUser();
-        // window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       error: (error) => {
         this.alertMessage = 'Cập Nhật Hồ Sơ Thất Bại!';
@@ -86,19 +102,17 @@ export class ProfileComponent implements OnInit {
     });
   }
   loadUser() {
-    const userCurrent = this.userProfileService.currentUser;
-    this.userid = userCurrent?.UserId;
+    this.userid = this.userProfileService.UserId;
     console.log(this.userid);
     this.userService.viewProfile(this.userid).subscribe({
       next: (res: ProfileResultService) => {
+        this.loadingService.setOtherLoading('loaded');
         this.user = res.data;
         this.userProfileService.setAvatar(this.user.avatarPersonal);
         console.log(this.user);
-        this.loading = false;
       },
       error: () => {
         this.userError = true; // Show NzResult on error
-        this.loading = false;
       }
       });
   }

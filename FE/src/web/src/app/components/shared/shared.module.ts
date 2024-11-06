@@ -52,6 +52,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { environment } from '../../../environments/environment.development';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
 import { ErrorComponent } from '../../features/error/error.component';
@@ -97,6 +98,7 @@ import { ViewMoreItemComponent } from '../view-more-item/view-more-item.componen
 import { SelectRadioPaymentMethodComponent } from '../core/radio/select-radio-payment-method/select-radio-payment-method.component';
 import { SelectRadioRentalDayComponent } from '../core/radio/select-radio-rental-day/select-radio-rental-day.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { ConfimOrderProcessComponent } from '../modal/confim-order-process/confim-order-process.component';
 import { PriceListComponent } from '../price-list/price-list.component';
 import { SelectRadioCollateralComponent } from '../core/radio/select-radio-collateral/select-radio-collateral.component';
@@ -147,6 +149,9 @@ const ANTD_MODULES = [
   NzProgressModule,
   NzMessageModule,
   NzTimelineModule,
+  NzTypographyModule,
+  NzCollapseModule,
+  
 ];
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];

@@ -14,7 +14,6 @@ export class ShopCardComponent {
   @Input() isShowBtn1: boolean = false;
   @Input() isShowBtn2: boolean = false;
   @Input() isShowBtn3: boolean = false;
-  @Input() isInDetailView: boolean = false;
   @Output() showFeedBack = new EventEmitter<void>();  
   numberofRentalDays: number = 0;
 

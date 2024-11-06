@@ -36,10 +36,15 @@ export class ProductService {
       PageIndex: pageIndex.toString(),
     };
     if (ProductName) params.ProductName = ProductName;
-    return this.httpClient.get<ProductResultService>(
-      ProductSlug.ListProduct.api,
-      params
-    );
+    return this.httpClient.get<ProductResultService>(ProductSlug.ListProduct.api, params);
+  }
+  listProductByShop(rentalShopId: string, pageIndex: number, pageSize: number, Search?: string): Observable<ProductResultService>{
+    let params: any = {
+      PageSize: pageSize.toString(),
+      PageIndex: pageIndex.toString(),
+    };
+    if (Search) params.Search = Search;
+    return this.httpClient.get<ProductResultService>(ProductSlug.ListProductByShopId.api + rentalShopId, params);
   }
 
   /**

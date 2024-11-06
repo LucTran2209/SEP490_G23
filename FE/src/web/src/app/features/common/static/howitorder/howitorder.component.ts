@@ -46,6 +46,22 @@ export class HowitorderComponent implements OnInit {
   }
   constructor(private router: Router, private activeRouter: ActivatedRoute) {}
   ngOnInit(): void {}
+  //rentalProduct
+  openRentalProductSections = [false, false, false, false, false];
+
+  toggleRentalProductSection(index: number): void {
+    this.openRentalProductSections[index] = !this.openRentalProductSections[index];
+  }
+  //payment
+  openPaymentSections = [false, false, false, false, false, false, false, false];
+  togglePaymentSection(index: number): void {
+    this.openPaymentSections[index] = !this.openPaymentSections[index];
+  }
+  //regulations
+  openRegulationSections = [false, false, false, false, false, false];
+  toggleRegulationSection(index: number): void {
+    this.openRegulationSections[index] = !this.openRegulationSections[index];
+  }
 }
 
 const contentCardProcessRental_lessor: IItemProcessRental[] = [

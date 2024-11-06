@@ -1,11 +1,11 @@
-<ng-container *ngIf="loading; else content">
+<!-- <ng-container *ngIf="loading; else content">
   <div class="flex justify-center w-full h-full">
     <nz-spin class="w-full" nzTip="Vui Lòng Chờ Trong Giây Lát..."></nz-spin>
   </div>
-</ng-container>
+</ng-container> -->
 <!-- error case -->
-<ng-template #content>
-  <ng-container *ngIf="orderError; else ordersContent">
+<!-- <ng-template #content> -->
+  <!-- <ng-container *ngIf="orderError; else ordersContent">
     <div class="flex justify-center">
       <nz-result
         nzStatus="500"
@@ -13,9 +13,9 @@
         nzSubTitle="Xin lỗi, có lỗi trên máy chủ."
       ></nz-result>
     </div>
-  </ng-container>
+  </ng-container> -->
 
-  <ng-template #ordersContent>
+  <!-- <ng-template #ordersContent> -->
     <div class="mx-16 mt-3">
       <h1 class="text-2xl">DANH SÁCH THUÊ CỦA TÔI</h1>
       <nz-tabset class="mt-2">
@@ -53,11 +53,12 @@
               <nz-option nzValue="30days" nzLabel="30 ngày gần đây"></nz-option>
             </nz-select>
           </div>
-          <div *ngIf="!orderListNull; else noData">
+          <!-- <div *ngIf="!orderListNull; else noData">
             <div *ngFor="let order of orderList">
               <app-shop-card [order]="order"></app-shop-card>
             </div>
-          </div>
+          </div> -->
+          <app-shop-card></app-shop-card>
         </nz-tab>
         <nz-tab nzTitle="CHỜ THANH TOÁN">
           <div class="mt-6 flex justify-between">
@@ -93,11 +94,11 @@
               <nz-option nzValue="30days" nzLabel="30 ngày gần đây"></nz-option>
             </nz-select>
           </div>
-          <div *ngIf="!orderListNull; else noData">
+          <!-- <div *ngIf="!orderListNull; else noData">
             <div *ngFor="let order of orderList">
               <app-shop-card [order]="order"></app-shop-card>
             </div>
-          </div>
+          </div> -->
         </nz-tab>
         <nz-tab nzTitle="CHỜ GIAO HÀNG">
           <div class="mt-6 flex justify-between">
@@ -133,11 +134,11 @@
               <nz-option nzValue="30days" nzLabel="30 ngày gần đây"></nz-option>
             </nz-select>
           </div>
-          <div *ngIf="!orderListNull; else noData">
+          <!-- <div *ngIf="!orderListNull; else noData">
             <div *ngFor="let order of orderList">
               <app-shop-card [order]="order"></app-shop-card>
             </div>
-          </div>
+          </div> -->
         </nz-tab>
         <nz-tab nzTitle="ĐÃ NHẬN HÀNG">
           <div class="mt-6 flex justify-between">
@@ -173,11 +174,11 @@
               <nz-option nzValue="30days" nzLabel="30 ngày gần đây"></nz-option>
             </nz-select>
           </div>
-          <div *ngIf="!orderListNull; else noData">
+          <!-- <div *ngIf="!orderListNull; else noData">
             <div *ngFor="let order of orderList">
               <app-shop-card [order]="order"></app-shop-card>
             </div>
-          </div>
+          </div> -->
         </nz-tab>
         <nz-tab nzTitle="CHỜ HOÀN TRẢ">
           <div class="mt-6 flex justify-between">
@@ -213,11 +214,11 @@
               <nz-option nzValue="30days" nzLabel="30 ngày gần đây"></nz-option>
             </nz-select>
           </div>
-          <div *ngIf="!orderListNull; else noData">
+          <!-- <div *ngIf="!orderListNull; else noData">
             <div *ngFor="let order of orderList">
               <app-shop-card [order]="order"></app-shop-card>
             </div>
-          </div>
+          </div> -->
         </nz-tab>
         <nz-tab nzTitle="HOÀN THÀNH">
           <div class="mt-6 flex justify-between">
@@ -253,11 +254,11 @@
               <nz-option nzValue="30days" nzLabel="30 ngày gần đây"></nz-option>
             </nz-select>
           </div>
-          <div *ngIf="!orderListNull; else noData">
+          <!-- <div *ngIf="!orderListNull; else noData">
             <div *ngFor="let order of orderList">
               <app-shop-card [order]="order"></app-shop-card>
             </div>
-          </div>
+          </div> -->
         </nz-tab>
       </nz-tabset>
     </div>
@@ -265,7 +266,7 @@
       [isVisible]="isVisible"
       (closeModal)="handleCloseModal()"
     ></app-form-feedback>
-    <ng-template #noData>
+    <!-- <ng-template #noData>
       <div class="flex justify-center">
         <nz-result
           nzTitle="Chưa có đơn hàng"
@@ -275,4 +276,4 @@
       </div>
     </ng-template>
   </ng-template>
-</ng-template>
+</ng-template> -->

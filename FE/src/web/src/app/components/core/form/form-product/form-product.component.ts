@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Subcategory, SubCategoryResultService } from '../../../../interfaces/category.interface';
 import { ProductInputDto, UpdateProductInputDto } from '../../../../interfaces/product.interface';
 import { CategoryService } from '../../../../services/category.service';
+import { ImageFileService } from '../../../../services/image-file.service';
 
 @Component({
   selector: 'app-form-product',
@@ -39,7 +40,11 @@ export class FormProductComponent {
   @Input() listOfControl: Array<{ id: number; controlInstance: string }> = [];
   categories: Subcategory[] = [];
 
-  constructor(private msg: NzMessageService, private categoryService: CategoryService) {
+  constructor(
+    private msg: NzMessageService, 
+    private categoryService: CategoryService, 
+    private imageFileService: ImageFileService,
+  ) {
       this.productForm = new FormGroup({
         productName: new FormControl(this.product.productName, [Validators.required]),
         description: new FormControl(this.product.description, [Validators.required]),
@@ -68,7 +73,7 @@ export class FormProductComponent {
   beforeUpload = (file: NzUploadFile): boolean => {
     const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJPG) {
-      this.msg.error('You can only upload JPG/PNG files!');
+      this.msg.error('Bạn chỉ được tải lên những ảnh có đuôi JPG/PNG thôi!');
     }
     return isJPG;
   };
@@ -92,8 +97,8 @@ export class FormProductComponent {
     this.imageList = fileList;
     const imageFiles = fileList.map((file) => file.originFileObj).filter(Boolean);
     this.productForm.get('images')?.setValue(imageFiles);
+    this.productForm.get('images')?.markAsTouched();
   }
-
   populateForm(): void {
     this.productForm.patchValue({
       productName: this.productUpdate.productName,
@@ -103,49 +108,38 @@ export class FormProductComponent {
       depositPrice: this.productUpdate.depositPrice,
       rentalLimitDays: this.productUpdate.rentalLimitDays,
       evaluate: this.productUpdate.evaluate,
-      images: this.productUpdate.images,
+      // images: this.productUpdate.images,
     });
+    
     if (this.productUpdate.images && this.productUpdate.images.length) {
-    //   this.imageList = this.productUpdate.images.map((image: string | File, index: number) => {
-    //     if (typeof image === 'string') {
-    //       return {
-    //         uid: `${index}`,
-    //         name: `image-${index}.jpg`,
-    //         status: 'done',
-    //         url: image, // URL from the server
-    //       };
-    //     } else {
-    //       return {
-    //         uid: `${index}`,
-    //         name: image.name,
-    //         status: 'done',
-    //         originFileObj: image,
-    //         url: image.name
-    //       };
-    //     }
-    //   });
-    this.imageList = this.productUpdate.images.map((image: string | File, index: number) => {
-      if (typeof image === 'string') {
-        return {
-          uid: `${index}`,
-          name: `image-${index}.jpg`,
-          status: 'done',
-          url: image, // Set existing image URL
-        } as NzUploadFile;
-      } else {
-        return {
-          uid: `${index}`,
-          name: image.name,
-          status: 'done',
-          originFileObj: image,
-          url: (image as File).name,
-        } as NzUploadFile;
-      }
-    });
+      // this.imageList = this.productUpdate.images.map((image: string | File, index: number) => {
+      //   if (typeof image === 'string') {
+      //     return {
+      //       uid: `${index}`,
+      //       name: `image-${index}.jpg`,
+      //       status: 'done',
+      //       url: image, // URL từ máy chủ
+      //     };
+      //   } else {
+      //     const url = URL.createObjectURL(image); // Tạo URL từ File
+      //     return {
+      //       uid: `${index}`,
+      //       name: image.name,
+      //       status: 'done',
+      //       originFileObj: image,
+      //       url: url // URL tạm thời từ đối tượng File
+      //     };
+      //   }
+      // });
+      this.imageList = this.imageFileService.processImageList(this.productUpdate.images);
     }
-    console.log(this.imageList);
+    console.log("line122: ", this.imageList);
+  }
+  get imagesControl(): AbstractControl<any> {
+    return this.productForm.get('images') as AbstractControl<any>;
   }
   submitForm(){
+    
     let formData = new FormData();
     if (this.isEditMode) {
       const formValue = this.productForm.value;
@@ -154,11 +148,29 @@ export class FormProductComponent {
         const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
     
         if (capitalizedKey === 'Images' && value) {
+          // if (this.imageList && this.imageList.length > 0) {
+            // this.imageList.forEach((file: NzUploadFile) => {
+            //   if (file.originFileObj) {
+            //     formData.append('Images', file.originFileObj);
+            //   }
+            // });
+          // } else if (this.isEditMode && this.productUpdate.images) {
+          //   // Handle existing images if no new ones are uploaded
+          //   this.productUpdate.images.forEach((image: string | File) => {
+          //     if (typeof image === 'string') {
+          //       // Append image URL as a string
+          //       formData.append('Images', image);
+          //     } else {
+          //       // Append File object if it’s a file
+          //       formData.append('Images', image);
+          //     }
+          //   });
+          // }
           this.imageList.forEach((file: NzUploadFile) => {
             if (file.originFileObj) {
-                formData.append('images', file.originFileObj);
+              formData.append('Images', file.originFileObj as Blob);
             }
-        });
+          });
         } else if (capitalizedKey !== 'SubCategoryId' && capitalizedKey !== 'RentalShopId') {
           // Append other fields, excluding 'SubCategoryId' and 'RentalShopId'
           formData.append(capitalizedKey, value as string);
@@ -167,7 +179,10 @@ export class FormProductComponent {
       this.updateProduct.emit(formData);
     }else{
 
-      
+      // if (this.productForm.invalid) {
+      //   this.msg.error("Vui lòng điền đầy đủ thông tin trong biểu mẫu.");
+      //   return;
+      // }
       formData.append('ProductName', this.productForm.value.productName);
       formData.append('Description', this.productForm.value.description);
       formData.append('Quantity', this.productForm.value.quantity.toString());
@@ -203,3 +218,4 @@ export class FormProductComponent {
     this.imageList = [];
   }
 }
+  

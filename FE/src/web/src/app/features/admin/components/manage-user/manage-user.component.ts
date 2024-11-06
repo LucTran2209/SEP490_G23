@@ -80,7 +80,6 @@ export class ManageUserComponent implements OnInit {
       this.loading = false;
       console.log(res)
     });
-    // this.store.dispatch(AdminActions.load_users({ pageIndex, pageSize }));
   }
   onSearch() {
     this.loadUsers(

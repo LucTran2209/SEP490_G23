@@ -5,3 +5,6 @@
 ::ng-deep .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
     border: none
 }
+::ng-deep .ant-collapse > .ant-collapse-item.ant-collapse-no-arrow > .ant-collapse-header{
+    display: block;
+}
