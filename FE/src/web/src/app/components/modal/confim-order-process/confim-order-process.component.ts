@@ -30,6 +30,7 @@ import { FeatureAppState } from '../../../store/app.state';
 import { generateCodeOrder } from '../../../utils/anonymous.helper';
 import { LocalStorageKey } from '../../../utils/constant';
 import { MyValidators } from '../../../utils/validators';
+import { resetRentalProduct } from '../../../features/common/state/rental/rental.actions';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -265,6 +266,6 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
     if(this.createOrderSubscription){
       this.createOrderSubscription.unsubscribe();
     }
-    // this.store.dispatch(resetRentalProduct());
+    this.store.dispatch(resetRentalProduct());
   }
 }
