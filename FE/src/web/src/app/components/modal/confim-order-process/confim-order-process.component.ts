@@ -13,7 +13,6 @@ import {
   Subscription,
 } from 'rxjs';
 import { createOrder } from '../../../features/common/state/order/order.actions';
-import { resetRentalProduct } from '../../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../../features/common/state/rental/rental.reducers';
 import {
   selectAllProductRental,
@@ -208,7 +207,6 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             mortgagePaperImageFont: res[6][0],
             mortgagePaperImageBack: res[6][1],
           };
-
           Object.entries(orderCreateRequest).forEach(([key, value]) => {
             const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
             if (
