@@ -179,10 +179,10 @@ export class FormProductComponent {
       this.updateProduct.emit(formData);
     }else{
 
-      if (this.productForm.invalid) {
-        this.msg.error("Vui lòng điền đầy đủ thông tin trong biểu mẫu.");
-        return;
-      }
+      // if (this.productForm.invalid) {
+      //   this.msg.error("Vui lòng điền đầy đủ thông tin trong biểu mẫu.");
+      //   return;
+      // }
       formData.append('ProductName', this.productForm.value.productName);
       formData.append('Description', this.productForm.value.description);
       formData.append('Quantity', this.productForm.value.quantity.toString());

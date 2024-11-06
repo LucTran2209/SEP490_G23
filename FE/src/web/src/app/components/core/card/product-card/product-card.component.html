@@ -1,5 +1,5 @@
 <nz-card
-  class="mt-4 cursor-pointer"
+  class="mt-4 cursor-pointer rounded-md"
   [nzCover]="nzAvatar"
   (click)="onNavigate()"
 >
@@ -19,7 +19,7 @@
           style="width: 100%; height: 250px; object-fit: fill"
           [src]="currentImage || 'assets/images/6306486.jpg'"
           alt="{{ product.productName }}"
-          class="image"
+          class="image rounded-t-md"
         />
       </div>
     </ng-template>

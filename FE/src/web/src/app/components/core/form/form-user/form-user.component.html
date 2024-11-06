@@ -7,6 +7,13 @@
   [nzWidth]="'800px'"
 >
   <ng-container *nzModalContent>
+    <div *ngIf="avatarPreview">
+      <img
+        [src]="avatarPreview"
+        alt="Avatar Preview"
+        style="width: 100px; height: auto; border-radius: 50%"
+      />
+    </div>
     <form
       [formGroup]="userForm"
       class="font-mono"

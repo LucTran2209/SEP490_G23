@@ -5,7 +5,6 @@ import { ProductService } from '../../../../services/product.service';
 import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import { Store } from '@ngrx/store';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { ImageFileService } from '../../../../services/image-file.service';
 import { RentalShopService } from '../../../../services/rental-shop.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
@@ -13,6 +12,8 @@ import { RentalShopResultService } from '../../../../interfaces/rental-shop.inte
 import { LoadingService } from '../../../../services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageResponseService } from '../../../../services/message-response.service';
 
 @Component({
   selector: 'app-manager-shop',
@@ -33,6 +34,7 @@ export class ManagerShopComponent  implements OnInit{
   currentId: string = '';
   userid: string = '';
   shopid: string = '';
+  shopName: string = '';
   searchText: string = '';
   loading$?: Observable<StatusProcess>;
   alertType: 'success' | 'error' = 'success';
@@ -41,11 +43,13 @@ export class ManagerShopComponent  implements OnInit{
     private storageService: StorageService,
     private cdRef: ChangeDetectorRef,
     private store: Store<FeatureAppState>,
-    private message: NzMessageService,
     private imageFileService: ImageFileService,
     private rentalShopService: RentalShopService,
     private userProfileService: UserProfileService,
     private loadingService: LoadingService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private messageService: MessageResponseService,
   ) {
     this.loading$ = this.loadingService.status$;
   }
@@ -53,8 +57,6 @@ export class ManagerShopComponent  implements OnInit{
   async showProductModal(prodId?: string){
     this.isVisible = true;
     if (prodId) {
-      // Update mode: Load the product information for the provided ID
-      // const product = this.getProductById(prodId);
       const product = await this.getProductById(prodId);
       
       this.currentId = prodId;
@@ -80,18 +82,15 @@ export class ManagerShopComponent  implements OnInit{
   ngOnInit(): void {
     this.userid = this.userProfileService.UserId;
     this.loadingService.setLoading();
+    this.route.queryParams.subscribe(params => {
+      this.searchText = params['search'] || '';
+      this.currentPage = +params['page'] || 1; // Set currentPage from URL or default to 1
+      this.loadProducts(this.shopid, this.currentPage, this.pageSize, this.searchText);
+    });
     this.rentalShopService.getRentalShop(this.userid).subscribe((res: RentalShopResultService) => {
-      // this.shopid = res.data.id;
-      // this.loadProducts(this.shopid, this.currentPage, this.pageSize);
-      if (res && res.data && res.data.id) {
         this.shopid = res.data.id;
-        
-        // Sau khi có shopid, tiến hành tải danh sách sản phẩm
+        this.shopName = res.data.shopName;
         this.loadProducts(this.shopid, this.currentPage, this.pageSize);
-      } else {
-        console.error('Failed to retrieve shop ID');
-        this.message.error('Không thể tải thông tin cửa hàng');
-      }
     });
     this.title = 'Thông tin Thiết Bị';
   }
@@ -107,16 +106,22 @@ export class ManagerShopComponent  implements OnInit{
     // this.store.dispatch(AdminActions.load_users({ pageIndex, pageSize }));
   }
   handlePageChange(page: number): void {
-    this.currentPage = page; // Cập nhật trang hiện tại
-    this.loadProducts(this.shopid, this.currentPage, this.pageSize); // Gọi lại hàm loadProducts với trang mới
-}
+    this.currentPage = page; // Update current page
+    // Update the URL with the current page number
+    this.router.navigate([], {
+      queryParams: { page: this.currentPage },
+      queryParamsHandling: 'merge', // This will merge with existing parameters
+    });
+  
+    this.loadProducts(this.shopid, this.currentPage, this.pageSize); // Call loadProducts with new page
+  }
   handleCreateProduct(productData: FormData): void {
     //chưa có get rentalshopId nên tự viết id trong database ở đây
       productData.append('rentalShopId', this.shopid);
 
       this.productService.createProduct(productData).subscribe({
         next: (response) => {
-          this.message.success('Tạo Sản Phẩm Mới Thành Công!');
+          this.messageService.showSuccess('Tạo Sản Phẩm Mới Thành Công!');
           this.handleCloseModal();
           console.log('Product created successfully!');
           this.loadProducts(this.shopid, this.currentPage, this.pageSize);
@@ -136,7 +141,7 @@ export class ManagerShopComponent  implements OnInit{
   handleUpdateProduct(product: FormData){
     this.productService.updateProduct(this.currentId, product).subscribe({
       next: (res) => {
-        this.message.success('Cập nhật sản phẩm thành công!');
+        this.messageService.showSuccess('Cập nhật sản phẩm thành công!');
         this.handleCloseModal();
         this.loadProducts(this.shopid, this.currentPage, this.pageSize);
       },
@@ -153,19 +158,17 @@ export class ManagerShopComponent  implements OnInit{
 
   }
   onSearch(){
+   // Update the URL with the current search text
+   this.router.navigate([], {
+    queryParams: { search: this.searchText },
+    queryParamsHandling: 'merge', // This will merge with existing parameters
+  });
     this.loadProducts(this.shopid, this.currentPage,this.pageSize, this.searchText);
   }
   async getProductById(productId: string): Promise<UpdateProductInputDto | undefined> {
     const product = this.productList.find(product => product.id === productId);
     this.currentId = productId;
     if (product) {
-    //   const imageFiles: File[] = await Promise.all(
-    //     product.images.map(async (imageUrl, index) => {
-    //       const response = await fetch(imageUrl);
-    //       const blob = await response.blob();
-    //       return new File([blob], `image-${index}.jpg`, { type: blob.type });
-    //     })
-    // );
       return {
         productName: product.productName,
         description: product.description,

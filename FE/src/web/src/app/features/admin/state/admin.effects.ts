@@ -26,10 +26,7 @@ export class AdminEffect {
     constructor(
         private action$: Actions,
         private userService: UserService,
-        private router: Router,
-        private store: Store,
         private loadingSerivce: LoadingService,
-        private storageService: StorageService,
         private messageNZ: NzMessageService
       ) {}
 
