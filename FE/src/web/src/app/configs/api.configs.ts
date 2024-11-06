@@ -138,7 +138,7 @@ export const ProductSlug = {
   GetDetailProduct: {
     label: 'Get Detail Product',
     title: 'detail shop product | ERMS',
-    api: 'Product',
+    api: 'Product/detail',
   }
 };
 export const OrderSlug = {

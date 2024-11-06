@@ -25,7 +25,7 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("detail/{id}")]
         public async Task<IActionResult> GetProductByIdAsync(Guid id)
         {
             var output = await productService.GetProductByIdAsync(id);
