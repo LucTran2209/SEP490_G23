@@ -31,7 +31,7 @@ namespace BE.Application.Services.Users
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    StatusCode = (int)HttpStatusCode.NotFound,
                     Message = "User not found"
                 };
             }
@@ -42,7 +42,7 @@ namespace BE.Application.Services.Users
                 await unitOfWork.SaveChangesAsync();
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.OK.ToString(),
+                    StatusCode = (int)HttpStatusCode.OK,
                     Message = "Success"
                 };
             }
@@ -66,7 +66,7 @@ namespace BE.Application.Services.Users
 
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.Created.ToString(),
+                    StatusCode = (int)HttpStatusCode.Created,
                     Message = "Success"
                 };
             }
@@ -74,7 +74,7 @@ namespace BE.Application.Services.Users
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.BadRequest.ToString(),
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Message = "Failed to create! Username already exists"
                 };
             }
@@ -88,7 +88,7 @@ namespace BE.Application.Services.Users
                 var data = UserExtention.FindUser(r);
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.OK.ToString(),
+                    StatusCode = (int)HttpStatusCode.OK,
                     Message = "Success",
                     Datas = data
                 };
@@ -97,7 +97,7 @@ namespace BE.Application.Services.Users
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    StatusCode = (int)HttpStatusCode.NotFound,
                     Message = "Success",
                 };
             }
@@ -121,7 +121,7 @@ namespace BE.Application.Services.Users
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
                 Datas = res
             };
@@ -136,7 +136,7 @@ namespace BE.Application.Services.Users
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    StatusCode = (int)HttpStatusCode.NotFound,
                     Message = "User not found",
                 };
             }
@@ -148,7 +148,7 @@ namespace BE.Application.Services.Users
                 await unitOfWork.SaveChangesAsync();
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.OK.ToString(),
+                    StatusCode = (int)HttpStatusCode.OK,
                     Message = "Success",
                 };
             }

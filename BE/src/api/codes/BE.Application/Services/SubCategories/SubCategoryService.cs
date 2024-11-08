@@ -12,7 +12,7 @@
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Subcategories retrieved successfully.",
                 Datas = subCategories
             };

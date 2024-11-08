@@ -28,7 +28,7 @@ namespace BE.Application.Services.Feedbacks
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.Created.ToString(),
+                StatusCode = (int)HttpStatusCode.Created,
                 Message = "Feedback created successfully."
             };
         }
@@ -42,7 +42,7 @@ namespace BE.Application.Services.Feedbacks
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Feedbacks retrieved successfully.",
                 Datas = feedbacks
             };

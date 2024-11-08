@@ -1,5 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Products.ProductServiceInputDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -7,7 +8,7 @@ namespace BE.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService productService;
@@ -30,12 +31,7 @@ namespace BE.Api.Controllers
         {
             var output = await productService.GetProductByIdAsync(id);
 
-            if (output.StatusCode == HttpStatusCode.NotFound.ToString())
-            {
-                return NotFound(output);
-            }
-
-            return Ok(output);
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpGet("Shop/{rentalShopId}/")]
@@ -43,33 +39,34 @@ namespace BE.Api.Controllers
         {
             var output = await productService.GetListProductByRentalShopIdAsync(inputDto, rentalShopId);
 
-            if (output.StatusCode == HttpStatusCode.NotFound.ToString())
-            {
-                return NotFound(output);
-            }
-
-            return Ok(output);
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddAsync([FromForm] CreateProductInputDto inputDto)
         {
             var output = await productService.CreateAsync(inputDto);
-            return Created(output.StatusCode, output);
+
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateProductInputDto inputDto)
         {
             var output = await productService.UpdateProductAsync(inputDto, id);
-            return Ok(output);
+
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var output = await productService.DeleteProductAsync(id);
-            return Ok(output);
+
+            return ReturnFollowStatusCode(output);
         }
     }
 }
