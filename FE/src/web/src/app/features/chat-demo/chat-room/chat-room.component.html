@@ -1,0 +1,28 @@
+<!-- <div *ngIf="{
+    chatRoom: chatRoom$ | async,
+    member: member$ | async
+} as room">
+
+  <div #chat class="w-full h-[500px] border border-solid border-[#ccc] overflow-y-auto bg-[rgba(#f9f9f9)]" [scrollTop]="chat.scrollHeight">
+    <ul class="p-1">
+      <li *ngFor="let message of messages$ | async" [attr.title]="message.user.username" class="bg-white mb-2 p-2 rounded">
+        <div class="text-[0.9rem]">
+          <strong>{{ message.user.firstName }} {{ message.user.lastName }}</strong>
+          <span class="text-[#111] ml-1 text-[0.9rem]">
+            {{ message.dateCreated | date : 'medium' }}
+          </span>
+        </div>
+        {{ message.message }}
+      </li>
+    </ul>
+  </div>
+
+  <input
+    *ngIf="room.member && room.chatRoom"
+    type="text"
+    [formControl]="message"
+    placeholder="Nhập message"
+    (keyup.enter)="sendMessage(room.chatRoom.id, room.member)"
+    id=""
+  >
+</div> -->

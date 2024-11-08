@@ -1,4 +1,5 @@
 import { AuthState } from '../features/auth/state/auth.state';
+import { OrdeProductState } from '../features/common/state/order/order.reducer';
 import { ProductDetailState } from '../features/common/state/product/product-detail.reducer';
 import { RentalOrderState } from '../features/common/state/rental/rental.reducers';
 import { RentalShopProductState } from '../features/common/state/shop/shop-personal.reducer';
@@ -12,6 +13,7 @@ export interface FeatureAppState {
   featureRentalShopProduct: RentalShopProductState,
   featureProductDetailRental: ProductDetailState,
   featureRentalProduct: RentalOrderState,
+  featureOrderRentalProduct: OrdeProductState,
   featureFilter: FilterParameters
 }
 

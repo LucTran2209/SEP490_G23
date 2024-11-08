@@ -22,6 +22,8 @@ import { rentalOrderReducer } from './state/rental/rental.reducers';
 import { ShopRentalShopEffects } from './state/shop/shop-personal.effects';
 import { featureRentalShopProduct } from './state/shop/shop-personal.reducer';
 import { filterFeatures } from '../../store/filters/filter.reducers';
+import { featureOrderRentalProduct } from './state/order/order.reducer';
+import { OrderProductsEffects } from './state/order/order.effects';
 
 @NgModule({
   declarations: [
@@ -40,11 +42,13 @@ import { filterFeatures } from '../../store/filters/filter.reducers';
   imports: [
     CommonModule, SharedModule,
     StoreModule.forFeature(featureRentalShopProduct),
+    StoreModule.forFeature(featureOrderRentalProduct),
     StoreModule.forFeature(featureProductDetail),
     StoreModule.forFeature(filterFeatures),
     StoreModule.forFeature(feature_key['rentalProductFeature'], rentalOrderReducer),
     EffectsModule.forFeature([ShopRentalShopEffects]),
     EffectsModule.forFeature([ProductDetailEffects]),
+    EffectsModule.forFeature([OrderProductsEffects]),
     CommonRoutingModule
   ],
 })

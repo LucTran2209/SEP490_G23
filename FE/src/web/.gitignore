@@ -46,3 +46,8 @@ Thumbs.db
 /src/environments
 =======
 >>>>>>> dev/fe/base-source
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

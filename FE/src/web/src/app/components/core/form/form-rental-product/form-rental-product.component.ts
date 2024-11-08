@@ -1,16 +1,12 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import {
-  filter,
-  Observable,
-  Subscription
-} from 'rxjs';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { filter, Observable, Subscription } from 'rxjs';
 import { selectData } from '../../../../features/common/state/product/product-detail.reducer';
 import {
   selectDepositActualPriceById,
-  selectRentalActualPriceById
+  selectRentalActualPriceById,
 } from '../../../../features/common/state/rental/rental.selectors';
 import { ProductItemResponse } from '../../../../interfaces/product.interface';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
@@ -45,6 +41,10 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   //subscription
   private routeSubscription?: Subscription;
 
+  // modal Ref
+  private rentalModalRef: NzModalRef | null = null;
+  private dateModalRef: NzModalRef | null = null;
+  // modal Ref
   handleOkOrderProcess(): void {
     console.log('Đã xác nhận đơn hàng!');
   }
@@ -59,7 +59,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
    *
    */
   onChooseRental(titleTemplate: TemplateRef<any>) {
-    this.modal.create({
+    this.rentalModalRef = this.modal.create({
       nzTitle: titleTemplate,
       nzContent: ConfimOrderProcessComponent,
       nzFooter: null,
@@ -68,15 +68,25 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
         productRentalDetail$: this.productRentalDetail$,
       },
     });
+
+    if (this.rentalModalRef)
+      this.rentalModalRef.afterClose.subscribe(() => {
+        this.rentalModalRef = null;
+      });
   }
 
   onChooseDateCustom() {
-    this.modal.create({
+    this.dateModalRef = this.modal.create({
       nzTitle: 'Thời gian',
       nzContent: PickerTimerComponent,
       nzFooter: null,
       nzWidth: 700,
     });
+
+    if (this.dateModalRef)
+      this.dateModalRef.afterClose.subscribe(() => {
+        this.dateModalRef = null;
+      });
   }
 
   // modal

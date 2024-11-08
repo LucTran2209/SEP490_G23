@@ -1,12 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-upload-list',
   templateUrl: './upload-list.component.html',
-  styleUrl: './upload-list.component.scss'
+  styleUrl: './upload-list.component.scss',
 })
 export class UploadListComponent {
   uploadedFiles: File[] = [];
+  @ViewChild('fileInput') fileInput!: ElementRef;
   @Output() listFiles = new EventEmitter<File[]>();
   @Output() removeAFile = new EventEmitter<any>();
   @Input() boundTypeFile?: string;
@@ -14,13 +22,20 @@ export class UploadListComponent {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      this.uploadedFiles = Array.from(input.files);
+      const newFiles = Array.from(input.files); 
+    this.uploadedFiles.push(...newFiles); 
+    this.listFiles.emit(newFiles);
     }
-    this.listFiles.emit(this.uploadedFiles);
+    // Reset file input to allow re-upload of the same file
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 
   removeFile(index: number): void {
     this.uploadedFiles.splice(index, 1);
     this.removeAFile.emit(index);
   }
+
+  constructor() {}
 }
