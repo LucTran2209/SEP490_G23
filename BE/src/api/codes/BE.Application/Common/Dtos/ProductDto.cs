@@ -13,8 +13,9 @@ namespace BE.Application.Common.Dtos
         public decimal DepositPrice { get; set; }
         public int RentalLimitDays { get; set; }
         public decimal Evaluate { get; set; }
+
         //public SubCategoryDto? SubCategory { get; set; }
         //public RentalShopDto? RentalShop { get; set; }
-        //public List<ProductImageDto>? ProductImages { get; set; }
+        public List<ProductImageDto>? ProductImages { get; set; }
     }
 }
