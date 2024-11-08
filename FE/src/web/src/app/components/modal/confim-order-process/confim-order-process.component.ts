@@ -97,6 +97,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   onOkClick(): void {
+    debugger;
     if (!this.userCurrent) {
       this.toastMS.handleError('Bạn cần đăng nhập để tạo đơn thuê!', 401);
       this.router.navigateByUrl('/auth/login');
@@ -208,6 +209,8 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             mortgagePaperImageFont: res[6][0],
             mortgagePaperImageBack: res[6][1],
           };
+
+          console.log('>>>> line 206', orderCreateRequest);
           Object.entries(orderCreateRequest).forEach(([key, value]) => {
             const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
             if (
