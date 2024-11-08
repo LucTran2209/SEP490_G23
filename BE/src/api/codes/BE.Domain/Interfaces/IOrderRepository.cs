@@ -6,5 +6,6 @@ namespace BE.Domain.Interfaces
     public interface IOrderRepository : IBaseRepository<Order>
     {
         IQueryable<Order> GetAll();
+        IQueryable<Order> GetMyOrder(Guid? id);
     }
 }

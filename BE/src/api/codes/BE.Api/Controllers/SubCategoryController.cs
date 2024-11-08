@@ -18,6 +18,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> GetAllSubCategories()
         {
             var result = await _subCategoryService.GetAllSubCategoriesAsync();
+
             return Ok(result);
         }
     }

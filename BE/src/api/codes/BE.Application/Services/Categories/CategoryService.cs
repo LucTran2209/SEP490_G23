@@ -23,7 +23,7 @@
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Categories retrieved successfully.",
                 Datas = categories
             };

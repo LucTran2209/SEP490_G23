@@ -1,12 +1,13 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RentalShopController : ControllerBase
+    public class RentalShopController : BaseController
     {
         private readonly ILogger<RentalShopController> _logger;
         private readonly IRentalShopService rentalShopService;
@@ -32,24 +33,30 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateAsync([FromForm] CreateRentalShopInputDto inputDto)
         {
             var output = await rentalShopService.CreateAsync(inputDto);
-            return Created(output.StatusCode, output);
+
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateRentalShopInputDto inputDto)
         {
             var output = await rentalShopService.UpdateAsync(inputDto, id);
-            return Ok(output);
+
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var output = await rentalShopService.DeleteAsync(id);
-            return Ok(output);
+
+            return ReturnFollowStatusCode(output);
         }
     }
 }

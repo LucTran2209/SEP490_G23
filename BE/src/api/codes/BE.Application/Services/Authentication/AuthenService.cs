@@ -55,14 +55,14 @@ namespace BE.Application.Services.Authentication
 
                 return new ResultService()
                 {
-                    StatusCode = "200",
+                    StatusCode = (int)HttpStatusCode.OK,
                     Message = "Success"
                 };
             }
 
             return new ResultService()
             {
-                StatusCode = "500",
+                StatusCode = (int)HttpStatusCode.InternalServerError,
                 Message = "Fail"
             };
         }
@@ -93,7 +93,7 @@ namespace BE.Application.Services.Authentication
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    StatusCode = (int)HttpStatusCode.NotFound,
                     Message = "Wrong UserName or Password"
                 };
             }
@@ -110,7 +110,7 @@ namespace BE.Application.Services.Authentication
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "",
                 Datas = ouputDto
             };
@@ -154,7 +154,7 @@ namespace BE.Application.Services.Authentication
             {
                 return new ResultService()
                 {
-                    StatusCode = "400",
+                    StatusCode = (int)HttpStatusCode.Unauthorized,
                     Message = "Token was expired"
                 };
             }
@@ -167,7 +167,7 @@ namespace BE.Application.Services.Authentication
 
             return new ResultService()
             {
-                StatusCode = "200"
+                StatusCode = (int)HttpStatusCode.OK,
             };
         }
 
@@ -226,7 +226,7 @@ namespace BE.Application.Services.Authentication
                 issuer: jwtOption.ValidIssuer,
                 audience: jwtOption.ValidAudience,
                 authClaims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

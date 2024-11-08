@@ -42,7 +42,7 @@ namespace BE.Application.Services.RentalShops
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.Created.ToString(),
+                StatusCode = (int)HttpStatusCode.Created,
                 Message = "Rental shop created successfully."
             };
         }
@@ -53,7 +53,7 @@ namespace BE.Application.Services.RentalShops
 
             var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(id);
             if (rentalShop == null)
-                return new ResultService { StatusCode = HttpStatusCode.NotFound.ToString(), Message = "Rental shop not found." };
+                return new ResultService { StatusCode = (int)HttpStatusCode.NotFound, Message = "Rental shop not found." };
 
             rentalShop.ShopName = inputDto.ShopName;
             rentalShop.Email = inputDto.Email;
@@ -67,7 +67,7 @@ namespace BE.Application.Services.RentalShops
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Rental shop updated successfully."
             };
         }
@@ -77,14 +77,14 @@ namespace BE.Application.Services.RentalShops
             var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(id);
 
             if (rentalShop == null)
-                return new ResultService { StatusCode = HttpStatusCode.NotFound.ToString(), Message = "Rental shop not found." };
+                return new ResultService { StatusCode = (int)HttpStatusCode.NotFound, Message = "Rental shop not found." };
 
             await unitOfWork.RentalShopRepository.DeleteAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Rental shop deleted successfully."
             };
         }
@@ -105,7 +105,7 @@ namespace BE.Application.Services.RentalShops
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
                 Datas = rentalShops
             };
@@ -119,7 +119,7 @@ namespace BE.Application.Services.RentalShops
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    StatusCode = (int)HttpStatusCode.NotFound,
                     Message = "Rental shop not found."
                 };
             }
@@ -128,7 +128,7 @@ namespace BE.Application.Services.RentalShops
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Rental shop detail retrieved successfully.",
                 Datas = result
             };

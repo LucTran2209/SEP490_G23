@@ -34,7 +34,7 @@ namespace BE.Application.Services.Products
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.NotFound.ToString(),
+                    StatusCode = (int)HttpStatusCode.NotFound,
                     Message = "Product not found."
                 };
             }
@@ -43,7 +43,7 @@ namespace BE.Application.Services.Products
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Product detail retrieved successfully.",
                 Datas = productDetail
             };
@@ -62,7 +62,7 @@ namespace BE.Application.Services.Products
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
                 Datas = products
             };
@@ -83,7 +83,7 @@ namespace BE.Application.Services.Products
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
                 Datas = products
             };
@@ -103,7 +103,7 @@ namespace BE.Application.Services.Products
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.Created.ToString(),
+                StatusCode = (int)HttpStatusCode.Created,
                 Message = "Product created successfully."
             };
         }
@@ -114,7 +114,7 @@ namespace BE.Application.Services.Products
 
             var product = await unitOfWork.ProductRepository.FindByIdAsync(id);
             if (product == null)
-                return new ResultService { StatusCode = HttpStatusCode.NotFound.ToString(), Message = "Product not found." };
+                return new ResultService { StatusCode = (int)HttpStatusCode.NotFound, Message = "Product not found." };
 
             product.ProductName = inputDto.ProductName;
             product.Description = inputDto.Description;
@@ -132,7 +132,7 @@ namespace BE.Application.Services.Products
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Product updated successfully."
             };
         }
@@ -141,14 +141,14 @@ namespace BE.Application.Services.Products
         {
             var product = await unitOfWork.ProductRepository.FindByIdAsync(productId);
             if (product == null)
-                return new ResultService { StatusCode = HttpStatusCode.NotFound.ToString(), Message = "Product not found." };
+                return new ResultService { StatusCode = (int)HttpStatusCode.NotFound, Message = "Product not found." };
 
             await unitOfWork.ProductRepository.DeleteAsync(product);
             await unitOfWork.SaveChangesAsync();
 
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Product deleted successfully."
             };
         }
