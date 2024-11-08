@@ -46,7 +46,7 @@
     }@else {
     <div class="flex items-center gap-x-2">
       <button nz-button nzGhost nzType="primary">Chọn thuê</button>
-      <button nz-button nzType="primary" (click)="onAddMoreClick()">T</button>
+      <button nz-button nzType="primary" (click)="$event.stopPropagation(); onAddMoreClick()">T</button>
     </div>
     }
   </div>

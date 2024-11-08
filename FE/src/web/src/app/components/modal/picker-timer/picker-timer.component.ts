@@ -45,6 +45,15 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
     }
   }
 
+  isDisabled(): boolean {
+    return (
+      this.rangeDatePicker &&
+      this.rangeDatePicker.length === 2 &&
+      this.timePickerEnd &&
+      this.timePickerTo
+    );
+  }
+
   handleOkPickTime(): void {
     if (
       this.rangeDatePicker &&
@@ -52,11 +61,11 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
       this.timePickerEnd &&
       this.timePickerTo
     ) {
-      this.rangeDatePicker[0] = this.setTimeForDate(
+      this.rangeDatePicker[0] = this.rentalTimerService.setTimeForDate(
         this.rangeDatePicker[0],
         this.timePickerTo.value
       );
-      this.rangeDatePicker[1] = this.setTimeForDate(
+      this.rangeDatePicker[1] = this.rentalTimerService.setTimeForDate(
         this.rangeDatePicker[1],
         this.timePickerEnd.value
       );
@@ -93,15 +102,11 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
   }
 
   disabledDate = (current: Date): boolean => {
-    return current && current.getTime() < new Date().setHours(0, 0, 0, 0);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0); 
+    return current && current.getTime() < tomorrow.getTime();
   };
-
-  setTimeForDate(date: Date, time: string): Date {
-    const [hour, minute] = time.split(':').map(Number);
-    date.setHours(hour);
-    date.setMinutes(minute);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-    return date;
-  }
+  
+  
 }

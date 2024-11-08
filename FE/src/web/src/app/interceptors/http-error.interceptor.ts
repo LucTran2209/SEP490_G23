@@ -11,6 +11,17 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { LoadingService } from '../services/loading.service';
+import { MessageResponseService } from '../services/message-response.service';
+
+interface IErrorItem {
+  propertyName: string;
+  errorMessage: string;
+}
+interface IErrorApi {
+  status: 400;
+  errorList: IErrorItem[];
+}
+
 
 @Injectable()
 export class httpErrorInterceptor implements HttpInterceptor {
@@ -19,6 +30,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     private router: Router,
     private authService: AuthService,
     private loadingSerivce: LoadingService,
+    private responseMS: MessageResponseService
   ) {}
 
   intercept(
@@ -54,7 +66,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
   ) {
     this.message.create('error', 'Bạn không có quyền truy cập vào hệ thống');
     this.authService.endSession();
-    this.loadingSerivce.setOtherLoading("error");
+    this.loadingSerivce.setOtherLoading('error');
     return throwError(() => error);
   }
 
@@ -66,17 +78,22 @@ export class httpErrorInterceptor implements HttpInterceptor {
     const {} = error;
     // console.log('>>> http-error interceptor: ',error);
     this.message.create('error', 'Đã xảy ra lỗi nội bộ. Vui lòng thử lại sau.');
-    this.loadingSerivce.setOtherLoading("error");
+    this.loadingSerivce.setOtherLoading('error');
     return throwError(() => error);
   }
 
   protected handleBadRequest(
     request: HttpRequest<any>,
     next: HttpHandler,
-    error: HttpErrorResponse
+    errorRes: HttpErrorResponse
   ) {
-    this.loadingSerivce.setOtherLoading("error");
-    return throwError(() => error);
+    const { error } = errorRes;
+    let diffError = error as IErrorApi;
+    diffError.errorList.map((ier) => {
+      this.responseMS.handleError(ier.errorMessage, diffError.status);
+    })
+    this.loadingSerivce.setOtherLoading('error');
+    return throwError(() => errorRes);
   }
 
   protected handleUnknownError(
@@ -85,7 +102,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     error: HttpErrorResponse
   ) {
     const {} = error;
-    this.loadingSerivce.setOtherLoading("error");
+    this.loadingSerivce.setOtherLoading('error');
 
     console.warn(error);
 
@@ -97,7 +114,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
     error: HttpErrorResponse
   ) {
-    this.loadingSerivce.setOtherLoading("error");
+    this.loadingSerivce.setOtherLoading('error');
     return throwError(() => error);
   }
 
@@ -106,7 +123,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
     error: HttpErrorResponse
   ) {
-    this.loadingSerivce.setOtherLoading("error");
+    this.loadingSerivce.setOtherLoading('error');
     return throwError(() => error);
   }
 
@@ -115,8 +132,7 @@ export class httpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
     error: HttpErrorResponse
   ) {
-    this.loadingSerivce.setOtherLoading("error");
+    this.loadingSerivce.setOtherLoading('error');
     return throwError(() => error);
   }
-
 }

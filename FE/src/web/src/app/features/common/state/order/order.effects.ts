@@ -26,12 +26,12 @@ export class OrderProductsEffects {
         switchMap(({ formData }) =>
           this.orderService.createOrders(formData).pipe(
             map((res) => {
+              console.log(res,'>>>> line 29', res);
               return OrderActions.createOrder_success({ message: res.message });
             }),
             catchError((err) => {
-              const errorMessage = err.error.message;
               return of(
-                OrderActions.createOrder_failure({ message: errorMessage })
+                OrderActions.createOrder_failure({ message: '' })
               );
             })
           )
@@ -65,7 +65,6 @@ export class OrderProductsEffects {
         ofType(OrderActions.createOrder_failure),
         tap(({ message }) => {
           this.loadingService.setOtherLoading('error');
-          this.messageNZ.create('error', message);
         })
       ),
     {
