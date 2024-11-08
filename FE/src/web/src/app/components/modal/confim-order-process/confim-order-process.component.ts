@@ -193,7 +193,6 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
           }));
           const orderCreateRequest: OrderCreateRequest = {
             userId: res[4].UserId || '',
-            code: generateCodeOrder(),
             note: formValues.note,
             recipientAddress: formValues.recipientAddress,
             recipientEmail: formValues.recipientEmail,
@@ -223,6 +222,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             }
           });
           this.store.dispatch(createOrder({ formData }));
+          this.router.navigateByUrl('/common/user/order');
         }
       });
   }
@@ -269,6 +269,5 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
     if(this.createOrderSubscription){
       this.createOrderSubscription.unsubscribe();
     }
-    this.store.dispatch(resetRentalProduct());
   }
 }

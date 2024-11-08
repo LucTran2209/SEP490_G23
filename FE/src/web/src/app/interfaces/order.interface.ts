@@ -32,7 +32,6 @@ export interface OrderResultService {
 export interface OrderCreateRequest {
   userId: string;
   voucherId: string | null;
-  code: string;
   recipientName: string;
   recipientPhoneNumber: string;
   recipientEmail: string;

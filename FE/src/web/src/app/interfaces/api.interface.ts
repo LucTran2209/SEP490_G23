@@ -18,7 +18,6 @@ export interface BaseResponseRecords<T> {
   totalCount: number;
   items: T[];
 }
-
 export interface BaseResponseAddressApi {
   error: number;
   error_text: string;
