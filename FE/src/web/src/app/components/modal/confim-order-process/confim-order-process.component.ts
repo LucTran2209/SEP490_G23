@@ -9,7 +9,8 @@ import {
   filter,
   map,
   Observable,
-  of
+  of,
+  Subscription,
 } from 'rxjs';
 import { createOrder } from '../../../features/common/state/order/order.actions';
 import { resetRentalProduct } from '../../../features/common/state/rental/rental.actions';
@@ -68,6 +69,9 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   parentSelectedValue: string = '';
   listFiles?: File[];
   // radio
+  //subscription
+  private createOrderSubscription?: Subscription;
+  //subscription
 
   initForm(): FormGroup {
     return (this.infoOrderCommonForm = this.formbuilder.group({
@@ -93,6 +97,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   onOkClick(): void {
+    debugger;
     if (!this.userCurrent) {
       this.toastMS.handleError('Bạn cần đăng nhập để tạo đơn thuê!', 401);
       this.router.navigateByUrl('/auth/login');
@@ -113,7 +118,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   mergeAllDataReq(): void {
-   combineLatest([
+    this.createOrderSubscription = combineLatest([
       this.store.select(selectAllProductRental),
       this.store.select(selectTotalAllProductDepositPrice()),
       this.store.select(selectTotalAllProductRentalPrice()),
@@ -196,12 +201,14 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             voucherId: '',
             totalDepositPrice: Number(res[1]),
             totalRentPrice: Number(res[2]),
-            startDate: res[3][0].toDateString(),
-            endDate: res[3][1].toDateString(),
+            startDate: res[3][0].toISOString(),
+            endDate: res[3][1].toISOString(),
             mortgagePaperType: this.parentSelectedValue,
             mortgagePaperImageFont: res[6][0],
             mortgagePaperImageBack: res[6][1],
           };
+
+          console.log('>>>> line 206', orderCreateRequest);
           Object.entries(orderCreateRequest).forEach(([key, value]) => {
             const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
             if (
@@ -257,6 +264,9 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(resetRentalProduct())
+    if(this.createOrderSubscription){
+      this.createOrderSubscription.unsubscribe();
+    }
+    this.store.dispatch(resetRentalProduct());
   }
 }

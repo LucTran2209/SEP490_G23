@@ -115,11 +115,6 @@ export const ProductSlug = {
     title: 'List Product By Shop Id | ERMS',
     api: 'Product/Shop/',
   },
-  GetProduct: {
-    label: 'View Product',
-    title: 'View Product | ERMS',
-    api: 'api/Post/?postId =',
-  },
   UpdateProduct: {
     label: 'Update Product',
     title: 'Update Product | ERMS',

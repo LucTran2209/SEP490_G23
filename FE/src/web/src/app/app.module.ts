@@ -39,6 +39,8 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment.development';
+import {AngularFireModule} from '@angular/fire/compat'
+import {AngularFirestoreModule} from '@angular/fire/compat/firestore'
 registerLocaleData(en);
 
 @NgModule({
@@ -49,6 +51,8 @@ registerLocaleData(en);
     LayoutUserComponent,
   ],
   imports: [
+    AngularFireModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     SharedModule,
     BrowserModule,
     AppRoutingModule,

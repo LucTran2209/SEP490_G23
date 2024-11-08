@@ -2,7 +2,7 @@ import {
   GoogleLoginProvider,
   SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -104,6 +104,7 @@ import { PriceListComponent } from '../price-list/price-list.component';
 import { SelectRadioCollateralComponent } from '../core/radio/select-radio-collateral/select-radio-collateral.component';
 import { UploadListComponent } from '../core/upload/upload-list/upload-list.component';
 import { ProductRelatedComponent } from '../product-related/product-related.component';
+import { DateFirebasePipe } from '../../pipes/date-firebase.pipe';
 
 registerLocaleData(en);
 
@@ -151,11 +152,11 @@ const ANTD_MODULES = [
   NzTimelineModule,
   NzTypographyModule,
   NzCollapseModule,
-  
 ];
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  DateFirebasePipe,
   ProductRelatedComponent,
   CardStaticComponent,
   SelectRadioCollateralComponent,
@@ -205,7 +206,7 @@ const SHARED_MODULES = [
   FormFeedbackComponent,
   FeelbackCardComponent,
   FormRentalProductV2Component,
-  ProductRelatedComponent
+  ProductRelatedComponent,
 ];
 
 @NgModule({
@@ -245,6 +246,8 @@ const SHARED_MODULES = [
         },
       } as SocialAuthServiceConfig,
     },
+    DateFirebasePipe,
+    DatePipe,
   ],
 })
 export class SharedModule {}
