@@ -17,5 +17,7 @@ namespace BE.Api.Services
         public string? UserName => _httpContextAccessor?.HttpContext?.User.FindFirstValue("UserName")!;
 
         public string? FullName => _httpContextAccessor?.HttpContext?.User.FindFirstValue("FullName")!;
+
+        public Guid? RentalShopId => Guid.Parse(_httpContextAccessor?.HttpContext?.User.FindFirstValue("RentalShopId")!);
     }
 }

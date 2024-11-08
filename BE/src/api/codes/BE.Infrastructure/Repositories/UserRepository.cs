@@ -22,7 +22,8 @@ namespace BE.Infrastructure.Repositories
         {
             var user = await context.Users.Include(u => u.UserRoles!)
                                             .ThenInclude(ur => ur.Role)
-                                            .FirstOrDefaultAsync(x => x.UserName == userName);
+                                          .Include(u => u.RentalShops)
+                                          .FirstOrDefaultAsync(x => x.UserName == userName);
 
             return user;
         }

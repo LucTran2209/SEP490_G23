@@ -143,7 +143,30 @@ namespace BE.Application.Services.Orders
                 Message = "Success",
                 Datas = result
             };
+        }
 
+        public async Task<ResultService> GetListRentalShopOrderAsync(GetListRentalShopOrderInputDto inputDto)
+        {
+            var myOrders = unitOfWork.OrderRepository.GetRentalShopOrder((Guid)user.RentalShopId!);
+
+            myOrders = myOrders.Filter(inputDto.OrderCode, o => o.Code!.Contains(inputDto.OrderCode ?? string.Empty))
+                               .Filter(inputDto.Status.ToString(), o => o.OrderStatuses!.Any(os => os.Status == inputDto.Status))
+                               .Filter(inputDto.RenterName, o => o.User!.FullName!.Contains(inputDto.RenterName ?? string.Empty))
+                               .Filter(inputDto.PhoneNumber, o => o.RecipientPhoneNumber!.Contains(inputDto.PhoneNumber ?? string.Empty))
+                               .Filter(inputDto.StartDate.ToString(), o => o.StartDate >= inputDto.StartDate)
+                               .Filter(inputDto.EndDate.ToString(), o => o.EndDate <= inputDto.EndDate);
+                               
+
+            var result = await myOrders.ToPageList(inputDto)
+                                       .ToPageResult(await myOrders.CountAsync(), inputDto,
+                                                    o => _mapper.Map<GetListRentalShopOrderOutputDto>(o));
+
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "Success",
+                Datas = result
+            };
         }
     }
 }

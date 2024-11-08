@@ -60,6 +60,23 @@ namespace BE.Infrastructure.Repositories
             return query;
         }
 
+        public IQueryable<Order> GetRentalShopOrder(Guid rentalShopId)
+        {
+            var query = context.Orders.Include(o => o.User)
+                                      .Include(o => o.OrderStatuses)
+                                      .Include(o => o.Voucher)
+                                      .Include(o => o.OrderDetails!)
+                                        .ThenInclude(o => o.Product)
+                                            .ThenInclude(o => o.RentalShop)
+                                      .Include(o => o.OrderDetails!)
+                                        .ThenInclude(o => o.Product)
+                                        .ThenInclude(o => o.ProductImages)
+                                      .Where(o => o.OrderDetails!.FirstOrDefault()!.Product.RentalShopId == rentalShopId)
+                                      .OrderBy(o => o.CreatedDate)
+                                      .AsQueryable();
+            return query;
+        }
+
         public Task UpdateAsync(Order entity)
         {
             throw new NotImplementedException();

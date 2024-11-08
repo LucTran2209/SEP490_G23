@@ -208,6 +208,7 @@ namespace BE.Application.Services.Authentication
                 new Claim("FullName", user.FullName!),
                 new Claim("UserName", user.UserName!),
                 new Claim("Avatar", user.AvatarPersonal ?? string.Empty),
+                new Claim("RentalShopId", user.RentalShops?.FirstOrDefault()?.Id.ToString() ?? string.Empty),
             };
 
             if (user.UserRoles?.Count > 0)

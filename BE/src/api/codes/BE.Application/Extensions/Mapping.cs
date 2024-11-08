@@ -6,6 +6,7 @@ namespace BE.Application.Extensions
     {
         public Mapping()
         {
+            CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailDto>().ReverseMap();

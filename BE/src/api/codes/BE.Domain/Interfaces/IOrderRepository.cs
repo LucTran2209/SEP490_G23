@@ -7,5 +7,6 @@ namespace BE.Domain.Interfaces
     {
         IQueryable<Order> GetAll();
         IQueryable<Order> GetMyOrder(Guid? id);
+        IQueryable<Order> GetRentalShopOrder(Guid rentalShopId);
     }
 }

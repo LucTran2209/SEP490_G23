@@ -57,6 +57,7 @@ namespace BE.Infrastructure.Repositories
                 .Include(p => p.SubCategory)
                     .ThenInclude(sc => sc.Category)
                 .Include(p => p.ProductImages)
+                .Where(p => p.RentalShopId == rentalShopId)
                 .AsQueryable();
 
             return query;

@@ -1,5 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Orders.OrderServiceInputDto;
+using BE.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,13 @@ namespace BE.Api.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IOrderService orderService;
+        private readonly IUser _user;
 
-        public OrderController(ILogger<UserController> logger, IOrderService orderService)
+        public OrderController(ILogger<UserController> logger, IOrderService orderService, IUser user)
         {
             _logger = logger;
             this.orderService = orderService;
+            _user = user;
         }
 
         [HttpPost]
@@ -46,9 +49,18 @@ namespace BE.Api.Controllers
 
         [HttpGet("my")]
         [Authorize]
-        public async Task<IActionResult> GetListMyOrder([FromQuery] GetListMyOrderInputDto inputDto)
+        public async Task<IActionResult> GetListMyOrderAsync([FromQuery] GetListMyOrderInputDto inputDto)
         {
             var output = await orderService.GetListMyOrderAsync(inputDto);
+
+            return ReturnFollowStatusCode(output);
+        }
+
+        [HttpGet("list")]
+        [Authorize]
+        public async Task<IActionResult> GetListRentalShopOrderAsync([FromQuery] GetListRentalShopOrderInputDto inputDto)
+        {
+            var output = await orderService.GetListRentalShopOrderAsync(inputDto);
 
             return ReturnFollowStatusCode(output);
         }
