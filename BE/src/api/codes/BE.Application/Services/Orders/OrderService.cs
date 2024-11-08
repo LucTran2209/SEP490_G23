@@ -25,6 +25,8 @@ namespace BE.Application.Services.Orders
 
             var order = _mapper.Map<Order>(inputDto);
 
+            order.Code = DateTime.Now.Ticks.ToString() + "E";
+
             order.MortgagePaperImageFont = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageFont!);
             order.MortgagePaperImageBack = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageBack!);
 

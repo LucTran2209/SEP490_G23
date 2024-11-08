@@ -7,7 +7,6 @@ namespace BE.Application.Services.Orders.OrderServiceInputDto
     {
         public Guid UserId { get; set; }
         public Guid? VoucherId { get; set; }
-        public string? Code { get; set; }
         public string? RecipientName { get; set; }
         public string? RecipientPhoneNumber { get; set; }
         public string? RecipientEmail { get; set; }
