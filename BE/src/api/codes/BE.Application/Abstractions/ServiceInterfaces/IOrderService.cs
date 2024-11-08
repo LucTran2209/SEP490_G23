@@ -9,5 +9,6 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> CreateOrderStatusAsync(CreateOrderStatusInputDto inputDto);
         Task<ResultService> ListOrderAsync(GetListOrderByUserInputDto inputDto);
         Task<ResultService> GetListMyOrderAsync(GetListMyOrderInputDto inputDto);
+        // Task<ResultService> GetListRentalShopOrderAsync(GetListRentalShopOrderInputDto inputDto);
     }
 }
