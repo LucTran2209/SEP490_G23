@@ -7,6 +7,7 @@ import { FeatureAppState } from '../../../../store/app.state';
 import { getDetailProductRental, resetProductRental } from '../../state/product/product-detail.actions';
 import { selectData } from '../../state/product/product-detail.reducer';
 import { resetRentalProduct } from '../../state/rental/rental.actions';
+import { MessageResponseService } from '../../../../services/message-response.service';
 
 @Component({
   selector: 'app-product-rental-detail',
@@ -29,6 +30,11 @@ export class ProductRentalDetailComponent implements OnDestroy{
     this.isVisible = false;
   }
 
+
+  onPreventAccess(){
+    this.messageResponseService.showPreventAccess("Tính năng đang phát triển",'');
+  }
+
   selectStateFromNgRx() {
     this.productDetail$ = this.store.select(selectData);
   }
@@ -43,7 +49,8 @@ export class ProductRentalDetailComponent implements OnDestroy{
   constructor(
     private router: ActivatedRoute,
     private route: Router,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private messageResponseService: MessageResponseService
   ) {}
 
   ngOnInit(): void {

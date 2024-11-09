@@ -105,10 +105,11 @@ import { SelectRadioCollateralComponent } from '../core/radio/select-radio-colla
 import { UploadListComponent } from '../core/upload/upload-list/upload-list.component';
 import { ProductRelatedComponent } from '../product-related/product-related.component';
 import { DateFirebasePipe } from '../../pipes/date-firebase.pipe';
-
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzNotificationModule,
   NzDividerModule,
   NzTagModule,
   NzAutocompleteModule,

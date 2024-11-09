@@ -27,10 +27,8 @@ import { OrderService } from '../../../services/order.service';
 import { RentalTimerService } from '../../../services/rental-timer.service';
 import { StorageService } from '../../../services/storage.service';
 import { FeatureAppState } from '../../../store/app.state';
-import { generateCodeOrder } from '../../../utils/anonymous.helper';
 import { LocalStorageKey } from '../../../utils/constant';
 import { MyValidators } from '../../../utils/validators';
-import { resetRentalProduct } from '../../../features/common/state/rental/rental.actions';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -221,7 +219,6 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             }
           });
           this.store.dispatch(createOrder({ formData }));
-          this.router.navigateByUrl('/common/user/order');
         }
       });
   }

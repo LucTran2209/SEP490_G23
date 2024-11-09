@@ -29,7 +29,8 @@
 
 <ng-template #stepProcess>
   @if (current === 0) {
-  <app-step-info (nextStep)="next()" />
+  <app-step-identify (nextStep)="next()" (prevStep)="pre()" />
+  <!-- <app-step-info (nextStep)="next()" /> -->
 
   } @if (current === 1) {
   <app-step-identify (nextStep)="next()" (prevStep)="pre()" />

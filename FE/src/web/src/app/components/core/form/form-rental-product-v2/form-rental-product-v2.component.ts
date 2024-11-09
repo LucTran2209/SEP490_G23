@@ -15,6 +15,7 @@ import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
 import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
+import { resetRentalProduct } from '../../../../features/common/state/rental/rental.actions';
 
 interface IProductShortSearch {
   id: string | number;
@@ -153,5 +154,6 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
+    this.store.dispatch(resetRentalProduct());
   }
 }

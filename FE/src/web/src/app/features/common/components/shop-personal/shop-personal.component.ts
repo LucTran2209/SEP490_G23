@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
@@ -19,7 +19,7 @@ import * as selectShopRentalProduct from '../../state/shop/shop-personal.reducer
   templateUrl: './shop-personal.component.html',
   styleUrl: './shop-personal.component.scss',
 })
-export class ShopPersonalComponent implements OnInit {
+export class ShopPersonalComponent implements OnInit, OnDestroy {
   // param shop url
   paramHave: string | null;
   productListShopFilter$?: Observable<ProductItemResponse[]>;
@@ -95,6 +95,10 @@ export class ShopPersonalComponent implements OnInit {
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
     this.onQueryParams();
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch
   }
 
   constructor(

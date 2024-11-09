@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { OrderService } from '../../../../services/order.service';
-import { LoadingService } from '../../../../services/loading.service';
 import { Store } from '@ngrx/store';
-import { MessageResponseService } from '../../../../services/message-response.service';
-import * as OrderActions from './order.actions';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { LoadingService } from '../../../../services/loading.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
+import { OrderService } from '../../../../services/order.service';
+import * as OrderActions from './order.actions';
 @Injectable()
 export class OrderProductsEffects {
   constructor(
@@ -15,6 +16,7 @@ export class OrderProductsEffects {
     private loadingService: LoadingService,
     private responseMessage: MessageResponseService,
     private store: Store,
+    private router: Router,
     private messageNZ: NzMessageService
   ) {}
 
@@ -51,6 +53,7 @@ export class OrderProductsEffects {
           this.responseMessage.showSuccess(
             'Đơn hàng đã được gửi yêu cầu tới Người cho thuê!'
           );
+          this.router.navigateByUrl('/common/user/order');
           this.store.dispatch(OrderActions.resetOrderState());
         })
       ),

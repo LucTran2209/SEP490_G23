@@ -8,6 +8,8 @@ import { MessageResponseService } from '../../../../services/message-response.se
 import { HttpErrorResponse } from '@angular/common/http';
 import * as RentalProduct from '../rental/rental.actions';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import { IErrorApi } from '../../../../interceptors/http-error.interceptor';
 @Injectable()
 export class ProductDetailEffects {
   constructor(
@@ -15,7 +17,8 @@ export class ProductDetailEffects {
     private loadingService: LoadingService,
     private productSerivce: ProductService,
     private toastMT: MessageResponseService,
-    private store: Store
+    private store: Store,
+    private router: Router,
   ) {}
 
   processGetDetailProduct$ = createEffect(
@@ -31,8 +34,9 @@ export class ProductDetailEffects {
                 data,
               });
             }),
-            catchError((err: HttpErrorResponse) => {
-              const errorMessage = err.message || 'Đã xảy ra lỗi hiển thị';
+            catchError((err: any) => {
+              const {errorList, status} = err;
+              const errorMessage = errorList || 'Đã xảy ra lỗi hiển thị';
               const statusCode = err.status;
               return of(
                 ProductDetailActions.getDetailProductRental_failure({
@@ -72,9 +76,11 @@ export class ProductDetailEffects {
     () =>
       this.action$.pipe(
         ofType(ProductDetailActions.getDetailProductRental_failure),
-        tap(({ message, statusCode }) => {
+        tap(({  statusCode }) => {
           this.loadingService.setOtherLoading('error');
-          this.toastMT.handleError(message, statusCode);
+          console.log('statusCode',statusCode);
+          this.toastMT.setErrorCode(statusCode);
+          this.router.navigate(['error']);
         })
       ),
     { dispatch: false }

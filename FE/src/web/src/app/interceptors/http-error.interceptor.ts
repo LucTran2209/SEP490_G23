@@ -12,13 +12,14 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { LoadingService } from '../services/loading.service';
 import { MessageResponseService } from '../services/message-response.service';
+import { HttpStatusCode } from '../configs/status-code.config';
 
-interface IErrorItem {
+export interface IErrorItem {
   propertyName: string;
   errorMessage: string;
 }
-interface IErrorApi {
-  status: 400;
+export interface IErrorApi {
+  status: HttpStatusCode;
   errorList: IErrorItem[];
 }
 
@@ -77,7 +78,6 @@ export class httpErrorInterceptor implements HttpInterceptor {
   ) {
     const {} = error;
     // console.log('>>> http-error interceptor: ',error);
-    this.message.create('error', 'Đã xảy ra lỗi nội bộ. Vui lòng thử lại sau.');
     this.loadingSerivce.setOtherLoading('error');
     return throwError(() => error);
   }
@@ -89,11 +89,9 @@ export class httpErrorInterceptor implements HttpInterceptor {
   ) {
     const { error } = errorRes;
     let diffError = error as IErrorApi;
-    diffError.errorList.map((ier) => {
-      this.responseMS.handleError(ier.errorMessage, diffError.status);
-    })
+    console.log('<<<<<line 93>>>>>',diffError);
     this.loadingSerivce.setOtherLoading('error');
-    return throwError(() => errorRes);
+    return throwError(() => diffError);
   }
 
   protected handleUnknownError(

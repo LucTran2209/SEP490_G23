@@ -41,8 +41,8 @@ export class AppHttpClientService {
       })
       .pipe(
         catchError((err) => {
-          console.log('line 37:', err.message);
-          return this.handleError(err.message);
+          // console.log('line 37:', err);
+          return this.handleError(err);
         })
       );
   }
@@ -69,7 +69,7 @@ export class AppHttpClientService {
       })
       .pipe(
         catchError((err) => {
-          return this.handleError(err.message);
+          return this.handleError(err);
         })
       );
   }
@@ -95,7 +95,7 @@ export class AppHttpClientService {
       .pipe(
         catchError((err) => {
           console.log('line 37:', err.message);
-          return this.handleError(err.message);
+          return this.handleError(err);
         })
       );
   }
@@ -119,7 +119,7 @@ export class AppHttpClientService {
       })
       .pipe(
         catchError((err) => {
-          return this.handleError(err.message);
+          return this.handleError(err);
         })
       );
   }
@@ -140,7 +140,7 @@ export class AppHttpClientService {
       .pipe(
         catchError((err) => {
           console.log('line 37:', err.message);
-          return this.handleError(err.message);
+          return this.handleError(err);
         })
       );
   }
@@ -193,7 +193,7 @@ export class AppHttpClientService {
     return httpHeaders;
   }
 
-  private handleError(errorSet: string) {
-    return throwError(() => new Error(errorSet));
+  private handleError(errorSet: any) {
+    return throwError(() => errorSet);
   }
 }

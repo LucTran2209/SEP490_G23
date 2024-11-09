@@ -49,7 +49,7 @@
           (click)="onSelectDetail(data)"
         >
           <td nzCellControl="maDonHang">{{ data.code ?? i + 1 }}</td>
-          <td nzCellControl="ngayTao">{{ data.startDate }}</td>
+          <td nzCellControl="ngayTao">{{ data.startDate | date: "dd/MM/yyyy hh:mm a" }}</td>
           <td nzCellControl="nguoiThue">{{ data.user.userName }}</td>
           <td nzCellControl="soDienThoai">{{ data.recipientPhoneNumber }}</td>
           <td nzCellControl="thoiGianThue">
