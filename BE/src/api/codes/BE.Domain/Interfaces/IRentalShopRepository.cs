@@ -7,5 +7,7 @@ namespace BE.Domain.Interfaces
     {
         IQueryable<RentalShop> GetAll();
         Task<RentalShop?> GetRentalShopByIdAsync(Guid userId);
+        Task<RentalShop?> GetAllRentalShopByNotActiveAsync();
+        Task<RentalShop?> GetRentalShopByNotActiveAsync(Guid Id);
     }
 }
