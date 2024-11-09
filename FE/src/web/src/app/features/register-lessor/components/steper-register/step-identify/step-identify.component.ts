@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   OnDestroy,
@@ -50,9 +51,11 @@ export class StepIdentifyComponent implements OnInit, OnDestroy {
           this.backImageFile = file;
           this.backImagePreview = reader.result as string;
         }
+        setTimeout(() => this.cdRef.detectChanges(), 0);
       };
       reader.readAsDataURL(file);
     }
+   
   }
 
   onSubmit() {
@@ -79,7 +82,7 @@ export class StepIdentifyComponent implements OnInit, OnDestroy {
     this.prevStep.emit();
   }
 
-  constructor(private store: Store<FeatureAppState>) {}
+  constructor(private store: Store<FeatureAppState>, private cdRef: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {}
   ngOnInit(): void {

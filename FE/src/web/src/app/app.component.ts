@@ -2,6 +2,7 @@ import { AfterContentChecked, AfterViewInit, ChangeDetectionStrategy, ChangeDete
 import { LoadingService } from './services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from './interfaces/anonymous.interface';
+import { ActivatedRoute, ActivationEnd, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import { StatusProcess } from './interfaces/anonymous.interface';
 })
 export class AppComponent implements OnInit{
   loading$?: Observable<StatusProcess>;
-  constructor(private loadingService: LoadingService) {
+  constructor(private loadingService: LoadingService, private route: ActivatedRoute) {
     this.loading$ = this.loadingService.status$;
   }
 

@@ -1,14 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import {
-  MappingLinkAfterLoginByRoles,
-  RouteData,
+  RouteData
 } from '../configs/anonymous.config';
 import { AuthSlug } from '../configs/api.configs';
+import { ErrorStatusCode } from '../configs/status-code.config';
+import { selectIsAuthenticated } from '../features/auth/state/auth.feature';
 import {
   IChangePassword,
   IExternalLoginRequest,
@@ -21,19 +21,16 @@ import {
 } from '../interfaces/account.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
 import { FeatureAppState } from '../store/app.state';
-import { decodeBase64 } from '../utils/anonymous.helper';
-import { LocalStorageKey, STRING, USER_ROLE } from '../utils/constant';
+import { LocalStorageKey, STRING } from '../utils/constant';
 import {
   getCookie,
   removeAllCookies,
   replaceCookie,
 } from '../utils/cookie.helper';
 import { AppHttpClientService } from './app-http-client.service';
+import { MessageResponseService } from './message-response.service';
 import { StorageService } from './storage.service';
 import { UserProfileService } from './user-profile.service';
-import { selectIsAuthenticated } from '../features/auth/state/auth.feature';
-import { MessageResponseService } from './message-response.service';
-import { ErrorStatusCode } from '../configs/status-code.config';
 
 @Injectable({
   providedIn: 'root',

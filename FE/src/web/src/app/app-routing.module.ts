@@ -6,6 +6,7 @@ import { LayoutUserComponent } from './components/layout/layout-user/layout-user
 import { authGuard } from './guards/auth.guard';
 import { USER_ROLE } from './utils/constant';
 import { ErrorComponent } from './features/error/error.component';
+import { isLoginGuard } from './guards/is-login.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/common/home' },
@@ -35,6 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'auth',
+    canActivate: [isLoginGuard],
     loadChildren: () =>
       import('./features/auth/auth.module').then((m) => m.AuthModule),
   },

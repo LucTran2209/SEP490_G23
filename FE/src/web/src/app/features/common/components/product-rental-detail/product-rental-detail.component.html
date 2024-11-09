@@ -1,6 +1,6 @@
 <div class="container">
   <!-- breadcrumb -->
-  <div class="py-3">
+  <div class="py-3" (click)="onPreventAccess()">
     <nz-breadcrumb>
       <nz-breadcrumb-item>Home</nz-breadcrumb-item>
       <nz-breadcrumb-item>
@@ -54,7 +54,7 @@
         ></nz-avatar>
         <div class="mx-3">
           <h1 class="mt-2 font-bold uppercase">
-            <a (click)="navigateToShop(productDetail.rentalShop.userId)">{{
+            <a (click)="navigateToShop(productDetail.rentalShop.id)">{{
               productDetail.rentalShop.shopName
             }}</a>
           </h1>

@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { HttpStatusCode } from '../../../configs/status-code.config';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
-import { StorageService } from '../../../services/storage.service';
-import { encodeBase64 } from '../../../utils/anonymous.helper';
-import { STRING } from '../../../utils/constant';
-import { replaceCookie } from '../../../utils/cookie.helper';
-import * as AuthActions from './auth.actions';
-import { selectAccessToken } from './auth.feature';
 import { MessageResponseService } from '../../../services/message-response.service';
-import { HttpStatusCode } from '../../../configs/status-code.config';
+import { StorageService } from '../../../services/storage.service';
+import { STRING } from '../../../utils/constant';
+import * as AuthActions from './auth.actions';
 
 @Injectable()
 export class AuthEffect {
@@ -113,7 +110,7 @@ export class AuthEffect {
               return AuthActions.register_success({ message: data.message });
             }),
             catchError((err) =>
-              of(AuthActions.register_failure({ error: err.message }))
+              of(AuthActions.register_failure({ error: "Đã xảy ra lỗi" }))
             )
           )
         )
