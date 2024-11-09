@@ -14,7 +14,7 @@ namespace BE.Application.Services.RentalShops
                 Address = inputDto.Address,
                 PhoneNumber = inputDto.PhoneNumber,
                 Email = inputDto.Email,
-                IsActive = inputDto.IsActive,
+                Status = inputDto.Status,
                 Description = inputDto.Description
             };
         }
@@ -26,7 +26,7 @@ namespace BE.Application.Services.RentalShops
             rentalShop.Address = inputDto.Address;
             rentalShop.PhoneNumber = inputDto.PhoneNumber;
             rentalShop.Email = inputDto.Email;
-            rentalShop.IsActive = inputDto.IsActive;
+            rentalShop.Status = inputDto.Status;
             rentalShop.Description = inputDto.Description;
 
             return rentalShop;
@@ -41,7 +41,7 @@ namespace BE.Application.Services.RentalShops
                 Address = rentalShop.Address,
                 PhoneNumber = rentalShop.PhoneNumber,
                 Email = rentalShop.Email,
-                IsActive = rentalShop.IsActive,
+                Status = rentalShop.Status,
                 Description = rentalShop.Description
             };
         }

@@ -7,6 +7,7 @@ namespace BE.Application.Services.RentalShops
     {
         private readonly IValidator<CreateRentalShopInputDto> createValidator;
         private readonly IValidator<UpdateRentalShopInputDto> updateValidator;
+        private readonly IValidator<ActiveRentalShopInputDto> statusValidator;
         private readonly IMapper _mapper;
         private readonly IAzureService _azureService;
 
@@ -15,11 +16,13 @@ namespace BE.Application.Services.RentalShops
             IUser user, IMapper mapper,
             IValidator<CreateRentalShopInputDto> createValidator,
             IValidator<UpdateRentalShopInputDto> updateValidator,
+            IValidator<ActiveRentalShopInputDto> statusValidator,
             IAzureService azureService)
             : base(unitOfWork, user)
         {
             this.createValidator = createValidator;
             this.updateValidator = updateValidator;
+            this.statusValidator = statusValidator;
             _mapper = mapper;
             _azureService = azureService;
         }
@@ -60,7 +63,7 @@ namespace BE.Application.Services.RentalShops
             rentalShop.PhoneNumber = inputDto.PhoneNumber;
             rentalShop.Address = inputDto.Address;
             rentalShop.Description = inputDto.Description;
-            rentalShop.IsActive = inputDto.IsActive;
+            rentalShop.Status = inputDto.Status;
 
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
@@ -178,6 +181,7 @@ namespace BE.Application.Services.RentalShops
 
         public async Task<ResultService> ActiveRentalShopAsync(ActiveRentalShopInputDto input)
         {
+            await statusValidator.ValidateAndThrowAsync(input);
             var rentalShop = await unitOfWork.RentalShopRepository.GetRentalShopByNotActiveAsync(input.Id);
             if (rentalShop == null)
             {
@@ -187,16 +191,8 @@ namespace BE.Application.Services.RentalShops
                     Message = "Not have rental shop application."
                 };
             }
-            if (input.IsActive == true)
-            {
-                rentalShop.IsActive = input.IsActive;
-                await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
-            }
-            else
-            {
-                rentalShop.IsDeleted = true;
-                await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
-            }
+            rentalShop.Status = input.Status;
+            await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
             return new ResultService
             {

@@ -3,6 +3,6 @@
     public class ActiveRentalShopInputDto
     {
         public Guid Id { get; set; }
-        public bool IsActive { get; set; }
+        public RequestShop Status { get; set; }
     }
 }

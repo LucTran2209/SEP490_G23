@@ -42,17 +42,17 @@ namespace BE.Infrastructure.Repositories
 
         public async Task<RentalShop?> GetRentalShopByIdAsync(Guid id)
         {
-            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.UserId == id || rs.Id == id);
+            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Id == id);
         }
 
         public async Task<RentalShop?> GetRentalShopByNotActiveAsync(Guid Id)
         {
-            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Id == Id && rs.IsActive == false);
+            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Id == Id && rs.Status == 0);
         }
 
         public async Task<RentalShop?> GetAllRentalShopByNotActiveAsync()
         {
-            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.IsActive == false);
+            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Status == 0);
         }
     }
 }

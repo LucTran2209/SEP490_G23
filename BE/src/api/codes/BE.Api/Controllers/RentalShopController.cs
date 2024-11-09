@@ -63,19 +63,19 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> GetAllRentalShopByNotActiveAsync()
         {
             var output = await rentalShopService.GetAllRentalShopByNotActiveAsync();
-            return Ok(output);
+            return ReturnFollowStatusCode(output);
         }
         [HttpGet("RequestShopById")]
         public async Task<IActionResult> GetRentalShopByNotActiveAsync(Guid id)
         {
             var output = await rentalShopService.GetRentalShopByNotActiveAsync(id);
-            return Ok(output);
+            return ReturnFollowStatusCode(output);
         }
         [HttpPut("RequestShopById")]
         public async Task<IActionResult> ActiveRentalShopAsync(ActiveRentalShopInputDto input)
         {
             var output = await rentalShopService.ActiveRentalShopAsync(input);
-            return Ok(output);
+            return ReturnFollowStatusCode(output);
         }
     }
 }
