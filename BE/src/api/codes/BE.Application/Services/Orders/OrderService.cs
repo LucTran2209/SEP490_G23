@@ -1,5 +1,6 @@
 ﻿using BE.Application.Services.Orders.OrderServiceInputDto;
 using BE.Application.Services.Orders.OrderServiceOutputDto;
+using Newtonsoft.Json;
 
 namespace BE.Application.Services.Orders
 {
@@ -23,9 +24,11 @@ namespace BE.Application.Services.Orders
         {
             await createOrderValidator.ValidateAndThrowAsync(inputDto);
 
+            inputDto.OrderDetails = JsonConvert.DeserializeObject<List<ProductOrder>>(inputDto.OrderDetailsJson!);
+
             var order = _mapper.Map<Order>(inputDto);
 
-            order.Code = DateTime.Now.Ticks.ToString() + "E";
+            order.Code = DateTime.Now.Ticks.ToString() + "E";            
 
             order.MortgagePaperImageFont = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageFont!);
             order.MortgagePaperImageBack = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageBack!);
@@ -135,13 +138,15 @@ namespace BE.Application.Services.Orders
             var myOrders = unitOfWork.OrderRepository.GetMyOrder(user.Id);
 
             myOrders = myOrders.Filter(inputDto.Search, o => o.Code!.Contains(inputDto.Search)
-                                                            || o.OrderDetails!.Any(od => od.Product.ProductName!.Contains(inputDto.Search)));
+                                                            || o.OrderDetails!.Any(od => od.Product.ProductName!.Contains(inputDto.Search)))
+                ;
+                                //.Filter(inputDto.NearDays.ToString(), o => o.)
 
             var result = await myOrders.ToPageList(inputDto)
                                        .ToPageResult(await myOrders.CountAsync(), inputDto,
                                                     o => _mapper.Map<GetListMyOrderOutputDto>(o));
 
-            return new ResultService    
+            return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
