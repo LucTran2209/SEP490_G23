@@ -179,7 +179,6 @@ export class FormUserComponent{
       // if (capitalizedKey === 'AvatarPersonal' && value) {
       //   // Append file if AvatarPersonal is selected
       //   formData.append(capitalizedKey, value as File, (value as File).name);
-      //   console.log(value);
       // } else if (value !== null && value !== undefined) {
       //   // Append other fields as strings
       //   formData.append(capitalizedKey, value.toString());

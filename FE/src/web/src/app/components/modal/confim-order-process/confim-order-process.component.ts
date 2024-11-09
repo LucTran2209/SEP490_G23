@@ -97,7 +97,6 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   onOkClick(): void {
-    debugger;
     if (!this.userCurrent) {
       this.toastMS.handleError('Bạn cần đăng nhập để tạo đơn thuê!', 401);
       this.router.navigateByUrl('/auth/login');
@@ -181,16 +180,15 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
       )
       .subscribe((res) => {
         if (res) {
-          console.log('time',res[3]);
-      
           const formData = new FormData();
           const formValues = res[5].value;
-          const orderDetails = res[0].map((item) => ({
+          const orderDetailsJson = JSON.stringify(res[0].map((item) => ({
             id: null as string | null,
             productId: item.productId.toString(),
             orderId: null as string | null,
             quantity: Number(item.quantityRequest),
-          }));
+          })));
+          console.log('orderDetailsJson', orderDetailsJson);
           const orderCreateRequest: OrderCreateRequest = {
             userId: res[4].UserId || '',
             note: formValues.note,
@@ -198,7 +196,8 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             recipientEmail: formValues.recipientEmail,
             recipientName: formValues.recipientName,
             recipientPhoneNumber: formValues.recipientPhoneNumber,
-            orderDetails: orderDetails,
+            orderDetails: "",
+            orderDetailsJson: orderDetailsJson,
             voucherId: '',
             totalDepositPrice: Number(res[1]),
             totalRentPrice: Number(res[2]),
@@ -209,12 +208,12 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             mortgagePaperImageBack: res[6][1],
           };
 
-          console.log('>>>> line 206', orderCreateRequest);
           Object.entries(orderCreateRequest).forEach(([key, value]) => {
             const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
             if (
               capitalizedKey === 'MortgagePaperImageFont' ||
-              capitalizedKey === 'MortgagePaperImageBack'
+              capitalizedKey === 'MortgagePaperImageBack' || 
+              capitalizedKey === 'OrderDetailsJson'
             ) {
               formData.append(capitalizedKey, value);
             } else {

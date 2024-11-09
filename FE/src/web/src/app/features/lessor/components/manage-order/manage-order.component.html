@@ -44,7 +44,7 @@
           <td nzCellControl="maDonHang">{{ data.code ?? i + 1 }}</td>
           <td nzCellControl="ngayTao">{{ data.startDate }}</td>
           <td nzCellControl="nguoiThue">{{ data.user.userName }}</td>
-          <td nzCellControl="soDienThoai">{{ data.user.phoneNumber }}</td>
+          <td nzCellControl="soDienThoai">{{ data.recipientPhoneNumber }}</td>
           <td nzCellControl="thoiGianThue">
             {{ convertRentalDay(data.startDate, data.endDate) }} ngày
           </td>
@@ -56,10 +56,14 @@
           </td>
           <td nzCellControl="noiDung">{{ data.note }}</td>
           <td nzCellControl="trangThaiDonHang">
-            <app-status-label
+            @if(data.orderStatuses.length !== 0){
+              <app-status-label
               [label]="convertStatus(data.orderStatuses[0].status)"
               [statusType]="data.orderStatuses[0].status"
             />
+            }@else {
+              UNKNOWN
+            }
           </td>
         </tr>
       </tbody>

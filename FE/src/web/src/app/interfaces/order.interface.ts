@@ -78,34 +78,8 @@ export interface OrderCreateRequest {
   mortgagePaperType: string;
   mortgagePaperImageFont: File;
   mortgagePaperImageBack: File;
-  orderDetails: {
-    id: string | null;
-    productId: string;
-    orderId: string | null;
-    quantity: number;
-  }[];
-}
-export interface OrderCreateRequest {
-  userId: string;
-  voucherId: string | null;
-  recipientName: string;
-  recipientPhoneNumber: string;
-  recipientEmail: string;
-  recipientAddress: string;
-  startDate: string;
-  endDate: string;
-  totalRentPrice: number;
-  totalDepositPrice: number;
-  note: string;
-  mortgagePaperType: string;
-  mortgagePaperImageFont: File;
-  mortgagePaperImageBack: File;
-  orderDetails: {
-    id: string | null;
-    productId: string;
-    orderId: string | null;
-    quantity: number;
-  }[];
+  orderDetailsJson: string;
+  orderDetails: null | string
 }
 
 export interface OrderDetailResponse {
