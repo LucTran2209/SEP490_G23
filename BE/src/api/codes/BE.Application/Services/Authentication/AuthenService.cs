@@ -74,7 +74,7 @@ namespace BE.Application.Services.Authentication
 
         public async Task<ResultService> ForgotPasswordAsync(ForgotPasswordInputDto inputDto)
         {
-            await forgotPasswordValidator.ValidateAsync(inputDto);
+            await forgotPasswordValidator.ValidateAndThrowAsync(inputDto);
 
             var user = await unitOfWork.UserRepository.GetsUserByUserEmailAsync(inputDto.Email);
 
