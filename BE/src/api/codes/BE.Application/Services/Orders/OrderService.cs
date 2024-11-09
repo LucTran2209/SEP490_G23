@@ -34,9 +34,13 @@ namespace BE.Application.Services.Orders
             {
                 OrderId = order.Id,
                 Message = string.Empty,
-                Status = RequestStatus.Order,
+                Status = RequestStatus.WaitApprove,
                 FileAttach = null
             };
+
+            order.OrderStatuses = new List<OrderStatus>();
+
+            order.OrderStatuses.Add(orderStatus);
 
             await unitOfWork.OrderRepository.AddAsync(order);
 
@@ -115,7 +119,7 @@ namespace BE.Application.Services.Orders
             var res = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                                  .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
                                  .ToPageList(inputDto)
-                                 .ToPageResult(await query.CountAsync(), inputDto, 
+                                 .ToPageResult(await query.CountAsync(), inputDto,
                                  o => _mapper.Map<GetListOrderByUserOutputDto>(o));
 
             return new ResultService
@@ -155,7 +159,7 @@ namespace BE.Application.Services.Orders
                                .Filter(inputDto.PhoneNumber, o => o.RecipientPhoneNumber!.Contains(inputDto.PhoneNumber ?? string.Empty))
                                .Filter(inputDto.StartDate.ToString(), o => o.StartDate >= inputDto.StartDate)
                                .Filter(inputDto.EndDate.ToString(), o => o.EndDate <= inputDto.EndDate);
-                               
+
 
             var result = await myOrders.ToPageList(inputDto)
                                        .ToPageResult(await myOrders.CountAsync(), inputDto,
