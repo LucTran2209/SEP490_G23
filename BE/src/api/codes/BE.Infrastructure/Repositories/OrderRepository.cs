@@ -43,6 +43,22 @@ namespace BE.Infrastructure.Repositories
             return query;
         }
 
+        public Task<Order?> GetDetailOrderAsync(Guid orderId)
+        {
+            var order = context.Orders.Include(o => o.User)
+                                      .Include(o => o.OrderStatuses)
+                                      .Include(o => o.OrderDetails!)
+                                        .ThenInclude(o => o.Product)
+                                            .ThenInclude(o => o.RentalShop)
+                                      .Include(o => o.OrderDetails!)
+                                        .ThenInclude(o => o.Product)
+                                        .ThenInclude(o => o.ProductImages)
+                                      .OrderBy(o => o.CreatedDate)
+                                      .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            return order;
+        }
+
         public IQueryable<Order> GetMyOrder(Guid? id)
         {
             var query = context.Orders.Include(o => o.User)

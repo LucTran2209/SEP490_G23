@@ -7,15 +7,18 @@ namespace BE.Application.Services.Orders
     public class OrderService : BaseService, IOrderService
     {
         private readonly IValidator<CreateOrderInputDto> createOrderValidator;
+        private readonly IValidator<GetOrderDetailInputDto> _getOrderDetailInputDto;
         private readonly IMapper _mapper;
         private readonly IAzureService _azureService;
 
         public OrderService(IUnitOfWork unitOfWork, IUser user,
             IMapper mapper,
             IValidator<CreateOrderInputDto> createOrderValidator,
+            IValidator<GetOrderDetailInputDto> getOrderDetailInputDto,
             IAzureService azureService) : base(unitOfWork, user)
         {
             this.createOrderValidator = createOrderValidator;
+            _getOrderDetailInputDto = getOrderDetailInputDto;
             _mapper = mapper;
             _azureService = azureService;
         }
@@ -175,6 +178,21 @@ namespace BE.Application.Services.Orders
                 StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
                 Datas = result
+            };
+        }
+
+        public async Task<ResultService> GetDetailOrderAsync(GetOrderDetailInputDto inputDto)
+        {
+            await _getOrderDetailInputDto.ValidateAndThrowAsync(inputDto);
+
+            var order = await unitOfWork.OrderRepository.GetDetailOrderAsync(inputDto.OrderId);
+
+            var result = _mapper.Map<GetListRentalShopOrderOutputDto>(order);
+
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Datas= result
             };
         }
     }

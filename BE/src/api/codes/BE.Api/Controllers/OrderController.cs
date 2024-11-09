@@ -64,5 +64,14 @@ namespace BE.Api.Controllers
 
             return ReturnFollowStatusCode(output);
         }
+
+        [HttpGet("detail/{orderId}")]
+        [Authorize]
+        public async Task<IActionResult> GetDetailOrderAsync(Guid orderId)
+        {
+            var output = await orderService.GetDetailOrderAsync(new GetOrderDetailInputDto { OrderId = orderId});
+
+            return ReturnFollowStatusCode(output);
+        }
     }
 }
