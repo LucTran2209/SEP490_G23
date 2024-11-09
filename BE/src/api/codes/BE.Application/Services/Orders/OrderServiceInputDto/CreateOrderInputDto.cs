@@ -1,5 +1,6 @@
 ﻿using BE.Application.Common.Dtos;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Application.Services.Orders.OrderServiceInputDto
 {
@@ -19,7 +20,8 @@ namespace BE.Application.Services.Orders.OrderServiceInputDto
         public MortgagePaperType MortgagePaperType { get; set; }
         public IFormFile? MortgagePaperImageFont { get; set; }
         public IFormFile? MortgagePaperImageBack { get; set; }
-        public virtual List<OrderDetailDto>? OrderDetails { get; set; }
+        public string? OrderDetailsJson { get; set; }
+        public IEnumerable<ProductOrder>? OrderDetails { get; set; }
 
         public class Mapping : Profile
         {
@@ -35,8 +37,14 @@ namespace BE.Application.Services.Orders.OrderServiceInputDto
                         opt => opt.Ignore()
                     );
 
-                CreateMap<OrderDetailDto, OrderDetail>();
+                CreateMap<ProductOrder, OrderDetail>();
             }
         }
+    }
+
+    public class ProductOrder
+    {
+        public Guid ProductId { get; set; }
+        public int Quantity { get; set; }
     }
 }
