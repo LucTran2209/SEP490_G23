@@ -1,6 +1,4 @@
-﻿using BE.Application.Common.Results;
-using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
-using System.Threading.Tasks;
+﻿using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
 
 namespace BE.Application.Abstractions.ServiceInterfaces
 {
@@ -11,5 +9,8 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> UpdateAsync(UpdateRentalShopInputDto inputDto, Guid id);
         Task<ResultService> GetRentalShopDetailByIdAsync(Guid id);
         Task<ResultService> DeleteAsync(Guid id);
+        Task<ResultService> GetRentalShopByNotActiveAsync(Guid id);
+        Task<ResultService> GetAllRentalShopByNotActiveAsync();
+        Task<ResultService> ActiveRentalShopAsync(ActiveRentalShopInputDto input);
     }
 }

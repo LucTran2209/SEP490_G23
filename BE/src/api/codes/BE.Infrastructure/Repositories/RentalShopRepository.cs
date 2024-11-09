@@ -44,5 +44,15 @@ namespace BE.Infrastructure.Repositories
         {
             return await context.RentalShops.FirstOrDefaultAsync(rs => rs.UserId == id || rs.Id == id);
         }
+
+        public async Task<RentalShop?> GetRentalShopByNotActiveAsync(Guid Id)
+        {
+            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Id == Id && rs.IsActive == false);
+        }
+
+        public async Task<RentalShop?> GetAllRentalShopByNotActiveAsync()
+        {
+            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.IsActive == false);
+        }
     }
 }
