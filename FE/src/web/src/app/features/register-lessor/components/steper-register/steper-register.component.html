@@ -1,7 +1,9 @@
-<section class="h-screen flex flex-col items-center justify-center">
-  <div class="p-6 min-w-[700px]">
-    <div class="">
-      <p class="text-gray-500 text-lg font-semibold text-center uppercase py-3">
+<section
+  class="h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-white"
+>
+  <div class="bg-white p-10 min-w-[700px] rounded-xl shadow-lg my-8">
+    <div class="mb-6">
+      <p class="text-gray-600 text-lg font-semibold text-center uppercase py-3">
         Hoàn thành các bước sau để trở thành người cho thuê
       </p>
 
@@ -28,14 +30,15 @@
 </section>
 
 <ng-template #stepProcess>
-  @if (current === 0) {
-  <app-step-identify (nextStep)="next()" (prevStep)="pre()" />
-  <!-- <app-step-info (nextStep)="next()" /> -->
+  <ng-container *ngIf="current === 0">
+    <app-step-info (nextStep)="next()" />
+  </ng-container>
 
-  } @if (current === 1) {
-  <app-step-identify (nextStep)="next()" (prevStep)="pre()" />
+  <ng-container *ngIf="current === 1">
+    <app-step-identify (nextStep)="next()" (prevStep)="pre()" />
+  </ng-container>
 
-  } @if (current === 2) {
-  <app-step-tax (nextStep)="done()" (prevStep)="pre()" />
-  }
+  <ng-container *ngIf="current === 2">
+    <app-step-tax (nextStep)="done()" (prevStep)="pre()" />
+  </ng-container>
 </ng-template>

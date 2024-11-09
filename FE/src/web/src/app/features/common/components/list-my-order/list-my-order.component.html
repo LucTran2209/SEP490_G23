@@ -220,7 +220,6 @@
   </ng-template>
 </ng-template> -->
 
-
 <ng-container *ngIf="orderError; else ordersContent">
   <div class="flex justify-center">
     <nz-result
@@ -236,10 +235,14 @@
     <h1 class="text-2xl">DANH SÁCH THUÊ CỦA TÔI</h1>
     <nz-tabset class="mt-2">
       <ng-container *ngFor="let tab of orderTabs">
-        <nz-tab [nzTitle]="tab.title">
+        <nz-tab [nzTitle]="tab.title" (nzSelect)="onTabChange(tab.status)">
           <div class="mt-6 flex justify-between">
             <div>
-              <nz-input-group nzSearch [nzPrefix]="suffixIconButton" class="grow">
+              <nz-input-group
+                nzSearch
+                [nzPrefix]="suffixIconButton"
+                class="grow"
+              >
                 <input
                   class="w-input"
                   type="text"
@@ -262,8 +265,8 @@
               </ng-template>
             </div>
             <nz-select [(ngModel)]="selectedFilter" style="width: 200px">
-              <nz-option nzValue="7days" nzLabel="7 ngày gần đây"></nz-option>
-              <nz-option nzValue="30days" nzLabel="30 ngày gần đây"></nz-option>
+              <nz-option [nzValue]="7" nzLabel="7 ngày gần đây"></nz-option>
+              <nz-option [nzValue]="30" nzLabel="30 ngày gần đây"></nz-option>
             </nz-select>
           </div>
 
