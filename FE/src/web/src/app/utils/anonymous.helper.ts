@@ -1,5 +1,7 @@
 import { concatMap, delay, map, Observable, of, range, takeWhile } from 'rxjs';
 import { ItimeClock } from '../interfaces/anonymous.interface';
+import { OrderStatus } from '../interfaces/order.interface';
+import { ORDER_STATUS } from './constant';
 
 export function encodeBase64(str: string) {
   const bytes = new TextEncoder().encode(str);
@@ -88,9 +90,9 @@ export function generateRandomColor(): string {
 }
 
 /**
- * 
- * @param params 
- * @returns 
+ *
+ * @param params
+ * @returns
  * @description filter field requried not null, so if it null, we'll skip that field
  */
 export const cleanParams = (params: {
@@ -103,13 +105,32 @@ export const cleanParams = (params: {
       clearnParams[key] = value;
     }
   });
-  return clearnParams
+  return clearnParams;
 };
-
 
 export const generateCodeOrder = (): string => {
   const randValue = new Uint32Array(1);
   crypto.getRandomValues(randValue);
-  const ordeCode = randValue[0].toString(16).padStart(8,'0').toUpperCase();
+  const ordeCode = randValue[0].toString(16).padStart(8, '0').toUpperCase();
   return ordeCode;
-}
+};
+
+export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
+  if (orderstatus === ORDER_STATUS.PENDING_APPROVAL) {
+    return 'Chờ xác nhận';
+  }
+  if (orderstatus === ORDER_STATUS.DEPOSIT_REFUND) {
+    return 'Đã thanh toán cọc';
+  }
+  if (orderstatus === ORDER_STATUS.PENDING_DELIVERY) {
+    return 'Chờ giao hàng';
+  }
+  if (orderstatus === ORDER_STATUS.PENDING_PAYMENT) {
+    return 'Chờ thanh toán';
+  }
+  if (orderstatus === ORDER_STATUS.RECEIVED) {
+    return 'Đã nhận hàng';
+  } else {
+    return 'Hoàn tiền';
+  }
+};
