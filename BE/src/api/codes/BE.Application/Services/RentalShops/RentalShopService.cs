@@ -133,5 +133,76 @@ namespace BE.Application.Services.RentalShops
                 Datas = result
             };
         }
+
+        public async Task<ResultService> GetRentalShopByNotActiveAsync(Guid id)
+        {
+            var rentalShop = await unitOfWork.RentalShopRepository.GetRentalShopByNotActiveAsync(id);
+            if (rentalShop == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = (int)HttpStatusCode.NotFound,
+                    Message = "Not have rental shop application."
+                };
+            }
+            var result = _mapper.Map<GetRentalShopDetailByIdOuputDto>(rentalShop);
+
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "Rental shop detail retrieved successfully.",
+                Datas = result
+            };
+        }
+
+        public async Task<ResultService> GetAllRentalShopByNotActiveAsync()
+        {
+            var rentalShop = await unitOfWork.RentalShopRepository.GetAllRentalShopByNotActiveAsync();
+            if (rentalShop == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = (int)HttpStatusCode.NotFound,
+                    Message = "Not have rental shop application."
+                };
+            }
+            var result = _mapper.Map<GetRentalShopDetailByIdOuputDto>(rentalShop);
+
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "Rental shop detail retrieved successfully.",
+                Datas = result
+            };
+        }
+
+        public async Task<ResultService> ActiveRentalShopAsync(ActiveRentalShopInputDto input)
+        {
+            var rentalShop = await unitOfWork.RentalShopRepository.GetRentalShopByNotActiveAsync(input.Id);
+            if (rentalShop == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = (int)HttpStatusCode.NotFound,
+                    Message = "Not have rental shop application."
+                };
+            }
+            if (input.IsActive == true)
+            {
+                rentalShop.IsActive = input.IsActive;
+                await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
+            }
+            else
+            {
+                rentalShop.IsDeleted = true;
+                await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
+            }
+            await unitOfWork.SaveChangesAsync();
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "successfully.",
+            };
+        }
     }
 }
