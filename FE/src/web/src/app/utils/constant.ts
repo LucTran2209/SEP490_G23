@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "../configs/status-code.config";
+import { HttpStatusCode } from '../configs/status-code.config';
 
 export enum STRING {
   ID = 'id',
@@ -21,34 +21,35 @@ export enum STRING {
   EMAIL = 'email',
 }
 
-
 export const ErrorMessages: Record<HttpStatusCode, string> = {
-  [HttpStatusCode.UNKNOWN_ERROR]: "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng của bạn.",
-  [HttpStatusCode.BAD_REQUEST]: "Yêu cầu không hợp lệ. Vui lòng kiểm tra và thử lại.",
-  [HttpStatusCode.UNAUTHORIZED]: "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.",
-  [HttpStatusCode.FORBIDDEN]: "Bạn không có quyền truy cập vào tài nguyên này.",
-  [HttpStatusCode.NOT_FOUND]: "Không tìm thấy tài nguyên yêu cầu.",
-  [HttpStatusCode.CONFLICT]: "Xung đột dữ liệu. Vui lòng kiểm tra thông tin.",
-  [HttpStatusCode.INTERNAL_SERVER_ERROR]: "Lỗi hệ thống. Vui lòng thử lại sau.",
-  [HttpStatusCode.BAD_GATEWAY]: "Lỗi kết nối. Vui lòng thử lại sau.",
-  [HttpStatusCode.SERVICE_UNAVAILABLE]: "Hệ thống đang bảo trì. Vui lòng quay lại sau.",
-  [HttpStatusCode.GATEWAY_TIMEOUT]: "Kết nối đến máy chủ bị gián đoạn. Vui lòng thử lại.",
-  [HttpStatusCode.OK]: "", 
-  [HttpStatusCode.CREATED]: "Tạo mới thành công!",
-  [HttpStatusCode.NO_CONTENT]: "Không có dữ liệu để hiển thị.",
+  [HttpStatusCode.UNKNOWN_ERROR]:
+    'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng của bạn.',
+  [HttpStatusCode.BAD_REQUEST]:
+    'Yêu cầu không hợp lệ. Vui lòng kiểm tra và thử lại.',
+  [HttpStatusCode.UNAUTHORIZED]:
+    'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.',
+  [HttpStatusCode.FORBIDDEN]: 'Bạn không có quyền truy cập vào tài nguyên này.',
+  [HttpStatusCode.NOT_FOUND]: 'Không tìm thấy tài nguyên yêu cầu.',
+  [HttpStatusCode.CONFLICT]: 'Xung đột dữ liệu. Vui lòng kiểm tra thông tin.',
+  [HttpStatusCode.INTERNAL_SERVER_ERROR]: 'Lỗi hệ thống. Vui lòng thử lại sau.',
+  [HttpStatusCode.BAD_GATEWAY]: 'Lỗi kết nối. Vui lòng thử lại sau.',
+  [HttpStatusCode.SERVICE_UNAVAILABLE]:
+    'Hệ thống đang bảo trì. Vui lòng quay lại sau.',
+  [HttpStatusCode.GATEWAY_TIMEOUT]:
+    'Kết nối đến máy chủ bị gián đoạn. Vui lòng thử lại.',
+  [HttpStatusCode.OK]: '',
+  [HttpStatusCode.CREATED]: 'Tạo mới thành công!',
+  [HttpStatusCode.NO_CONTENT]: 'Không có dữ liệu để hiển thị.',
 };
-
-
-
 
 export const BASE_AVATAR_IMG =
   'https://firebasestorage.googleapis.com/v0/b/sm-ngrx-6e4cd.appspot.com/o/ezgif-1-c7078777f5-removebg-preview%201%20(1).png?alt=media&token=aa4b5717-5708-4bc9-8ffc-24d992c47b48';
 
 export enum USER_ROLE {
-  ADMIN = "Admin",
-  LESSOR = "Lessor",
-  RENTER = "Renter",
-  MODERATOR = "Moderator",
+  ADMIN = 'Admin',
+  LESSOR = 'Lessor',
+  RENTER = 'Renter',
+  MODERATOR = 'Moderator',
 }
 
 export const PERMISSION_ALL = [];
@@ -57,12 +58,11 @@ export const LocalStorageKey = {
   currentUser: 'current_user',
   breadCrumb: 'bread_crumb',
   prevBreadcrumb: 'prev_bread_crumb',
-  orderProcess: "order_process",
-
+  orderProcess: 'order_process',
 };
 export const Sessionkey = {
-  orderProcess: "order_process",
-}
+  orderProcess: 'order_process',
+};
 
 export const REGEX = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -74,3 +74,12 @@ export const REGEX = {
 export const FormatDate = {
   DDMMYYYY: 'dd/MM/YYYY',
 };
+
+export enum ORDER_STATUS {
+  PENDING_APPROVAL = 0,
+  PENDING_PAYMENT = 1,
+  PENDING_DELIVERY = 2,
+  RECEIVED = 3,
+  REFUND = 4,
+  DEPOSIT_REFUND = 5,
+}

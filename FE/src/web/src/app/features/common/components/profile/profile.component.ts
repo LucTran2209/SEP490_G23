@@ -1,27 +1,20 @@
 import {
   Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  signal,
-  TemplateRef,
-  ViewChild,
+  OnInit
 } from '@angular/core';
-import {
-  ProfileResultService,
-  UserInputDto,
-  UserOutputDto,
-  UserResultService,
-  UserUpdateInputDto,
-} from '../../../../interfaces/user.interface';
-import { UserService } from '../../../../services/user.service';
-import { UserProfileService } from '../../../../services/user-profile.service';
 import { Router } from '@angular/router';
-import { ImageFileService } from '../../../../services/image-file.service';
-import { LoadingService } from '../../../../services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import {
+  ProfileResultService,
+  UserOutputDto,
+  UserUpdateInputDto
+} from '../../../../interfaces/user.interface';
+import { ImageFileService } from '../../../../services/image-file.service';
+import { LoadingService } from '../../../../services/loading.service';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { UserProfileService } from '../../../../services/user-profile.service';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-profile',

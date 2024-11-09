@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { OptionSelect } from '../../../../configs/anonymous.config';
+import { ORDER_STATUS } from '../../../../utils/constant';
+import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 
 @Component({
   selector: 'app-form-order',
@@ -12,6 +10,34 @@ import {
   styleUrl: './form-order.component.scss',
 })
 export class FormOrderComponent implements OnInit {
+  optionOrderStatus: OptionSelect[] = [
+    {
+      value: ORDER_STATUS.PENDING_APPROVAL,
+      label: convertStatusOrder(ORDER_STATUS.PENDING_APPROVAL),
+    },
+    {
+      value: ORDER_STATUS.PENDING_DELIVERY,
+      label: convertStatusOrder(ORDER_STATUS.PENDING_DELIVERY),
+    },
+    {
+      value: ORDER_STATUS.PENDING_PAYMENT,
+      label: convertStatusOrder(ORDER_STATUS.PENDING_PAYMENT),
+    },
+    {
+      value: ORDER_STATUS.RECEIVED,
+      label: convertStatusOrder(ORDER_STATUS.RECEIVED),
+    },
+    {
+      value: ORDER_STATUS.REFUND,
+      label: convertStatusOrder(ORDER_STATUS.REFUND),
+    },
+    {
+      value: ORDER_STATUS.DEPOSIT_REFUND,
+      label: convertStatusOrder(ORDER_STATUS.DEPOSIT_REFUND),
+    },
+  ];
+
+  
   filterFormOrder: FormGroup<{
     orderCode: FormControl<string | null>;
     orderStatus: FormControl<string | null>;
@@ -20,8 +46,10 @@ export class FormOrderComponent implements OnInit {
     timeRange: FormControl<string[] | null>;
   }>;
 
+  @Output() formValueFilter = new EventEmitter();
+  @Output() resetLoad = new EventEmitter();
   onSubmit() {
-    console.log('form val:', this.filterFormOrder.value);
+    this.formValueFilter.emit(this.filterFormOrder.value);
   }
   resetForm(): void {
     this.filterFormOrder.reset({
@@ -31,6 +59,7 @@ export class FormOrderComponent implements OnInit {
       phoneNumber: '',
       timeRange: [],
     });
+    this.resetLoad.emit();
   }
 
   constructor(private formBuilder: FormBuilder) {

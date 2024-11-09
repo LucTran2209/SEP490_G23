@@ -1,23 +1,28 @@
 <div class="p-5 my-3 bg-white rounded-md">
   <h3 class="text-xl text-[#111]">Danh sách yêu cầu thuê</h3>
   <section class="py-3">
-    <app-form-order />
+    <app-form-order  (resetLoad)="onloadOrder()" (formValueFilter)="onSubmitForm($event)"/>
   </section>
 </div>
 <div class="p-5 my-3 bg-white rounded-md">
   <div class="flex items-center justify-start gap-x-2 pb-3">
     <p class="font-medium">Dữ liệu hiển thị</p>
-    <app-header-table (handleChooseCell)="handleChooseViewCell($event)"/>
+    <app-header-table (handleChooseCell)="handleChooseViewCell($event)" />
   </div>
   <section>
     <nz-table
       [nzCustomColumn]="customColumn"
       [nzScroll]="{ x: '1150px' }"
       #basicTable
-      [nzData]="listOfData"
+      [nzData]="listData"
       [nzBordered]="true"
       [nzPaginationPosition]="'bottom'"
-    >
+      nzShowSizeChanger="true"
+      [nzShowTotal]="showTotal"
+      [nzPageSize]="(pageSize$ | async) ?? 10"
+      [nzPageIndex]="(pageIndex$ | async) ?? 1"
+      [nzTotal]="(pageTotal$ | async) ?? 0"
+      >
       <thead>
         <tr>
           <th nzCellControl="maDonHang">Mã đơn hàng</th>
@@ -29,23 +34,42 @@
           <th nzCellControl="tongTien">Tổng tiền</th>
           <th nzCellControl="noiDung">Nội dung</th>
           <th nzCellControl="trangThaiDonHang">Trạng thái đơn hàng</th>
-          <th nzCellControl="trangThaiThanhToan">Trạng thái thanh toán</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data" (click)="onSelectDetail(data)">
-          <td  nzCellControl="maDonHang">{{ data.maDonHang }}</td>
-          <td  nzCellControl="ngayTao">{{ data.ngayTao }}</td>
-          <td  nzCellControl="nguoiThue">{{ data.nguoiThue }}</td>
-          <td  nzCellControl="soDienThoai">{{ data.soDienThoai }}</td>
-          <td  nzCellControl="thoiGianThue">{{ data.thoiGianThue }}</td>
-          <td  nzCellControl="giaCoc">{{ data.giaCoc }} VND</td>
-          <td  nzCellControl="tongTien">{{ data.tongTien }} VND</td>
-          <td  nzCellControl="noiDung">{{ data.noiDung }}</td>
-          <td  nzCellControl="trangThaiDonHang">{{ data.trangThaiDonHang }}</td>
-          <td  nzCellControl="trangThaiThanhToan">{{ data.trangThaiThanhToan }}</td>
+        <tr
+          *ngFor="let data of basicTable.data; let i = index"
+          (click)="onSelectDetail(data)"
+        >
+          <td nzCellControl="maDonHang">{{ data.code ?? i + 1 }}</td>
+          <td nzCellControl="ngayTao">{{ data.startDate }}</td>
+          <td nzCellControl="nguoiThue">{{ data.user.userName }}</td>
+          <td nzCellControl="soDienThoai">{{ data.user.phoneNumber }}</td>
+          <td nzCellControl="thoiGianThue">
+            {{ convertRentalDay(data.startDate, data.endDate) }} ngày
+          </td>
+          <td nzCellControl="giaCoc">
+            {{ data.totalDepositPrice | currency : "VND" }}
+          </td>
+          <td nzCellControl="tongTien">
+            {{ data.totalRentPrice | currency : "VND" }}
+          </td>
+          <td nzCellControl="noiDung">{{ data.note }}</td>
+          <td nzCellControl="trangThaiDonHang">
+            <app-status-label
+              [label]="convertStatus(data.orderStatuses[0].status)"
+              [statusType]="data.orderStatuses[0].status"
+            />
+          </td>
         </tr>
       </tbody>
     </nz-table>
   </section>
 </div>
+
+<ng-template #showTotal>
+  <div class="text-[14px] font-medium text-[#333]">
+    Hiển thị thứ tự 1- {{ pageSize$ | async }} trong
+    {{ pageTotal$ | async }} kết quả
+  </div>
+</ng-template>

@@ -8,7 +8,7 @@ export interface BaseResponseApi<T> {
 
 export interface BaseResponseApiV2<T> {
   statusCode: number | string;
-  data: BaseResponseRecords<T>;
+  data: BaseResponseRecords<T> ;
   message: string;
 }
 
@@ -24,4 +24,3 @@ export interface BaseResponseAddressApi {
   data_name: string;
   data: Province[] | [];
 }
-

@@ -17,9 +17,9 @@
           formControlName="orderStatus"
           nzPlaceHolder="Chọn một giá trị"
         >
-          <nz-option nzValue="Đang giao" nzLabel="Đang giao"></nz-option>
-          <nz-option nzValue="Thành công" nzLabel="Thành công"></nz-option>
-          <nz-option nzValue="Đang xử lý" nzLabel="Đang xử lý"></nz-option>
+        @for (item of optionOrderStatus; track $index) {
+          <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+        }
         </nz-select>
       </nz-form-control>
     </nz-form-item>
