@@ -16,6 +16,5 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log(">>> line 18 app component");
   }
 }

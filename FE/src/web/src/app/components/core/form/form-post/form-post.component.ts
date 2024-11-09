@@ -44,7 +44,6 @@ export class FormPostComponent implements OnInit{
       controlInstance: `passenger${id}`
     };
     const index = this.listOfControl.push(control);
-    // console.log(this.listOfControl[this.listOfControl.length - 1]);
     // this.validateForm.addControl(
     //   this.listOfControl[index - 1].controlInstance,
     //   this.fb.control('', Validators.required)
@@ -56,7 +55,6 @@ export class FormPostComponent implements OnInit{
     if (this.listOfControl.length > 1) {
       const index = this.listOfControl.indexOf(i);
       this.listOfControl.splice(index, 1);
-      // console.log(this.listOfControl);
       // this.validateForm.removeControl(i.controlInstance);
     }
   }
