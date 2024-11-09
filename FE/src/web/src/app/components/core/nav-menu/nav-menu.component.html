@@ -5,7 +5,7 @@
       nzPlacement="bottomCenter"
       nzTitle="Trang chủ"
       class="uppercase"
-      [routerLink]="['./home']"
+      [routerLink]="['/common/home']"
     ></li>
     <li
       nz-submenu
@@ -14,16 +14,18 @@
       class="uppercase"
     >
       <ul class="">
-          <li
-            nz-menu-group
-            nzTitle="{{ category.categoryName }}"
-            class=""
-            *ngFor="let category of categoryList"
-          >
-            <ul *ngFor="let sub of category.subCategories">
-              <li nz-menu-item (click)="onNavigate(category)">{{ sub.subCategoryName }}</li>
-            </ul>
-          </li>
+        <li
+          nz-menu-group
+          nzTitle="{{ category.categoryName }}"
+          class=""
+          *ngFor="let category of categoryList"
+        >
+          <ul *ngFor="let sub of category.subCategories">
+            <li nz-menu-item (click)="onNavigate(category)">
+              {{ sub.subCategoryName }}
+            </li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li

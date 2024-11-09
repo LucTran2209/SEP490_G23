@@ -7,6 +7,7 @@ import { ProfileResultService } from '../../../../interfaces/user.interface';
 import { LoadingService } from '../../../../services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-my-order',
@@ -14,13 +15,7 @@ import { StatusProcess } from '../../../../interfaces/anonymous.interface';
   styleUrl: './list-my-order.component.scss'
 })
 export class ListMyOrderComponent implements OnInit {
-  selectedFilter = '7days';
-  // searchText1: string = '';
-  // searchText2: string = '';
-  // searchText3: string = '';
-  // searchText4: string = '';
-  // searchText5: string = '';
-  // searchText6: string = '';
+  selectedFilter = 7;
   isVisible : boolean = false;
   username: string = '';
   totalUsers = 0;     
@@ -31,11 +26,15 @@ export class ListMyOrderComponent implements OnInit {
   orderError = false;
   loading = true;
   loading$?: Observable<StatusProcess>;
+  searchText: string = '';
+  statusOrder: number = 0;
   constructor(
     private orderService: OrderService,
     private userService: UserService,
     private userProfileService: UserProfileService,
     private loadingService: LoadingService,
+    private router: Router,
+    private route: ActivatedRoute,
   ){
     this.loading$ = this.loadingService.status$;
   }
@@ -49,7 +48,7 @@ export class ListMyOrderComponent implements OnInit {
   }[] = [
     {
       title: 'CHỜ PHÊ DUYỆT',
-      status: 1,  // status for 'Pending Approval'
+      status: 0,  // status for 'Pending Approval'
       searchText: '',
       orders: [],  // Initialize with an empty array
       ordersNull: true,  // Will be updated later
@@ -57,7 +56,7 @@ export class ListMyOrderComponent implements OnInit {
     },
     {
       title: 'CHỜ THANH TOÁN',
-      status: 2,  // status for 'Pending Payment'
+      status: 1,  // status for 'Pending Payment'
       searchText: '',
       orders: [],
       ordersNull: true,
@@ -65,7 +64,7 @@ export class ListMyOrderComponent implements OnInit {
     },
     {
       title: 'CHỜ GIAO HÀNG',
-      status: 3,  // status for 'Pending Delivery'
+      status: 2,  // status for 'Pending Delivery'
       searchText: '',
       orders: [],
       ordersNull: true,
@@ -73,7 +72,7 @@ export class ListMyOrderComponent implements OnInit {
     },
     {
       title: 'ĐÃ NHẬN HÀNG',
-      status: 4,  // status for 'Delivered'
+      status: 3,  // status for 'Delivered'
       searchText: '',
       orders: [],
       ordersNull: true,
@@ -81,7 +80,7 @@ export class ListMyOrderComponent implements OnInit {
     },
     {
       title: 'CHỜ HOÀN TRẢ',
-      status: 5,  // status for 'Pending Return'
+      status: 4,  // status for 'Pending Return'
       searchText: '',
       orders: [],
       ordersNull: true,
@@ -89,7 +88,7 @@ export class ListMyOrderComponent implements OnInit {
     },
     {
       title: 'HOÀN THÀNH',
-      status: 6,  // status for 'Completed'
+      status: 5,  // status for 'Completed'
       searchText: '',
       orders: [],
       ordersNull: true,
@@ -98,11 +97,19 @@ export class ListMyOrderComponent implements OnInit {
   ];
   ngOnInit() {
     this.loadingService.setLoading();
-      this.loadOrders(this.currentPage, this.pageSize);
+    this.route.queryParams.subscribe(params => {
+      const status = params['filter'] || 1;
+      const filter = params['filter'] || 7;
+      const searchText = params['searchText'] || ''; 
+      this.statusOrder = status;
+      this.selectedFilter = filter;
+      this.searchText = searchText;
+    });
+    this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
   }
-  loadOrders(pageIndex: number, pageSize: number){
+  loadOrders(pageIndex: number, pageSize: number, nearDays: number){
     this.loadingService.setLoading();
-    this.orderService.listMyOrder(pageIndex, pageSize).subscribe({
+    this.orderService.listMyOrder(pageIndex, pageSize, nearDays).subscribe({
       next: (res: OrderResultService) => {
         this.loadingService.setOtherLoading('loaded');
         this.orderList = res.data.items;
@@ -127,6 +134,11 @@ export class ListMyOrderComponent implements OnInit {
     const tab = this.orderTabs.find(tab => tab.status === status);
     if (tab) {
       this.filterOrders(tab);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { status: this.statusOrder, searchText: this.searchText }, // Cập nhật tham số searchText vào URL
+        queryParamsHandling: 'merge'
+      });
     }
   }
 
@@ -142,9 +154,14 @@ export class ListMyOrderComponent implements OnInit {
     tab.orders = filteredOrders;
     tab.ordersNull = filteredOrders.length === 0;
   }
-  // onSearch(){
-
-  // }
+    // Hàm gọi khi chuyển tab, cập nhật tham số `status` trong URL
+    onTabChange(status: number) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { status: this.statusOrder },
+        queryParamsHandling: 'merge' // Giữ lại các tham số khác trong URL
+      });
+    }
   showFeedback(){
     this.isVisible = true;
   }

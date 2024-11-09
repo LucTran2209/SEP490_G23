@@ -11,7 +11,12 @@
       <img
         [src]="avatarPreview"
         alt="Avatar Preview"
-        style="width: 100px; height: auto; border-radius: 50%"
+        style="
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          object-fit: cover;
+        "
       />
     </div>
     <form
@@ -119,12 +124,16 @@
           [nzXs]="24"
           nzErrorTip="Vui lòng nhập ngày sinh hoặc phải trên 18 tuổi!"
         >
-          <input
+          <!-- <input
             nz-input
             type="date"
             formControlName="dateOfBirth"
             nzPlaceHolder="'Chọn ngày sinh'"
-          />
+          /> -->
+          <nz-date-picker
+            class="w-full"
+            formControlName="dateOfBirth"
+          ></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="!isEditMode">

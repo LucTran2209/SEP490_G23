@@ -123,11 +123,24 @@ export class FormUserComponent{
       isActive: true,
     });
   }
-  // onFileChange(event: Event): void {
+  // async onFileChange(event: Event): Promise<void> {
   //   const input = event.target as HTMLInputElement;
   //   if (input?.files && input.files.length > 0) {
   //     const file = input.files[0];
-  //     this.userForm.patchValue({ avatarPersonal: file });
+  //     const reader = new FileReader();
+
+  //     // Convert file to Blob for form
+  //     const blob = new Blob([file], { type: file.type });
+  //     this.userForm.patchValue({ avatarPersonal: blob });
+
+  //     // Generate a URL for the image preview
+  //     reader.onload = () => {
+  //       this.avatarPreview = reader.result; // Set preview URL
+  //     };
+  //     reader.readAsDataURL(file); // Read file as Data URL
+  //   } else {
+  //     this.userForm.patchValue({ avatarPersonal: null });
+  //     this.avatarPreview = null; // Reset preview
   //   }
   // }
   async onFileChange(event: Event): Promise<void> {
@@ -135,19 +148,16 @@ export class FormUserComponent{
     if (input?.files && input.files.length > 0) {
       const file = input.files[0];
       const reader = new FileReader();
-
-      // Convert file to Blob for form
-      const blob = new Blob([file], { type: file.type });
-      this.userForm.patchValue({ avatarPersonal: blob });
-
-      // Generate a URL for the image preview
+  
       reader.onload = () => {
-        this.avatarPreview = reader.result; // Set preview URL
+        this.avatarPreview = reader.result; // Cập nhật ngay ảnh xem trước bằng base64
+        this.userForm.patchValue({ avatarPersonal: file }); // Cập nhật giá trị avatarPersonal trong form
       };
-      reader.readAsDataURL(file); // Read file as Data URL
+  
+      reader.readAsDataURL(file); // Đọc file dưới dạng Data URL
     } else {
       this.userForm.patchValue({ avatarPersonal: null });
-      this.avatarPreview = null; // Reset preview
+      this.avatarPreview = null; // Xóa ảnh xem trước nếu không có tệp nào
     }
   }
   submitForm() {
@@ -197,11 +207,11 @@ export class FormUserComponent{
     } else {
       // Emit new user data with FormData
       this.saveUser.emit(formData as unknown as UserInputDto); // Cast if needed
+      this.userForm.reset({
+        password: '123456789',
+        isActive: true,
+      });
     }
   
-    this.userForm.reset({
-      password: '123456789',
-      isActive: true,
-    });
   }
 }

@@ -19,10 +19,11 @@ export class OrderService {
 
   constructor(private httpClient: AppHttpClientService) { }
 
-  listMyOrder(pageIndex: number, pageSize: number): Observable<OrderResultService>{
+  listMyOrder(pageIndex: number, pageSize: number, nearDays: number): Observable<OrderResultService>{
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
+      NearDays: nearDays.toString(),
     };
     return this.httpClient.get<OrderResultService>(OrderSlug.ListMyOrder.api, params );
   }
