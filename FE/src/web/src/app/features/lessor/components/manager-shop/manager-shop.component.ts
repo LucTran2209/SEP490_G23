@@ -36,6 +36,7 @@ export class ManagerShopComponent  implements OnInit{
   shopid: string = '';
   shopName: string = '';
   searchText: string = '';
+  productListNull = true;
   loading$?: Observable<StatusProcess>;
   alertType: 'success' | 'error' = 'success';
   constructor(private modal: NzModalService, 
@@ -53,45 +54,68 @@ export class ManagerShopComponent  implements OnInit{
   ) {
     this.loading$ = this.loadingService.status$;
   }
+  async showProductModal(prodId?: string) {
+    this.isVisible = true; // Show modal immediately
+    this.isEditMode = !!prodId; // Set edit mode based on prodId
+    this.title = prodId ? 'Cập nhật Sản phẩm' : 'Tạo mới Sản phẩm';
   
-  async showProductModal(prodId?: string){
-    this.isVisible = true;
     if (prodId) {
-      const product = await this.getProductById(prodId);
-      
-      this.currentId = prodId;
-      console.log(this.currentId);
-      
+      // Preload form with initial data while loading images asynchronously
+      const product = this.productList.find(p => p.id === prodId);
       if (product) {
-        this.isEditMode = true;
-        this.productInformation = product;
-        console.log(this.productInformation);
-        this.title = 'Cập nhật Sản phẩm';
-      } else {
-        this.isEditMode = false;
-        this.title = 'Tạo mới Sản phẩm';
+        try {
+          // Fetch images asynchronously and update productInformation
+          const imagess = await this.imageFileService.fetchImagesAsFiles(product.images);
+  
+          this.productInformation = {
+            productName: product.productName,
+            description: product.description,
+            quantity: product.quantity,
+            rentalPrice: product.rentalPrice,
+            depositPrice: product.depositPrice,
+            rentalLimitDays: product.rentalLimitDays,
+            evaluate: product.evaluate,
+            images: imagess
+          };
+          this.currentId = prodId;
+          // Trigger change detection manually to update the template
+          this.cdRef.detectChanges();
+        } catch (error) {
+          console.error('Error fetching images:', error);
+        }
       }
     } else {
-      this.isEditMode = false;
-      this.title = 'Tạo mới Sản phẩm';
+      this.productInformation = {
+        productName: '',
+        description: '',
+        quantity: 0,
+        rentalPrice: 0,
+        depositPrice: 0,
+        rentalLimitDays: 0,
+        evaluate: 0,
+        images: []
+      };
     }
   }
   handleCloseModal(){
     this.isVisible = false;
   }
   ngOnInit(): void {
-    this.userid = this.userProfileService.UserId;
     this.loadingService.setLoading();
+    this.route.params.subscribe(params => {
+      this.shopid = params['id']; // Get rentalShopId from route params
+      if (this.shopid) {
+        this.rentalShopService.getRentalShop(this.shopid).subscribe((res: RentalShopResultService) => {
+          this.shopName = res.data.shopName;
+          this.loadProducts(this.shopid, this.currentPage, this.pageSize);    
+      });
+      }
+    });
     this.route.queryParams.subscribe(params => {
       this.searchText = params['search'] || '';
       this.currentPage = +params['page'] || 1; // Set currentPage from URL or default to 1
       this.loadProducts(this.shopid, this.currentPage, this.pageSize, this.searchText);
-    });
-    this.rentalShopService.getRentalShop(this.userid).subscribe((res: RentalShopResultService) => {
-        this.shopid = res.data.id;
-        this.shopName = res.data.shopName;
-        this.loadProducts(this.shopid, this.currentPage, this.pageSize);
-    });
+    }); 
     this.title = 'Thông tin Thiết Bị';
   }
   
@@ -99,6 +123,7 @@ export class ManagerShopComponent  implements OnInit{
     this.loadingService.setLoading();
     this.productService.listProductByShop(rentalShopId, pageIndex, pageSize, search).subscribe((res: ProductResultService) =>{
       this.productList = res.data.items;
+      this.productListNull = !this.productList || this.productList.length === 0;
       this.totalProducts = res.data.totalCount;
       this.loadingService.setOtherLoading('loaded');
       console.log(res)
@@ -128,12 +153,7 @@ export class ManagerShopComponent  implements OnInit{
           
         },
         error: (error) => {
-          this.alertMessage = 'Lưu sản phẩm thất bại!';
-          this.showAlert = true;
-          this.alertType = 'error';
-          setTimeout(() => {
-            this.showAlert = false;
-          }, 3000);
+          this.messageService.handleError('Lưu sản phẩm thất bại!');
           console.error('Failed to create Product');
         }
       });
@@ -146,13 +166,7 @@ export class ManagerShopComponent  implements OnInit{
         this.loadProducts(this.shopid, this.currentPage, this.pageSize);
       },
       error: () => {
-        this.alertMessage = 'Cập nhật sản phẩm thất bại!';
-        this.alertType = 'error';
-        this.showAlert = true;
-        setTimeout(() => {
-          this.handleCloseModal();
-          this.showAlert = false;
-        }, 5000);
+        this.messageService.handleError('Cập nhật sản phẩm thất bại!');
       }
     });
 
@@ -164,23 +178,5 @@ export class ManagerShopComponent  implements OnInit{
     queryParamsHandling: 'merge', // This will merge with existing parameters
   });
     this.loadProducts(this.shopid, this.currentPage,this.pageSize, this.searchText);
-  }
-  async getProductById(productId: string): Promise<UpdateProductInputDto | undefined> {
-    const product = this.productList.find(product => product.id === productId);
-    this.currentId = productId;
-    if (product) {
-      return {
-        productName: product.productName,
-        description: product.description,
-        quantity: product.quantity,
-        rentalPrice: product.rentalPrice,
-        depositPrice: product.depositPrice,
-        rentalLimitDays: product.rentalLimitDays,
-        evaluate: product.evaluate,
-        // images: imageFiles
-        images: await this.imageFileService.fetchImagesAsFiles(product.images)
-      };
-    }
-    return undefined;
   }
 }

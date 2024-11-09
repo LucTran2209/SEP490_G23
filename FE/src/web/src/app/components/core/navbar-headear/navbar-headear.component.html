@@ -54,7 +54,7 @@
           <li
             nz-menu-item
             class="p-3 uppercase text-center menu-item"
-            *ngIf="userRole === USERROLE.LESSOR"
+            *ngIf="hasLessorRole()"
             [routerLink]="['../lessor/shop']"
           >
             Cửa Hàng Của Tôi

@@ -37,7 +37,7 @@ export interface UpdateProductInputDto {
   images: (File | string)[];
 }
 export interface ProductResultService {
-  statusCode: string;
+  statusCode: number;
   message: string;
   data: {
     items: ProductOutputDto[];

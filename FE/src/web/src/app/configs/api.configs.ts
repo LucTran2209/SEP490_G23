@@ -142,15 +142,15 @@ export const OrderSlug = {
     title: 'Add Order | ERMS',
     api: 'api/Order',
   },
-  ListOrder: {
-    label: 'List Order',
-    title: 'List Order | ERMS',
-    api: 'api/Order',
-  },
   ListOrderLessor: {
     label: 'List Of Lessor Order',
     title: 'List Of Lessor Order | ERMS',
     api: 'api/Order/list',
+  },
+  ListMyOrder: {
+    label: 'List Order',
+    title: 'List Order | ERMS',
+    api: 'api/Order/my',
   },
   GetOrder: {
     label: 'View Order',

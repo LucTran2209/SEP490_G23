@@ -34,8 +34,8 @@ const routes: Routes = [
         path: 'order',
         children: [
           { path: '', component: ListMyOrderComponent },
-          // { path: 'order-detail/:id', component: MyOrderDetailComponent },
-          { path: 'order-detail', component: MyOrderDetailComponent },
+          { path: 'order-detail/:id', component: MyOrderDetailComponent },
+          // { path: 'order-detail', component: MyOrderDetailComponent },
       ]
       },
     ]

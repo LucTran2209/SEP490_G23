@@ -19,6 +19,7 @@ export class UserNavbarHeaderComponent implements OnInit {
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
   avatarPersonal: string = '';
+  rentalShopId: string = '';
 
 
   constructor(
@@ -31,6 +32,7 @@ export class UserNavbarHeaderComponent implements OnInit {
     this.handleAssginInfo();
     this.checkRole();
     this.avatarPersonal = this.userProfileService.avatar;
+    this.rentalShopId = this.userProfileService.rentalshopId;
   }
 
   onAvatarClick(): void {
@@ -64,6 +66,13 @@ export class UserNavbarHeaderComponent implements OnInit {
     // Handle the case where role is undefined or invalid if needed
     console.warn('Invalid or undefined user role');
   }
+  }
+  hasLessorRole(): boolean {
+    const role = this.userProfileService.roleCurrentUser;
+    if (Array.isArray(role)) {
+      return role.includes(USER_ROLE.LESSOR);
+    }
+    return role === USER_ROLE.LESSOR;
   }
 
 }

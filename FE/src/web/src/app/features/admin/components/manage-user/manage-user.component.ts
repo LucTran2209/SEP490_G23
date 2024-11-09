@@ -10,6 +10,9 @@ import * as AdminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 import { selectLoading, selectUsers } from '../../state/admin.selectors';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { LoadingService } from '../../../../services/loading.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
 @Component({
   selector: 'app-manage-user',
   templateUrl: './manage-user.component.html',
@@ -39,8 +42,8 @@ export class ManageUserComponent implements OnInit {
   visibleGender = false;
   visibleDateOfBirth = false;
   selectedGender: string[] = [];
-  userResult$!: Observable<UserOutputDto[]>;
-  loading$!: Observable<boolean>;
+  loading$?: Observable<StatusProcess>;
+  isloading = false;
   searchFullName: string = '';
   searchEmail: string = '';
   searchPhoneNumber: string = '';
@@ -57,11 +60,11 @@ export class ManageUserComponent implements OnInit {
     private storageService: StorageService,
     private cdRef: ChangeDetectorRef,
     private store: Store<FeatureAppState>,
-    private message: NzMessageService,
+    private messageService: MessageResponseService,
+    private loadingService: LoadingService,
   ) 
   {
-    this.userResult$ = this.store.select(selectUsers);
-    this.loading$ = this.store.select(selectLoading);
+    this.loading$ = this.loadingService.status$;
   }
   
   ngOnInit(): void{
@@ -73,11 +76,12 @@ export class ManageUserComponent implements OnInit {
   }
   errorMessage: string = '';
   loadUsers(pageIndex: number, pageSize: number, FullName?: string, Email?: string, PhoneNumber?: string, Address?: string, Gender?: string, DateOfBirth?: string){
-    this.loading = true;
+    this.isloading = true;
     this.userService.listUser(pageIndex, pageSize, FullName, Email, PhoneNumber, Address, Gender, DateOfBirth).subscribe((res: UserResultService) =>{
       this.userList = res.data.items;
       this.totalUsers = res.data.totalCount;
-      this.loading = false;
+      this.isloading = false;
+      this.loadingService.setOtherLoading('loaded');
       console.log(res)
     });
   }
@@ -112,7 +116,7 @@ export class ManageUserComponent implements OnInit {
 
     this.userService.addUser(userData).subscribe({
       next: (response) => {
-        this.message.success('Tạo Tài Khoản Mới Thành Công!');
+        this.messageService.showSuccess('Tạo Tài Khoản Mới Thành Công!', 3000);
         this.handleCloseModal();
         this.loadUsers(this.currentPage, this.pageSize);
         
@@ -142,7 +146,7 @@ export class ManageUserComponent implements OnInit {
         console.log(this.userActive);
         this.userService.activeUser(this.userActive).subscribe(
           (response) => {
-            this.message.success('Cấm tài khoản thành công!');
+            this.messageService.showSuccess('Cấm tài khoản thành công!', 3000);
             console.log(response);
             this.loadUsers(this.currentPage, this.pageSize);
           },
@@ -152,7 +156,7 @@ export class ManageUserComponent implements OnInit {
         );
       },
       nzCancelText: 'Không',
-      nzOnCancel: () => this.message.error('Cấm tài khoản thất bại!')
+      nzOnCancel: () => this.messageService.handleError('Cấm tài khoản thất bại!', 3000)
     });
   }
 }

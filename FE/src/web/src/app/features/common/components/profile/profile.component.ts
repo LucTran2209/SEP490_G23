@@ -36,7 +36,6 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private userProfileService: UserProfileService,
     private router: Router,
-    private imageFileService: ImageFileService,
     private loadingService: LoadingService,
     private messageService: MessageResponseService,
   ) {
@@ -95,6 +94,7 @@ export class ProfileComponent implements OnInit {
     });
   }
   loadUser() {
+    this.loadingService.setLoading();
     this.userid = this.userProfileService.UserId;
     console.log(this.userid);
     this.userService.viewProfile(this.userid).subscribe({
