@@ -11,7 +11,7 @@ const routes: Routes = [
     component: ManagePostComponent,
   },
   {
-    path: 'shop',
+    path: 'shop/:id',
     component: ManagerShopComponent,
   },
   {

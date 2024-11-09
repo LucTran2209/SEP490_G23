@@ -17,7 +17,7 @@
         <nz-step
           nzTitle="Thông tin cho thuê"
           nzDescription="Việc thu thập thông tin thuế là bắt buộc theo quy định của luật an ninh mạng,
-          thương mại điện tử và thuế Việt Nam"
+            thương mại điện tử và thuế Việt Nam"
         ></nz-step>
       </nz-steps>
     </div>
@@ -29,11 +29,10 @@
 
 <ng-template #stepProcess>
   @if (current === 0) {
-  <app-step-info  (nextStep)="next()"/>
-  
+  <app-step-info (nextStep)="next()" />
 
   } @if (current === 1) {
-  <app-step-identify  (nextStep)="next()" (prevStep)="pre()" />
+  <app-step-identify (nextStep)="next()" (prevStep)="pre()" />
 
   } @if (current === 2) {
   <app-step-tax (nextStep)="done()" (prevStep)="pre()" />

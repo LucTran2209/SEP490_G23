@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderByUserOutputDto, OrderResultService } from '../../../../interfaces/order.interface';
+import { MyOrderOutputDto, OrderResultService } from '../../../../interfaces/order.interface';
 import { OrderService } from '../../../../services/order.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingService } from '../../../../services/loading.service';
+import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-my-order-detail',
@@ -12,11 +15,12 @@ import { ActivatedRoute } from '@angular/router';
 export class MyOrderDetailComponent implements OnInit {
   currentStep = 1; // Bước hiện tại
   orderId: string = '';
-  order!: OrderByUserOutputDto;
+  order!: MyOrderOutputDto;
   loading = true;
-  totalDepositPrice = 0;
+  totalPrice = 0;
   totalDailyRent: number = 0;
   numberofRentalDays: number = 0;
+  loading$?: Observable<StatusProcess>;
   // Handle the step change event
   onStepChange(index: number): void {
     this.currentStep = index;
@@ -25,24 +29,28 @@ export class MyOrderDetailComponent implements OnInit {
     private orderService: OrderService,
     private location: Location,
     private route: ActivatedRoute,
-  ){}
+    private loadingService: LoadingService,
+  ){
+    this.loading$ = this.loadingService.status$;
+  }
   goBack(): void {
     this.location.back();
   }
   ngOnInit(){
-    // this.route.paramMap.subscribe(params => {
-    //   this.orderId = params.get('id') || '';
-    // });
-    // // this.orderId = '5613ff49-0d6a-40ff-9bb1-d2278031c602';
-    // this.loadOrder(this.orderId);
+    this.loadingService.setLoading();
+    this.route.paramMap.subscribe(params => {
+      this.orderId = params.get('id') || '';
+    });
+    console.log(this.orderId);
+    this.loadOrder(this.orderId);
     
   }
   loadOrder(orderId: string){
+    this.loadingService.setLoading();
     this.orderService.getOrder(orderId).subscribe({
       next: (res: OrderResultService) => {
         this.order = res.data.items[0];
-        this.calculateTotalDepositPrice();
-        this.calculateTotalDailyRent();
+        this.loadingService.setOtherLoading('loaded');
         this.calculateNumberOfRentalDays();
         console.log(this.order);
         this.loading = false;
@@ -52,23 +60,16 @@ export class MyOrderDetailComponent implements OnInit {
       }
     })
   }
-  calculateTotalDepositPrice() {
-    this.totalDepositPrice = this.order.detailProducts.reduce((sum, product) => {
-      return sum + product.depositPrice;
-    }, 0);
-  }
-  calculateTotalDailyRent() {
-    // Tính tổng giá thuê của các sản phẩm trong `detailProducts`
-    this.totalDailyRent = this.order.detailProducts.reduce((sum, product) => {
-      return sum + product.price * product.quantity;
-    }, 0);
-  }
-  calculateNumberOfRentalDays() {
+
+  calculateNumberOfRentalDays(): void {
+    // Ensure the startDate and endDate are valid Date objects
     const startDate = new Date(this.order.startDate);
     const endDate = new Date(this.order.endDate);
 
     const timeDiff = endDate.getTime() - startDate.getTime();
-    this.numberofRentalDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+    this.numberofRentalDays = Math.floor(timeDiff / (1000 * 3600 * 24)); // Convert time diff to number of days
   }
-
+  calculateTotalRentAndDeposit(): void {
+    this.totalPrice = this.order.totalRentPrice * this.numberofRentalDays + this.order.totalDepositPrice;
+  }
 }

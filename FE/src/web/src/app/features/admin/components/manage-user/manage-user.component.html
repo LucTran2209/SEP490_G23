@@ -55,6 +55,7 @@
           [nzTotal]="totalUsers"
           [(nzPageIndex)]="currentPage"
           (nzPageIndexChange)="onPageChange($event)"
+          [nzLoading]="isloading"
           class="mt-2"
         >
           <thead>
@@ -181,12 +182,22 @@
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  {{ user.gender ? "Nam" : "Nữ" || "[CHƯA CÓ]" }}
+                  {{
+                    user.gender !== null && user.gender !== undefined
+                      ? user.gender
+                        ? "Nam"
+                        : "Nữ"
+                      : "[CHƯA CÓ]"
+                  }}
                 </span>
               </td>
               <td class="">
                 <span class="name text-secondary p-3 text-center">
-                  {{ user.dateOfBirth | date : "dd/MM/yyyy" || "[CHƯA CÓ]" }}
+                  {{
+                    user.dateOfBirth
+                      ? (user.dateOfBirth | date : "dd/MM/yyyy")
+                      : "[CHƯA CÓ]"
+                  }}
                 </span>
               </td>
               <td class="">

@@ -143,20 +143,22 @@
 </nz-row>
 
 <!-- Product Grid Section -->
-<nz-row [nzGutter]="16" class="mt-4">
-  <nz-col
-    *ngFor="let product of productList"
-    [nzXs]="24"
-    [nzSm]="12"
-    [nzMd]="8"
-    [nzLg]="6"
-  >
-    <app-product-card
-      [product]="product"
-      (editProduct)="showProductModal(product.id)"
-    ></app-product-card>
-  </nz-col>
-</nz-row>
+<div *ngIf="!productListNull; else noData">
+  <nz-row [nzGutter]="16" class="mt-4">
+    <nz-col
+      *ngFor="let product of productList"
+      [nzXs]="24"
+      [nzSm]="12"
+      [nzMd]="8"
+      [nzLg]="6"
+    >
+      <app-product-card
+        [product]="product"
+        (editProduct)="showProductModal(product.id)"
+      ></app-product-card>
+    </nz-col>
+  </nz-row>
+</div>
 
 <!-- Pagination Section -->
 <nz-row nzJustify="center" class="mt-4">
@@ -181,3 +183,12 @@
   (updateProduct)="handleUpdateProduct($event)"
   [alertType]="alertType"
 ></app-form-product>
+<ng-template #noData>
+  <div class="flex justify-center">
+    <nz-result
+      nzTitle="Chưa Có Thiết Bị Cho Thuê"
+      nzSubTitle="Shop Của Bạn Chưa Có Thiết Bị Cho Thuê Nào. Hãy Tạo Thiết Bị Cho Thuê Nhé!"
+    >
+    </nz-result>
+  </div>
+</ng-template>

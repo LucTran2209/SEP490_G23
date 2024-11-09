@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { DetailOfProduct, OrderByUserOutputDto } from '../../../../interfaces/order.interface';
+import {  MyOrderOutputDto } from '../../../../interfaces/order.interface';
 
 @Component({
   selector: 'app-shop-card',
@@ -7,7 +7,7 @@ import { DetailOfProduct, OrderByUserOutputDto } from '../../../../interfaces/or
   styleUrl: './shop-card.component.scss'
 })
 export class ShopCardComponent {
-  @Input() order!: OrderByUserOutputDto;
+  @Input() order!: MyOrderOutputDto;
   @Input() buttonName1: string = '';
   @Input() buttonName2: string = '';
   @Input() buttonName3: string = '';
@@ -15,26 +15,23 @@ export class ShopCardComponent {
   @Input() isShowBtn2: boolean = false;
   @Input() isShowBtn3: boolean = false;
   @Output() showFeedBack = new EventEmitter<void>();  
-  numberofRentalDays: number = 0;
+  totalQuantity: number = 0;
 
   // ngOnInit() {
   //   this.calculateNumberOfRentalDays();
   // }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['order'] && this.order) {
-      // Chỉ tính số ngày thuê khi `order` đã có giá trị
-      this.calculateNumberOfRentalDays();
+      this.calculateTotalQuantity();
     }
   }
   onClickBtn1(){
     this.showFeedBack.emit();
   }
-  calculateNumberOfRentalDays() {
-    const startDate = new Date(this.order.startDate);
-    const endDate = new Date(this.order.endDate);
-    
-    const timeDiff = endDate.getTime() - startDate.getTime();
-    this.numberofRentalDays = Math.floor(timeDiff / (1000 * 3600 * 24));
-    console.log(this.numberofRentalDays);
+  // New method to calculate the total quantity
+  calculateTotalQuantity(): void {
+    this.totalQuantity = this.order.orderDetails.reduce((sum, orderDetail) => {
+      return sum + orderDetail.quantity;
+    }, 0);
   }
 }

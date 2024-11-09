@@ -65,4 +65,11 @@ export class NavbarHeadearComponent implements OnInit {
     console.warn('Invalid or undefined user role');
   }
   }
+  hasLessorRole(): boolean {
+    const role = this.userProfileService.roleCurrentUser;
+    if (Array.isArray(role)) {
+      return role.includes(USER_ROLE.LESSOR);
+    }
+    return role === USER_ROLE.LESSOR;
+  }
 }

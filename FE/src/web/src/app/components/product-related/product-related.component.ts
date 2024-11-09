@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ProductOutputDto } from '../../interfaces/product.interface';
+import { ProductCardComponent } from "../core/card/product-card/product-card.component";
 
 @Component({
   selector: 'app-product-related',
   templateUrl: './product-related.component.html',
-  styleUrl: './product-related.component.scss'
+  styleUrl: './product-related.component.scss',
+  // imports: [ProductCardComponent]
 })
 export class ProductRelatedComponent {
 @Input() productRelatedList: ProductOutputDto[] = mockDataList;

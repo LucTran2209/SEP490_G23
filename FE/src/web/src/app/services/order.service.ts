@@ -16,30 +16,15 @@ import { cleanParams } from '../utils/anonymous.helper';
   providedIn: 'root',
 })
 export class OrderService {
-  constructor(private httpClient: AppHttpClientService) {}
 
-  /**
-   *
-   * @param pageIndex
-   * @param pageSize
-   * @param userId
-   * @returns
-   * @description: list order of rental
-   */
-  listMyOrder(
-    pageIndex: number,
-    pageSize: number,
-    userId: string
-  ): Observable<OrderResultService> {
+  constructor(private httpClient: AppHttpClientService) { }
+
+  listMyOrder(pageIndex: number, pageSize: number): Observable<OrderResultService>{
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
-      UserId: userId,
     };
-    return this.httpClient.get<OrderResultService>(
-      OrderSlug.ListOrder.api,
-      params
-    );
+    return this.httpClient.get<OrderResultService>(OrderSlug.ListMyOrder.api, params );
   }
 
   /**
@@ -52,10 +37,7 @@ export class OrderService {
     let params: any = {
       OrderId: orderId,
     };
-    return this.httpClient.get<OrderResultService>(
-      OrderSlug.ListOrder.api,
-      params
-    );
+    return this.httpClient.get<OrderResultService>(OrderSlug.ListMyOrder.api, params );
   }
 
   /**

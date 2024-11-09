@@ -51,6 +51,7 @@ export interface IPayLoad {
   _id: string;
   Avatar: string;
   UserId: string;
+  RentalShopId: string;
   FullName: string;
   UserName: string;
   Email: string;

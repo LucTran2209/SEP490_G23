@@ -1,39 +1,90 @@
 import { ORDER_STATUS } from '../utils/constant';
 import { ProductOutputDto } from './product.interface';
 import { UserOutputDto } from './user.interface';
-
-export interface DetailOfProduct {
-  productName: string;
-  quantity: number;
-  price: number;
-  depositPrice: number;
-  // numberofRentalDays?: number;
-  images: string[];
+export interface ProductImage {
+  id: string;
+  productId: string;
+  link: string;
 }
-export interface OrderByUserOutputDto {
+export interface Product {
+  id: string;
+  productName: string;
+  description: string;
+  quantity: number;
+  rentalPrice: number;
+  depositPrice: number;
+  rentalLimitDays: number;
+  evaluate: number;
+  productImages: ProductImage[];
+}
+export interface OrderDetail {
+  id: string;
+  productId: string;
   orderId: string;
+  quantity: number;
+  product: Product;
+}
+export interface OrderStatusDto {
+  id: string;
+  orderId: string;
+  message: string;
+  status: number;
+  fileAttach: string | null;
+}
+export interface MyOrderOutputDto {
+  id: string;
   userId: string;
-  address: string;
-  startDate: Date;
-  endDate: Date;
-  note: string;
-  totalPrice: number;
-  orderStatus: string;
-  rentalShopName: string;
-  detailProducts: DetailOfProduct[];
+  voucherId: string | null;
+  code: string | null;
+  recipientName: string | null;
+  recipientPhoneNumber: string;
+  recipientEmail: string | null;
+  recipientAddress: string | null;
+  startDate: string;
+  endDate: string;
+  totalRentPrice: number;
+  totalDepositPrice: number;
+  note: string | null;
+  mortgagePaperType: number;
+  mortgagePaperImageFont: string | null;
+  mortgagePaperImageBack: string | null;
+  orderDetails: OrderDetail[];
+  orderStatuses: OrderStatusDto[];
 }
 
 export interface OrderResultService {
-  statusCode: string;
+  statusCode: number;
   message: string;
   data: {
-    items: OrderByUserOutputDto[];
+    items: MyOrderOutputDto[];
     pageSize: number;
     pageIndex: number;
     totalCount: number;
   };
 }
 
+export interface OrderCreateRequest {
+  userId: string;
+  voucherId: string | null;
+  recipientName: string;
+  recipientPhoneNumber: string;
+  recipientEmail: string;
+  recipientAddress: string;
+  startDate: string;
+  endDate: string;
+  totalRentPrice: number;
+  totalDepositPrice: number;
+  note: string;
+  mortgagePaperType: string;
+  mortgagePaperImageFont: File;
+  mortgagePaperImageBack: File;
+  orderDetails: {
+    id: string | null;
+    productId: string;
+    orderId: string | null;
+    quantity: number;
+  }[];
+}
 export interface OrderCreateRequest {
   userId: string;
   voucherId: string | null;

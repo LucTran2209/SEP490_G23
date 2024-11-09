@@ -40,6 +40,9 @@ export class UserProfileService {
   get avatar(): string {
     return this.currentUser.Avatar;
   }
+  get rentalshopId(): string {
+    return this.currentUser.RentalShopId;
+  }
   
 
   // Method to update avatar URL

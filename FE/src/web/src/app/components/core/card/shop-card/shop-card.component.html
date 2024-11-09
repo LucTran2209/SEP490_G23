@@ -4,12 +4,12 @@
       <div class="flex">
         <div class="flex">
           <p
-            class="pb-1 text-2xl font-extralight"
+            class="text-2xl font-extralight"
             nz-icon
             nzType="shop"
             nzTheme="outline"
           ></p>
-          <p class="p-1 text-xl font-semibold mx-1.5">
+          <p class="text-xl font-semibold mx-1.5">
             <!-- {{ order.rentalShopName }} -->
             Cửa Hàng Thiết Bị
           </p>
@@ -21,41 +21,64 @@
           <button nz-button nzType="primary">Xem Shop</button>
         </div>
       </div>
-      <p class="text-zinc-500 text-xl">
-        <!-- {{ order.startDate | date : "dd/MM/yyyy" }} -->
-        20/10/2024
+      <p class="text-[#676767] font-semibold text-xl">
+        {{ order.startDate | date : "dd/MM/yyyy" }}
+        <!-- 20/10/2024 -->
       </p>
     </div>
   </div>
-  <div class="order-item py-3 cursor-pointer" [routerLink]="['./order-detail']">
+  <div
+    class="order-item py-3 cursor-pointer"
+    [routerLink]="['./order-detail', order.id]"
+  >
     <div nz-row nzGutter="16" class="p-4">
       <div nz-col [nzSpan]="6">
         <img
-          src="https://cdn.tgdd.vn/Files/2016/10/25/904759/may-giat-mini-la-gi-nen-mua-hay-khong--19.jpg"
+          [src]="order.orderDetails[0].product.productImages[0].link"
           alt="ảnh sản phẩm cố định"
           class="w-full rounded-md"
         />
       </div>
       <div nz-col [nzSpan]="12" class="pl-4">
         <div nz-typography>
-          <h4 class="font-semibold text-lg">Mã đơn hàng: SAS9492</h4>
-          <p class="text-gray-500 font-medium uppercase">
-            Thời gian thuê: từ 20/10/2024 đến 23/10/2024
+          <h4 class="font-semibold text-lg uppercase">
+            Mã đơn hàng: <span class="ml-1">24119SGDR</span>
+          </h4>
+          <p class="font-semibold text-base text-[#676767] uppercase">
+            Thời gian thuê:
+            <span class="ml-3 font-light"
+              >từ {{ order.startDate | date : "dd/MM/yyyy" }} đến
+              {{ order.endDate | date : "dd/MM/yyyy" }}</span
+            >
           </p>
         </div>
         <div class="columns-2 gap-2">
-          <p class="font-medium text-base uppercase">Tổng giá thuê:</p>
-          <p class="font-medium text-base uppercase">Giá cọc:</p>
-          <p class="font-medium text-base uppercase">Số lượng sản phẩm:</p>
-          <p class="font-medium text-base uppercase">Trạng thái:</p>
-          <p class="font-normal text-base uppercase text-gray-500">
-            200,000 VND
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Tổng giá thuê:
           </p>
-          <p class="font-normal text-base uppercase text-gray-500">
-            200,000 VND
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Giá cọc:
           </p>
-          <p class="font-normal text-base uppercase text-gray-500">2</p>
-          <p class="font-normal text-base uppercase text-gray-500">Đang thuê</p>
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Số lượng sản phẩm:
+          </p>
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Trạng thái:
+          </p>
+          <p class="font-light text-base uppercase text-[#676767] pb-1">
+            {{ order.totalRentPrice | currency : "VND" : "" : "1.0-0" }} VND
+          </p>
+          <p class="font-light text-base uppercase text-[#676767] pb-1">
+            {{ order.totalDepositPrice | currency : "VND" : "" : "1.0-0" }} VND
+          </p>
+          <p class="font-light text-base uppercase text-[#676767] pb-1">
+            {{ totalQuantity }}
+          </p>
+          <p
+            class="p-2 border-2 text-lime-500 border-lime-500 bg-lime-100 text-xs w-28"
+          >
+            Đang phê duyệt
+          </p>
         </div>
       </div>
     </div>

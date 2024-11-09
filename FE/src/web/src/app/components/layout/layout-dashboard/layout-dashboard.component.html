@@ -40,7 +40,7 @@
       </ng-container>
 
       <!-- Lessor Role -->
-      <ng-container *ngIf="userRole === USERROLE.LESSOR">
+      <ng-container *ngIf="hasLessorRole()">
         <li nz-menu-item>
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thông Kê</span>
@@ -55,7 +55,7 @@
         </li>
         <li
           nz-menu-item
-          [routerLink]="['./shop']"
+          [routerLink]="['./shop', shopId]"
           routerLinkActive="ant-menu-item-selected"
           [routerLinkActiveOptions]="{ exact: true }"
         >
