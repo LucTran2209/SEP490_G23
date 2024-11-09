@@ -1,11 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NzCustomColumn } from 'ng-zorro-antd/table';
 import { OptionSelectCheckBox } from '../../../../configs/anonymous.config';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../../../../services/order.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LoadingService } from '../../../../services/loading.service';
-import { combineLatest, delay, map, Observable, of, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  delay,
+  map,
+  Observable,
+  of,
+  pipe,
+  take,
+  tap,
+} from 'rxjs';
 import { OrderListResponse } from '../../../../interfaces/order.interface';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { ORDER_STATUS } from '../../../../utils/constant';
@@ -17,18 +27,6 @@ interface CustomColumns extends NzCustomColumn {
   position?: 'left' | 'right';
 }
 
-interface IData {
-  maDonHang: string | number;
-  ngayTao: string;
-  nguoiThue: string;
-  soDienThoai: string;
-  thoiGianThue: string;
-  giaCoc: string;
-  tongTien: string;
-  noiDung: string;
-  trangThaiDonHang: string;
-  trangThaiThanhToan: string;
-}
 @Component({
   selector: 'app-manage-order',
   templateUrl: './manage-order.component.html',
@@ -37,9 +35,9 @@ interface IData {
 export class ManageOrderComponent implements OnInit {
   // listOfData: IData[] = mockData;
   listData: OrderListResponse[] = [];
-  pageIndex$?: Observable<number>;
-  pageTotal$?: Observable<number>;
-  pageSize$?: Observable<number>;
+  pageIndex$ = new BehaviorSubject<number>(1);
+  pageTotal$ = new BehaviorSubject<number>(0);
+  pageSize$ = new BehaviorSubject<number>(10);
   // filterFormOrder: FormGroup<{
   //   orderCode: FormControl<string | null>;
   //   orderStatus: FormControl<string | null>;
@@ -155,28 +153,28 @@ export class ManageOrderComponent implements OnInit {
     this.router.navigateByUrl(`lessor/order/${val.id}`);
   }
 
-  onSubmitForm(valGroup: any) {
-    const { orderCode, orderStatus, humanRental, phoneNumber, timeRange } = valGroup;
-  
-    combineLatest([
-      this.pageIndex$ ?? of(1),
-      this.pageSize$ ?? of(10)
-    ]).subscribe(([pageIndex, pageSize]) => {
-      const startDate = timeRange ? timeRange[0] : null;
-      const endDate = timeRange ? timeRange[1] : null;
-  
-      this.onloadOrder({
-        pageIndex,
-        pageSize,
-        orderCode,
-        status: orderStatus,
-        phoneNumber,
-        renterName: humanRental,
-        startDate,
-        endDate
+  async onSubmitForm(valGroup: any) {
+    const { orderCode, orderStatus, humanRental, phoneNumber, timeRange } =
+      valGroup;
+
+    combineLatest([this.pageIndex$ ?? of(1), this.pageSize$ ?? of(10)])
+      .pipe(take(1))
+      .subscribe(([pageIndex, pageSize]) => {
+        const startDate = timeRange ? timeRange[0] : null;
+        const endDate = timeRange ? timeRange[1] : null;
+
+        this.onloadOrder({
+          pageIndex,
+          pageSize,
+          orderCode,
+          status: orderStatus,
+          phoneNumber,
+          renterName: humanRental,
+          startDate,
+          endDate,
+        });
       });
-    });
-  
+
     this.navigateService.updateParams({
       pageIndex: 1,
       pageSize: 10,
@@ -185,32 +183,46 @@ export class ManageOrderComponent implements OnInit {
       humanRental,
     });
   }
-  
+
+  onPageSizeChange(newPageSize: number) {
+    this.onloadOrder({
+      pageSize: newPageSize,
+    });
+    this.navigateService.updateParams({
+      pageIndex: newPageSize,
+    });
+  }
+
+  onPageIndexChange(newPageIndex: number) {
+    this.onloadOrder({
+      pageIndex: newPageIndex,
+    });
+    this.navigateService.updateParams({
+      pageIndex: newPageIndex,
+    });
+  }
 
   async onloadOrder(paramFilter?: any) {
     this.loadingSerivce.setLoading();
-    this.orderService
-      .listOrderLessor(paramFilter ?? {})
-      .subscribe({
-        next: (res) => {
-          const {
-            data: { items, pageIndex, pageSize, totalCount },
-          } = res;
-          this.listData = items;
-          this.pageIndex$ = of(pageIndex);
-          this.pageTotal$ = of(totalCount);
-          this.pageSize$ = of(pageSize);
-        },
-        error: (err) => {
-          console.log('<<<< 208>>>>');
-          this.loadingSerivce.setOtherLoading('error');
-        },
-        complete: () => {
-          console.log('<<<< 212>>>>');
-
-          this.loadingSerivce.setOtherLoading('loaded');
-        },
-      });
+    this.orderService.listOrderLessor(paramFilter ?? {}).subscribe({
+      next: (res) => {
+        const {
+          data: { items, pageIndex, pageSize, totalCount },
+        } = res;
+        this.listData = items;
+        this.pageIndex$.next(pageIndex);
+        this.pageTotal$.next(totalCount);
+        this.pageSize$.next(pageSize);
+      },
+      error: (err) => {
+        console.log('<<<< 208>>>>');
+        this.loadingSerivce.setOtherLoading('error');
+      },
+      complete: () => {
+        console.log('<<<< 212>>>>');
+        this.loadingSerivce.setOtherLoading('loaded');
+      },
+    });
   }
 
   onQueryParams() {
@@ -238,7 +250,8 @@ export class ManageOrderComponent implements OnInit {
     private navigateService: NavigationService,
     private orderService: OrderService,
     private loadingSerivce: LoadingService,
-    private timerCalculatorService: RentalTimerService
+    private timerCalculatorService: RentalTimerService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {

@@ -1,7 +1,10 @@
 <div class="p-5 my-3 bg-white rounded-md">
   <h3 class="text-xl text-[#111]">Danh sách yêu cầu thuê</h3>
   <section class="py-3">
-    <app-form-order  (resetLoad)="onloadOrder()" (formValueFilter)="onSubmitForm($event)"/>
+    <app-form-order
+      (resetLoad)="onloadOrder()"
+      (formValueFilter)="onSubmitForm($event)"
+    />
   </section>
 </div>
 <div class="p-5 my-3 bg-white rounded-md">
@@ -17,12 +20,16 @@
       [nzData]="listData"
       [nzBordered]="true"
       [nzPaginationPosition]="'bottom'"
+      nzFrontPagination="false"
       nzShowSizeChanger="true"
+      [nzShowPagination]="true"
       [nzShowTotal]="showTotal"
-      [nzPageSize]="(pageSize$ | async) ?? 10"
       [nzPageIndex]="(pageIndex$ | async) ?? 1"
       [nzTotal]="(pageTotal$ | async) ?? 0"
-      >
+      [nzPageSize]="(pageSize$ | async) ?? 10"
+      (nzPageIndexChange)="onPageIndexChange($event)"
+      (nzPageSizeChange)="onPageSizeChange($event)"
+    >
       <thead>
         <tr>
           <th nzCellControl="maDonHang">Mã đơn hàng</th>
@@ -33,7 +40,7 @@
           <th nzCellControl="giaCoc">Giá cọc</th>
           <th nzCellControl="tongTien">Tổng tiền</th>
           <th nzCellControl="noiDung">Nội dung</th>
-          <th nzCellControl="trangThaiDonHang">Trạng thái đơn hàng</th>
+          <th nzCellControl="trangThaiDonHang" nzRight>Trạng thái đơn hàng</th>
         </tr>
       </thead>
       <tbody>
@@ -55,15 +62,13 @@
             {{ data.totalRentPrice | currency : "VND" }}
           </td>
           <td nzCellControl="noiDung">{{ data.note }}</td>
-          <td nzCellControl="trangThaiDonHang">
+          <td nzCellControl="trangThaiDonHang" nzRight>
             @if(data.orderStatuses.length !== 0){
-              <app-status-label
+            <app-status-label
               [label]="convertStatus(data.orderStatuses[0].status)"
               [statusType]="data.orderStatuses[0].status"
             />
-            }@else {
-              UNKNOWN
-            }
+            }@else { UNKNOWN }
           </td>
         </tr>
       </tbody>
@@ -72,8 +77,8 @@
 </div>
 
 <ng-template #showTotal>
-  <div class="text-[14px] font-medium text-[#333]">
-    Hiển thị thứ tự 1- {{ pageSize$ | async }} trong
-    {{ pageTotal$ | async }} kết quả
-  </div>
+    <div class="text-[14px] font-medium text-[#333]">
+      Hiển thị thứ tự 1- {{ pageSize$ | async }} trong
+      {{ pageTotal$ | async }} kết quả
+    </div>
 </ng-template>
