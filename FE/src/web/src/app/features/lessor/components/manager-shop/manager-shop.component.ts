@@ -69,7 +69,7 @@ export class ManagerShopComponent  implements OnInit{
       if (product) {
         try {
           // Fetch images asynchronously and update productInformation
-          const imagess = await this.imageFileService.fetchImagesAsFiles(product.images);
+          const imagess = await this.imageFileService.fetchImagesAsFiles(product.images as string[]);
   
           this.productInformation = {
             productName: product.productName,
