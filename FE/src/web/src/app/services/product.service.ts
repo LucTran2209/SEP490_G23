@@ -26,18 +26,18 @@ export class ProductService {
  * @param ProductName 
  * @returns 
  */
-  // listProduct(
-  //   pageIndex: number,
-  //   pageSize: number,
-  //   ProductName?: string
-  // ): Observable<ProductResultService> {
-  //   let params: any = {
-  //     PageSize: pageSize.toString(),
-  //     PageIndex: pageIndex.toString(),
-  //   };
-  //   if (ProductName) params.ProductName = ProductName;
-  //   return this.httpClient.get<ProductResultService>(ProductSlug.ListProduct.api, params);
-  // }
+  listProduct(
+    pageIndex: number,
+    pageSize: number,
+    ProductName?: string
+  ): Observable<ProductResultService> {
+    let params: any = {
+      PageSize: pageSize.toString(),
+      PageIndex: pageIndex.toString(),
+    };
+    if (ProductName) params.ProductName = ProductName;
+    return this.httpClient.get<ProductResultService>(ProductSlug.ListProduct.api, params);
+  }
   listProductByShop(rentalShopId: string, pageIndex: number, pageSize: number, Search?: string, ): Observable<ProductResultService>{
     let params: any = {
       PageSize: pageSize.toString(),

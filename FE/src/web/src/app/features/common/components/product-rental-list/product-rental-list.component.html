@@ -20,9 +20,9 @@
     </section>
     <section class="col-span-9 flex flex-col justify-between">
       <div>
-        <h4 class="uppercase text-center text-2xl font-semibold pb-9">
+        <!-- <h4 class="uppercase text-center text-2xl font-semibold pb-9">
           CHO THUE SAN PHAM N2
-        </h4>
+        </h4> -->
         <div class="flex justify-between pb-3">
           <nz-input-group [nzSuffix]="suffixIconSearch" class="max-w-[40%]">
             <input
@@ -51,15 +51,24 @@
           </div>
         </div>
         <div class="grid grid-cols-12 gap-3 pb-3">
-          <div *ngFor="let post of postList" class="col-span-4">
-            <app-post-card [post]="post" class=""></app-post-card>
+          <div *ngFor="let product of productList" class="col-span-4">
+            <app-product-card
+              [product]="product"
+              [isRenter]="true"
+            ></app-product-card>
           </div>
         </div>
       </div>
       <div class="">
         <!-- pagination -->
         <div class="flex justify-center items-end m-5">
-          <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+          <nz-pagination
+            [nzPageSize]="pageSize"
+            [nzTotal]="totalProducts"
+            [(nzPageIndex)]="currentPage"
+            (nzPageIndexChange)="handlePageChange($event)"
+          >
+          </nz-pagination>
         </div>
       </div>
     </section>

@@ -34,7 +34,7 @@
       ></span>
       <p class="text-sm">{{ product.evaluate }}</p>
     </div>
-    @if(user && user.Role?.includes('Lessor')){
+    @if(user && user.Role?.includes('Lessor') && !isRenter){
     <button
       nz-button
       nzGhost
@@ -46,7 +46,13 @@
     }@else {
     <div class="flex items-center gap-x-2">
       <button nz-button nzGhost nzType="primary">Chọn thuê</button>
-      <button nz-button nzType="primary" (click)="$event.stopPropagation(); onAddMoreClick()">T</button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="$event.stopPropagation(); onAddMoreClick()"
+      >
+        T
+      </button>
     </div>
     }
   </div>

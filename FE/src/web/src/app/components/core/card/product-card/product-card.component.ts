@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPayLoad } from '../../../../interfaces/account.interface';
 import {
+  ProductImage,
   ProductItemResponse,
   ProductOutputDto,
 } from '../../../../interfaces/product.interface';
@@ -17,6 +18,7 @@ import { FeatureAppState } from '../../../../store/app.state';
 })
 export class ProductCardComponent implements OnInit {
   @Input() product!: ProductOutputDto | ProductItemResponse; // Union Type
+  @Input() isRenter: boolean = false;
   currentIndex: number = 0;
   @Output() editProduct = new EventEmitter<
     ProductOutputDto | ProductItemResponse>();
@@ -39,13 +41,28 @@ export class ProductCardComponent implements OnInit {
       productName: this.product.productName,
       quantityAvailable: this.product.quantity,
       rentalPrice: this.product.rentalPrice,
-      images: this.product.images
+      images: this.product.images as string[]
     })
    )
   }
-
+  private isProductOutputDto(product: ProductOutputDto | ProductItemResponse): product is ProductOutputDto {
+    return (product as ProductOutputDto).productImages !== undefined;
+  }
   get currentImage() {
-    return this.product.images[this.currentIndex];
+    if (this.isProductOutputDto(this.product)) {
+      // If the product is ProductOutputDto and productImages exist
+      if (this.isRenter && this.product.productImages && this.product.productImages.length > 0) {
+        const currentProductImage = this.product.productImages[this.currentIndex];
+        return currentProductImage?.link || null; // Return link or empty string if not found
+      }
+    }
+
+    // If it's not ProductOutputDto or no productImages, fallback to string[]
+    if (this.product.images && this.product.images.length > 0) {
+      return this.product.images[this.currentIndex];
+    }
+
+    return null; // Default to empty string if no image is available
   }
 
   nextImage(): void {

@@ -11,6 +11,7 @@ export interface ProductOutputDto {
     rentalLimitDays: number;
     evaluate: number;
     images: string[];
+    productImages?: ProductImage[];
     subCategory: SubcategoryOutputDto;
     
 }
