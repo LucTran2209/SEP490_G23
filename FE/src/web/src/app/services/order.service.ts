@@ -7,6 +7,7 @@ import {
   BaseResponseApiV2,
 } from '../interfaces/api.interface';
 import {
+  OrderDetailResultService,
   OrderListResponse,
   OrderResultService,
 } from '../interfaces/order.interface';
@@ -34,11 +35,8 @@ export class OrderService {
    * @returns
    * @description: get order detail
    */
-  getOrder(orderId: string): Observable<OrderResultService> {
-    let params: any = {
-      OrderId: orderId,
-    };
-    return this.httpClient.get<OrderResultService>(OrderSlug.ListMyOrder.api, params );
+  getOrder(orderId: string): Observable<OrderDetailResultService> {
+    return this.httpClient.get<OrderDetailResultService>(OrderSlug.GetOrder.api + orderId );
   }
 
   /**

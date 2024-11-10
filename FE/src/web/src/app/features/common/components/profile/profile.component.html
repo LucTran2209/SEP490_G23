@@ -1,4 +1,4 @@
-<ng-container *ngIf="(loading$ | async) !== 'loading'">
+<div *ngIf="(loading$ | async) !== 'loading'">
   <ng-container *ngIf="userError; else profileContent">
     <div class="flex justify-center">
       <nz-result
@@ -100,4 +100,4 @@
       </div>
     </div>
   </ng-template>
-</ng-container>
+</div>

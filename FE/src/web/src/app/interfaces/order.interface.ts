@@ -17,7 +17,7 @@ export interface Product {
   evaluate: number;
   productImages: ProductImage[];
 }
-export interface OrderDetail {
+export interface OrderDetailDto {
   id: string;
   productId: string;
   orderId: string;
@@ -48,7 +48,39 @@ export interface MyOrderOutputDto {
   mortgagePaperType: number;
   mortgagePaperImageFont: string | null;
   mortgagePaperImageBack: string | null;
-  orderDetails: OrderDetail[];
+  orderDetails: OrderDetailDto[];
+  orderStatuses: OrderStatusDto[];
+}
+export interface User {
+  fullName: string;
+  userName: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  gender: boolean;
+  dateOfBirth: string;
+}
+
+export interface MyOrderDetailDto {
+  id: string;
+  userId: string;
+  voucherId: string | null;
+  code: string | null;
+  recipientName: string | null;
+  recipientPhoneNumber: string;
+  recipientEmail: string | null;
+  recipientAddress: string | null;
+  startDate: string;
+  endDate: string;
+  totalRentPrice: number;
+  totalDepositPrice: number;
+  note: string;
+  mortgagePaperType: number;
+  mortgagePaperImageFont: any | null;
+  mortgagePaperImageBack: any | null;
+  user: User;
+  voucher: any | null;
+  orderDetails: OrderDetailDto[];
   orderStatuses: OrderStatusDto[];
 }
 
@@ -61,6 +93,11 @@ export interface OrderResultService {
     pageIndex: number;
     totalCount: number;
   };
+}
+export interface OrderDetailResultService {
+  statusCode: number;
+  message: string;
+  data: MyOrderDetailDto;
 }
 
 export interface OrderCreateRequest {
@@ -81,28 +118,28 @@ export interface OrderCreateRequest {
   orderDetailsJson: string;
   orderDetails: null | string
 }
-export interface OrderCreateRequest {
-  userId: string;
-  voucherId: string | null;
-  recipientName: string;
-  recipientPhoneNumber: string;
-  recipientEmail: string;
-  recipientAddress: string;
-  startDate: string;
-  endDate: string;
-  totalRentPrice: number;
-  totalDepositPrice: number;
-  note: string;
-  mortgagePaperType: string;
-  mortgagePaperImageFont: File;
-  mortgagePaperImageBack: File;
-  orderDetails: {
-    id: string | null;
-    productId: string;
-    orderId: string | null;
-    quantity: number;
-  }[];
-}
+// export interface OrderCreateRequest {
+//   userId: string;
+//   voucherId: string | null;
+//   recipientName: string;
+//   recipientPhoneNumber: string;
+//   recipientEmail: string;
+//   recipientAddress: string;
+//   startDate: string;
+//   endDate: string;
+//   totalRentPrice: number;
+//   totalDepositPrice: number;
+//   note: string;
+//   mortgagePaperType: string;
+//   mortgagePaperImageFont: File;
+//   mortgagePaperImageBack: File;
+//   orderDetails: {
+//     id: string | null;
+//     productId: string;
+//     orderId: string | null;
+//     quantity: number;
+//   }[];
+// }
 
 export interface OrderDetailResponse {
   id: string;

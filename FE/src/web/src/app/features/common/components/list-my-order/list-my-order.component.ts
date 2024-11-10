@@ -98,7 +98,7 @@ export class ListMyOrderComponent implements OnInit {
   ngOnInit() {
     this.loadingService.setLoading();
     this.route.queryParams.subscribe(params => {
-      const status = params['filter'] || 1;
+      const status = params['status'] || 0;
       const filter = params['filter'] || 7;
       const searchText = params['searchText'] || ''; 
       this.statusOrder = status;
