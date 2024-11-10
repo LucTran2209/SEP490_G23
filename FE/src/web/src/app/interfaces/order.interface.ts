@@ -146,6 +146,10 @@ type ProductCustomImage = ProductOutputDto & {
   productImages: ProductImage[];
 };
 
+type ProductCustomImage = ProductOutputDto & {
+  productImages: ProductImage[];
+};
+
 export interface OrderDetailResponse {
   id: string;
   productId: string;
