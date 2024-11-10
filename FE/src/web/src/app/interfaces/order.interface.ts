@@ -142,7 +142,6 @@ export interface OrderCreateRequest {
 //   }[];
 // }
 
-
 type ProductCustomImage = ProductOutputDto & {
   productImages: ProductImage[];
 };
