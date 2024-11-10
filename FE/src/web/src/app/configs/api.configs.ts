@@ -157,6 +157,11 @@ export const OrderSlug = {
     title: 'View Order | ERMS',
     api: 'api/Order/detail/',
   },
+  GetOrderLessor: {
+    label: 'View Order',
+    title: 'View Order | ERMS',
+    api: 'api/Order/detail/',
+  },
   UpdateOrder: {
     label: 'Update Order',
     title: 'Update Order | ERMS',
