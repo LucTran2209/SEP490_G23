@@ -267,7 +267,7 @@ namespace BE.Application.Services.Authentication
             v.Email = inputDto.Email;
             return new ResultService()
             {
-                StatusCode = "200",
+                StatusCode = 200,
                 Message = "Send code to email success!",
                 Datas = v
             };
@@ -278,13 +278,13 @@ namespace BE.Application.Services.Authentication
             {
                 return new ResultService
                 {
-                    StatusCode = HttpStatusCode.BadRequest.ToString(),
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Message = "Wrong to comfirm code"
                 };
             }
             return new ResultService
             {
-                StatusCode = HttpStatusCode.OK.ToString(),
+                StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success"
             };
         }
