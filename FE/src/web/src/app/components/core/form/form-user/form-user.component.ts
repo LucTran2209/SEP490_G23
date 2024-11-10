@@ -12,7 +12,7 @@ import { ageValidator } from '../../../../utils/form-validators';
 export class FormUserComponent{
   dateFormat = 'dd/MM/yyyy';
   userForm: FormGroup;
-  avatarPreview: string | ArrayBuffer | null = null; // Changed to match base64 string or null
+  avatarPreview: string | ArrayBuffer | null = 'assets/images/default-avatar.jpg'; // Changed to match base64 string or null
   @Input() user: UserInputDto = {
     userName: '',
     password: '123456789',
@@ -197,11 +197,11 @@ export class FormUserComponent{
     } else {
       // Emit new user data with FormData
       this.saveUser.emit(formData as unknown as UserInputDto); // Cast if needed
+      this.userForm.reset({
+        password: '123456789',
+        isActive: true,
+      });
     }
   
-    this.userForm.reset({
-      password: '123456789',
-      isActive: true,
-    });
   }
 }

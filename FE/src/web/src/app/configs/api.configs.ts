@@ -155,7 +155,7 @@ export const OrderSlug = {
   GetOrder: {
     label: 'View Order',
     title: 'View Order | ERMS',
-    api: 'api/Post/?postId =',
+    api: 'api/Order/detail/',
   },
   UpdateOrder: {
     label: 'Update Order',

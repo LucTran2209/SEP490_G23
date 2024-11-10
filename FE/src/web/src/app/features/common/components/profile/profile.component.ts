@@ -81,13 +81,7 @@ export class ProfileComponent implements OnInit {
         }, 1000);
       },
       error: (error) => {
-        this.alertMessage = 'Cập Nhật Hồ Sơ Thất Bại!';
-          this.alertType = 'error';
-          this.showAlert = true;
-          setTimeout(() => {
-            this.handleCloseModal();
-            this.showAlert = false;
-          }, 5000);
+        this.messageService.handleError('Cập Nhật Hồ Sơ Thất Bại!');
         console.error('Failed to create user');
       }
 
@@ -103,6 +97,7 @@ export class ProfileComponent implements OnInit {
         this.user = res.data;
         this.userProfileService.setAvatar(this.user.avatarPersonal);
         console.log(this.user);
+        this.userError = false; 
       },
       error: () => {
         this.userError = true; // Show NzResult on error

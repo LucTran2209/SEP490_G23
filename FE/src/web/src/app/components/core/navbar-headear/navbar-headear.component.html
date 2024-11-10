@@ -39,14 +39,14 @@
           <li
             nz-menu-item
             class="p-3 uppercase text-center menu-item"
-            [routerLink]="['../common/user/account/profile']"
+            [routerLink]="['/common/user/account/profile']"
           >
             Thông tin cá nhân
           </li>
           <li
             nz-menu-item
             class="p-3 uppercase text-center menu-item"
-            [routerLink]="['../common/user/order']"
+            [routerLink]="['/common/user/order']"
           >
             Danh sách thuê của tôi
           </li>
@@ -55,7 +55,7 @@
             nz-menu-item
             class="p-3 uppercase text-center menu-item"
             *ngIf="hasLessorRole()"
-            [routerLink]="['../lessor/shop']"
+            [routerLink]="['/lessor/shop', rentalShopId]"
           >
             Cửa Hàng Của Tôi
           </li>
@@ -63,7 +63,7 @@
             nz-menu-item
             class="p-3 uppercase text-center menu-item"
             *ngIf="userRole === USERROLE.ADMIN"
-            [routerLink]="['../admin/manage-users']"
+            [routerLink]="['/admin/manage-users']"
           >
             Thanh Tiến Trình
           </li>

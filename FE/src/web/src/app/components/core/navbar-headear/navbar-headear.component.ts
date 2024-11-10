@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { LocalStorageKey, USER_ROLE } from '../../../utils/constant';
 import { IPayLoad } from '../../../interfaces/account.interface';
 import { StorageService } from '../../../services/storage.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { FeatureAppState } from '../../../store/app.state';
 import { logout } from '../../../features/auth/state/auth.actions';
 import { Store } from '@ngrx/store';
@@ -20,7 +20,8 @@ export class NavbarHeadearComponent implements OnInit {
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
   avatarPersonal: string = '';
-  
+  rentalShopId: string = '';
+
   @Output() toggleSidebar = new EventEmitter<boolean>(); 
   @Output() avatarClick = new EventEmitter<void>(); 
 
@@ -35,6 +36,7 @@ export class NavbarHeadearComponent implements OnInit {
     this.handleAssginInfo();
     this.checkRole();
     this.avatarPersonal = this.userProfileService.avatar;
+    this.rentalShopId = this.userProfileService.rentalshopId;
   }
   handleToggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed; 

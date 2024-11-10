@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { OptionSelect } from '../../../../configs/anonymous.config';
+import { selectSortByOrderProduct } from '../../../../configs/product.config';
 
 @Component({
   selector: 'app-manager-shop',
@@ -37,7 +39,9 @@ export class ManagerShopComponent  implements OnInit{
   shopName: string = '';
   searchText: string = '';
   productListNull = true;
+  selectedValue = null;
   loading$?: Observable<StatusProcess>;
+  groupOptionFilterSelect: OptionSelect[] = selectSortByOrderProduct;
   alertType: 'success' | 'error' = 'success';
   constructor(private modal: NzModalService, 
     private productService: ProductService,

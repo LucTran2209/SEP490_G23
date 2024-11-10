@@ -1,9 +1,4 @@
-<ng-container *ngIf="(loading$ | async) === 'loading'; else content">
-  <div class="flex justify-center items-center h-64">
-    <nz-spin nzSize="large"></nz-spin>
-  </div>
-</ng-container>
-<ng-template #content>
+<div *ngIf="(loading$ | async) !== 'loading'">
   <ng-container *ngIf="userError; else profileContent">
     <div class="flex justify-center">
       <nz-result
@@ -105,4 +100,4 @@
       </div>
     </div>
   </ng-template>
-</ng-template>
+</div>

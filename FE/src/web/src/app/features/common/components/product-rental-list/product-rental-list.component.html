@@ -1,5 +1,5 @@
-<div class="">
-    <div class="backcrumb">
+<div class="container">
+  <!-- <div class="backcrumb">
       <nz-breadcrumb>
         <nz-breadcrumb-item>Home</nz-breadcrumb-item>
         <nz-breadcrumb-item>
@@ -7,65 +7,64 @@
         </nz-breadcrumb-item>
         <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
       </nz-breadcrumb>
-    </div>
-    <div class="py-5">
-      <p class="font-semibold text-4xl">
-        <span class="text-red-500">199</span> sản phẩm được tìm thấy trong <br />
-        <span class="text-red-500">loại sản phẩm n2</span>
-      </p>
-    </div>
-    <div class="grid grid-cols-12 gap-5">
-      <section class="col-span-3">
-        <app-filter-product-rental></app-filter-product-rental>
-      </section>
-      <section class="col-span-9 flex flex-col justify-between">
-        <div>
-          <h4 class="uppercase text-center text-2xl font-semibold pb-9">
-            CHO THUE SAN PHAM N2
-          </h4>
-          <div class="flex justify-between pb-3">
-            <nz-input-group [nzSuffix]="suffixIconSearch" class="max-w-[40%]">
-              <input
-                type="text"
-                nz-input
-                placeholder="Tìm kiếm bài viết cho thuê"
-              />
-            </nz-input-group>
-  
-            <div class="min-w-[20%]">
-              <nz-select
-                nzShowSearch
-                nzAllowClear
-                nzPlaceHolder="sắp xếp theo thứ tự"
-                [(ngModel)]="selectedValue"
-                class="w-full"
-              >
-                @for (item of groupOptionFilterSelect; track $index) {
-                <nz-option
-                  [nzLabel]="item.label"
-                  [nzKey]="$index"
-                  [nzValue]="item.value"
-                ></nz-option>
-                }
-              </nz-select>
-            </div>
-          </div>
-          <div class="grid grid-cols-12 gap-3 pb-3">
-            <div *ngFor="let post of postList" class="col-span-4">
-              <app-post-card [post]="post" class=""></app-post-card>
-            </div>
-          </div>
-        </div>
-        <div class="">
-          <!-- pagination -->
-          <div class="flex justify-center items-end">
-            <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
-          </div>
-        </div>
-      </section>
-    </div>
+    </div> -->
+  <div class="py-5">
+    <p class="font-semibold text-2xl">
+      <span class="text-red-500">199</span> sản phẩm được tìm thấy trong <br />
+      <span class="text-red-500">loại sản phẩm n2</span>
+    </p>
   </div>
-  <ng-template #suffixIconSearch>
-    <span nz-icon nzType="search"></span>
-  </ng-template>
-  
+  <div class="grid grid-cols-12 gap-5">
+    <section class="col-span-3">
+      <app-filter-product-rental class="m-5"></app-filter-product-rental>
+    </section>
+    <section class="col-span-9 flex flex-col justify-between">
+      <div>
+        <h4 class="uppercase text-center text-2xl font-semibold pb-9">
+          CHO THUE SAN PHAM N2
+        </h4>
+        <div class="flex justify-between pb-3">
+          <nz-input-group [nzSuffix]="suffixIconSearch" class="max-w-[40%]">
+            <input
+              type="text"
+              nz-input
+              placeholder="Tìm kiếm bài viết cho thuê"
+            />
+          </nz-input-group>
+
+          <div class="min-w-[20%]">
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="sắp xếp theo thứ tự"
+              [(ngModel)]="selectedValue"
+              class="w-full"
+            >
+              @for (item of groupOptionFilterSelect; track $index) {
+              <nz-option
+                [nzLabel]="item.label"
+                [nzKey]="$index"
+                [nzValue]="item.value"
+              ></nz-option>
+              }
+            </nz-select>
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-3 pb-3">
+          <div *ngFor="let post of postList" class="col-span-4">
+            <app-post-card [post]="post" class=""></app-post-card>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <!-- pagination -->
+        <div class="flex justify-center items-end m-5">
+          <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>
