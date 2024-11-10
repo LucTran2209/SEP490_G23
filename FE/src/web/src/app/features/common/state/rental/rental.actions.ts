@@ -8,7 +8,7 @@ export const setInit = createAction(
     quantityAvailable: string | number;
     pid: number | string;
     productName: string;
-    images: string[]
+    images: string[];
   }>()
 );
 
@@ -24,7 +24,7 @@ export const setNumberOfDays = createAction(
 
 export const checkIsQuantityExceed = createAction(
   `[Rental] Set check quantity have exceed the limit?`,
-  props<{ pid: string | number }>()
+  props<{ pid: string | number; quantityRequest: string | number }>()
 );
 
 export const resetRentalProduct = createAction('[Rental] reset rental product');

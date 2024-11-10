@@ -1,21 +1,24 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { debounceTime, Observable, Subject } from 'rxjs';
+import { debounceTime, map, Observable, Subject, take } from 'rxjs';
 import { selectIsInitialState } from '../../features/common/state/product/product-detail.reducer';
-import { setQuantityRequest } from '../../features/common/state/rental/rental.actions';
+import {
+  setQuantityRequest
+} from '../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../features/common/state/rental/rental.reducers';
 import {
   selectNumberOfDaysById,
   selectProductRentalById,
-  selectRentalActualPriceById
+  selectRentalActualPriceById,
 } from '../../features/common/state/rental/rental.selectors';
+import { MessageResponseService } from '../../services/message-response.service';
 import { FeatureAppState } from '../../store/app.state';
-
 
 @Component({
   selector: 'app-renter-item',
@@ -33,7 +36,26 @@ export class RenterItemComponent implements OnInit {
   private quantitySubject = new Subject<number>();
 
   handleRequestQuantity(val: number) {
-    this.quantitySubject.next(val);
+    this.productRentalFollowId$
+      ?.pipe(
+        take(1),
+        map((order) => {
+          if (order && val > Number(order.quantityAvailable)) {
+            this.messageResponseMS.showPreventAccess(
+              'Cảnh báo',
+              'Số lượng yêu cầu vượt quá giới hạn số lượng có sẵn'
+            );
+            this.demoValue = null as any;
+            setTimeout(() => {
+              this.demoValue = Number(order.quantityAvailable);
+              this.cdRef.detectChanges();
+            }, 0);
+          } else {
+            this.quantitySubject.next(val);
+          }
+        })
+      )
+      .subscribe();
   }
 
   selectStateFromNgRx() {
@@ -45,7 +67,9 @@ export class RenterItemComponent implements OnInit {
       this.numberDay$ = this.store.select(
         selectNumberOfDaysById(String(this.pId))
       );
-      this.productRentalFollowId$ = this.store.select(selectProductRentalById(String(this.pId)));
+      this.productRentalFollowId$ = this.store.select(
+        selectProductRentalById(String(this.pId))
+      );
     }
   }
 
@@ -67,5 +91,9 @@ export class RenterItemComponent implements OnInit {
     this.handleSubjectQuantity();
   }
 
-  constructor(private store: Store<FeatureAppState>) {}
+  constructor(
+    private store: Store<FeatureAppState>,
+    private cdRef: ChangeDetectorRef,
+    private messageResponseMS: MessageResponseService
+  ) {}
 }

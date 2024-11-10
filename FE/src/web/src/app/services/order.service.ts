@@ -16,15 +16,20 @@ import { cleanParams } from '../utils/anonymous.helper';
   providedIn: 'root',
 })
 export class OrderService {
+  constructor(private httpClient: AppHttpClientService) {}
 
-  constructor(private httpClient: AppHttpClientService) { }
-
-  listMyOrder(pageIndex: number, pageSize: number): Observable<OrderResultService>{
+  listMyOrder(
+    pageIndex: number,
+    pageSize: number
+  ): Observable<OrderResultService> {
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
     };
-    return this.httpClient.get<OrderResultService>(OrderSlug.ListMyOrder.api, params );
+    return this.httpClient.get<OrderResultService>(
+      OrderSlug.ListMyOrder.api,
+      params
+    );
   }
 
   /**
@@ -37,7 +42,10 @@ export class OrderService {
     let params: any = {
       OrderId: orderId,
     };
-    return this.httpClient.get<OrderResultService>(OrderSlug.ListMyOrder.api, params );
+    return this.httpClient.get<OrderResultService>(
+      OrderSlug.ListMyOrder.api,
+      params
+    );
   }
 
   /**
@@ -57,6 +65,12 @@ export class OrderService {
     );
   }
 
+  /**
+   *
+   * @param param
+   * @returns
+   * @description list order for lessor
+   */
   listOrderLessor(
     param: any
   ): Observable<BaseResponseApiV2<OrderListResponse>> {
@@ -67,10 +81,6 @@ export class OrderService {
         cleanedParams
       )
       .pipe(
-        map((response) => {
-          console.log('API response:', response);
-          return response;
-        }),
         catchError((error) => {
           console.error('API error:', error);
           const errorResponse: BaseResponseApiV2<OrderListResponse> = {
@@ -84,6 +94,21 @@ export class OrderService {
             message: 'Failed to fetch order list',
           };
           return of(errorResponse);
+        })
+      );
+  }
+
+  getOrderDetailLessor(
+    pid: string
+  ): Observable<BaseResponseApi<OrderListResponse>> {
+    return this.httpClient
+      .get<BaseResponseApi<OrderListResponse>>(
+        OrderSlug.GetOrderLessor.api + `${pid}`
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('API error:', error);
+          return of(error);
         })
       );
   }

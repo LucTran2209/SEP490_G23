@@ -18,8 +18,8 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
   timeChooseStart = timePeriodSelect;
   timeChooseEnd = timePeriodSelect;
   rangeDatePicker?: Date[];
-  timePickerTo: any;
-  timePickerEnd: any;
+  timePickerTo: any = { label: '00:00', value: '00:00' };
+  timePickerEnd: any = { label: '23:30', value: '23:30' };
   selectAllProductRental$?: Observable<OrderState[]>;
   //date time
   rangePickerTime$?: Observable<Date[]>;
@@ -104,9 +104,7 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
   disabledDate = (current: Date): boolean => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0); 
+    tomorrow.setHours(0, 0, 0, 0);
     return current && current.getTime() < tomorrow.getTime();
   };
-  
-  
 }
