@@ -62,9 +62,16 @@
             </td>
           </tr>
           <tr>
+            <td class="text-[14px] font-normal py-[4px] w-full">Thành tiền</td>
+            <td class="font-medium py-[4px]">
+              <!-- giá voucher fix -->
+              {{ +orderDetails.totalRentPrice + +orderDetails.totalDepositPrice | currency : "VND" }}
+            </td>
+          </tr>
+          <tr>
             <td class="text-[14px] font-normal py-[4px] w-full">Tổng tiền</td>
             <td class="font-medium py-[4px]">
-              {{ orderDetails.totalRentPrice | currency : "VND" }}
+              {{ +orderDetails.totalRentPrice + +orderDetails.totalDepositPrice | currency : "VND" }}
             </td>
           </tr>
           <tr>
@@ -78,7 +85,7 @@
           </tr>
         </tbody>
       </table>
-      <section class="flex flex-col gap-2 pt-3">
+      <section class="flex flex-col gap-2 pt-3" *ngIf="orderDetails.orderStatuses[0].status === 0">
         <button nz-button class="w-full" nzType="primary">
           Chấp nhận yêu cầu
         </button>
