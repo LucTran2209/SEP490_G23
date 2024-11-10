@@ -5,7 +5,7 @@ export interface OrderState {
   productId: string | number;
   productName: string;
   rentalPrice: string | number;
-  images: string[],
+  images: string[];
   rentalActualPrice: string | number;
   depositPrice: string | number;
   depositActualPrice: string | number;
@@ -37,8 +37,14 @@ export const rentalOrderReducer = createReducer(
   on(RentalActions.resetRentalProduct, () => initialState),
   //set init product rental order
   on(RentalActions.setInit, (state, action) => {
-    const { depositPrice, pid, quantityAvailable, rentalPrice, productName, images} =
-      action;
+    const {
+      depositPrice,
+      pid,
+      quantityAvailable,
+      rentalPrice,
+      productName,
+      images,
+    } = action;
     const existingOrderIndex = checkProductRentalExist(state.orders, pid);
     if (existingOrderIndex !== -1) {
       const updatedOrder = {
@@ -65,9 +71,9 @@ export const rentalOrderReducer = createReducer(
         depositActualPrice: depositPrice,
         numberOfDays: 1,
         quantityRequest: 1,
-        isBoundQuantity: false,
+        isBoundQuantity: true,
         productName: productName,
-        images: images
+        images: images,
       };
 
       return { ...state, orders: [...state.orders, newOrder] };
@@ -78,10 +84,18 @@ export const rentalOrderReducer = createReducer(
     const { pid, quantityRequest } = action;
     const existingOrderIndex = checkProductRentalExist(state.orders, pid);
     let order = state.orders[existingOrderIndex];
+
+    if (quantityRequest > Number(order.quantityAvailable)) {
+      console.warn(
+        `Requested quantity (${quantityRequest}) exceeds available stock (${order.quantityAvailable}) for product ${order.productId}`
+      );
+      return state;
+    }
     const updatedOrder = {
       ...order,
       quantityRequest: quantityRequest,
       depositActualPrice: quantityRequest * Number(order.depositPrice),
+      isBoundQuantity: quantityRequest <= Number(order.quantityAvailable),
     };
     const updatedOrders = [
       ...state.orders.slice(0, existingOrderIndex),
@@ -108,19 +122,4 @@ export const rentalOrderReducer = createReducer(
     return { ...state, orders: updatedOrders };
   }),
 
-  on(RentalActions.checkIsQuantityExceed, (state, action) => {
-    const { pid } = action;
-    const existingOrderIndex = checkProductRentalExist(state.orders, pid);
-    let order = state.orders[existingOrderIndex];
-    const updatedOrder = {
-      ...order,
-      isBoundQuantity: order.quantityRequest <= order.quantityAvailable,
-    };
-    const updatedOrders = [
-      ...state.orders.slice(0, existingOrderIndex),
-      updatedOrder,
-      ...state.orders.slice(existingOrderIndex + 1),
-    ];
-    return { ...state, orders: updatedOrders };
-  })
 );
