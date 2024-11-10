@@ -23,6 +23,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> GetListAsync([FromQuery] GetListProductInputDto inputDto)
         {
             var output = await productService.GetListProductAsync(inputDto);
+
             return Ok(output);
         }
 

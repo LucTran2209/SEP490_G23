@@ -52,8 +52,12 @@ namespace BE.Application.Services.Products
         public async Task<ResultService> GetListProductAsync(GetListProductInputDto inputDto)
         {
             var query = unitOfWork.ProductRepository.GetAll()
-                .Filter(inputDto.ProductName, p => p.ProductName!.Contains(inputDto.ProductName ?? string.Empty))
-                .Filter(inputDto.Description, p => p.Description == null ? p.Description!.Contains(inputDto.Description ?? string.Empty) : false);
+                .Filter(inputDto.Search, p => p.ProductName!.Contains(inputDto.Search)
+                        || p.Description!.Contains(inputDto.Search)
+                        || p.SubCategory!.SubCategoryName.Contains(inputDto.Search)
+                        || p.SubCategory.Category.CategoryName.Contains(inputDto.Search))
+                .Filter(inputDto.Address, p => p.RentalShop.Address!.Contains(inputDto.Address ?? string.Empty));
+
 
             var products = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                 .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)

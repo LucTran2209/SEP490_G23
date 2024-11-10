@@ -4,7 +4,6 @@ namespace BE.Application.Services.Products.ProductServiceInputDto
 {
     public class GetListProductInputDto : PagedResultRequestModel
     {
-        public string? ProductName { get; set; }
-        public string? Description { get; set; }
+        public string? Address { get; set; }
     }
 }
