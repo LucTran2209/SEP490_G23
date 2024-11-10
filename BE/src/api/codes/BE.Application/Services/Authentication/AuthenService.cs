@@ -251,5 +251,42 @@ namespace BE.Application.Services.Authentication
 
             await mailService.SendMailAsync(null, user.Email!, subject, body);
         }
+        private async Task VerifyMailAsync(VerifyEmailInputDto Email, string code)
+        {
+            string subject = "ERMS Verify Code";
+
+            await mailService.SendMailAsync(null, Email.Email, subject, code);
+        }
+        public async Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto)
+        {
+            var code = new string(Enumerable.Repeat("0123456789", 4)
+                            .Select(s => s[new Random().Next(s.Length)]).ToArray());
+            await VerifyMailAsync(inputDto, code);
+            var v = new ComfirmVerifyEmailOutputDto();
+            v.Code = code;
+            v.Email = inputDto.Email;
+            return new ResultService()
+            {
+                StatusCode = 200,
+                Message = "Send code to email success!",
+                Datas = v
+            };
+        }
+        public async Task<ResultService> ComfirmVerifyEmailAsync(ComfirmVerifyEmailInputDto inputDto)
+        {
+            if (inputDto.Code != inputDto.UserComfirmCode)
+            {
+                return new ResultService
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Message = "Wrong to comfirm code"
+                };
+            }
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "Success"
+            };
+        }
     }
 }
