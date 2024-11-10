@@ -16,7 +16,7 @@ namespace BE.Application.Extensions
             CreateMap<ProductImage, ProductImageDto>().ReverseMap();
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<SubCategory, SubCategoryDto>().ReverseMap();
-            CreateMap<Voucher, VoucherDto>().ReverseMap();        
+            CreateMap<Voucher, VoucherDto>().ReverseMap();
         }
     }
 }
