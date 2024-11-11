@@ -15,6 +15,7 @@ namespace BE.Application.Services.RentalShops.RentalShopServiceInputDto
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public bool IsActive { get; set; }
+        public RequestShop Status { get; set; }
         public string? Description { get; set; }
 
         public class Mapping : Profile
