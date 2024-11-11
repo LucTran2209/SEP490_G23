@@ -10,7 +10,7 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> GetRentalShopDetailByIdAsync(Guid id);
         Task<ResultService> DeleteAsync(Guid id);
         Task<ResultService> GetRentalShopByNotActiveAsync(Guid id);
-        Task<ResultService> GetAllRentalShopByNotActiveAsync();
+        Task<ResultService> GetAllRentalShopByNotActiveAsync(GetAllRentalShopByNotActiveInputDto inputDto);
         Task<ResultService> ActiveRentalShopAsync(ActiveRentalShopInputDto input);
         Task<ResultService> ActivityRentalShopAsync(ActivityRentalShopInputDto input);
     }

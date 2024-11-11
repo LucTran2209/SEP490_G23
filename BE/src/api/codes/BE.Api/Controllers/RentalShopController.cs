@@ -61,9 +61,9 @@ namespace BE.Api.Controllers
 
         [HttpGet("AllRequestShop")]
         [Authorize]
-        public async Task<IActionResult> GetAllRentalShopByNotActiveAsync()
+        public async Task<IActionResult> GetAllRentalShopByNotActiveAsync([FromQuery] GetAllRentalShopByNotActiveInputDto inputDto)
         {
-            var output = await rentalShopService.GetAllRentalShopByNotActiveAsync();
+            var output = await rentalShopService.GetAllRentalShopByNotActiveAsync(inputDto);
             return ReturnFollowStatusCode(output);
         }
         [HttpGet("RequestShopById")]

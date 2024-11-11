@@ -50,9 +50,9 @@ namespace BE.Infrastructure.Repositories
             return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Id == Id && rs.Status == 0);
         }
 
-        public async Task<RentalShop?> GetAllRentalShopByNotActiveAsync()
+        public IQueryable<RentalShop?> GetAllRentalShopByNotActiveAsync()
         {
-            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Status == 0);
+            return context.RentalShops.Where(rs => rs.Status == 0).AsQueryable();
         }
     }
 }
