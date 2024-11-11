@@ -161,24 +161,26 @@ namespace BE.Application.Services.RentalShops
             };
         }
 
-        public async Task<ResultService> GetAllRentalShopByNotActiveAsync()
+        public async Task<ResultService> GetAllRentalShopByNotActiveAsync(GetAllRentalShopByNotActiveInputDto inputDto)
         {
-            var rentalShop = await unitOfWork.RentalShopRepository.GetAllRentalShopByNotActiveAsync();
-            if (rentalShop == null)
-            {
-                return new ResultService
-                {
-                    StatusCode = (int)HttpStatusCode.NotFound,
-                    Message = "Not have rental shop application."
-                };
-            }
-            var result = _mapper.Map<GetRentalShopDetailByIdOuputDto>(rentalShop);
+            var query = unitOfWork.RentalShopRepository.GetAllRentalShopByNotActiveAsync();
+
+            query = query
+                .Filter(inputDto.ShopName, rs => rs.ShopName.Contains(inputDto.ShopName ?? string.Empty))
+                .Filter(inputDto.Email, rs => rs.Email.Contains(inputDto.Email ?? string.Empty))
+                .Filter(inputDto.PhoneNumber, rs => rs.PhoneNumber.Contains(inputDto.PhoneNumber ?? string.Empty))
+                .Filter(inputDto.Address, rs => rs.Address.Contains(inputDto.Address ?? string.Empty));
+
+            var rentalShops = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
+                .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
+                .ToPageList(inputDto)
+                .ToPageResult(await query.CountAsync(), inputDto, rs => rs.ToListRentalShopOutput());
 
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
                 Message = "Rental shop detail retrieved successfully.",
-                Datas = result
+                Datas = rentalShops
             };
         }
 
