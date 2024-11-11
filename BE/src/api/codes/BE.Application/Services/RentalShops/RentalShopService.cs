@@ -67,7 +67,7 @@ namespace BE.Application.Services.RentalShops
             rentalShop.Address = inputDto.Address;
             rentalShop.Description = inputDto.Description;
             rentalShop.Status = inputDto.Status;
-
+            rentalShop.IsActive = inputDto.IsActive;
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
 
