@@ -12,5 +12,6 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> GetRentalShopByNotActiveAsync(Guid id);
         Task<ResultService> GetAllRentalShopByNotActiveAsync();
         Task<ResultService> ActiveRentalShopAsync(ActiveRentalShopInputDto input);
+        Task<ResultService> ActivityRentalShopAsync(ActivityRentalShopInputDto input);
     }
 }

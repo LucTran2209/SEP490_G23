@@ -8,6 +8,7 @@ namespace BE.Application.Services.RentalShops
         private readonly IValidator<CreateRentalShopInputDto> createValidator;
         private readonly IValidator<UpdateRentalShopInputDto> updateValidator;
         private readonly IValidator<ActiveRentalShopInputDto> statusValidator;
+        private readonly IValidator<ActivityRentalShopInputDto> activityValidator;
         private readonly IMapper _mapper;
         private readonly IAzureService _azureService;
 
@@ -17,12 +18,14 @@ namespace BE.Application.Services.RentalShops
             IValidator<CreateRentalShopInputDto> createValidator,
             IValidator<UpdateRentalShopInputDto> updateValidator,
             IValidator<ActiveRentalShopInputDto> statusValidator,
+            IValidator<ActivityRentalShopInputDto> activityValidator,
             IAzureService azureService)
             : base(unitOfWork, user)
         {
             this.createValidator = createValidator;
             this.updateValidator = updateValidator;
             this.statusValidator = statusValidator;
+            this.activityValidator = activityValidator;
             _mapper = mapper;
             _azureService = azureService;
         }
@@ -192,6 +195,27 @@ namespace BE.Application.Services.RentalShops
                 };
             }
             rentalShop.Status = input.Status;
+            await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
+            await unitOfWork.SaveChangesAsync();
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "successfully.",
+            };
+        }
+        public async Task<ResultService> ActivityRentalShopAsync(ActivityRentalShopInputDto input)
+        {
+            await activityValidator.ValidateAndThrowAsync(input);
+            var rentalShop = await unitOfWork.RentalShopRepository.GetRentalShopByNotActiveAsync(input.Id);
+            if (rentalShop == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = (int)HttpStatusCode.NotFound,
+                    Message = "Not have rental shop application."
+                };
+            }
+            rentalShop.IsActive = input.IsActive;
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
             return new ResultService
