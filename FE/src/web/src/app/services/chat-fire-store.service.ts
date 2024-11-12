@@ -7,6 +7,7 @@ import {
   doc,
   Firestore,
   getDocs,
+  orderBy,
   query,
   Timestamp,
   updateDoc,
@@ -115,7 +116,8 @@ export class ChatFireStoreService {
   //get chat message
   getChatMessages(chatId: string): Observable<IMessageFireBase[]> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
-    const queryAll = query(ref);
+    // const queryAll = query(ref);
+    const queryAll = query(ref, orderBy('sentDate', 'asc'));
     return collectionData(queryAll) as Observable<IMessageFireBase[]>;
   }
 }

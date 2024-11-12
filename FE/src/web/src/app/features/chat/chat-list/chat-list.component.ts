@@ -1,9 +1,19 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ChatFireStoreService } from '../../../services/chat-fire-store.service';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
+import {
+  IChatFireBase,
+  IUserFireBase,
+} from '../../../interfaces/Chat.interface';
 import { UserFireStoreService } from '../../../services/user-fire-store.service';
-import { Observable } from 'rxjs';
-import { IChatFireBase } from '../../../interfaces/Chat.interface';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-chat-list',
@@ -13,68 +23,38 @@ import { FormControl } from '@angular/forms';
 export class ChatListComponent implements OnInit {
   listChatMember$: Observable<IChatFireBase[]> =
     this.userFireStoreService.getListMemberChat();
+  searchMembers$?: Observable<IChatFireBase[]>;
   @Output() chooseChatRoom = new EventEmitter<IChatFireBase>();
+  isChatRoomSelect: boolean = false;
+  private searchSubject = new Subject<string>();
+
+  onInput(e: Event) {
+    let value = (e.target as HTMLInputElement).value;
+    this.searchSubject.next(value);
+  }
 
   chooseChatItem(val: IChatFireBase) {
     this.chooseChatRoom.emit(val);
+    this.isChatRoomSelect = true;
   }
-  constructor(
-    private chatFireStore: ChatFireStoreService,
-    private userFireStoreService: UserFireStoreService
-  ) {}
+  constructor(private userFireStoreService: UserFireStoreService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    /**
+     * search member chat
+     */
+    combineLatest([this.searchSubject, this.listChatMember$])
+      .pipe(
+        debounceTime(100),
+        switchMap(([searchText, listMembers]) =>
+        {
+          this.searchMembers$ = of(listMembers.filter((lm) =>
+            lm.chatName?.toLowerCase().includes(searchText.toLowerCase())
+          ))
+          return of();
+        }
+        ),
+      )
+      .subscribe();
+  }
 }
-
-// const mockData = [
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Samsung",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Amazon",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Dribble",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Harman",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "TCS",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Google",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Google",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Google",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Google",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-//   {
-//     avatar: "assets/images/6306486.jpg",
-//     displayName: "Google",
-//     lastMessage: "Nice. I don't know why people get all worked up about hawaiian pizza. I ..."
-//   },
-// ]

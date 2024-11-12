@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
 import { IChatFireBase } from '../../../interfaces/Chat.interface';
-import { IPayLoad } from '../../../interfaces/account.interface';
 import { ChatFireStoreService } from '../../../services/chat-fire-store.service';
+import { MessageResponseService } from '../../../services/message-response.service';
 import { UserFireStoreService } from '../../../services/user-fire-store.service';
 
 @Component({
@@ -25,7 +24,11 @@ export class ChatComponent implements OnInit {
   }
 
   onResizeChat() {
-    this.resizeChat = !this.resizeChat;
+    if(this.currentUserChat){
+      this.resizeChat = !this.resizeChat;
+    }else{
+      this.messageResponseMS.showInfo('chọn cuộc hội thoại đi!')
+    }
   }
 
   selectUserChatRoom(val: IChatFireBase){
@@ -34,15 +37,11 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private chatFireStore: ChatFireStoreService,
-    private userFireStoreService: UserFireStoreService
+    private userFireStoreService: UserFireStoreService,
+    private messageResponseMS: MessageResponseService
   ) {}
 
   ngOnInit(): void {
     console.log('currentUserChat',this.currentUserChat);
   }
 }
-
-// const currentUserChat = {
-//   avatar: 'assets/images/6306486.jpg',
-//   displayName: 'Amazon',
-// };

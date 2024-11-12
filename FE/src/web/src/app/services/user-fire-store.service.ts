@@ -6,12 +6,15 @@ import {
   collectionData,
   doc,
   docData,
+  endAt,
   Firestore,
   getDocs,
+  orderBy,
   query,
+  startAt,
   where,
 } from '@angular/fire/firestore';
-import { from, map, Observable } from 'rxjs';
+import { from, map, mergeMap, Observable, of, switchMap, toArray } from 'rxjs';
 import { IChatFireBase, IUserFireBase } from '../interfaces/Chat.interface';
 import { MessageResponseService } from './message-response.service';
 import { UserProfileService } from './user-profile.service';
@@ -48,33 +51,34 @@ export class UserFireStoreService {
     }
   }
 
-
   //get user id from cloud firestore
   getUserIdInFireStore(): Observable<IUserFireBase | undefined> {
     const currentUserId = this.userProfileService.UserId;
     const usersRef = collection(this.firestore, 'users');
     const userQuery = query(usersRef, where('uid', '==', currentUserId));
     return from(getDocs(userQuery)).pipe(
-      map(snapshot => {
-        const users = snapshot.docs.map(doc => doc.data() as IUserFireBase);
+      map((snapshot) => {
+        const users = snapshot.docs.map((doc) => doc.data() as IUserFireBase);
         return users.length > 0 ? users[0] : undefined;
       })
     );
-  
   }
-
 
   //get list member chat of current user
   getListMemberChat() {
     const currentUserId = this.userProfileService.UserId;
     const userRef = collection(this.firestore, 'chats');
-    const myQuery = query(userRef, where('userIds', 'array-contains', currentUserId));
+    const myQuery = query(
+      userRef,
+      where('userIds', 'array-contains', currentUserId)
+    );
 
     return collectionData(myQuery, { idField: 'id' }).pipe(
-      map((chats) => this.addChatNameAndPic(currentUserId, chats as IChatFireBase[]))
+      map((chats) =>
+        this.addChatNameAndPic(currentUserId, chats as IChatFireBase[])
+      )
     ) as Observable<IChatFireBase[]>;
   }
-
 
   addChatNameAndPic(
     currentUserId: string,
@@ -90,6 +94,4 @@ export class UserFireStoreService {
     return chats;
   }
 
-  
-  //get list member in cloud firestore
 }
