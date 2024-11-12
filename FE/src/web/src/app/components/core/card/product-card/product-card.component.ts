@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterContentChecked, AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IPayLoad } from '../../../../interfaces/account.interface';
 import {
   ProductImage,
@@ -11,14 +11,16 @@ import { LocalStorageKey } from '../../../../utils/constant';
 import * as RentalActions from '../../../../features/common/state/rental/rental.actions';
 import { Store } from '@ngrx/store';
 import { FeatureAppState } from '../../../../store/app.state';
+import { first, map, Observable, of, take } from 'rxjs';
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
-export class ProductCardComponent implements OnInit {
+export class ProductCardComponent implements OnInit, AfterContentInit {
   @Input() product!: ProductOutputDto | ProductItemResponse; // Union Type
   @Input() isRenter: boolean = false;
+  paramURL$?: Observable<string>;
   currentIndex: number = 0;
   @Output() editProduct = new EventEmitter<
     ProductOutputDto | ProductItemResponse>();
@@ -91,8 +93,20 @@ export class ProductCardComponent implements OnInit {
     ]);
   }
 
-  constructor(private storageService: StorageService, private router: Router, private store: Store<FeatureAppState>) {}
+  getParam(){
+    this.activateRoute.url.pipe(
+      first(),
+      map((res) => {
+        this.paramURL$ = of(res[0].path);
+      })
+    ).subscribe();
+  }
 
+  constructor(private storageService: StorageService, private router: Router,private activateRoute: ActivatedRoute, private store: Store<FeatureAppState>) {}
+
+  ngAfterContentInit(): void {
+    this.getParam();
+  }
   ngOnInit(): void {
     this.handleAssginInfo();
   }

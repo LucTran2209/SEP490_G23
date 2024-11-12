@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryOutputDto } from '../../../../interfaces/category.interface';
-import { FeedBackInputDto, FeedbackOutputDto } from '../../../../interfaces/feedback.interface';
+import { FeedbackOutputDto } from '../../../../interfaces/feedback.interface';
 import { PostOutputDto, PostResultService } from '../../../../interfaces/post.interface';
 import { PostService } from '../../../../services/post.service';
 
