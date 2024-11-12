@@ -1,0 +1,11 @@
+<div class="p-3 flex justify-between items-center border-b border-solid border-[#E1E1E1]">
+  <h4 class="text-[#1890FF] font-semibold text-[20px] uppercase">CHAT</h4>
+  <nz-button-group class="gap-x-3">
+      <button nz-button nzType="primary" [disabled]="(listChatMember$ | async)?.length === 0" (click)="onResizeChat()">
+        <span nz-icon nzType="right-square" nzTheme="outline"></span>
+      </button>
+    <button nz-button="default" class="border border-solid border-[#1890FF]" (click)="onCloseChat()">
+      <span nz-icon nzType="down-square" nzTheme="outline" class="text-[#1890FF]"></span>
+    </button>
+  </nz-button-group>
+</div>

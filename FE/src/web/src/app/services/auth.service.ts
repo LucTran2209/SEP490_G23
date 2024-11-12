@@ -31,6 +31,7 @@ import { AppHttpClientService } from './app-http-client.service';
 import { MessageResponseService } from './message-response.service';
 import { StorageService } from './storage.service';
 import { UserProfileService } from './user-profile.service';
+import { UserFireStoreService } from './user-fire-store.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,8 @@ export class AuthService {
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
     private storageService: StorageService,
-    private errorPage: MessageResponseService
+    private errorPage: MessageResponseService,
+    private userFireStoreService: UserFireStoreService
   ) {}
 
   get token() {
@@ -118,6 +120,7 @@ export class AuthService {
 
     replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
+    this.userFireStoreService.addUserInToFireStore({displayName: userPayLoad.FullName, photoURL: userPayLoad.Avatar, uid: userPayLoad.UserId})
     this.storageService.set(
       LocalStorageKey.currentUser,
       JSON.stringify(userPayLoad)
@@ -185,10 +188,6 @@ export class AuthService {
     );
   }
 
-  //test
-  // changepassword(data: IChangePassword): Observable<ResultService>{
-  //   return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});
-  // }
   changepassword(data: IChangePassword) {
     return this.httpClient.post(AuthSlug.ChangePassword.api, data);
   }

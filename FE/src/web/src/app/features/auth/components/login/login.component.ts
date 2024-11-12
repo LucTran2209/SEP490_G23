@@ -1,9 +1,7 @@
-import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import {
   FormControl,
@@ -11,15 +9,15 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import {
   IExternalLoginRequest,
   ILoginRequest,
 } from '../../../../interfaces/account.interface';
-import { Store } from '@ngrx/store';
-import { login, login_external } from '../../state/auth.actions';
-import { delay, Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { LoadingService } from '../../../../services/loading.service';
+import { login, login_external } from '../../state/auth.actions';
 
 @Component({
   selector: 'app-login',

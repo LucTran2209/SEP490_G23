@@ -40,7 +40,7 @@ import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment.development';
 import {AngularFireModule} from '@angular/fire/compat'
-import {AngularFirestoreModule} from '@angular/fire/compat/firestore'
+import { chatResizeFeature } from './features/chat/state/chat.reducer';
 registerLocaleData(en);
 
 @NgModule({
@@ -60,6 +60,7 @@ registerLocaleData(en);
     FormsModule,
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature(authFeature),
+    StoreModule.forFeature(chatResizeFeature),
     StoreModule.forFeature(addressFeature),
     EffectsModule.forRoot([AuthEffect, ProvinceEffect]),
     StoreRouterConnectingModule.forRoot(),

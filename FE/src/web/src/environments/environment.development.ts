@@ -14,5 +14,10 @@ export const environment = {
       messagingSenderId: "1041166104874",
       appId: "1:1041166104874:web:dc78c6d29bb180c0570653",
       measurementId: "G-WQC9XVJ3TH"
+    },
+    azureConfig: {
+      accountName : 'sep490g23',
+      sasToken: 'sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-11-12T21:09:44Z&st=2024-11-12T13:09:44Z&spr=https&sig=OwN6oaHrFPyvQXgzQZK7PakIRFerxnZw5w3d7Eo%2ByLE%3D',
+      key1: '1y4ILg0k4AnWxsgqRbnupbYSBAqg5i8kWm0OAa1OlQtup3owJ+O112iu4F/YlVZ3TUqieY6/RS8L+ASt3kK8pw=='
     }
   };
