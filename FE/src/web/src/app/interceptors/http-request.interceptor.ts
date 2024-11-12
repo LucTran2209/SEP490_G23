@@ -9,6 +9,7 @@ const ignoredUrls: string[] = [
   AuthSlug.Login.api,
   AuthSlug.ForgotPassWord.api,
   AuthSlug.Register.api,
+  AuthSlug.ResetPassWord.api,
   CategorySlug.ListCategory.api,
   CategorySlug.ListSubCategory.api,
   'https://esgoo.net/api-tinhthanh/',

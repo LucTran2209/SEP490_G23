@@ -57,7 +57,6 @@ import { environment } from '../../../environments/environment.development';
 import { NumberOnlyDirective } from '../../directives/number-only.directive';
 import { ErrorComponent } from '../../features/error/error.component';
 import { AnonymousComponent } from '../anonymous/anonymous.component';
-import { ChatComponent } from '../chat/chat.component';
 import { CommentComponent } from '../comment/comment.component';
 import { BreadcrumbComponent } from '../core/breadcrumb/breadcrumb.component';
 import { CategoryCardComponent } from '../core/card/category-card/category-card.component';
@@ -106,6 +105,11 @@ import { UploadListComponent } from '../core/upload/upload-list/upload-list.comp
 import { ProductRelatedComponent } from '../product-related/product-related.component';
 import { DateFirebasePipe } from '../../pipes/date-firebase.pipe';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { ChatListComponent } from '../../features/chat/chat-list/chat-list.component';
+import { ChatMessageComponent } from '../../features/chat/chat-message/chat-message.component';
+import { ChatInputComponent } from '../../features/chat/chat-input/chat-input.component';
+import { ChatHeaderComponent } from '../../features/chat/chat-header/chat-header.component';
+import { ChatComponent } from '../../features/chat/chat-popup/chat.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -157,6 +161,11 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  ChatListComponent,
+  ChatMessageComponent,
+  ChatInputComponent,
+  ChatHeaderComponent,
+  ChatComponent,
   DateFirebasePipe,
   ProductRelatedComponent,
   CardStaticComponent,
@@ -192,7 +201,6 @@ const SHARED_MODULES = [
   ProductCardComponent,
   FooterComponent,
   CommentComponent,
-  ChatComponent,
   ProductCarouseComponent,
   ViewMoreItemComponent,
   RatingProccessProductComponent,

@@ -8,6 +8,10 @@ import { getDetailProductRental, resetProductRental } from '../../state/product/
 import { selectData } from '../../state/product/product-detail.reducer';
 import { resetRentalProduct } from '../../state/rental/rental.actions';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { ChatFireStoreService } from '../../../../services/chat-fire-store.service';
+import { IPayLoad } from '../../../../interfaces/account.interface';
+import { StorageService } from '../../../../services/storage.service';
+import { LocalStorageKey } from '../../../../utils/constant';
 
 @Component({
   selector: 'app-product-rental-detail',
@@ -18,7 +22,7 @@ import { MessageResponseService } from '../../../../services/message-response.se
 export class ProductRentalDetailComponent implements OnDestroy{
   isVisible: boolean = false;
   productDetail$?: Observable<ProductItemResponse>;
-
+  userCurrent?: IPayLoad
   navigateToShop(id: string) {
     this.route.navigate(['/common/shop', id]);
   }
@@ -28,6 +32,18 @@ export class ProductRentalDetailComponent implements OnDestroy{
   }
   handleCloseModal() {
     this.isVisible = false;
+  }
+
+  chatShop(val: ProductItemResponse){
+    if(!this.userCurrent){
+      this.messageResponseService.handleError('Bạn cần đăng nhập để trò chuyện!', 401);
+      this.route.navigateByUrl('/auth/login');
+      return;
+    }
+    else {
+      console.log('chat with shop', val);
+      this.chatFireStoreService.addChatRoom(val.rentalShop.userId);
+    }
   }
 
 
@@ -50,12 +66,19 @@ export class ProductRentalDetailComponent implements OnDestroy{
     private router: ActivatedRoute,
     private route: Router,
     private store: Store<FeatureAppState>,
-    private messageResponseService: MessageResponseService
+    private messageResponseService: MessageResponseService,
+    private chatFireStoreService: ChatFireStoreService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit(): void {
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+      ? (JSON.parse(
+          this.storageService.get(LocalStorageKey.currentUser)!
+        ) as IPayLoad)
+      : undefined;
   }
 
   ngOnDestroy(): void {

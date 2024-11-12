@@ -34,7 +34,7 @@
       ></span>
       <p class="text-sm">{{ product.evaluate }}</p>
     </div>
-    @if(user && user.Role?.includes('Lessor')){
+    @if((paramURL$ | async) !== 'shop'){
     <button
       nz-button
       nzGhost
