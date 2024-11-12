@@ -1,8 +1,35 @@
+@if ((listChatMember$ | async)?.length !== 0) {
 <div class="py-2 min-h-[500px]">
   <div class="border-b border-solid border-[#E1E1E1] pb-5 px-2">
     <nz-input-group [nzSuffix]="suffixIconSearch">
-      <input type="text" nz-input placeholder="Tìm kiếm cuộc trò chuyện" />
+      <input
+        type="text"
+        nz-input
+        placeholder="Tìm kiếm cuộc trò chuyện"
+        [nzAutocomplete]="auto"
+        (input)="onInput($event)"
+      />
     </nz-input-group>
+    <nz-autocomplete nzBackfill #auto>
+      @for (item of searchMembers$ | async; track $index) {
+      <nz-auto-option
+        [nzValue]="item.id"
+        [nzLabel]="item.chatName"
+        (click)="chooseChatItem(item)"
+      >
+        <div class="flex items-start gap-x-4 justify-start">
+          <img
+            [src]="item.chatPic"
+            class="w-[40px] h-[40px] object-cover rounded-full"
+            alt="avtar.png"
+          />
+          <div>
+            <p>{{ item.chatName }}</p>
+          </div>
+        </div>
+      </nz-auto-option>
+      }
+    </nz-autocomplete>
     <ng-template #suffixIconSearch>
       <span nz-icon nzType="search"></span>
     </ng-template>
@@ -10,24 +37,42 @@
   <div class="my-2 overflow-y-auto max-h-[500px]">
     @for (item of listChatMember$ | async; track $index) {
     <div
-      class="flex justify-between items-start gap-3 p-2 rounded-md transition-all duration-200 ease-in-out hover:bg-[#F2F2F7] cursor-pointer"
+      class="flex justify-between items-center gap-3 m-2 p-2 rounded-md transition-all duration-200 ease-in-out hover:bg-[#F2F2F7] cursor-pointer"
+      [ngClass]="{ 'bg-[#D5E1EB]': isChatRoomSelect }"
       (click)="chooseChatItem(item)"
-      >
+    >
       <img
         [src]="item.chatPic"
         alt="avatar.png"
-        class="object-cover w-[50px] h-[50px] shadow-md rounded-full"
+        class="object-cover w-[55px] h-[55px] shadow-md rounded-full"
       />
       <div class="flex-1">
-        <h5 class="capitalize font-medium text-[#000] text-[15px]">
+        <h5 class="capitalize font-semibold text-[#000] text-[15px]">
           {{ item.chatName }}
-          <span class="text-[10px] text-[#898F94]">{{item.lastMessageDate | dateFirebase}}</span>
         </h5>
-        <p class="text-[#898F94] text-[10px] leading-3 truncate text-wrap" [ngClass]="{'font-medium text-[13px] text-black': !item.lastMessage}">
-          {{ item.lastMessage || 'Trò chuyện với nhau ngay đi!' }}
-        </p>
+        <div class="flex items-center justify-start gap-x-3">
+          <p
+            class="text-[#898F94] text-[13px] leading-3 truncate text-wrap"
+            [ngClass]="{
+              'font-medium text-[15px] text-black': !item.lastMessage
+            }"
+          >
+            {{ item.lastMessage || "Trò chuyện với nhau ngay đi!" }}
+          </p>
+          <p class="w-[50%] text-ellipsis text-[10px] text-[#898F94]">
+            {{ item.lastMessageDate | dateFirebase }}
+          </p>
+        </div>
       </div>
     </div>
     }
   </div>
 </div>
+}@else {
+<div class="flex flex-col items-center p-5">
+  <img src="assets/images/empty_convenstation.png" alt="" class="w-[280px]" />
+  <p class="text-wrap font-semibold text-slate-400">
+    Chưa có cuộc hội thoại nào
+  </p>
+</div>
+}

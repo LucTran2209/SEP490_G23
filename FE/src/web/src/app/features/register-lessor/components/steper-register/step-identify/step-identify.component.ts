@@ -37,24 +37,6 @@ export class StepIdentifyComponent implements OnInit, OnDestroy {
     if (this.frontImageFile && this.backImageFile) return true;
     return false;
   }
-  // onFileSelect(e: Event, typeImage: string) {
-  //   const input = e.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     const file = input.files[0];
-  //     const reader = new FileReader();
-
-  //     reader.onload = () => {
-  //       if (typeImage === 'front') {
-  //         this.frontImageFile = file;
-  //         this.frontImagePreview = reader.result as string;
-  //       } else {
-  //         this.backImageFile = file;
-  //         this.backImagePreview = reader.result as string;
-  //       }
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
   onFileSelect(e: Event, typeImage: string) {
     const input = e.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
