@@ -16,7 +16,7 @@
     " #messageContainer>
         <div *ngFor="let message of messages">
             <div class="py-2 px-3 mb-4 rounded-l-lg rounded-tr-lg w-fit text-white bg-[#1890FF]" [ngClass]="{
-          'bg-[#E1E1E1] text-black rounded-r-lg rounded-l-none rounded-tl-lg':
+          'bg-[#E1E1E1] text-[#242426] rounded-r-lg rounded-l-none rounded-tl-lg':
             message.senderId !== currentOwnUser.uid,
           'float-right': message.senderId === currentOwnUser.uid
         }">

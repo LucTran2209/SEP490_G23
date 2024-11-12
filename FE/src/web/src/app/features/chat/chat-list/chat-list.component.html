@@ -38,7 +38,7 @@
     @for (item of listChatMember$ | async; track $index) {
     <div
       class="flex justify-between items-center gap-3 m-2 p-2 rounded-md transition-all duration-200 ease-in-out hover:bg-[#F2F2F7] cursor-pointer"
-      [ngClass]="{ 'bg-[#D5E1EB]': isChatRoomSelect }"
+      [ngClass]="{ 'bg-[#D5E1EB]': isChatRoomSelect === item.id}"
       (click)="chooseChatItem(item)"
     >
       <img
@@ -52,17 +52,18 @@
         </h5>
         <div class="flex items-center justify-start gap-x-3">
           <p
-            class="text-[#898F94] text-[13px] leading-3 truncate text-wrap"
+            class="text-[#898F94] text-[15px] leading-3 w-[125px] overflow-hidden text-ellipsis whitespace-nowrap"
             [ngClass]="{
               'font-medium text-[15px] text-black': !item.lastMessage
             }"
           >
             {{ item.lastMessage || "Trò chuyện với nhau ngay đi!" }}
           </p>
-          <p class="w-[50%] text-ellipsis text-[10px] text-[#898F94]">
+          <p class="w-[30%] text-ellipsis text-[10px] text-[#898F94] text-right">
             {{ item.lastMessageDate | dateFirebase }}
           </p>
         </div>
+        
       </div>
     </div>
     }

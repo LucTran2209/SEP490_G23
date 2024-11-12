@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
 import { IChatFireBase } from '../../../interfaces/Chat.interface';
-import { ChatFireStoreService } from '../../../services/chat-fire-store.service';
 import { MessageResponseService } from '../../../services/message-response.service';
-import { UserFireStoreService } from '../../../services/user-fire-store.service';
+import { ChatState, selectIsResized } from '../state/chat.reducer';
 
 @Component({
   selector: 'app-chat',
@@ -12,7 +13,7 @@ import { UserFireStoreService } from '../../../services/user-fire-store.service'
 export class ChatComponent implements OnInit {
   currentUserChat?: IChatFireBase;
   isChatOpen = false;
-  resizeChat = false;
+  resizeChat$: Observable<boolean> = of(false);
   // open Modal Chat
   openChat(): void {
     this.isChatOpen = true;
@@ -23,25 +24,15 @@ export class ChatComponent implements OnInit {
     this.isChatOpen = false;
   }
 
-  onResizeChat() {
-    if(this.currentUserChat){
-      this.resizeChat = !this.resizeChat;
-    }else{
-      this.messageResponseMS.showInfo('chọn cuộc hội thoại đi!')
-    }
-  }
-
-  selectUserChatRoom(val: IChatFireBase){
+  selectUserChatRoom(val: IChatFireBase) {
     this.currentUserChat = val;
   }
 
   constructor(
-    private chatFireStore: ChatFireStoreService,
-    private userFireStoreService: UserFireStoreService,
-    private messageResponseMS: MessageResponseService
+    private store: Store<{ chat: ChatState }>,
   ) {}
 
   ngOnInit(): void {
-    console.log('currentUserChat',this.currentUserChat);
+    this.resizeChat$ = this.store.select(selectIsResized);
   }
 }

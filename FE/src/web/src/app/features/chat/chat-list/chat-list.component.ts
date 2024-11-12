@@ -14,6 +14,9 @@ import {
   IUserFireBase,
 } from '../../../interfaces/Chat.interface';
 import { UserFireStoreService } from '../../../services/user-fire-store.service';
+import { ChatState } from '../state/chat.reducer';
+import { Store } from '@ngrx/store';
+import { resizeChat } from '../state/chat.actions';
 
 @Component({
   selector: 'app-chat-list',
@@ -25,7 +28,7 @@ export class ChatListComponent implements OnInit {
     this.userFireStoreService.getListMemberChat();
   searchMembers$?: Observable<IChatFireBase[]>;
   @Output() chooseChatRoom = new EventEmitter<IChatFireBase>();
-  isChatRoomSelect: boolean = false;
+  isChatRoomSelect: string = '';
   private searchSubject = new Subject<string>();
 
   onInput(e: Event) {
@@ -35,9 +38,13 @@ export class ChatListComponent implements OnInit {
 
   chooseChatItem(val: IChatFireBase) {
     this.chooseChatRoom.emit(val);
-    this.isChatRoomSelect = true;
+    this.isChatRoomSelect = val.id;
+    this.store.dispatch(resizeChat({ isResized: true }));
   }
-  constructor(private userFireStoreService: UserFireStoreService) {}
+  constructor(
+    private userFireStoreService: UserFireStoreService,
+    private store: Store<{ chat: ChatState }>
+  ) {}
 
   ngOnInit(): void {
     /**
@@ -46,14 +53,14 @@ export class ChatListComponent implements OnInit {
     combineLatest([this.searchSubject, this.listChatMember$])
       .pipe(
         debounceTime(100),
-        switchMap(([searchText, listMembers]) =>
-        {
-          this.searchMembers$ = of(listMembers.filter((lm) =>
-            lm.chatName?.toLowerCase().includes(searchText.toLowerCase())
-          ))
+        switchMap(([searchText, listMembers]) => {
+          this.searchMembers$ = of(
+            listMembers.filter((lm) =>
+              lm.chatName?.toLowerCase().includes(searchText.toLowerCase())
+            )
+          );
           return of();
-        }
-        ),
+        })
       )
       .subscribe();
   }
