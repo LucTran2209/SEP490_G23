@@ -12,12 +12,12 @@ namespace BE.Api.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Guid? Id => Guid.Parse(_httpContextAccessor?.HttpContext?.User.FindFirstValue("UserId")!);
+        public Guid? Id => Guid.Parse(_httpContextAccessor?.HttpContext?.User?.FindFirstValue("UserId")!);
 
-        public string? UserName => _httpContextAccessor?.HttpContext?.User.FindFirstValue("UserName")!;
+        public string? UserName => _httpContextAccessor?.HttpContext?.User?.FindFirstValue("UserName")!;
 
-        public string? FullName => _httpContextAccessor?.HttpContext?.User.FindFirstValue("FullName")!;
+        public string? FullName => _httpContextAccessor?.HttpContext?.User?.FindFirstValue("FullName")!;
 
-        public Guid? RentalShopId => Guid.Parse(_httpContextAccessor?.HttpContext?.User.FindFirstValue("RentalShopId")!);
+        public Guid? RentalShopId => Guid.Parse(_httpContextAccessor?.HttpContext?.User?.FindFirstValue("RentalShopId")!);
     }
 }
