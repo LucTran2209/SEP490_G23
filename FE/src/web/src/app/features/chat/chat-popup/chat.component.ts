@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { IChatFireBase } from '../../../interfaces/Chat.interface';
-import { MessageResponseService } from '../../../services/message-response.service';
 import { ChatState, selectIsResized } from '../state/chat.reducer';
 
 @Component({
