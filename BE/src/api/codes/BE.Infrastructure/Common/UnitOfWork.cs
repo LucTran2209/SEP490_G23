@@ -129,7 +129,15 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking hasTrace)
                         {
-                            hasTrace.CreatedBy = user.Id ?? Guid.Empty;
+                            try
+                            {
+                                hasTrace.CreatedBy = user.Id;
+                            }
+                            catch (Exception)
+                            {
+                                hasTrace.CreatedBy = Guid.Empty;
+                            }
+                            
                         }
 
                         break;
@@ -141,7 +149,14 @@ namespace BE.Infrastructure.Common
 
                         if (entry.Entity is IUserTracking trace)
                         {
-                            trace.CreatedBy = user.Id ?? Guid.Empty;
+                            try
+                            {
+                                trace.CreatedBy = user.Id;
+                            }
+                            catch (Exception)
+                            {
+                                trace.CreatedBy = Guid.Empty;
+                            }
                         }
 
                         break;
