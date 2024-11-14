@@ -8,6 +8,7 @@ using BE.Application.Services.Products;
 using BE.Application.Services.RentalShops;
 using BE.Application.Services.SubCategories;
 using BE.Application.Services.Users;
+using BE.Application.Services.Vouchers;
 using BE.Domain.Abstractions.UnitOfWork;
 using BE.Infrastructure.Common;
 using FluentValidation;
@@ -35,7 +36,7 @@ namespace BE.Application.DependencyInjections
             services.AddScoped(typeof(IOrderService), typeof(OrderService));
             services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
             services.AddScoped(typeof(ISubCategoryService), typeof(SubCategoryService));
-
+            services.AddScoped(typeof(IVoucherService), typeof(VoucherService));
             return services;
         }
     }
