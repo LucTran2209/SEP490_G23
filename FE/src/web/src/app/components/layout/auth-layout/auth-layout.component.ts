@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ImageMocks } from '../../../configs/image.config';
 
 @Component({
@@ -10,7 +10,14 @@ import { ImageMocks } from '../../../configs/image.config';
 })
 export class AuthLayoutComponent implements OnInit {
   imageUse = ImageMocks;
-  constructor(private route: ActivatedRoute) {}
+  currentRoute?: string;
 
-  ngOnInit(): void {}
+  get isVerifyEmailRoute(){
+    return this.currentRoute === 'verify-email'
+  }
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.currentRoute = this.router.url.split('/auth/')[1]
+}
 }

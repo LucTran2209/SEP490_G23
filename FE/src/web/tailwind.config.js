@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         'bg-4': "url('../src/assets/images/bg-auth-other.jpg')",
+        'bg-verifyEmail': "url('../src/assets/images/DeWatermark.ai_1731512741490.png')",
       },
       spacing: {
         '9/16': '56.25%',

@@ -11,6 +11,7 @@ import { MessageResponseService } from '../../../services/message-response.servi
 import { StorageService } from '../../../services/storage.service';
 import { STRING } from '../../../utils/constant';
 import * as AuthActions from './auth.actions';
+import { removeCookie, replaceCookie } from '../../../utils/cookie.helper';
 
 @Injectable()
 export class AuthEffect {
@@ -40,7 +41,7 @@ export class AuthEffect {
             }),
             catchError((error) => {
               const errorMessage = error.error?.message || 'Đã xảy ra lỗi!';
-              const statusCode = error.status 
+              const statusCode = error.status;
               return of(
                 AuthActions.login_failure({ error: errorMessage, statusCode })
               );
@@ -65,7 +66,7 @@ export class AuthEffect {
               });
             }),
             catchError((error) => {
-              console.log('error',error);
+              console.log('error', error);
               return of(AuthActions.login_external_failure({ error }));
             })
           )
@@ -110,7 +111,7 @@ export class AuthEffect {
               return AuthActions.register_success({ message: data.message });
             }),
             catchError((err) =>
-              of(AuthActions.register_failure({ error: "Đã xảy ra lỗi" }))
+              of(AuthActions.register_failure({ error: 'Đã xảy ra lỗi' }))
             )
           )
         )
@@ -120,7 +121,6 @@ export class AuthEffect {
     }
   );
 
-
   resetPassword$ = createEffect(
     () =>
       this.action$.pipe(
@@ -129,20 +129,70 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.resetPassword(data).pipe(
             map((res) => {
-              if(res.statusCode != HttpStatusCode.OK){
+              if (res.statusCode != HttpStatusCode.OK) {
                 throw Error;
-              }else{
+              } else {
                 return AuthActions.resetPassword_success();
               }
             }),
-            catchError((err) =>
-             {
+            catchError((err) => {
               const errorMessage = err.error?.message || 'Đã xảy ra lỗi!';
-              const statusCode = err.status 
+              const statusCode = err.status;
               return of(
-                AuthActions.resetPassword_failure({error: "Đường dẫn hết thời gian thay đổi mật khẩu!", statusCode: statusCode })
-               )
-             }
+                AuthActions.resetPassword_failure({
+                  error: 'Đường dẫn hết thời gian thay đổi mật khẩu!',
+                  statusCode: statusCode,
+                })
+              );
+            })
+          )
+        )
+      ),
+    {
+      dispatch: true,
+    }
+  );
+
+  verifyEmailProcess$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.verifyEmail),
+        tap(() => {
+          this.loadingSerivce.setLoading();
+        }),
+        switchMap(({ email }) =>
+          this.authService.verifyEmail({ email }).pipe(
+            map((res) => AuthActions.verifyEmail_success({ data: res.data })),
+            catchError((err) =>
+              of(
+                AuthActions.verifyEmail_failure({
+                  error: 'Có lỗi xảy ra vui lòng thử lại',
+                })
+              )
+            )
+          )
+        )
+      ),
+    {
+      dispatch: true,
+    }
+  );
+  confirmVerifyEmailProcess$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.confirmVerifyEmail),
+        tap(() => {
+          this.loadingSerivce.setLoading();
+        }),
+        switchMap(({ data }) =>
+          this.authService.confirmVerifyEmail(data).pipe(
+            map((res) => AuthActions.confirmVerifyEmail_success()),
+            catchError((err) =>
+              of(
+                AuthActions.verifyEmail_failure({
+                  error: 'Có lỗi xảy ra vui lòng thử lại',
+                })
+              )
             )
           )
         )
@@ -246,6 +296,38 @@ export class AuthEffect {
     }
   );
 
+  verifyEmail_success$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.verifyEmail_success),
+        tap(({ data: { code, email } }) => {
+          this.loadingSerivce.setOtherLoading('loaded');
+          const timestamp15MinutesLater = Math.floor(Date.now() / 1000) + 15 * 60;
+          replaceCookie(STRING.OTPCODE, code, timestamp15MinutesLater, '/'); //15 minutes
+          replaceCookie(STRING.EMAIL, email, timestamp15MinutesLater, '/'); //15 minutes
+          window.location.reload();
+        })
+      ),
+    {
+      dispatch: false,
+    }
+  );
+  confirmVerifyEmail_success$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.confirmVerifyEmail_success),
+        tap(() => {
+          this.loadingSerivce.setOtherLoading('loaded');
+          // removeCookie(STRING.OTPCODE);
+          this.messageNZ.success("Hãy tiếp tục đăng ký tài khoản nào");
+          this.router.navigate(['auth/register']);
+        })
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
   processFailure$ = createEffect(
     () =>
       this.action$.pipe(
@@ -255,7 +337,9 @@ export class AuthEffect {
           AuthActions.forgotPassword_failure,
           AuthActions.checkOtpCode_failure,
           AuthActions.register_failure,
-          AuthActions.resetPassword_failure
+          AuthActions.resetPassword_failure,
+          AuthActions.verifyEmail_failure,
+          AuthActions.confirmVerifyEmail_failure
         ),
         tap((action) => {
           this.loadingSerivce.setOtherLoading('error');

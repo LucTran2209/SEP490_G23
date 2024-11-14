@@ -1,10 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import {
+  IConfirmEmailRequest,
   IExternalLoginRequest,
   IForgotPassword,
   ILoginRequest,
   IRegisterRequest,
   IResetPassword,
+  IVerifyEmailResponse,
 } from '../../../interfaces/account.interface';
 
 export const LOGIN_INIT = '[Auth] login init';
@@ -31,10 +33,14 @@ export const CHECK_OTPCODE_SEND_TO_EMAIL_FAILURE =
 export const REGISTER_INIT = '[Auth] register init';
 export const REGISTER_SUCCESS = '[Auth] register success';
 export const REGISTER_FAILURE = '[Auth] register failure';
-
 export const LOGOUT = '[Auth] logout';
-
 export const TOKEN_EXPIRED = '[Auth] token expired';
+export const VERIFY_EMAIL = '[Auth] verify email';
+export const VERIFY_EMAIL_SUCCESS = '[Auth] verify email success';
+export const VERIFY_EMAIL_FAILURE = '[Auth] verify email failure';
+export const CONFIRM_VERIFY_EMAIL = '[Auth] confirm verify email';
+export const CONFIRM_VERIFY_EMAIL_SUCCESS = '[Auth] confirm verify email success';
+export const CONFIRM_VERIFY_EMAIL_FAILURE = '[Auth] confirm verify email failure';
 
 export const login = createAction(LOGIN_INIT, props<{ data: ILoginRequest }>());
 export const login_success = createAction(
@@ -112,3 +118,26 @@ export const tokenExpire = createAction(
   TOKEN_EXPIRED,
   props<{ message: string }>()
 );
+
+export const verifyEmail = createAction(
+  VERIFY_EMAIL, props<{email: string}>()
+)
+
+export const verifyEmail_success = createAction(
+  VERIFY_EMAIL_SUCCESS, props<{data: IVerifyEmailResponse}>()
+)
+
+export const verifyEmail_failure = createAction(
+  VERIFY_EMAIL_FAILURE, props<{error: string}>()
+)
+export const confirmVerifyEmail = createAction(
+  CONFIRM_VERIFY_EMAIL, props<{data: IConfirmEmailRequest}>()
+)
+
+export const confirmVerifyEmail_success = createAction(
+  CONFIRM_VERIFY_EMAIL_SUCCESS,
+)
+
+export const confirmVerifyEmail_failure = createAction(
+  CONFIRM_VERIFY_EMAIL_FAILURE, props<{error: string}>()
+)

@@ -8,7 +8,7 @@ const CycleGroup = 'assets/images/image-group-demo.png';
 const Logo = 'assets/images/logo.png';
 const ShapeT1 = 'assets/images/shape_tornado.png';
 const ShapeT2 = 'assets/images/shape_tornado2.png';
-
+const bgVerifyEmail = 'assets/images/DeWatermark.ai_1731512741490.png'
 export const ImageMocks = {
   BackCard,
   FontCard,
@@ -20,4 +20,5 @@ export const ImageMocks = {
   Logo,
   ShapeT1,
   ShapeT2,
+  bgVerifyEmail,
 };

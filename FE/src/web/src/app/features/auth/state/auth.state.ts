@@ -11,4 +11,5 @@ export interface AuthState {
   refreshToken: string | null;
   isRecoveringPassword: boolean;
   isRecoveredPassword: boolean;
+  isHasConditionRegister: boolean
 }

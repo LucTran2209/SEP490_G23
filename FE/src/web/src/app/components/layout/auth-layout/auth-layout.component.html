@@ -1,10 +1,11 @@
-<div nz-row class="auth_wrapper container-fluid p-0 min-h-screen bg-[#fff]">
+<div nz-row class="auth_wrapper container-fluid p-0 min-h-screen bg-[#fff]" [ngClass]="{'flex flex-row-reverse': isVerifyEmailRoute}">
   <section
     nz-col
     [nzMd]="{ span: 12 }"
     class="bg-bg-4 bg-no-repeat bg-center bg-cover z-30"
+    [ngClass]="{'bg-bg-verifyEmail': isVerifyEmailRoute}"
   >
-    <div class="image_logo absolute brightness-150">
+    <div class="image_logo absolute brightness-150 p-10">
       <img [src]="imageUse.Logo" alt="logo_image.png" srcset="" />
     </div>
   </section>
@@ -14,8 +15,10 @@
     [nzSm]="{ span: 24 }"
     class="form-section relative"
   >
+  @if(!isVerifyEmailRoute){
     <img [src]="imageUse.ShapeT1" alt="" />
     <img [src]="imageUse.ShapeT2" alt="" class="fixed -right-6" />
+  }
     <div
       class="container_auth_form p-5 rounded-md w-72 sm:w-[425px] lg:w-[500px]"
     >

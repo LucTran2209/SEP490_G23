@@ -15,4 +15,5 @@ export const {
   selectMessageRegister,
   selectErrorRegister,
   selectIsRecoveringPassword,
+  selectIsHasConditionRegister
 } = authFeature;

@@ -20,10 +20,6 @@ export const AuthSlug = {
     title: 'register | ERMS',
     api: 'api/Authentication/Register',
   },
-  RenewToken: {
-    label: 'renew token',
-    api: 'renew-token',
-  },
   ChangePassword: {
     label: 'change-passowrd',
     title: 'change password | ERMS',
@@ -33,6 +29,15 @@ export const AuthSlug = {
     label: 'reset-password/:token/:email',
     title: 'reset password | ERMS',
     api: 'api/Authentication/ResetPassword',
+  },
+  VerifyEmail: {
+    label: 'verify-email',
+    title: 'verify email | ERMS',
+    api: 'api/Authentication/VerifyEmail',
+  },
+  ConfirmEmail: {
+    title: 'confirm email | ERMS',
+    api: 'api/Authentication/ComfirmVerifyEmailAsync',
   },
 };
 
