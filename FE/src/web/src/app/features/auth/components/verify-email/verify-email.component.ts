@@ -1,21 +1,20 @@
 import {
   ChangeDetectorRef,
   Component,
-  input,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CodeInputComponent } from 'angular-code-input';
-import { MyValidators } from '../../../../utils/validators';
 import { Store } from '@ngrx/store';
-import { GlobalState } from '../../../../store/app.state';
-import * as AuthActions from '../../state/auth.actions';
-import { getCookie } from '../../../../utils/cookie.helper';
-import { STRING } from '../../../../utils/constant';
+import { CodeInputComponent } from 'angular-code-input';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { IConfirmEmailRequest } from '../../../../interfaces/account.interface';
 import { MessageResponseService } from '../../../../services/message-response.service';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { GlobalState } from '../../../../store/app.state';
+import { STRING } from '../../../../utils/constant';
+import { getCookie } from '../../../../utils/cookie.helper';
+import { MyValidators } from '../../../../utils/validators';
+import * as AuthActions from '../../state/auth.actions';
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.component.html',
