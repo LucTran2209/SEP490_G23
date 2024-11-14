@@ -59,6 +59,9 @@ namespace BE.Infrastructure.Common
         public IProductImageRepository productImageRepository;
         public IProductImageRepository ProductImageRepository => productImageRepository = new ProductImageRepository(context);
 
+        public IVoucherRepository voucherRepository;
+        public IVoucherRepository VoucherRepository => voucherRepository = new VoucherRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
