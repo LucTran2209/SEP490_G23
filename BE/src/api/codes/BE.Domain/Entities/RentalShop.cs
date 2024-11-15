@@ -6,6 +6,7 @@ namespace BE.Domain.Entities
     public class RentalShop : EntityAuditBase
     {
         public Guid UserId { get; set; }
+        public string? AvatarShop {  get; set; }
         public string? ShopName { get; set; }
         public string? ImageFont { get; set; }
         public string? ImageBack { get; set; }

@@ -1,18 +1,26 @@
 ﻿using BE.Application.Common.Dtos;
+using BE.Application.Models;
 
 namespace BE.Application.Services.Products.ProductServiceOutputDto
 {
-    public class GetListProductOutputDto : ProductDto
+    public class GetListProductOutputDto
     {
-        public SubCategoryDto? SubCategory { get; set; }
-        public RentalShopDto? RentalShop { get; set; }
+        public List<RentalShopDto>? RentalShops { get; set; }
+        public PagedResultModel<ProductDetailDto>? Products { get; set; }
 
         public class Mapping : Profile
         {
             public Mapping()
             {
-                CreateMap<Product, GetListProductOutputDto>();
+                CreateMap<Product, ProductDetailDto>();
             }
         }
+    }
+
+    public class ProductDetailDto : ProductDto
+    {
+        public SubCategoryDto? SubCategory { get; set; }
+        public RentalShopDto? RentalShop { get; set; }
+
     }
 }
