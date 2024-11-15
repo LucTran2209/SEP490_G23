@@ -1,4 +1,5 @@
-﻿using BE.Application.Services.Products.ProductServiceInputDto;
+﻿using BE.Application.Common.Dtos;
+using BE.Application.Services.Products.ProductServiceInputDto;
 using BE.Application.Services.Products.ProductServiceOutputDto;
 using Microsoft.AspNetCore.Http;
 
@@ -52,23 +53,36 @@ namespace BE.Application.Services.Products
         public async Task<ResultService> GetListProductAsync(GetListProductInputDto inputDto)
         {
             var query = unitOfWork.ProductRepository.GetAll()
-                .Filter(inputDto.Search, p => p.ProductName!.Contains(inputDto.Search)
+                .Filter(inputDto.Search,
+                    p => p.ProductName!.Contains(inputDto.Search)
                         || p.Description!.Contains(inputDto.Search)
                         || p.SubCategory!.SubCategoryName.Contains(inputDto.Search)
                         || p.SubCategory.Category.CategoryName.Contains(inputDto.Search))
-                .Filter(inputDto.Address, p => p.RentalShop.Address!.Contains(inputDto.Address ?? string.Empty));
-
+                .Filter(inputDto.Addresses?.ToString(),
+                    p => (inputDto.Addresses == null) ? true : inputDto.Addresses.Any(a => a.Contains(p.RentalShop.Address!)))
+                .Filter(inputDto.SubCategory?.ToString(),
+                    p => (inputDto.SubCategory == null) ? true : inputDto.SubCategory.Any(s => p.SubCategoryId == s));
 
             var products = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                 .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
                 .ToPageList(inputDto)
-                .ToPageResult(await query.CountAsync(), inputDto, p => _mapper.Map<GetListProductOutputDto>(p));
+                .ToPageResult(await query.CountAsync(), inputDto, p => _mapper.Map<ProductDetailDto>(p));
+
+            var rentalShops = unitOfWork.RentalShopRepository.GetAll()
+                .Filter(inputDto.Search, p => p.ShopName!.Contains(inputDto.Search))
+                .ToList();
+
+            var output = new GetListProductOutputDto()
+            {
+                Products = products,
+                RentalShops = _mapper.Map<List<RentalShopDto>>(rentalShops)
+            };
 
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
-                Datas = products
+                Datas = output
             };
         }
 
