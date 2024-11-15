@@ -61,7 +61,9 @@ namespace BE.Application.Services.Products
                 .Filter(inputDto.Addresses?.ToString(),
                     p => (inputDto.Addresses == null) ? true : inputDto.Addresses.Any(a => a.Contains(p.RentalShop.Address!)))
                 .Filter(inputDto.SubCategory?.ToString(),
-                    p => (inputDto.SubCategory == null) ? true : inputDto.SubCategory.Any(s => p.SubCategoryId == s));
+                    p => (inputDto.SubCategory == null) ? true : inputDto.SubCategory.Any(s => p.SubCategoryId == s))
+                .Filter(inputDto.Evaluates?.ToString(),
+                    p => (inputDto.Evaluates == null) ? true : inputDto.Evaluates.Any(e => e == Decimal.ToInt32(p.Evaluate)));
 
             var products = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                 .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
