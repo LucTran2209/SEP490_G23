@@ -9,16 +9,19 @@ import { ProductRentalDetailComponent } from './components/product-rental-detail
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
 import { HowitorderComponent } from './static/howitorder/howitorder.component';
+import { ShopRentalListComponent } from './components/shop-rental-list/shop-rental-list.component';
 
 
 const routes: Routes = [
   {
     path: 'home',
     component: HomePageComponent,
+    // data: { breadcrumb: 'Trang Chủ' }
   },
   {
     path: 'howitorder',
     component: HowitorderComponent,
+    data: { breadcrumb: 'Quy Trình Thuê' }
   },
   {
     path: 'user',
@@ -27,15 +30,14 @@ const routes: Routes = [
       { 
         path: 'account', 
         children: [
-          { path: 'profile', component: ProfileComponent },
+          { path: 'profile', component: ProfileComponent  },
         ],
       },
       {
         path: 'order',
         children: [
-          { path: '', component: ListMyOrderComponent },
+          { path: '', component: ListMyOrderComponent  },
           { path: 'order-detail/:id', component: MyOrderDetailComponent },
-          // { path: 'order-detail', component: MyOrderDetailComponent },
       ]
       },
     ]
@@ -43,14 +45,25 @@ const routes: Routes = [
   {
     path: 'product-list/:slug/caid/:id',
     component: ProductRentalListComponent,
+    data: { breadcrumb: 'Danh Sách Sản Phẩm' }
   },
   {
-    path: 'product-detail/:slug./.i/:id',
+    path: 'product-search',
+    component: ProductRentalListComponent,
+  },
+  {
+    path: 'product-detail/:slug/.i/:id',
     component: ProductRentalDetailComponent,
+    data: { breadcrumb: 'Chi Tiết Sản Phẩm' }
   },
   {
     path: 'shop/:id',
     component: ShopPersonalComponent,
+    data: { breadcrumb: 'Shop' }
+  },
+  {
+    path: 'shopList',
+    component: ShopRentalListComponent,
   },
 ];
 

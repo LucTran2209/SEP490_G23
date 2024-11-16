@@ -1,0 +1,20 @@
+<div *ngIf="!isHomePage && breadcrumbs?.length" class="container mt-10">
+  <nz-breadcrumb>
+    <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs; let last = last">
+      <ng-container *ngIf="!last">
+        <a
+          *ngIf="breadcrumb.url !== '/common/home'; else homeLink"
+          [routerLink]="breadcrumb.url"
+        >
+          {{ breadcrumb.label }}
+        </a>
+        <ng-template #homeLink>
+          <a [routerLink]="breadcrumb.url">
+            <span nz-icon nzType="home" nzTheme="outline"></span>
+          </a>
+        </ng-template>
+      </ng-container>
+      <span *ngIf="last">{{ breadcrumb.label }}</span>
+    </nz-breadcrumb-item>
+  </nz-breadcrumb>
+</div>

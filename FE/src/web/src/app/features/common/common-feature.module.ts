@@ -24,6 +24,7 @@ import { featureRentalShopProduct } from './state/shop/shop-personal.reducer';
 import { filterFeatures } from '../../store/filters/filter.reducers';
 import { featureOrderRentalProduct } from './state/order/order.reducer';
 import { OrderProductsEffects } from './state/order/order.effects';
+import { ShopRentalListComponent } from './components/shop-rental-list/shop-rental-list.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { OrderProductsEffects } from './state/order/order.effects';
     ShopPersonalComponent,
     MyOrderDetailComponent,
     HowitorderComponent,
+    ShopRentalListComponent,
   ],
   imports: [
     CommonModule, SharedModule,

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MyOrderDetailDto, OrderDetailResultService, OrderResultService } from '../../../../interfaces/order.interface';
 import { OrderService } from '../../../../services/order.service';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from '../../../../services/loading.service';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { Observable } from 'rxjs';
@@ -31,6 +31,7 @@ export class MyOrderDetailComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private loadingService: LoadingService,
+    private router: Router,
   ){
     this.loading$ = this.loadingService.status$;
   }
@@ -53,6 +54,7 @@ export class MyOrderDetailComponent implements OnInit {
         this.order = res.data;
         this.loadingService.setOtherLoading('loaded');
         this.calculateNumberOfRentalDays();
+        this.calculateTotalRentAndDeposit();
         this.setStatusMessage();
         console.log(this.order);
       },
@@ -65,6 +67,9 @@ export class MyOrderDetailComponent implements OnInit {
     // Ensure the startDate and endDate are valid Date objects
     const startDate = new Date(this.order.startDate);
     const endDate = new Date(this.order.endDate);
+
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
 
     const timeDiff = endDate.getTime() - startDate.getTime();
     this.numberofRentalDays = Math.floor(timeDiff / (1000 * 3600 * 24)); // Convert time diff to number of days

@@ -33,6 +33,15 @@
           <span nz-icon nzType="user" nzTheme="outline"></span>
           <span>Quản Lý Người Dùng</span>
         </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./manage-register-lessor']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span nz-icon nzType="solution" nzTheme="outline"></span>
+          <span>Danh Sách Đơn Yêu Cầu</span>
+        </li>
         <li nz-menu-item>
           <span nz-icon nzType="shop" nzTheme="outline"></span>
           <span>Danh Sách Cửa Hàng</span>

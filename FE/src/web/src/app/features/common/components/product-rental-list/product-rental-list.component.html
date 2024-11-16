@@ -1,34 +1,41 @@
-<div class="container">
-  <!-- <div class="backcrumb">
-      <nz-breadcrumb>
-        <nz-breadcrumb-item>Home</nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          <a>Application List</a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
-      </nz-breadcrumb>
-    </div> -->
-  <div class="py-5">
-    <p class="font-semibold text-2xl">
-      <span class="text-red-500">199</span> sản phẩm được tìm thấy trong <br />
-      <span class="text-red-500">loại sản phẩm n2</span>
-    </p>
-  </div>
+<div class="container mt-3">
   <div class="grid grid-cols-12 gap-5">
     <section class="col-span-3">
       <app-filter-product-rental class="m-5"></app-filter-product-rental>
     </section>
     <section class="col-span-9 flex flex-col justify-between">
       <div>
-        <!-- <h4 class="uppercase text-center text-2xl font-semibold pb-9">
-          CHO THUE SAN PHAM N2
-        </h4> -->
+        @if(search){
+        <div class="flex justify-between">
+          <p class="font-light text-lg pt-3 text-[#696969] uppercase">
+            Shop liên quan đến "{{ search }}"
+          </p>
+
+          <button
+            nz-button
+            nzType="link"
+            nzShape="round"
+            (click)="goAllShopRelated()"
+            class="font-base text-base pt-3"
+          >
+            Thêm Kết Quả <i nz-icon nzType="arrow-right" class="ml-2"></i>
+          </button>
+        </div>
+        <app-header-shop></app-header-shop>
+        }
+        <div class="flex justify-start">
+          <p class="text-center font-light text-lg py-5 text-[#696969]">
+            ({{ totalProducts }} kết quả {{ search }} tìm thấy)
+          </p>
+        </div>
         <div class="flex justify-between pb-3">
           <nz-input-group [nzSuffix]="suffixIconSearch" class="max-w-[40%]">
             <input
               type="text"
               nz-input
-              placeholder="Tìm kiếm bài viết cho thuê"
+              placeholder="Tìm kiếm thiết bị cho thuê"
+              [(ngModel)]="searchText"
+              (keyup.enter)="onSearch()"
             />
           </nz-input-group>
 

@@ -50,7 +50,7 @@ export interface MyOrderOutputDto {
   mortgagePaperImageFont: string | null;
   mortgagePaperImageBack: string | null;
   orderDetails: OrderDetailDto[];
-  orderStatuses: OrderStatusDto[];
+  orderStatuses: OrderStatus[];
 }
 export interface User {
   fullName: string;
@@ -82,7 +82,7 @@ export interface MyOrderDetailDto {
   user: User;
   voucher: any | null;
   orderDetails: OrderDetailDto[];
-  orderStatuses: OrderStatusDto[];
+  orderStatuses: OrderStatus[];
 }
 
 export interface OrderResultService {
