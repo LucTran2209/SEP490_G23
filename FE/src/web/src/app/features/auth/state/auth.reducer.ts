@@ -147,6 +147,8 @@ export const authReducer = createReducer(
     ...initialState,
     message: error,
     status: 'loading' as StatusProcess,
-  }))
+  })),
   //----------------------------------confirm verify email
+on(AuthActions.reset_state, () => ({...initialState}))
+  //----------------------------------reset state and reson something
 );

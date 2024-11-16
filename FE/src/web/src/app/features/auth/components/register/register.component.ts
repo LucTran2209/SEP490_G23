@@ -4,8 +4,9 @@ import { Store } from '@ngrx/store';
 import { IRegisterRequest } from '../../../../interfaces/account.interface';
 import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
-import { FormatDate } from '../../../../utils/constant';
+import { FormatDate, STRING } from '../../../../utils/constant';
 import * as AuthActions from '../../state/auth.actions';
+import { getCookie } from '../../../../utils/cookie.helper';
 
 @Component({
   selector: 'app-register',
@@ -46,7 +47,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setEmailAfterVerifyEmail();
+  }
 
   handleselectAddress(address: string) {
     this.forminfocommongroup.patchValue({ address });
@@ -62,5 +65,12 @@ export class RegisterComponent implements OnInit {
     } else {
       this.markControlsAsDirty(this.forminfocommongroup);
     }
+  }
+
+  setEmailAfterVerifyEmail(){
+     //set email after verify email successfull
+     const verifyEmail = getCookie(STRING.EMAIL);
+     this.forminfocommongroup.patchValue({email: verifyEmail});
+     this.forminfocommongroup.get('email')?.disable();
   }
 }

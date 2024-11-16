@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CodeInputComponent } from 'angular-code-input';
 import { MyValidators } from '../../../../utils/validators';
@@ -9,41 +15,45 @@ import { getCookie } from '../../../../utils/cookie.helper';
 import { STRING } from '../../../../utils/constant';
 import { IConfirmEmailRequest } from '../../../../interfaces/account.interface';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.component.html',
   styleUrl: './verify-email.component.scss',
 })
-export class VerifyEmailComponent implements OnInit{
+export class VerifyEmailComponent implements OnInit {
   inputEmail: FormControl<string | null> = new FormControl<string>('', [
     MyValidators.required,
     MyValidators.email,
   ]);
+  isVerificationComplete: boolean = false;
   codeGenerate: string | null = null;
   emailGenerate: string | null = null;
   @ViewChild('codeInput') codeInput!: CodeInputComponent;
 
   onCodeChanged(code: string) {
-    console.log('line 24',code);
+    console.log('line 24', code);
   }
 
   onCodeCompleted(code: string) {
-    if(code !== this.codeGenerate){
-      this.toastMS.handleError('Mã xác minh không trùng khớp, vui lòng thử lại!',400)
+    if (code !== this.codeGenerate) {
+      this.toastMS.handleError(
+        'Mã xác minh không trùng khớp, vui lòng thử lại!',
+        400
+      );
       return;
     }
-    if(this.codeGenerate && this.emailGenerate && code){
+    if (this.codeGenerate && this.emailGenerate && code) {
       const data: IConfirmEmailRequest = {
         code: this.codeGenerate,
         email: this.emailGenerate,
-        userComfirmCode: code
-      }
-      this.store.dispatch(AuthActions.confirmVerifyEmail({data}))
-    }else{
+        userComfirmCode: code,
+      };
+      this.isVerificationComplete = true;
+      this.store.dispatch(AuthActions.confirmVerifyEmail({ data }));
+    } else {
       console.log('error what');
     }
-   
-
   }
 
   verifyEmailSubmit() {
@@ -56,11 +66,20 @@ export class VerifyEmailComponent implements OnInit{
     }
   }
 
-  constructor(private store: Store<GlobalState>, private cdRef: ChangeDetectorRef, private toastMS: MessageResponseService) {}
+  constructor(
+    private store: Store<GlobalState>,
+    private cdRef: ChangeDetectorRef,
+    private toastMS: MessageResponseService,
+    private modal: NzModalService
+  ) {}
 
   ngOnInit(): void {
     this.codeGenerate = getCookie(STRING.OTPCODE);
     this.emailGenerate = getCookie(STRING.EMAIL);
-    console.log('otpcode',this.codeGenerate, this.emailGenerate);
+    console.log('otpcode', this.codeGenerate, this.emailGenerate);
+  }
+
+  canDeactivate(): boolean {
+    return this.isVerificationComplete;
   }
 }

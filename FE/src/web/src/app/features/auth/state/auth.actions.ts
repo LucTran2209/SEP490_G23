@@ -39,8 +39,11 @@ export const VERIFY_EMAIL = '[Auth] verify email';
 export const VERIFY_EMAIL_SUCCESS = '[Auth] verify email success';
 export const VERIFY_EMAIL_FAILURE = '[Auth] verify email failure';
 export const CONFIRM_VERIFY_EMAIL = '[Auth] confirm verify email';
-export const CONFIRM_VERIFY_EMAIL_SUCCESS = '[Auth] confirm verify email success';
-export const CONFIRM_VERIFY_EMAIL_FAILURE = '[Auth] confirm verify email failure';
+export const CONFIRM_VERIFY_EMAIL_SUCCESS =
+  '[Auth] confirm verify email success';
+export const CONFIRM_VERIFY_EMAIL_FAILURE =
+  '[Auth] confirm verify email failure';
+export const RESET_STATE = '[reset state] all state';
 
 export const login = createAction(LOGIN_INIT, props<{ data: ILoginRequest }>());
 export const login_success = createAction(
@@ -49,7 +52,7 @@ export const login_success = createAction(
 );
 export const login_failure = createAction(
   LOGIN_FAILURE,
-  props<{ error: string, statusCode: number }>()
+  props<{ error: string; statusCode: number }>()
 );
 
 export const login_external = createAction(
@@ -85,7 +88,7 @@ export const resetPassword = createAction(
 export const resetPassword_success = createAction(RESET_PASSWORD_SUCCESS);
 export const resetPassword_failure = createAction(
   RESET_PASSWORD_FAILURE,
-  props<{ error: string , statusCode: number}>()
+  props<{ error: string; statusCode: number }>()
 );
 
 export const checkOtpCode = createAction(
@@ -120,24 +123,31 @@ export const tokenExpire = createAction(
 );
 
 export const verifyEmail = createAction(
-  VERIFY_EMAIL, props<{email: string}>()
-)
+  VERIFY_EMAIL,
+  props<{ email: string }>()
+);
 
 export const verifyEmail_success = createAction(
-  VERIFY_EMAIL_SUCCESS, props<{data: IVerifyEmailResponse}>()
-)
+  VERIFY_EMAIL_SUCCESS,
+  props<{ data: IVerifyEmailResponse }>()
+);
 
 export const verifyEmail_failure = createAction(
-  VERIFY_EMAIL_FAILURE, props<{error: string}>()
-)
+  VERIFY_EMAIL_FAILURE,
+  props<{ error: string }>()
+);
 export const confirmVerifyEmail = createAction(
-  CONFIRM_VERIFY_EMAIL, props<{data: IConfirmEmailRequest}>()
-)
+  CONFIRM_VERIFY_EMAIL,
+  props<{ data: IConfirmEmailRequest }>()
+);
 
 export const confirmVerifyEmail_success = createAction(
-  CONFIRM_VERIFY_EMAIL_SUCCESS,
-)
+  CONFIRM_VERIFY_EMAIL_SUCCESS
+);
 
 export const confirmVerifyEmail_failure = createAction(
-  CONFIRM_VERIFY_EMAIL_FAILURE, props<{error: string}>()
-)
+  CONFIRM_VERIFY_EMAIL_FAILURE,
+  props<{ error: string }>()
+);
+
+export const reset_state = createAction(RESET_STATE);
