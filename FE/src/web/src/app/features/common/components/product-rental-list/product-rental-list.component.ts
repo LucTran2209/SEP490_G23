@@ -20,6 +20,7 @@ export class ProductRentalListComponent {
   search!: string;
   selectedValue = null;
   productList: ProductOutputDto[] = [];
+  locations: string[] = [];
   shop!: RentalShop;
   totalProducts = 0;     
   currentPage = 1;    
@@ -66,12 +67,12 @@ export class ProductRentalListComponent {
     });
   }
 
-  loadProducts() {
+  loadProducts(address?: string[]) {
     // Xác định thuật ngữ tìm kiếm sẽ sử dụng
     const searchTerm = this.search || this.searchText || this.subCategory;
-
+    
     this.loadingService.setLoading();
-    this.productService.listProduct(this.currentPage, this.pageSize, searchTerm).subscribe((res: ProductDtoResponse) => {
+    this.productService.listProduct(this.currentPage, this.pageSize, searchTerm, address).subscribe((res: ProductDtoResponse) => {
       this.productList = res.data.products.items;
       this.shop = res.data.rentalShops[0];
       this.totalProducts = res.data.products.totalCount;
@@ -106,5 +107,11 @@ export class ProductRentalListComponent {
     this.currentPage = 1; // Đặt lại về trang 1 khi thực hiện tìm kiếm mới
     this.updateQueryParams();
     this.loadProducts();
+  }
+  onLocationsSelected(locations: string[]){
+    this.currentPage = 1; // Đặt lại về trang 1 khi thực hiện tìm kiếm mới
+    this.updateQueryParams();
+    this.loadProducts(locations);
+    console.log(locations);
   }
 }

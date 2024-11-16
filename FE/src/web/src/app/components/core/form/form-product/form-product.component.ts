@@ -161,8 +161,8 @@ export class FormProductComponent {
         }
     });
         this.saveProduct.emit(formData);
-        this.resetForm();
-    }
+      }
+      this.resetForm();
       
       
   }

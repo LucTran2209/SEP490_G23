@@ -1,7 +1,11 @@
 <div class="container mt-3">
   <div class="grid grid-cols-12 gap-5">
     <section class="col-span-3">
-      <app-filter-product-rental [isSubcategoryPage]="isSubcategoryPage" class="m-5"></app-filter-product-rental>
+      <app-filter-product-rental
+        [isSubcategoryPage]="isSubcategoryPage"
+        (locationNames)="onLocationsSelected($event)"
+        class="m-5"
+      ></app-filter-product-rental>
     </section>
     <section class="col-span-9 flex flex-col justify-between">
       <div>

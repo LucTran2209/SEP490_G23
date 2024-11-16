@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { logout } from '../../../features/auth/state/auth.actions';
 import { FeatureAppState } from '../../../store/app.state';
 import { UserProfileService } from '../../../services/user-profile.service';
+import { MessageResponseService } from '../../../services/message-response.service';
 
 @Component({
   selector: 'app-user-navbar-header',
@@ -29,6 +30,7 @@ export class UserNavbarHeaderComponent implements OnInit {
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
     private activatedRoute: ActivatedRoute,
+    private messageService: MessageResponseService,
   ) {}
   ngOnInit(): void {
     this.handleAssginInfo();
@@ -89,6 +91,14 @@ export class UserNavbarHeaderComponent implements OnInit {
   }
   onSearch(){
     this.router.navigate(['/common/product-search'], { queryParams: { search: this.searchText } });
+  }
+  onShow(){
+    const shopId = this.userProfileService.rentalshopId;
+    if(shopId){
+      this.messageService.showInfo('Yêu Cầu Đang Chờ Xét Duyệt Vui Lòng Đợi!');
+    }else{
+      this.router.navigate(['/portal/register-lessor']);
+    }
   }
 
 }
