@@ -112,9 +112,13 @@ import { ChatHeaderComponent } from '../../features/chat/chat-header/chat-header
 import { ChatComponent } from '../../features/chat/chat-popup/chat.component';
 import { RequestShopCardComponent } from '../core/card/request-shop-card/request-shop-card.component';
 import { HeaderShopComponent } from '../core/header-shop/header-shop.component';
+import { CodeInputModule } from 'angular-code-input';
+import { CodeInputComponent } from 'angular-code-input';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
+  NzStatisticModule,
   NzNotificationModule,
   NzDividerModule,
   NzTagModule,
@@ -225,6 +229,7 @@ const SHARED_MODULES = [
 @NgModule({
   declarations: [...SHARED_MODULES],
   imports: [
+    CodeInputModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -234,6 +239,7 @@ const SHARED_MODULES = [
     SlickCarouselModule,
   ],
   exports: [
+    CodeInputComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

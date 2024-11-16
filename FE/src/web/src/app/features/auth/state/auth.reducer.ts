@@ -13,6 +13,7 @@ const initialState: AuthState = {
   status: 'idle',
   isRecoveringPassword: false,
   isRecoveredPassword: false,
+  isHasConditionRegister: false
 };
 
 export const authReducer = createReducer(
@@ -115,6 +116,39 @@ export const authReducer = createReducer(
   //----------------------------------register
   on(AuthActions.logout, (state, action) => ({
     ...initialState,
-  }))
+  })),
   //----------------------------------logout
+  on(AuthActions.verifyEmail, (state, action) => ({
+    ...initialState,
+    status: 'loading' as StatusProcess,
+  })),
+  on(AuthActions.verifyEmail_success, (state, action) => ({
+    ...initialState,
+    message: 'Mã xác minh đã được gửi đến hộp thư đến của bạn',
+    status: 'loaded' as StatusProcess,
+  })),
+  on(AuthActions.verifyEmail_failure, (state, { error }) => ({
+    ...initialState,
+    message: error,
+    status: 'loading' as StatusProcess,
+  })),
+  //----------------------------------verify email
+  on(AuthActions.confirmVerifyEmail, (state, action) => ({
+    ...initialState,
+    status: 'loading' as StatusProcess,
+  })),
+  on(AuthActions.confirmVerifyEmail_success, (state, action) => ({
+    ...state,
+    isHasConditionRegister: true,
+    message: 'Email hợp lệ, tiếp tục đăng ký nào',
+    status: 'loaded' as StatusProcess,
+  })),
+  on(AuthActions.confirmVerifyEmail_failure, (state, { error }) => ({
+    ...initialState,
+    message: error,
+    status: 'loading' as StatusProcess,
+  })),
+  //----------------------------------confirm verify email
+on(AuthActions.reset_state, () => ({...initialState}))
+  //----------------------------------reset state and reson something
 );

@@ -1,12 +1,12 @@
 .auth_wrapper {
     .form-section {
         .container_auth_form{
-            background-color: #fff;
-            border: 1px solid #a1a1a1;
+            background-color: #f0f5f663;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         }
     }
 

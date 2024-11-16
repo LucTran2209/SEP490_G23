@@ -11,6 +11,7 @@ import { ErrorStatusCode } from '../configs/status-code.config';
 import { selectIsAuthenticated } from '../features/auth/state/auth.feature';
 import {
   IChangePassword,
+  IConfirmEmailRequest,
   IExternalLoginRequest,
   IForgotPassword,
   ILoginRequest,
@@ -18,6 +19,8 @@ import {
   IPayLoad,
   IRegisterRequest,
   IResetPassword,
+  IVerifyEmailRequest,
+  IVerifyEmailResponse,
 } from '../interfaces/account.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
 import { FeatureAppState } from '../store/app.state';
@@ -38,7 +41,6 @@ import { UserFireStoreService } from './user-fire-store.service';
 })
 export class AuthService {
   public routerLinkRedirectURLSubject = new BehaviorSubject<string>('');
-
   private routerLinkRedirectURL$: Observable<string> =
     this.routerLinkRedirectURLSubject.asObservable();
 
@@ -50,7 +52,7 @@ export class AuthService {
     private storageService: StorageService,
     private errorPage: MessageResponseService,
     private userFireStoreService: UserFireStoreService
-  ) {}
+  ) { }
 
   get token() {
     return getCookie(STRING.ACCESS_TOKEN);
@@ -68,8 +70,8 @@ export class AuthService {
     const roleCheck: string[] = ([] as string[]).concat(
       this.userProfileService.roleCurrentUser ?? []
     );
-   const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
-   const hasExpectedRole =  expectedRole.some((val, index) => roleCheck.includes(val));
+    const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
+    const hasExpectedRole = expectedRole.some((val, index) => roleCheck.includes(val));
     return this.isAuthenticated$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
@@ -100,18 +102,18 @@ export class AuthService {
 
   isTokenExpired(): boolean {
     if (!this.token) {
-      return true; 
+      return true;
     }
     try {
       const { exp } = jwtDecode(this.token);
       if (exp) {
-        const currentTime = Math.floor(new Date().getTime() / 1000); 
+        const currentTime = Math.floor(new Date().getTime() / 1000);
         return currentTime >= exp;
       }
-      return true; 
+      return true;
     } catch (error) {
-      console.error('Invalid token:', error); 
-      return true; 
+      console.error('Invalid token:', error);
+      return true;
     }
   }
 
@@ -120,7 +122,7 @@ export class AuthService {
 
     replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
-    this.userFireStoreService.addUserInToFireStore({displayName: userPayLoad.FullName, photoURL: userPayLoad.Avatar, uid: userPayLoad.UserId})
+    this.userFireStoreService.addUserInToFireStore({ displayName: userPayLoad.FullName, photoURL: userPayLoad.Avatar, uid: userPayLoad.UserId })
     this.storageService.set(
       LocalStorageKey.currentUser,
       JSON.stringify(userPayLoad)
@@ -190,5 +192,13 @@ export class AuthService {
 
   changepassword(data: IChangePassword) {
     return this.httpClient.post(AuthSlug.ChangePassword.api, data);
+  }
+
+  verifyEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<IVerifyEmailResponse>> {
+    return this.httpClient.post<BaseResponseApi<IVerifyEmailResponse>>(AuthSlug.VerifyEmail.api, data);
+  }
+
+  confirmVerifyEmail(data: IConfirmEmailRequest): Observable<BaseResponseApi<any>> {
+    return this.httpClient.post(AuthSlug.ConfirmEmail.api,data)
   }
 }

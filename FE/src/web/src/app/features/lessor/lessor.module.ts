@@ -7,9 +7,11 @@ import { OrderDetailComponent } from './components/manage-order/order-detail/ord
 import { ManagePostComponent } from './components/manage-post/manage-post.component';
 import { ManagerShopComponent } from './components/manager-shop/manager-shop.component';
 import { LessorRoutingModule } from './lessor-routing.module';
+import { OverviewComponent } from './components/overview/overview.component';
+import { CardOverviewComponent } from './components/overview/card-overview/card-overview.component';
 
 @NgModule({
-  declarations: [ManagePostComponent, ManagerShopComponent, ManageOrderComponent, OrderDetailComponent],
+  declarations: [ManagePostComponent, ManagerShopComponent, ManageOrderComponent, OrderDetailComponent, OverviewComponent, CardOverviewComponent],
   imports: [CommonModule, LessorRoutingModule, SharedModule],
 })
 export class LessorModule {}

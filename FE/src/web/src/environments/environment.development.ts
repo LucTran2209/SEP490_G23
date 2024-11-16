@@ -17,7 +17,9 @@ export const environment = {
     },
     azureConfig: {
       accountName : 'sep490g23',
-      sasToken: 'sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-11-12T21:09:44Z&st=2024-11-12T13:09:44Z&spr=https&sig=OwN6oaHrFPyvQXgzQZK7PakIRFerxnZw5w3d7Eo%2ByLE%3D',
-      key1: '1y4ILg0k4AnWxsgqRbnupbYSBAqg5i8kWm0OAa1OlQtup3owJ+O112iu4F/YlVZ3TUqieY6/RS8L+ASt3kK8pw=='
+      containerName: 'g23chatstorage',
+      sasToken: 'sp=racwdli&st=2024-11-13T02:22:11Z&se=2025-01-01T10:22:11Z&sv=2022-11-02&sr=c&sig=ikE1bTC51vdNycHggg9qHccv%2Bw1xx6GqFUAo0L7P3zc%3D',
+      key1: '1y4ILg0k4AnWxsgqRbnupbYSBAqg5i8kWm0OAa1OlQtup3owJ+O112iu4F/YlVZ3TUqieY6/RS8L+ASt3kK8pw==',
+      sasService: "https://sep490g23.blob.core.windows.net/g23chatstorage?sp=racwdli&st=2024-11-13T02:22:11Z&se=2025-01-01T10:22:11Z&sv=2022-11-02&sr=c&sig=ikE1bTC51vdNycHggg9qHccv%2Bw1xx6GqFUAo0L7P3zc%3D"
     }
   };
