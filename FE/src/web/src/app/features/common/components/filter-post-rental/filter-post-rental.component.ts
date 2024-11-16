@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IITemListNav } from '../../../../configs/anonymous.config';
 import { rateStar } from '../../../../configs/post.config';
 import {
@@ -17,9 +17,11 @@ import { Subcategory, SubCategoryResultService } from '../../../../interfaces/ca
   styleUrl: './filter-post-rental.component.scss',
 })
 export class FilterProductRentalComponent implements OnInit {
+  @Input() isSubcategoryPage: boolean = false;
   selectLocationOptions = selectLocationOptions;
   categoryOptions : IITemListNav[] = [];
   subCategory: Subcategory[] = [];
+  locations: any[] = [];
   rateStar = rateStar;
   selectBranch = selectBranch;
   selectProductStatus = selectProductStatus;
@@ -44,8 +46,10 @@ export class FilterProductRentalComponent implements OnInit {
   onConvertPrice(value: number): string {
     return convertCurrency(value);
   }
+
   ngOnInit(): void {
     this.loadSubCategory();  // Load subcategories on component init
+
   }
 
   loadSubCategory(): void {
@@ -57,5 +61,14 @@ export class FilterProductRentalComponent implements OnInit {
       }));
       console.log('Mapped Category Options: ', this.categoryOptions);  // Log the mapped category options
     });
+  }
+  onCheckboxChange(item: any) {
+    if (item.selected) {
+      this.locations.push(item); // Add to the list if selected
+    } else {
+      this.locations = this.locations.filter(location => location !== item); // Remove if unselected
+    }
+
+    console.log('Selected Locations:', this.locations); // Log the updated list
   }
 }

@@ -28,12 +28,12 @@ export class BreadcrumbComponent {
   
         // Kiểm tra xem trang hiện tại có phải là trang chủ không
         this.isHomePage = currentUrl === '/common/home';
-        console.log('Current URL:', currentUrl);
-        console.log('Is Home Page:', this.isHomePage);
+        // console.log('Current URL:', currentUrl);
+        // console.log('Is Home Page:', this.isHomePage);
   
         // Khởi tạo lại mảng breadcrumbs
         this.breadcrumbs = [];
-        console.log('Breadcrumbs reset:', this.breadcrumbs);
+        // console.log('Breadcrumbs reset:', this.breadcrumbs);
   
         // Tạo breadcrumbs nếu không phải trang chủ
         
@@ -47,7 +47,7 @@ export class BreadcrumbComponent {
               ...this.breadcrumbs
             ];
           }
-          console.log('Breadcrumbs created:', this.breadcrumbs);
+          // console.log('Breadcrumbs created:', this.breadcrumbs);
         } else {
           console.log('Breadcrumbs not created because it is the home page');
         }
@@ -57,7 +57,7 @@ export class BreadcrumbComponent {
   
   private createBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumbItem[] = []): IBreadcrumbItem[] {
     const children: ActivatedRoute[] = route.children;
-    console.log('Children routes:', children);
+    // console.log('Children routes:', children);
   
     if (children.length === 0) {
       console.log('No more children, returning breadcrumbs:', breadcrumbs);
@@ -66,7 +66,7 @@ export class BreadcrumbComponent {
   
     for (const child of children) {
       const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-      console.log('Current child route URL segment:', routeURL);
+      // console.log('Current child route URL segment:', routeURL);
   
       if (routeURL !== '') {
         url += `/${routeURL}`;
@@ -74,7 +74,7 @@ export class BreadcrumbComponent {
   
       if (child.snapshot.data['breadcrumb']) {
         let breadcrumbLabel = child.snapshot.data['breadcrumb'];
-        console.log('Breadcrumb data found:', breadcrumbLabel);
+        // console.log('Breadcrumb data found:', breadcrumbLabel);
 
               // Handling for the product-detail route
       if (child.snapshot.params['slug']) {
@@ -95,7 +95,7 @@ export class BreadcrumbComponent {
         // } else {
           // For other routes, just decode the slug normally
           breadcrumbLabel = decodeURIComponent(child.snapshot.params['slug']);
-          console.log('Slug found, breadcrumb label updated to:', breadcrumbLabel);
+          // console.log('Slug found, breadcrumb label updated to:', breadcrumbLabel);
         // }
       }
   
@@ -109,13 +109,13 @@ export class BreadcrumbComponent {
           label: breadcrumbLabel,
           url: url
         });
-        console.log('Breadcrumb added:', { label: breadcrumbLabel, url: url });
+        // console.log('Breadcrumb added:', { label: breadcrumbLabel, url: url });
       }
   
       return this.createBreadcrumbs(child, url, breadcrumbs);
     }
   
-    console.log('Returning final breadcrumbs:', breadcrumbs);
+    // console.log('Returning final breadcrumbs:', breadcrumbs);
     return breadcrumbs;
   }
 }

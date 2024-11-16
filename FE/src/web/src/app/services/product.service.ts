@@ -6,6 +6,7 @@ import {
   BaseResponseApiV2,
 } from '../interfaces/api.interface';
 import {
+  ProductDtoResponse,
   ProductItemResponse,
   ProductResultService,
 } from '../interfaces/product.interface';
@@ -29,14 +30,20 @@ export class ProductService {
   listProduct(
     pageIndex: number,
     pageSize: number,
-    Search?: string
-  ): Observable<ProductResultService> {
+    Search?: string,
+    Addresses?: string[],
+    SubCategory?: string[],
+    Evaluates?: string[],
+  ): Observable<ProductDtoResponse> {
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
     };
     if (Search) params.Search = Search;
-    return this.httpClient.get<ProductResultService>(ProductSlug.ListProduct.api, params);
+    if (Addresses) params.Addresses = Addresses;
+    if (SubCategory) params.SubCategory = SubCategory;
+    if (Evaluates) params.Evaluates = Evaluates;
+    return this.httpClient.get<ProductDtoResponse>(ProductSlug.ListProduct.api, params);
   }
   listProductByShop(rentalShopId: string, pageIndex: number, pageSize: number, Search?: string, ): Observable<ProductResultService>{
     let params: any = {

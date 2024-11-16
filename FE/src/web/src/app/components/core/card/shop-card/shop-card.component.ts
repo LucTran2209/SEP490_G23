@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import {  MyOrderOutputDto } from '../../../../interfaces/order.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shop-card',
@@ -15,6 +16,10 @@ export class ShopCardComponent {
   orderStatusClass: string = '';
   @Output() showFeedBack = new EventEmitter<string>();  
   totalQuantity: number = 0;
+
+  constructor(
+    private router: Router,
+  ) {}
 
   // ngOnInit() {
   //   this.calculateNumberOfRentalDays();
@@ -43,7 +48,7 @@ export class ShopCardComponent {
     } else if (status === 1) {
       this.orderStatusMessage = 'Chờ Thanh Toán';
       this.orderStatusClass = 'p-2 border-2 text-yellow-500 border-yellow-500 bg-yellow-100 text-xs w-28';
-      this.isShowBtn1 = true;
+      // this.isShowBtn1 = true;
     } else if (status === 2){
       this.orderStatusMessage = 'Chờ Giao Hàng';
       this.orderStatusClass = 'p-2 border-2 text-gray-500 border-gray-500 bg-gray-100 text-xs w-28';
@@ -58,5 +63,8 @@ export class ShopCardComponent {
       this.orderStatusClass = 'p-2 border-2 text-gray-500 border-gray-500 bg-gray-100 text-xs w-28';
       
     }
+  }
+  goToShop(){
+    this.router.navigate(['/common/shop',this.order.rentalShopId]);
   }
 }

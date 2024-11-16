@@ -33,6 +33,9 @@ export interface OrderStatusDto {
   fileAttach: string | null;
 }
 export interface MyOrderOutputDto {
+  rentalShopId: string;
+  rentalShopName: string;
+  voucher?: string;
   id: string;
   userId: string;
   voucherId: string | null;

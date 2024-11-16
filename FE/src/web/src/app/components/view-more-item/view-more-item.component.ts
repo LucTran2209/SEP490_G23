@@ -41,6 +41,7 @@ export class ViewMoreItemComponent {
     this.updateVisibleItems();
 
     this.loadMore.emit(this.showMore);
+    console.log('Visible items after toggle:', this.visibleItems);
   }
 
   updateVisibleItems() {

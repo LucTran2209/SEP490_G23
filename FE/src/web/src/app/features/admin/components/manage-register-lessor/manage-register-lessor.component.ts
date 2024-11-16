@@ -5,6 +5,7 @@ import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { StorageService } from '../../../../services/storage.service';
 import { LoadingService } from '../../../../services/loading.service';
 import { RentalShopService } from '../../../../services/rental-shop.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
 
 @Component({
   selector: 'app-manage-register-lessor',
@@ -28,6 +29,7 @@ export class ManageRegisterLessorComponent implements OnInit {
     private storageService: StorageService,
     private cdRef: ChangeDetectorRef,
     private loadingService: LoadingService,
+    private messageService: MessageResponseService,
   ) 
   {
     this.loading$ = this.loadingService.status$;
@@ -46,76 +48,109 @@ export class ManageRegisterLessorComponent implements OnInit {
     totalRequestsRejected = 0;
   
     // Cấu hình các tab yêu cầu
-    requestTabs: { 
-      title: string;
-      status: number;
-      data: RequestShopDto[]; // Đảm bảo kiểu là RequestShopDto[]
-      currentPage: number;
-      totalRequests: number;
-    }[] = [
-      { title: 'Chờ xử lý', status: 0, data: [], currentPage: this.currentPagePending, totalRequests: this.totalRequestsPending },
-      { title: 'Đã phê duyệt', status: 1, data: [], currentPage: this.currentPageApproved, totalRequests: this.totalRequestsApproved },
-      { title: 'Đã từ chối', status: 2, data: [], currentPage: this.currentPageRejected, totalRequests: this.totalRequestsRejected }
-    ];
+  requestTabs: { 
+  title: string;
+  status: number;
+  data: RequestShopDto[];
+  currentPage: number;
+  totalRequests: number;
+  searchText: string; // Từ khóa tìm kiếm riêng cho mỗi tab
+}[] = [
+  { title: 'Chờ xử lý', status: 0, data: [], currentPage: this.currentPagePending, totalRequests: this.totalRequestsPending, searchText: '' },
+  { title: 'Đã phê duyệt', status: 1, data: [], currentPage: this.currentPageApproved, totalRequests: this.totalRequestsApproved, searchText: '' },
+  { title: 'Đã từ chối', status: 2, data: [], currentPage: this.currentPageRejected, totalRequests: this.totalRequestsRejected, searchText: '' }
+];
   
   
     ngOnInit(): void {
       this.loadRequests(0, this.currentPagePending);
       this.loadRequests(1, this.currentPageApproved);
       this.loadRequests(2, this.currentPageRejected);
+      console.log(this.searchText);
     }
   
     // Phương thức tải dữ liệu yêu cầu theo trạng thái và trang
-    loadRequests(status: number, pageIndex: number) {
+    loadRequests(status: number, pageIndex: number, search?: string) {
+      console.log(`Loading requests for status ${status} with search: ${search}`);
       this.isloading = true;
-      this.rentalShopService.requestShopList(pageIndex, this.pageSize).subscribe((res) => {
+      this.rentalShopService.requestShopList(pageIndex, this.pageSize, search).subscribe((res) => {
         this.loadingService.setOtherLoading('loaded');
         const filteredRequests = res.data.items.filter((item) => item.status === status);
   
         if (status === 0) {
           this.requestsPending = filteredRequests;
           this.totalRequestsPending = filteredRequests.length;
-          this.updateRequestTabs();
-          console.log("Danh Sách yêu cầu Chờ xử lý", this.requestsPending);
+          // this.updateRequestTabs();
+          // console.log("Danh Sách yêu cầu Chờ xử lý", this.requestsPending);
         } else if (status === 1) {
           this.requestsApproved = filteredRequests;
           this.totalRequestsApproved = filteredRequests.length;
-          this.updateRequestTabs();
+          // this.updateRequestTabs();
         } else if (status === 2) {
           this.requestsRejected = filteredRequests;
           this.totalRequestsRejected = filteredRequests.length;
-          this.updateRequestTabs();
+          // this.updateRequestTabs();
         }
-  
+        
+        this.updateRequestTabs();
         this.isloading = false;
       });
     }
 
     updateRequestTabs() {
       this.requestTabs = [
-        { title: 'Chờ xử lý', status: 0, data: this.requestsPending, currentPage: this.currentPagePending, totalRequests: this.totalRequestsPending },
-        { title: 'Đã phê duyệt', status: 1, data: this.requestsApproved, currentPage: this.currentPageApproved, totalRequests: this.totalRequestsApproved },
-        { title: 'Đã từ chối', status: 2, data: this.requestsRejected, currentPage: this.currentPageRejected, totalRequests: this.totalRequestsRejected }
+        { 
+          title: 'Chờ xử lý', 
+          status: 0, 
+          data: this.requestsPending, 
+          currentPage: this.currentPagePending, 
+          totalRequests: this.totalRequestsPending, 
+          searchText: this.requestTabs.find(tab => tab.status === 0)?.searchText || '' 
+        },
+        { 
+          title: 'Đã phê duyệt', 
+          status: 1, 
+          data: this.requestsApproved, 
+          currentPage: this.currentPageApproved, 
+          totalRequests: this.totalRequestsApproved, 
+          searchText: this.requestTabs.find(tab => tab.status === 1)?.searchText || '' 
+        },
+        { 
+          title: 'Đã từ chối', 
+          status: 2, 
+          data: this.requestsRejected, 
+          currentPage: this.currentPageRejected, 
+          totalRequests: this.totalRequestsRejected, 
+          searchText: this.requestTabs.find(tab => tab.status === 2)?.searchText || '' 
+        }
       ];
-  
-      // Bắt buộc Angular kiểm tra lại các thay đổi
+    
+      // Buộc Angular kiểm tra lại các thay đổi
       this.cdRef.detectChanges();
     }
   
     // Phương thức chuyển trang
     onPageChange(status: number, pageIndex: number) {
-      if (status === 0) {
-        this.currentPagePending = pageIndex;
-      } else if (status === 1) {
-        this.currentPageApproved = pageIndex;
-      } else if (status === 2) {
-        this.currentPageRejected = pageIndex;
+      const tab = this.requestTabs.find(tab => tab.status === status);
+      if (tab) {
+        tab.currentPage = pageIndex;
+        this.loadRequests(status, pageIndex);
       }
-  
-      this.loadRequests(status, pageIndex);
+      this.updateRequestTabs(); // Gọi để cập nhật giao diện
     }
-    onSearch(){
+    onSearch(status: number) {
+      const tab = this.requestTabs.find(tab => tab.status === status);
+      if (tab) {
+        tab.currentPage = 1;
+        this.loadRequests(status, tab.currentPage, tab.searchText);
+      }
+    }
+    reset(status: number){
+      const tab = this.requestTabs.find(tab => tab.status === status);
+      if (!tab?.searchText) {
+        this.loadRequests(status, this.getPageIndexForStatus(status));
 
+      }
     }
     viewDetail(id: string) {
       this.isVisible = true;
@@ -150,8 +185,15 @@ export class ManageRegisterLessorComponent implements OnInit {
       this.rentalShopService.changeStatusRequestShop(this.requestData).subscribe(
         () => {
           this.loadRequests(status, this.getPageIndexForStatus(status));
+          this.loadRequests(0, this.getPageIndexForStatus(0));
+          if(status == 1){
+            this.messageService.showSuccess('Bạn Đã Duyệt Đơn Yêu Cầu Thành Công!');
+          }else{
+            this.messageService.handleError('Bạn Đã Từ Chối Đơn Yêu Cầu Thành Công!');
+          }
         },
         (error) => {
+          this.messageService.handleError('Bạn Đã Xét Duyệt Đơn Yêu Cầu Thất Bại!Lỗi: error');
           console.error('Error changing status:', error);
         }
       );

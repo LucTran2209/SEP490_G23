@@ -194,6 +194,7 @@ export const RentalShopSlug = {
   }
 
 }
+
 export const RequestShopSlug = {
   RequestShopList: {
     label: 'Request Shop List',
@@ -209,6 +210,14 @@ export const RequestShopSlug = {
     label: 'Change Status',
     title: 'Change Status | ERMS',
     api: 'RentalShop/ActiveShopById',
+  }
+
+}
+export const FeedBackSlug = {
+  CreateFeedBack: {
+    label: 'Create Feedback',
+    title: 'Create Feedback | ERMS',
+    api: 'api/Feedback/create',
   }
 
 }

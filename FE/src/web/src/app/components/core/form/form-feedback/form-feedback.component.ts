@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
 import { MyOrderDetailDto } from '../../../../interfaces/order.interface';
 import { FeedBackInputDto } from '../../../../interfaces/feedback.interface';
 
@@ -9,7 +9,7 @@ import { FeedBackInputDto } from '../../../../interfaces/feedback.interface';
 })
 export class FormFeedbackComponent implements OnInit{
   @Input() order!: MyOrderDetailDto;
-  feedBack!: FeedBackInputDto[];
+  feedBackList: FeedBackInputDto[] = [];
   ratingValue = 3;
   reviewText = '';
   ratingName = ['Tệ', 'Không Hài Lòng', 'Bình Thường', 'Hài Lòng', 'Tuyệt Vời'];
@@ -19,18 +19,38 @@ export class FormFeedbackComponent implements OnInit{
   @Output() saveFeedBack = new EventEmitter<FeedBackInputDto>();
 
   ngOnInit() {
-    // Khởi tạo feedBack với các giá trị mặc định (rating = 3, comment = '')
-    this.feedBack = this.order.orderDetails.map((pro) => ({
-      productId: pro.productId,
-      userName: this.order.user.userName,
-      rating: 3, // Giá trị mặc định của rating
-      comment: '' // Mặc định nhận xét trống
-    }));
+    // Đảm bảo rằng feedBack được khởi tạo khi order và orderDetails có sẵn
+    this.initializeFeedback();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['order'] && this.order && this.order.orderDetails) {
+      this.initializeFeedback();
+    }
   }
 
-  // Cập nhật giá trị rating
-  onRatingChange(index: number) {
-    console.log(`Rating changed for product ${index + 1}:`, this.feedBack[index].rating);
+  // Hàm khởi tạo mảng feedback
+  initializeFeedback() {
+    if (this.order && this.order.orderDetails) {
+      this.feedBackList = this.order.orderDetails.map(detail => ({
+        productId: detail.product.id,
+        userName: this.order.user.userName, // Hoặc lấy tên người dùng nếu có
+        rating: 3,             // Giá trị mặc định cho đánh giá
+        comment: ''            // Chuỗi nhận xét trống ban đầu
+      }));
+      console.log('Feedback initialized:', this.feedBackList); // Kiểm tra dữ liệu
+    } else {
+      console.error('Order details are not available');
+    }
+  }
+   // Cập nhật giá trị rating
+   onRatingChange(index: number, value: number) {
+    this.feedBackList[index].rating = value;
+    console.log(`Rating for product ${index} changed to:`, value);
+  }
+
+  // Cập nhật giá trị comment
+  onCommentChange(index: number, value: string) {
+    this.feedBackList[index].comment = value;
   }
   handleOk(): void {
     this.isVisible = false;
@@ -42,7 +62,9 @@ export class FormFeedbackComponent implements OnInit{
     this.closeModal.emit();
   }
   onSave(){
-    // this.saveFeedBack.emit();
-    console.log(this.feedBack);
+    this.feedBackList.forEach(fb => {
+      console.log("FeedBack: ",fb);
+      this.saveFeedBack.emit(fb);
+    });
   }
 }

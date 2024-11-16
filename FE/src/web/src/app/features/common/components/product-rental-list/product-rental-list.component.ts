@@ -3,12 +3,13 @@ import { PostOutputDto, PostResultService } from '../../../../interfaces/post.in
 import { OptionSelect } from '../../../../configs/anonymous.config';
 import { PostService } from '../../../../services/post.service';
 import { selectSortByOrder } from '../../../../configs/post.config';
-import { ProductImage, ProductOutputDto, ProductResultService } from '../../../../interfaces/product.interface';
+import { ProductDtoResponse, ProductImage, ProductOutputDto, ProductResultService } from '../../../../interfaces/product.interface';
 import { ProductService } from '../../../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from '../../../../services/loading.service';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { Observable } from 'rxjs';
+import { RentalShop } from '../../../../interfaces/rental-shop.interface';
 
 @Component({
   selector: 'app-product-rental-list',
@@ -19,9 +20,11 @@ export class ProductRentalListComponent {
   search!: string;
   selectedValue = null;
   productList: ProductOutputDto[] = [];
+  shop!: RentalShop;
   totalProducts = 0;     
   currentPage = 1;    
   pageSize = 12;
+  isSubcategoryPage: boolean = false;
   subCategory: string = '';
   searchText: string = '';
   groupOptionFilterSelect: OptionSelect[] = selectSortByOrder;
@@ -41,7 +44,7 @@ export class ProductRentalListComponent {
       this.searchText = params['searchText'] || '';
       this.subCategory = params['subCategory'] || '';
       this.currentPage = +params['page'] || 1;
-
+      this.isSubcategoryPage = false;
       // Tải danh sách sản phẩm dựa vào tham số hiện tại
       this.loadProducts();
     });
@@ -53,6 +56,7 @@ export class ProductRentalListComponent {
       if (slug && caid) {
         // Chỉ khi URL có cả `slug` và `caid`, thì mới gán vào `subCategory`
         this.subCategory = slug;
+        this.isSubcategoryPage =true;
       } else {
         this.subCategory = ''; // Nếu không có, xóa subCategory
       }
@@ -67,9 +71,10 @@ export class ProductRentalListComponent {
     const searchTerm = this.search || this.searchText || this.subCategory;
 
     this.loadingService.setLoading();
-    this.productService.listProduct(this.currentPage, this.pageSize, searchTerm).subscribe((res: ProductResultService) => {
-      this.productList = res.data.items;
-      this.totalProducts = res.data.totalCount;
+    this.productService.listProduct(this.currentPage, this.pageSize, searchTerm).subscribe((res: ProductDtoResponse) => {
+      this.productList = res.data.products.items;
+      this.shop = res.data.rentalShops[0];
+      this.totalProducts = res.data.products.totalCount;
       this.loadingService.setOtherLoading('loaded');
     });
   }
@@ -94,7 +99,7 @@ export class ProductRentalListComponent {
 
   goAllShopRelated() {
     const searchTerm = 'dfdsf'; // Thiết lập từ khóa tìm kiếm
-    this.router.navigate(['/common/shopList'], { queryParams: { search: searchTerm } });
+    this.router.navigate(['/common/shopList'], { queryParams: { search: this.search } });
   }
 
   onSearch() {

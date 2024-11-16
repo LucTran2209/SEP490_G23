@@ -1,11 +1,11 @@
 <div class="container mt-3">
   <div class="grid grid-cols-12 gap-5">
     <section class="col-span-3">
-      <app-filter-product-rental class="m-5"></app-filter-product-rental>
+      <app-filter-product-rental [isSubcategoryPage]="isSubcategoryPage" class="m-5"></app-filter-product-rental>
     </section>
     <section class="col-span-9 flex flex-col justify-between">
       <div>
-        @if(search){
+        @if(search && shop){
         <div class="flex justify-between">
           <p class="font-light text-lg pt-3 text-[#696969] uppercase">
             Shop liên quan đến "{{ search }}"
@@ -21,15 +21,18 @@
             Thêm Kết Quả <i nz-icon nzType="arrow-right" class="ml-2"></i>
           </button>
         </div>
-        <app-header-shop></app-header-shop>
+        <app-header-shop [shop]="shop"></app-header-shop>
         }
-        <div class="flex justify-start">
+        <!-- <div class="flex justify-start">
           <p class="text-center font-light text-lg py-5 text-[#696969]">
             ({{ totalProducts }} kết quả {{ search }} tìm thấy)
           </p>
-        </div>
-        <div class="flex justify-between pb-3">
-          <nz-input-group [nzSuffix]="suffixIconSearch" class="max-w-[40%]">
+        </div> -->
+        <div class="flex justify-between py-5">
+          <p class="text-center font-light text-lg text-[#696969]">
+            ({{ totalProducts }} kết quả {{ search }} tìm thấy)
+          </p>
+          <!-- <nz-input-group [nzSuffix]="suffixIconSearch" class="max-w-[40%]">
             <input
               type="text"
               nz-input
@@ -37,7 +40,7 @@
               [(ngModel)]="searchText"
               (keyup.enter)="onSearch()"
             />
-          </nz-input-group>
+          </nz-input-group> -->
 
           <div class="min-w-[20%]">
             <nz-select

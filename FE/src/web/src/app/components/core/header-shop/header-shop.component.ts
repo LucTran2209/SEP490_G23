@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RequestShopDetailDto } from '../../../interfaces/request-shop.interface';
+import { Component, Input } from '@angular/core';
+import { RentalShop } from '../../../interfaces/rental-shop.interface';
 
 @Component({
   selector: 'app-header-shop',
@@ -7,5 +7,5 @@ import { RequestShopDetailDto } from '../../../interfaces/request-shop.interface
   styleUrl: './header-shop.component.scss'
 })
 export class HeaderShopComponent {
-  shop!: RequestShopDetailDto;
+  @Input() shop!: RentalShop;
 }

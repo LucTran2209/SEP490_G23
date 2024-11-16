@@ -1,19 +1,24 @@
 <div
   class="bg-slate-100 rounded-lg shadow-md p-3 mx-auto hover:translate-y-[-2px] my-5"
+  [routerLink]="['/common/shop', shop.id]"
 >
   <!-- Shop Info -->
   <div class="flex items-center justify-between mb-2">
     <div class="flex items-center">
       <!-- Shop Logo -->
       <nz-avatar
-        [nzSrc]="'/assets/images/logo-shop-default.png'"
+        [nzSrc]="
+          shop.avatarShop
+            ? shop.avatarShop
+            : '/assets/images/logo-shop-default.png'
+        "
         nzShape="circle"
         class="w-16 h-16"
       ></nz-avatar>
       <!-- Shop Details -->
       <div class="ml-4">
-        <h3 class="text-lg font-bold text-gray-800">Tạp Hóa Điện Tử</h3>
-        <p class="text-sm text-gray-500">halan</p>
+        <h3 class="text-lg font-bold text-gray-800">{{ shop.shopName }}</h3>
+        <p class="text-sm text-gray-500">{{ shop.address }}</p>
         <p class="text-xs text-gray-500">
           <span class="text-gray-900 font-semibold">12.4k</span> Người Theo Dõi
           | <span class="text-gray-900 font-semibold">73</span> Đang Theo

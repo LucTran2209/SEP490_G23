@@ -8,17 +8,18 @@
             <nz-tab [nzTitle]="tab.title">
               <div class="flex justify-start mt-5">
                 <div class="search-bar w-25 ms-0">
-                  <form class="search-form d-flex align-items-center">
+                  <div class="search-form d-flex align-items-center">
                     <input
                       class="form-control w-96"
                       type="text"
                       name="query"
                       placeholder="Tìm kiếm đơn yêu cầu..."
                       title="Enter search keyword"
-                      [(ngModel)]="searchText"
-                      (keyup.enter)="onSearch()"
+                      [(ngModel)]="tab.searchText"
+                      (keyup.enter)="onSearch(tab.status)"
+                      (keyup)="reset(tab.status)"
                     />
-                    <button type="submit" title="Search">
+                    <button title="Search" (click)="onSearch(tab.status)">
                       <span
                         class="text-xl"
                         nz-icon
@@ -26,7 +27,7 @@
                         nzTheme="outline"
                       ></span>
                     </button>
-                  </form>
+                  </div>
                 </div>
               </div>
 

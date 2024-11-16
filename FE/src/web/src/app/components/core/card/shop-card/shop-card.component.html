@@ -10,15 +10,14 @@
             nzTheme="outline"
           ></p>
           <p class="text-xl font-semibold mx-1.5">
-            <!-- {{ order.rentalShopName }} -->
-            Cửa Hàng Thiết Bị
+            {{ order.rentalShopName }}
           </p>
         </div>
         <div class="flex">
           <button class="mx-5" nz-button nzType="primary" nzGhost>
             Chat Ngay
           </button>
-          <button nz-button nzType="primary">Xem Shop</button>
+          <button nz-button nzType="primary" (click)="goToShop()">Xem Shop</button>
         </div>
       </div>
       <p class="text-[#676767] font-semibold text-xl">

@@ -16,11 +16,12 @@ export class RentalShopService {
   getRentalShop(id: string): Observable<RentalShopResultService>{
     return this.httpClient.get<RentalShopResultService>(RentalShopSlug.GetRentalShop.api + id);
   }
-  requestShopList(pageIndex: number, pageSize: number): Observable<RequestShopResultService>{
+  requestShopList(pageIndex: number, pageSize: number, ShopName?: string): Observable<RequestShopResultService>{
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
     };
+    if (ShopName) params.ShopName = ShopName;
     return this.httpClient.get<RequestShopResultService>(RequestShopSlug.RequestShopList.api, params );
   }
   requestShopDetail(id: string): Observable<RequestShopDetailResultService>{
