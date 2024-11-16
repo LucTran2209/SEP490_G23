@@ -11,6 +11,7 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { checkRegisterCommonGuard } from '../../guards/check-register-common.guard';
 import { WarningOutRegisterGuard } from '../../guards/warning-out-register.guard';
 
+
 const routes: Routes = [
   {
     path: '',
