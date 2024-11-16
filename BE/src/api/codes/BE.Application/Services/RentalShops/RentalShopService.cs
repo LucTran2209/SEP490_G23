@@ -1,5 +1,6 @@
 ﻿using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
 using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
+using Microsoft.AspNetCore.Http;
 
 namespace BE.Application.Services.RentalShops
 {
@@ -38,7 +39,7 @@ namespace BE.Application.Services.RentalShops
 
             rentalShop.ImageFont = await _azureService.UpLoadFileAsync(inputDto.ImageFont!);
             rentalShop.ImageBack = await _azureService.UpLoadFileAsync(inputDto.ImageBack!);
-            rentalShop.BusinessLicenseFile = await _azureService.UpLoadFileAsync(inputDto.BusinessLicenseFile!);
+            rentalShop.BusinessLicenseFile = await _azureService.UpLoadFileAsync(inputDto.BusinessLicenseFile);
 
             await unitOfWork.RentalShopRepository.AddAsync(rentalShop);
 

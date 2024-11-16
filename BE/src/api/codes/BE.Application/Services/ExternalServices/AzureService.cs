@@ -23,9 +23,9 @@ namespace BE.Application.Services.ExternalServices
             blobContainer!.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
         }
 
-        public async Task<string> UpLoadFileAsync(IFormFile file)
+        public async Task<string> UpLoadFileAsync(IFormFile? file)
         {
-            if (file.Length <= 0) return string.Empty;
+            if (file?.Length <= 0 || file == null) return string.Empty;
 
             CloudBlockBlob blob = blobContainer!.GetBlockBlobReference(GetRandomBlobName(file.FileName));
             using (var stream = file.OpenReadStream())
@@ -36,9 +36,9 @@ namespace BE.Application.Services.ExternalServices
             return blob.Uri.ToString();
         }
 
-        public async Task<List<string>> UpLoadFileAsync(List<IFormFile> files)
+        public async Task<List<string>> UpLoadFileAsync(List<IFormFile>? files)
         {
-            if (files.Count == 0) return new List<string>();
+            if (files?.Count == 0 || files == null) return new List<string>();
 
             List<string> blobUris = new List<string>();
 
