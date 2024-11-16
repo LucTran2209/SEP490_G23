@@ -4,8 +4,8 @@ namespace BE.Application.Abstractions.ServiceInterfaces
 {
     public interface IAzureService
     {
-        Task<string> UpLoadFileAsync(IFormFile file);
+        Task<string> UpLoadFileAsync(IFormFile? file);
 
-        Task<List<string>> UpLoadFileAsync(List<IFormFile> files);
+        Task<List<string>> UpLoadFileAsync(List<IFormFile>? files);
     }
 }
