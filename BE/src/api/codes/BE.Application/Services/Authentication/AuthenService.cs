@@ -1,6 +1,7 @@
 ﻿using BE.Application.DependencyInjections;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
 using BE.Application.Services.Authentication.AuthenServiceOutputDto;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,6 +16,8 @@ namespace BE.Application.Services.Authentication
         private readonly IValidator<RegisterInputDto> registerValidator;
         private readonly IValidator<ChangePasswordInputDto> changePasswordValidator;
         private readonly IValidator<ForgotPasswordInputDto> forgotPasswordValidator;
+        private readonly IValidator<VerifyEmailInputDto> verifyEmailValidator;
+        private readonly IMemoryCache _memoryCache;
         private readonly JwtOption jwtOption;
         private readonly SystemConfig systemConfig;
         private readonly IMailService mailService;
@@ -26,15 +29,19 @@ namespace BE.Application.Services.Authentication
                              IOptions<SystemConfig> systemConfig,
                              IMailService mailService,
                              IMapper mapper,
+                             IMemoryCache memoryCache,
                              IValidator<RegisterInputDto> registerValidator,
                              IValidator<ChangePasswordInputDto> changePasswordValidator,
                              IValidator<ForgotPasswordInputDto> forgotPasswordValidator,
+                              IValidator<VerifyEmailInputDto> verifyEmailValidator,
         IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork, user)
         {
             this.loginByUserNamePasswordValidator = loginByUserNamePasswordValidator;
             this.registerValidator = registerValidator;
             this.changePasswordValidator = changePasswordValidator;
             this.forgotPasswordValidator = forgotPasswordValidator;
+            this.verifyEmailValidator = verifyEmailValidator;
+            this._memoryCache = memoryCache;
             this.mailService = mailService;
             this.jwtOption = jwtOption.Value;
             this.systemConfig = systemConfig.Value;
@@ -253,39 +260,51 @@ namespace BE.Application.Services.Authentication
         }
         private async Task VerifyMailAsync(VerifyEmailInputDto Email, string code)
         {
+            await verifyEmailValidator.ValidateAndThrowAsync(Email);
             string subject = "ERMS Verify Code";
 
-            await mailService.SendMailAsync(null, Email.Email, subject, code);
+            await mailService.SendMailAsync(null, Email.Email, subject, $"Your verification code is: {code}");
         }
         public async Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto)
         {
             var code = new string(Enumerable.Repeat("0123456789", 4)
                             .Select(s => s[new Random().Next(s.Length)]).ToArray());
             await VerifyMailAsync(inputDto, code);
-            var v = new ComfirmVerifyEmailOutputDto();
-            v.Code = code;
-            v.Email = inputDto.Email;
+
+            _memoryCache.Set(inputDto.Email, code, TimeSpan.FromMinutes(30));
+
             return new ResultService()
             {
                 StatusCode = 200,
                 Message = "Send code to email success!",
-                Datas = v
             };
         }
         public async Task<ResultService> ComfirmVerifyEmailAsync(ComfirmVerifyEmailInputDto inputDto)
         {
-            if (inputDto.Code != inputDto.UserComfirmCode)
+            if (!_memoryCache.TryGetValue(inputDto.Email, out string? storedCode))
             {
                 return new ResultService
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest,
-                    Message = "Wrong to comfirm code"
+                    Message = "Verification code has expired or does not exist."
                 };
             }
+            // Kiểm tra mã người dùng nhập với mã lưu trong cache
+            if (storedCode != inputDto.UserComfirmCode)
+            {
+                return new ResultService
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Message = "Wrong verification code."
+                };
+            }
+            // Xóa mã khỏi cache sau khi xác minh thành công
+            _memoryCache.Remove(inputDto.Email);
+
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
-                Message = "Success"
+                Message = "Verification successful!"
             };
         }
     }
