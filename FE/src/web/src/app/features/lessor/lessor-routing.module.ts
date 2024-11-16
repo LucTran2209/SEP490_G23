@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ManagePostComponent } from './components/manage-post/manage-post.component';
-import { ManagerShopComponent } from './components/manager-shop/manager-shop.component';
 import { ManageOrderComponent } from './components/manage-order/manage-order.component';
 import { OrderDetailComponent } from './components/manage-order/order-detail/order-detail.component';
+import { ManagerShopComponent } from './components/manager-shop/manager-shop.component';
+import { OverviewComponent } from './components/overview/overview.component';
 
 const routes: Routes = [
   {
-    path: 'post',
-    component: ManagePostComponent,
+    path:'dashboard',
+    component: OverviewComponent
   },
   {
     path: 'shop/:id',
