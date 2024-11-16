@@ -40,9 +40,21 @@ export class ProductService {
       PageIndex: pageIndex.toString(),
     };
     if (Search) params.Search = Search;
-    if (Addresses) params.Addresses = Addresses;
-    if (SubCategory) params.SubCategory = SubCategory;
-    if (Evaluates) params.Evaluates = Evaluates;
+    if (Addresses) {
+      Addresses.forEach(address => {
+        params.Addresses = Addresses.join('&Addresses=');
+      });
+    }
+    if (SubCategory) {
+      SubCategory.forEach(subCat => {
+        params.SubCategory = SubCategory.join('&SubCategory=');
+      });
+    }
+    if (Evaluates) {
+      Evaluates.forEach(evaluate => {
+        params.Evaluates = Evaluates.join('&Evaluates=');
+      });
+    }
     return this.httpClient.get<ProductDtoResponse>(ProductSlug.ListProduct.api, params);
   }
   listProductByShop(rentalShopId: string, pageIndex: number, pageSize: number, Search?: string, ): Observable<ProductResultService>{

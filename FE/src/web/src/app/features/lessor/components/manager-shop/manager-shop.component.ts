@@ -61,6 +61,7 @@ export class ManagerShopComponent  implements OnInit{
   async showProductModal(prodId?: string) {
     this.isVisible = true; // Show modal immediately
     this.isEditMode = !!prodId; // Set edit mode based on prodId
+    console.log(this.isEditMode);
     this.title = prodId ? 'Cập nhật Sản phẩm' : 'Tạo mới Sản phẩm';
   
     if (prodId) {
@@ -88,18 +89,7 @@ export class ManagerShopComponent  implements OnInit{
           console.error('Error fetching images:', error);
         }
       }
-    } else {
-      this.productInformation = {
-        productName: '',
-        description: '',
-        quantity: 0,
-        rentalPrice: 0,
-        depositPrice: 0,
-        rentalLimitDays: 0,
-        evaluate: 0,
-        images: []
-      };
-    }
+    } 
   }
   handleCloseModal(){
     this.isVisible = false;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IITemListNav } from '../../../../configs/anonymous.config';
 import { rateStar } from '../../../../configs/post.config';
 import {
@@ -18,6 +18,7 @@ import { Subcategory, SubCategoryResultService } from '../../../../interfaces/ca
 })
 export class FilterProductRentalComponent implements OnInit {
   @Input() isSubcategoryPage: boolean = false;
+  @Output() locationNames = new EventEmitter<string[]>();
   selectLocationOptions = selectLocationOptions;
   categoryOptions : IITemListNav[] = [];
   subCategory: Subcategory[] = [];
@@ -64,11 +65,10 @@ export class FilterProductRentalComponent implements OnInit {
   }
   onCheckboxChange(item: any) {
     if (item.selected) {
-      this.locations.push(item); // Add to the list if selected
+      this.locations.push(item.label); // Add to the list if selected
     } else {
-      this.locations = this.locations.filter(location => location !== item); // Remove if unselected
+      this.locations = this.locations.filter(location => location !== item.label); // Remove if unselected
     }
-
-    console.log('Selected Locations:', this.locations); // Log the updated list
+    this.locationNames.emit(this.locations);
   }
 }
