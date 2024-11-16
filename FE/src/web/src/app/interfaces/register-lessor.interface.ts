@@ -11,7 +11,7 @@ export interface IRequestRegisterLessor_Step2 {
 }
 export interface IRequestRegisterLessor_Step3 {
   taxNumber: string;
-  businessLicense: File;
+  businessLicense: File | null;
   rentalScale: string | number;
   address: IAddressDeep;
   description: string;

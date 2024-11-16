@@ -77,7 +77,7 @@ export class SteperRegisterComponent {
       isActive,
       description
     ]) => {
-      if (!imageFront || !imageBack || !businessLicense) {
+      if (!imageFront || !imageBack) {
         console.error('One or more files are missing.');
         return;
       }
@@ -95,7 +95,12 @@ export class SteperRegisterComponent {
       formData.append('rentalScale', rentalScale.toString());
       formData.append('address', addressTest);
       formData.append('isActive', isActive.toString());
-      formData.append('businessLicenseFile', businessLicense, businessLicense.name);
+      if(businessLicense){
+        formData.append('businessLicenseFile', businessLicense, businessLicense.name);
+      }else {
+        formData.append('businessLicenseFile', String(businessLicense));
+
+      }
 
       console.log('FormData:', typeof formData);
 

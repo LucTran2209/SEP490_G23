@@ -30,7 +30,7 @@ const initialValue: IRegisterLessorState = {
   imageFileBack: null,
   taxNumber: '',
   businessLicense: null,
-  rentalScale: '',
+  rentalScale: '0',
   address: {
     address_district: {
       id: '',

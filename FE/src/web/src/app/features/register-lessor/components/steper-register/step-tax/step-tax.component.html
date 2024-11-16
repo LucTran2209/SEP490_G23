@@ -1,5 +1,14 @@
 <form nz-form [formGroup]="formTax" (ngSubmit)="onSubmit()">
   <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>Quy mô kinh doanh</nz-form-label>
+    <nz-form-control>
+      <nz-radio-group formControlName="rentalScale">
+        <label nz-radio-button nzValue="0">Hộ kinh doanh</label>
+        <label nz-radio-button nzValue="1">Cá nhân</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="!isChooseRentalScalePersonal">
     <nz-form-label [nzSpan]="24" nzRequired
       >́Giấy phép đăng ký kinh doanh</nz-form-label
     >
@@ -8,15 +17,6 @@
       (listFiles)="onSelectedFile($event)"
       (removeAFile)="onRemoveAFile($event)"
       />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSpan]="24" nzRequired>Quy mô kinh doanh</nz-form-label>
-    <nz-form-control>
-      <nz-radio-group formControlName="rentalScale">
-        <label nz-radio-button nzValue="0">Cá nhân</label>
-        <label nz-radio-button nzValue="1">Hộ kinh doanh</label>
-      </nz-radio-group>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item class="w-full">
