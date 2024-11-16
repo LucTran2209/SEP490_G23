@@ -27,6 +27,8 @@ namespace BE.Api
 
             builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
+            builder.Services.AddMemoryCache();
+
             // CORS
             builder.Services.AddCors(options =>
             {
