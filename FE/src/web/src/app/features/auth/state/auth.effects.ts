@@ -305,7 +305,7 @@ export class AuthEffect {
           const timestamp15MinutesLater = Math.floor(Date.now() / 1000) + 15 * 60;
           replaceCookie(STRING.OTPCODE, code, timestamp15MinutesLater, '/'); //15 minutes
           replaceCookie(STRING.EMAIL, email, timestamp15MinutesLater, '/'); //15 minutes
-          window.location.reload();
+          // window.location.reload();
         })
       ),
     {
