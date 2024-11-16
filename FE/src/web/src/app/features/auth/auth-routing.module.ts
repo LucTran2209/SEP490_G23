@@ -41,7 +41,6 @@ const routes: Routes = [
         path: AuthSlug.Register.label,
         component: RegisterComponent,
         title: AuthSlug.Register.title,
-        canActivate: [checkRegisterCommonGuard],
       },
       {
         path: AuthSlug.VerifyEmail.label,

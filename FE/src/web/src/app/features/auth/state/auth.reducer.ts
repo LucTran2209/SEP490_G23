@@ -13,7 +13,8 @@ const initialState: AuthState = {
   status: 'idle',
   isRecoveringPassword: false,
   isRecoveredPassword: false,
-  isHasConditionRegister: false
+  isHasConditionRegister: false,
+  dataRegister: null
 };
 
 export const authReducer = createReducer(
