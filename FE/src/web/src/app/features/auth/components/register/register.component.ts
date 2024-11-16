@@ -60,6 +60,8 @@ export class RegisterComponent implements OnInit {
       };
       this.store.dispatch(AuthActions.verifyEmail({email: this.forminfocommongroup.get("email")?.value}));
       // this.store.dispatch(AuthActions.register({ data: requestRegister }));
+
+      this.store.dispatch(AuthActions.register({ data: requestRegister }));
       console.log(requestRegister);
     } else {
       this.markControlsAsDirty(this.forminfocommongroup);
