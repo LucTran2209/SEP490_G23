@@ -199,7 +199,7 @@ namespace BE.Application.Services.RentalShops
             rentalShop.Status = input.Status;
             if (rentalShop.Status == RequestShop.Approval)
             {
-                await unitOfWork.UserRepository.AddRole(new UserRole { UserId = (Guid)user.Id!, RoleId = Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff") });
+                await unitOfWork.UserRepository.AddRole(new UserRole { UserId = rentalShop.UserId, RoleId = Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff") });
             }
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
