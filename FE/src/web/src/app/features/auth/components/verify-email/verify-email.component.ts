@@ -7,7 +7,6 @@ import {
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CodeInputComponent } from 'angular-code-input';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { IConfirmEmailRequest } from '../../../../interfaces/account.interface';
 import { MessageResponseService } from '../../../../services/message-response.service';
 import { GlobalState } from '../../../../store/app.state';
@@ -15,6 +14,7 @@ import { STRING } from '../../../../utils/constant';
 import { getCookie } from '../../../../utils/cookie.helper';
 import { MyValidators } from '../../../../utils/validators';
 import * as AuthActions from '../../state/auth.actions';
+import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.component.html',
