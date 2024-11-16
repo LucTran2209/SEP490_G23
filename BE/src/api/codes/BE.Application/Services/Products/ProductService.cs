@@ -59,7 +59,7 @@ namespace BE.Application.Services.Products
                         || p.SubCategory!.SubCategoryName.Contains(inputDto.Search)
                         || p.SubCategory.Category.CategoryName.Contains(inputDto.Search))
                 .Filter(inputDto.Addresses?.ToString(),
-                    p => (inputDto.Addresses == null) ? true : inputDto.Addresses.Any(a => a.Contains(p.RentalShop.Address!)))
+                    p => (inputDto.Addresses == null) ? true : inputDto.Addresses.Any(a => p.RentalShop.Address!.Contains(a)))
                 .Filter(inputDto.SubCategory?.ToString(),
                     p => (inputDto.SubCategory == null) ? true : inputDto.SubCategory.Any(s => p.SubCategoryId == s))
                 .Filter(inputDto.Evaluates?.ToString(),
