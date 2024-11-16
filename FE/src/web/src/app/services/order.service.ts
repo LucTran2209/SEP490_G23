@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { OrderSlug } from '../configs/api.configs';
+import { FeedBackSlug, OrderSlug } from '../configs/api.configs';
 import {
   BaseResponseApi,
   BaseResponseApiV2,
@@ -13,6 +13,7 @@ import {
 } from '../interfaces/order.interface';
 import { AppHttpClientService } from './app-http-client.service';
 import { cleanParams } from '../utils/anonymous.helper';
+import { FeedBackInputDto } from '../interfaces/feedback.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -104,5 +105,8 @@ export class OrderService {
           return of(error);
         })
       );
+  }
+  createFeedBack(data: FeedBackInputDto): Observable<BaseResponseApi<null>>{
+    return this.httpClient.post<BaseResponseApi<null>>(FeedBackSlug.CreateFeedBack.api, data);
   }
 }

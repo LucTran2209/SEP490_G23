@@ -1,0 +1,8 @@
+<div class="container mt-10">
+  <p class="font-light text-lg py-3 text-[#696969] uppercase">
+    Shop liên quan đến "{{ search }}"
+  </p>
+  <div *ngFor="let shop of shopList">
+    <app-header-shop [shop]="shop"></app-header-shop>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+.btn-add {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+  .card {
+    background-color: #ffffff;
+    padding: 2vw;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .details {
+    border: 2px dashed #f15e2c;
+    width: 500px;
+  }
+  .container-fluid {
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar-open .container-fluid {
+    margin-left: 80px; /* Điều chỉnh giá trị này tùy thuộc vào chiều rộng của sidebar */
+  }
+  
+  .row.flex-nowrap {
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar-open .row.flex-nowrap {
+    margin-left: 80px; /* Điều chỉnh giá trị này tùy thuộc vào chiều rộng của sidebar */
+  }
+  .search-form input {
+    border: 0;
+    font-size: 14px;
+    color: #012970;
+    border: 2px solid gray;
+    padding: 12px 25px 5px 8px;
+    border-radius: 20px;
+  }
+  .search-form button {
+    border: 0;
+    padding-top: 0;
+    margin-left: -35px;
+    background: none;
+    color: grey;
+  }
+  .name {
+    display: -webkit-box;
+    // -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 500px;
+    // height: 30px;
+    font-size: 0.6vw;
+  }
+  .tr-product:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    // border-radius: 12px;
+  }
+  span,
+  h2,
+  input,
+  textarea,
+  select,
+  label {
+    font-family: "Mona-Sans", sans-serif;
+  }
+  span {
+    font-weight: 400;
+    font-size: 12px;
+  }
+  // .mt {
+  //   margin-top: 80px;
+  // }
+  ::ng-deep .ant-table-thead > tr > th {
+    background-color: #cbddfb;
+    text-align: center;
+  }
+  a {
+    text-decoration: none;
+  }
+  .card{
+    max-width: 1700px;
+  }
+
+  // search in th
+  .search-box {
+    padding: 10px;
+  }

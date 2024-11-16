@@ -10,15 +10,14 @@
             nzTheme="outline"
           ></p>
           <p class="text-xl font-semibold mx-1.5">
-            <!-- {{ order.rentalShopName }} -->
-            Cửa Hàng Thiết Bị
+            {{ order.rentalShopName }}
           </p>
         </div>
         <div class="flex">
           <button class="mx-5" nz-button nzType="primary" nzGhost>
             Chat Ngay
           </button>
-          <button nz-button nzType="primary">Xem Shop</button>
+          <button nz-button nzType="primary" (click)="goToShop()">Xem Shop</button>
         </div>
       </div>
       <p class="text-[#676767] font-semibold text-xl">
@@ -74,11 +73,12 @@
           <p class="font-light text-base uppercase text-[#676767] pb-1">
             {{ totalQuantity }}
           </p>
-          <p
+          <!-- <p
             class="p-2 border-2 text-lime-500 border-lime-500 bg-lime-100 text-xs w-28"
           >
             Đang phê duyệt
-          </p>
+          </p> -->
+          <p [class]="orderStatusClass">{{ orderStatusMessage }}</p>
         </div>
       </div>
     </div>
@@ -91,13 +91,13 @@
       nzType="primary"
       (click)="onClickBtn1()"
     >
-      {{ buttonName1 }}
+      Đánh Giá
     </button>
     <button *ngIf="isShowBtn2" class="px-5" nz-button nzType="primary" nzGhost>
-      {{ buttonName2 }}
+      Chi TIết
     </button>
     <button *ngIf="isShowBtn3" class="px-5" nz-button nzType="primary" nzGhost>
-      {{ buttonName3 }}
+      Mua Lại
     </button>
   </div>
 </nz-card>

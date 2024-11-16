@@ -21,7 +21,7 @@
           *ngFor="let category of categoryList"
         >
           <ul *ngFor="let sub of category.subCategories">
-            <li nz-menu-item (click)="onNavigate(category)">
+            <li nz-menu-item (click)="onNavigate(sub)">
               {{ sub.subCategoryName }}
             </li>
           </ul>

@@ -4,55 +4,78 @@
   [nzMaskClosable]="true"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
-  [nzWidth]="'650px'"
+  [nzWidth]="'700px'"
 >
   <ng-container *nzModalContent>
-    <div class="py-3 cursor-pointer">
-      <div
-        class="flex justify-start gap-8 border-solid border-2 border-zinc-300 p-2 rounded"
-      >
-        <img
-          class="rounded object-cover"
-          src="https://cdn.tgdd.vn/Files/2016/10/25/904759/may-giat-mini-la-gi-nen-mua-hay-khong--19.jpg"
-          alt="anh san pham"
-          [width]="150"
-          [height]="200"
-        />
-        <div class="mt-2">
-          <h2 class="title font-semibold text-lg uppercase">
-            Máy giặt XQB30MJ102W
-          </h2>
+    <ng-container
+      *ngIf="order && order.orderDetails && order.orderDetails.length"
+    >
+      <div *ngFor="let pro of order.orderDetails; let i = index">
+        <div class="py-3 cursor-pointer">
           <div
-            class="grid grid-cols-2 gap-10 text-zinc-500 text-sm font-medium py-3"
+            class="flex justify-start gap-8 border-solid border-2 border-zinc-300 p-2 rounded"
           >
-            <div class="columns-2 gap-6">
-              <p>SỐ LƯỢNG:</p>
-              <p class="font-normal">2</p>
+            <img
+              class="rounded object-cover"
+              [src]="pro.product.productImages[0].link"
+              alt="anh san pham"
+              [width]="80"
+              [height]="50"
+            />
+            <div class="mt-2">
+              <h2 class="title font-semibold text-base uppercase">
+                {{ pro.product.productName }}
+              </h2>
+              <div
+                class="grid grid-cols-2 gap-10 text-zinc-500 text-xs font-medium py-3"
+              >
+                <div class="columns-2 gap-6">
+                  <p>SỐ LƯỢNG:</p>
+                  <p class="font-normal">{{ pro.product.quantity }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Rating input for each product -->
+        <div class="my-5">
+          <div class="columns-3 gap-2">
+            <h3 class="font-medium text-lg">Chất Lượng</h3>
+            <nz-rate
+              [(ngModel)]="feedBackList[i].rating"
+              (ngModelChange)="onRatingChange(i, $event)"
+            ></nz-rate>
+            <p
+              class="p-2"
+              [ngClass]="{ 'text-yellow-300': feedBackList[i].rating >= 4 }"
+            >
+              {{ ratingName[feedBackList[i].rating - 1] }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Review input for each product -->
+        <div class="my-5">
+          <h3 class="font-medium text-lg mb-2">Đánh Giá</h3>
+          <textarea
+            nz-input
+            placeholder="Đánh Giá Thiết Bị Thuê"
+            [(ngModel)]="feedBackList[i].comment"
+            (ngModelChange)="onCommentChange(i, $event)"
+            [nzAutosize]="{ minRows: 5, maxRows: 8 }"
+          ></textarea>
+        </div>
       </div>
-    </div>
-    <div class="my-5">
-      <div class="columns-3 gap-2">
-        <h3 class="font-medium text-xl">Chất Lượng</h3>
-        <nz-rate
-          [(ngModel)]="ratingValue"
-          (ngModelChange)="onRatingChange()"
-        ></nz-rate>
-        <p class="p-2" [ngClass]="{ 'text-yellow-300': ratingValue >= 4 }">
-          {{ ratingName[ratingValue - 1] }}
-        </p>
+
+      <div class="flex justify-end">
+        <button nz-button nzType="primary" (click)="handleCancel()" nzGhost>
+          Trở Lại
+        </button>
+        <button nz-button nzType="primary" class="mx-3" (click)="onSave()">
+          Hoàn Thành
+        </button>
       </div>
-    </div>
-    <div class="my-5">
-      <h3 class="font-medium text-xl mb-2">Đánh Giá</h3>
-      <textarea
-        nz-input
-        placeholder="Đánh Giá Thiết Bị Thuê"
-        [(ngModel)]="reviewText"
-        [nzAutosize]="{ minRows: 5, maxRows: 8 }"
-      ></textarea>
-    </div>
+    </ng-container>
   </ng-container>
 </nz-modal>

@@ -194,3 +194,30 @@ export const RentalShopSlug = {
   }
 
 }
+
+export const RequestShopSlug = {
+  RequestShopList: {
+    label: 'Request Shop List',
+    title: 'Request Shop List | ERMS',
+    api: 'RentalShop/list',
+  },
+  RequestShopDetail: {
+    label: 'Request Shop Detail',
+    title: 'Request Shop Detail | ERMS',
+    api: 'RentalShop/RequestShopById',
+  },
+  ChangeStatus: {
+    label: 'Change Status',
+    title: 'Change Status | ERMS',
+    api: 'RentalShop/ActiveShopById',
+  }
+
+}
+export const FeedBackSlug = {
+  CreateFeedBack: {
+    label: 'Create Feedback',
+    title: 'Create Feedback | ERMS',
+    api: 'api/Feedback/create',
+  }
+
+}

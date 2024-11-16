@@ -87,8 +87,8 @@
     <h1 class="font-bold text-center text-3xl">Danh sách thiết bị nổi bật</h1>
     <div class="flex justify-center mt-2 mb-5">
       <div class="flex justify-between">
-         <div class="w-[60px] h-[4px] bg-[#007bff] rounded-sm"></div>
-      <div class="w-[10px] h-[4px] bg-[#007bff] rounded-sm ml-1"></div>
+        <div class="w-[60px] h-[4px] bg-[#007bff] rounded-sm"></div>
+        <div class="w-[10px] h-[4px] bg-[#007bff] rounded-sm ml-1"></div>
       </div>
     </div>
     <div class="mx-20">
@@ -133,9 +133,11 @@
   <!-- list post rental -->
 
   <!-- list feedback -->
-  <div class="flex flex-col gap-y-10 px-28 py-28 ">
+  <div class="flex flex-col gap-y-10 px-28 py-28">
     <div>
-      <h1 class="font-bold text-center text-3xl">Những phản hồi mới nhất từ người thuê</h1>
+      <h1 class="font-bold text-center text-3xl">
+        Những phản hồi mới nhất từ người thuê
+      </h1>
       <div class="flex justify-center mt-2 mb-5">
         <div class="flex justify-between">
           <div class="underline-title-first"></div>
@@ -145,9 +147,8 @@
     </div>
     <div class="grid grid-cols-3 gap-10 items-center">
       @for (item of feedbackDataList; track $index) {
-        <app-feelback-card [feedBackDetail]="item"/>
+      <app-feelback-card [feedBackDetail]="item" />
       }
-
     </div>
     <div class="my-14 flex justify-center">
       <button nz-button nzType="primary" nzSize="large" nzShape="round">
@@ -159,7 +160,7 @@
 
   <!-- Performance metrics and insights -->
   <div class="my-10">
-    <div class=" p-16 bg-zinc-200">
+    <div class="p-16 bg-zinc-200">
       <div class="flex justify-between items-center">
         <h1
           class="font-semibold text-start text-4xl w-2/5 px-2 h-20 tracking-wide leading-relaxed"

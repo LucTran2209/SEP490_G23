@@ -33,6 +33,9 @@ export interface OrderStatusDto {
   fileAttach: string | null;
 }
 export interface MyOrderOutputDto {
+  rentalShopId: string;
+  rentalShopName: string;
+  voucher?: string;
   id: string;
   userId: string;
   voucherId: string | null;
@@ -50,7 +53,7 @@ export interface MyOrderOutputDto {
   mortgagePaperImageFont: string | null;
   mortgagePaperImageBack: string | null;
   orderDetails: OrderDetailDto[];
-  orderStatuses: OrderStatusDto[];
+  orderStatuses: OrderStatus[];
 }
 export interface User {
   fullName: string;
@@ -82,7 +85,7 @@ export interface MyOrderDetailDto {
   user: User;
   voucher: any | null;
   orderDetails: OrderDetailDto[];
-  orderStatuses: OrderStatusDto[];
+  orderStatuses: OrderStatus[];
 }
 
 export interface OrderResultService {

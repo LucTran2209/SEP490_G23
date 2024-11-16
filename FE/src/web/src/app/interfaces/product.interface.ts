@@ -1,19 +1,20 @@
 import { Subcategory, SubcategoryOutputDto } from './category.interface';
-import { RentalShopInfo } from './rental-shop.interface';
+import { RentalShopInfo, RentalShop } from './rental-shop.interface';
 
 export interface ProductOutputDto {
-    id: string;
-    productName: string;
-    description: string;
-    quantity: number;
-    rentalPrice: number;
-    depositPrice: number;
-    rentalLimitDays: number;
-    evaluate: number;
-    images: string[];
-    productImages?: ProductImage[];
-    subCategory: SubcategoryOutputDto;
-    
+  id: string;
+  productName: string;
+  description: string;
+  quantity: number;
+  rentalPrice: number;
+  depositPrice: number;
+  rentalLimitDays: number;
+  evaluate: number;
+  images: string[];
+  productImages?: ProductImage[];
+  subCategory: SubcategoryOutputDto;
+  rentalShop?: RentalShop;
+  
 }
 export interface ProductInputDto {
   productName: string;
@@ -80,4 +81,23 @@ export interface ProductItemResponse {
   subCategory?: Subcategory;
   rentalShop: RentalShopInfo;
   images: string[];
+}
+
+
+//Nhinth
+
+
+
+export interface ProductDtoResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    rentalShops: RentalShop[];
+    products: {
+      items: ProductOutputDto[];
+      pageSize: number;
+      pageIndex: number;
+      totalCount: number;
+    };
+  };
 }
