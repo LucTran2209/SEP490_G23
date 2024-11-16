@@ -47,9 +47,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.setEmailAfterVerifyEmail();
-  }
+  ngOnInit(): void {}
 
   handleselectAddress(address: string) {
     this.forminfocommongroup.patchValue({ address });
@@ -60,17 +58,13 @@ export class RegisterComponent implements OnInit {
       let requestRegister: IRegisterRequest = {
         ...this.forminfocommongroup.value,
       };
+      this.store.dispatch(AuthActions.verifyEmail({email: this.forminfocommongroup.get("email")?.value}));
+      // this.store.dispatch(AuthActions.register({ data: requestRegister }));
+
       this.store.dispatch(AuthActions.register({ data: requestRegister }));
       console.log(requestRegister);
     } else {
       this.markControlsAsDirty(this.forminfocommongroup);
     }
-  }
-
-  setEmailAfterVerifyEmail(){
-     //set email after verify email successfull
-     const verifyEmail = getCookie(STRING.EMAIL);
-     this.forminfocommongroup.patchValue({email: verifyEmail});
-     this.forminfocommongroup.get('email')?.disable();
   }
 }

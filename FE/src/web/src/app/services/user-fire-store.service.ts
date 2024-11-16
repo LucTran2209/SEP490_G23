@@ -4,17 +4,12 @@ import {
   addDoc,
   collection,
   collectionData,
-  doc,
-  docData,
-  endAt,
   Firestore,
   getDocs,
-  orderBy,
   query,
-  startAt,
-  where,
+  where
 } from '@angular/fire/firestore';
-import { from, map, mergeMap, Observable, of, switchMap, toArray } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { IChatFireBase, IUserFireBase } from '../interfaces/Chat.interface';
 import { MessageResponseService } from './message-response.service';
 import { UserProfileService } from './user-profile.service';
@@ -38,12 +33,13 @@ export class UserFireStoreService {
     try {
       const querySnapshot = await getDocs(myQuery);
       if (!querySnapshot.empty) {
-        this.messageToastSerivce.showInfo('Người dùng thực sự đã tồn tại');
+        // this.messageToastSerivce.showInfo('Người dùng thực sự đã tồn tại');
         console.warn('Người dùng thực sự đã tồn tại');
       } else {
-        this.messageToastSerivce.showSuccess(
-          'Test: thêm người dùng vào cloud firestore'
-        );
+        // this.messageToastSerivce.showSuccess(
+        //   'Test: thêm người dùng vào cloud firestore'
+        // );
+        console.log('thêm người dùng vào cloud firestore');
         await addDoc(ref, data);
       }
     } catch (error) {

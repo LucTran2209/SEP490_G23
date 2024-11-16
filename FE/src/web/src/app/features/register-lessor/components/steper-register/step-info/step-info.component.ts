@@ -1,21 +1,21 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import {
-  Form,
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { combineLatest, Subscription } from 'rxjs';
+import { IRequestRegisterLessor_Step1 } from '../../../../../interfaces/register-lessor.interface';
 import { FeatureAppState } from '../../../../../store/app.state';
 import { stepInfo } from '../../../state/register_lessor.actions';
-import { IRequestRegisterLessor_Step1 } from '../../../../../interfaces/register-lessor.interface';
 import {
   selectEmail,
   selectPhoneNumber,
   selectShopName,
 } from '../../../state/register_lessor.reducer';
-import { combineLatest, Subscription } from 'rxjs';
+import { UserProfileService } from '../../../../../services/user-profile.service';
 
 @Component({
   selector: 'app-step-info',
@@ -33,7 +33,8 @@ export class StepInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private userProfileService: UserProfileService
   ) {
     this.formInfoRegisterLessor = this.formBuilder.group({
       shopName: ['', [Validators.required]],
@@ -50,13 +51,14 @@ export class StepInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let emailCurrentUser = this.userProfileService.email;
     this.subscription = combineLatest([
       this.store.select(selectShopName),
       this.store.select(selectEmail),
       this.store.select(selectPhoneNumber),
     ]).subscribe(([val1, val2, val3]) => {
       this.formInfoRegisterLessor.patchValue({
-        email: val2,
+        email: val2 || emailCurrentUser,
         phoneNumber: val3,
         shopName: val1,
       });

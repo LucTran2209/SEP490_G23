@@ -23,10 +23,10 @@ export class UserProfileService {
   get currentUser(): IPayLoad {
     try {
       return JSON.parse(
-        this.storgageService.get(LocalStorageKey.currentUser) || '{}'
+        this.storgageService.get(LocalStorageKey.currentUser) || ''
       );
     } catch (error) {
-      return JSON.parse('{}');
+      return JSON.parse('');
     }
   }
 
@@ -42,6 +42,10 @@ export class UserProfileService {
   }
   get rentalshopId(): string {
     return this.currentUser.RentalShopId;
+  }
+
+  get email(): string {
+    return this.currentUser.Email;
   }
   
 

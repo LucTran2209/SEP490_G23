@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { StatusProcess } from '../../../../../interfaces/anonymous.interface';
 import { Province } from '../../../../../interfaces/province.interface';
 import { IRequestRegisterLessor_Step3 } from '../../../../../interfaces/register-lessor.interface';
@@ -50,7 +50,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     taxCode: FormControl<string>;
     description: FormControl<string>;
   }>;
-
+  
   uploadedFiles: File[] = [];
 
   @Output() nextStep = new EventEmitter<void>();
@@ -128,7 +128,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     this.prevStep.emit();
   }
   onSubmit(): void {
-    if (this.formTax.invalid || this.uploadedFiles.length === 0) {
+    if (this.formTax.invalid) {
       this.validateForm();
       return;
     }
@@ -139,7 +139,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
       stepInfoTax({
         content: {
           address: { address_district, address_province, address_ward },
-          businessLicense: this.uploadedFiles[0],
+          businessLicense: this.uploadedFiles[0] || null,
           description,
           rentalScale,
           taxNumber: taxCode,
@@ -211,5 +211,10 @@ export class StepTaxComponent implements OnInit, OnDestroy {
         control.updateValueAndValidity({ onlySelf: true });
       }
     });
+  }
+
+  get isChooseRentalScalePersonal() {
+    let rentalScale = this.formTax.get("rentalScale")?.value;
+    return rentalScale === '1';    
   }
 }

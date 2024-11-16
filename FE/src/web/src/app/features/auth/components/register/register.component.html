@@ -2,13 +2,19 @@
   <h2 class="font-bold text-4xl">Tạo tài khoản</h2>
   <p class="text-sm text-gray-300">
     Thực sự đã có tài khoảng
-    <a class="text-blue-400 hover:text-blue-600" [routerLink]="['/auth/login']">đăng nhập</a>
+    <a class="text-blue-400 hover:text-blue-600" [routerLink]="['/auth/login']"
+      >đăng nhập</a
+    >
   </p>
 </div>
 <ng-container *ngTemplateOutlet="forminfocommon"></ng-container>
 
 <ng-template #forminfocommon>
-  <form nz-form [formGroup]="forminfocommongroup" (ngSubmit)="submitTabFinall()">
+  <form
+    nz-form
+    [formGroup]="forminfocommongroup"
+    (ngSubmit)="submitTabFinall()"
+  >
     <nz-form-item>
       <nz-form-label
         [nzSm]="24"
@@ -77,7 +83,6 @@
             placeholder="nguyenvana@gmail.com"
             formControlName="email"
             nz-input
-            [readonly]="forminfocommongroup.get('email')?.disabled"
           />
         </nz-input-group>
       </nz-form-control>
@@ -121,7 +126,12 @@
         nzErrorTip="Nhập mật khẩu có vấn đề!"
       >
         <nz-input-group>
-          <input type="password" formControlName="password" nz-input />
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="**********"
+            nz-input
+          />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
@@ -133,4 +143,3 @@
     <div></div>
   </form>
 </ng-template>
-
