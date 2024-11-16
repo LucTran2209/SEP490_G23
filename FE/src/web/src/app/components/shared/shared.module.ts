@@ -115,7 +115,6 @@ import { HeaderShopComponent } from '../core/header-shop/header-shop.component';
 import { CodeInputModule } from 'angular-code-input';
 import { CodeInputComponent } from 'angular-code-input';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-
 registerLocaleData(en);
 
 const ANTD_MODULES = [
