@@ -29,13 +29,13 @@ export class ProductService {
   listProduct(
     pageIndex: number,
     pageSize: number,
-    ProductName?: string
+    Search?: string
   ): Observable<ProductResultService> {
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
     };
-    if (ProductName) params.ProductName = ProductName;
+    if (Search) params.Search = Search;
     return this.httpClient.get<ProductResultService>(ProductSlug.ListProduct.api, params);
   }
   listProductByShop(rentalShopId: string, pageIndex: number, pageSize: number, Search?: string, ): Observable<ProductResultService>{

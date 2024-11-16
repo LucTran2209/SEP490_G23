@@ -11,10 +11,17 @@
         type="text"
         nz-input
         placeholder="Bạn cần thuê sản phẩm gì?"
+        [(ngModel)]="searchText"
+        (keyup.enter)="onSearch()"
       />
     </nz-input-group>
     <ng-template #suffixIconSearch>
-      <span class="pe-1.5 text-lg" nz-icon nzType="search"></span>
+      <span
+        (click)="onSearch()"
+        class="pe-1.5 text-lg"
+        nz-icon
+        nzType="search"
+      ></span>
     </ng-template>
   </div>
 

@@ -110,6 +110,8 @@ import { ChatMessageComponent } from '../../features/chat/chat-message/chat-mess
 import { ChatInputComponent } from '../../features/chat/chat-input/chat-input.component';
 import { ChatHeaderComponent } from '../../features/chat/chat-header/chat-header.component';
 import { ChatComponent } from '../../features/chat/chat-popup/chat.component';
+import { RequestShopCardComponent } from '../core/card/request-shop-card/request-shop-card.component';
+import { HeaderShopComponent } from '../core/header-shop/header-shop.component';
 registerLocaleData(en);
 
 const ANTD_MODULES = [
@@ -216,6 +218,8 @@ const SHARED_MODULES = [
   FeelbackCardComponent,
   FormRentalProductV2Component,
   ProductRelatedComponent,
+  RequestShopCardComponent,
+  HeaderShopComponent,
 ];
 
 @NgModule({

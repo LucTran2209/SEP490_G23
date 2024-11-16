@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IPayLoad } from '../../../interfaces/account.interface';
 import { StorageService } from '../../../services/storage.service';
 import { LocalStorageKey, USER_ROLE } from '../../../utils/constant';
@@ -15,6 +15,7 @@ import { UserProfileService } from '../../../services/user-profile.service';
 })
 export class UserNavbarHeaderComponent implements OnInit {
   user?: IPayLoad;
+  searchText: string = '';
   @Output() avatarClick = new EventEmitter<void>();
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
@@ -27,12 +28,24 @@ export class UserNavbarHeaderComponent implements OnInit {
     private storageService: StorageService,
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
+    private activatedRoute: ActivatedRoute,
   ) {}
   ngOnInit(): void {
     this.handleAssginInfo();
     this.checkRole();
     this.avatarPersonal = this.userProfileService.avatar;
     this.rentalShopId = this.userProfileService.rentalshopId;
+    this.activatedRoute.queryParams.subscribe(params => {
+      const currentRoute = this.router.url; // Get current route
+      if (currentRoute.includes('/common/product-search')) {
+        const searchQuery = params['search'];
+        if (searchQuery) {
+          this.searchText = searchQuery;
+        }
+      } else {
+        this.searchText = '';
+      }
+    });
   }
 
   onAvatarClick(): void {
@@ -73,6 +86,9 @@ export class UserNavbarHeaderComponent implements OnInit {
       return role.includes(USER_ROLE.LESSOR);
     }
     return role === USER_ROLE.LESSOR;
+  }
+  onSearch(){
+    this.router.navigate(['/common/product-search'], { queryParams: { search: this.searchText } });
   }
 
 }

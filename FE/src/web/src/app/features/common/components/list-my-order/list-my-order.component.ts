@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { OrderService } from '../../../../services/order.service';
-import { MyOrderOutputDto, OrderResultService } from '../../../../interfaces/order.interface';
+import { MyOrderDetailDto, MyOrderOutputDto, OrderDetailResultService, OrderResultService } from '../../../../interfaces/order.interface';
 import { UserService } from '../../../../services/user.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { ProfileResultService } from '../../../../interfaces/user.interface';
@@ -24,6 +24,7 @@ export class ListMyOrderComponent implements OnInit {
   orderList: MyOrderOutputDto[] = [];
   orderListNull = true;
   orderError = false;
+  orderInformation!: MyOrderDetailDto;
   loading = true;
   loading$?: Observable<StatusProcess>;
   searchText: string = '';
@@ -33,6 +34,7 @@ export class ListMyOrderComponent implements OnInit {
     private userService: UserService,
     private userProfileService: UserProfileService,
     private loadingService: LoadingService,
+    private cdRef: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
   ){
@@ -97,14 +99,14 @@ export class ListMyOrderComponent implements OnInit {
   ];
   ngOnInit() {
     this.loadingService.setLoading();
-    this.route.queryParams.subscribe(params => {
-      const status = params['status'] || 0;
-      const filter = params['filter'] || 7;
-      const searchText = params['searchText'] || ''; 
-      this.statusOrder = status;
-      this.selectedFilter = filter;
-      this.searchText = searchText;
-    });
+    // this.route.queryParams.subscribe(params => {
+    //   const status = params['status'] || 0;
+    //   const filter = params['filter'] || 7;
+    //   const searchText = params['searchText'] || ''; 
+    //   this.statusOrder = status;
+    //   this.selectedFilter = filter;
+    //   this.searchText = searchText;
+    // });
     this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
   }
   loadOrders(pageIndex: number, pageSize: number, nearDays: number){
@@ -134,11 +136,11 @@ export class ListMyOrderComponent implements OnInit {
     const tab = this.orderTabs.find(tab => tab.status === status);
     if (tab) {
       this.filterOrders(tab);
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { status: this.statusOrder, searchText: this.searchText }, // Cập nhật tham số searchText vào URL
-        queryParamsHandling: 'merge'
-      });
+      // this.router.navigate([], {
+      //   relativeTo: this.route,
+      //   queryParams: { status: this.statusOrder, searchText: this.searchText }, // Cập nhật tham số searchText vào URL
+      //   queryParamsHandling: 'merge'
+      // });
     }
   }
 
@@ -154,16 +156,25 @@ export class ListMyOrderComponent implements OnInit {
     tab.orders = filteredOrders;
     tab.ordersNull = filteredOrders.length === 0;
   }
-    // Hàm gọi khi chuyển tab, cập nhật tham số `status` trong URL
-    onTabChange(status: number) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { status: this.statusOrder },
-        queryParamsHandling: 'merge' // Giữ lại các tham số khác trong URL
-      });
-    }
-  showFeedback(){
+    // // Hàm gọi khi chuyển tab, cập nhật tham số `status` trong URL
+    // onTabChange(status: number) {
+    //   this.router.navigate([], {
+    //     relativeTo: this.route,
+    //     queryParams: { status: this.statusOrder },
+    //     queryParamsHandling: 'merge' // Giữ lại các tham số khác trong URL
+    //   });
+    // }
+  showFeedBack(orderId: string){
     this.isVisible = true;
+    this.orderService.getOrder(orderId).subscribe({
+      next: (res: OrderDetailResultService) => {
+        this.orderInformation = res.data;
+        console.log(this.orderInformation);
+        this.cdRef.detectChanges();
+      },
+      error: () => {
+      }
+    })
   }
   handleCloseModal() {
     this.isVisible = false;

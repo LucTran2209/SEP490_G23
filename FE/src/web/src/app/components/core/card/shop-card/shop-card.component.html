@@ -74,11 +74,12 @@
           <p class="font-light text-base uppercase text-[#676767] pb-1">
             {{ totalQuantity }}
           </p>
-          <p
+          <!-- <p
             class="p-2 border-2 text-lime-500 border-lime-500 bg-lime-100 text-xs w-28"
           >
             Đang phê duyệt
-          </p>
+          </p> -->
+          <p [class]="orderStatusClass">{{ orderStatusMessage }}</p>
         </div>
       </div>
     </div>
@@ -91,13 +92,13 @@
       nzType="primary"
       (click)="onClickBtn1()"
     >
-      {{ buttonName1 }}
+      Đánh Giá
     </button>
     <button *ngIf="isShowBtn2" class="px-5" nz-button nzType="primary" nzGhost>
-      {{ buttonName2 }}
+      Chi TIết
     </button>
     <button *ngIf="isShowBtn3" class="px-5" nz-button nzType="primary" nzGhost>
-      {{ buttonName3 }}
+      Mua Lại
     </button>
   </div>
 </nz-card>

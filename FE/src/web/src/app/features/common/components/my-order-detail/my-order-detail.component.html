@@ -57,7 +57,15 @@
                     class="w-32 h-24 rounded-md mr-4"
                   />
                   <div>
-                    <p class="font-semibold">
+                    <p
+                      class="font-semibold cursor-pointer"
+                      [routerLink]="[
+                        '/common/product-detail',
+                        orderDetail.product.productName,
+                        '.i',
+                        orderDetail.product.id
+                      ]"
+                    >
                       {{ orderDetail.product.productName }}
                     </p>
                     <div class="columns-2 gap-6 w-48 mt-2">
