@@ -32,18 +32,6 @@
       >
         {{ message.text }}
       </div>
-      <div class="min-w-[230px] max-w-[250px]" [ngClass]="{'float-right clear-both my-1': message.senderId === currentOwnUser.uid}">
-        <img
-          src="assets/images/bg-auth-other.jpg"
-          alt=""
-          class="w-[230px] h-[150px] rounded-lg object-cover"
-        />
-        <img
-          src="assets/images/bg-auth-other.jpg"
-          alt=""
-          class="w-[230px] h-[150px] rounded-lg object-cover"
-        />
-      </div>
     </div>
     <div #endOfChat></div>
   </div>

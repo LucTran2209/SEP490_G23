@@ -41,11 +41,6 @@ const routes: Routes = [
         path: AuthSlug.Register.label,
         component: RegisterComponent,
         title: AuthSlug.Register.title,
-      },
-      {
-        path: AuthSlug.VerifyEmail.label,
-        component: VerifyEmailComponent,
-        title: AuthSlug.VerifyEmail.title,
         canDeactivate: [WarningOutRegisterGuard]
       },
     ],

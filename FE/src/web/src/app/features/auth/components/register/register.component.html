@@ -7,9 +7,7 @@
     >
   </p>
 </div>
-<ng-container *ngTemplateOutlet="forminfocommon"></ng-container>
-
-<ng-template #forminfocommon>
+<ng-container *ngIf="!(isEmailVerifySuccess$ | async); else verifyEmailTpl">
   <form
     nz-form
     [formGroup]="forminfocommongroup"
@@ -75,7 +73,15 @@
       <nz-form-control
         [nzSm]="24"
         [nzXs]="24"
-        nzErrorTip="Nhập email không hợp lệ!"
+        [nzErrorTip]="
+          forminfocommongroup.get('email')?.hasError('required')
+            ? 'Email là bắt buộc!'
+            : forminfocommongroup.get('email')?.hasError('email')
+            ? 'Nhập email không hợp lệ!'
+            : forminfocommongroup.get('email')?.hasError('emailExists')
+            ? 'Email đã tồn tại!'
+            : ''
+        "
       >
         <nz-input-group>
           <input
@@ -85,6 +91,9 @@
             nz-input
           />
         </nz-input-group>
+        <small *ngIf="forminfocommongroup.get('email')?.pending"
+          >Đang kiểm tra email...</small
+        >
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -137,9 +146,13 @@
     </nz-form-item>
     <nz-form-item>
       <button nz-button type="submit" class="w-full" [nzType]="'primary'">
-        Tạo tài khoản
+        Tiếp Tục
       </button>
     </nz-form-item>
     <div></div>
   </form>
+</ng-container>
+
+<ng-template #verifyEmailTpl>
+  <app-verify-email (onResendCode)="sendOtpCode()" (onChangeEmailStepFirst)="changeEmail()" (onVerifyOtpCode)="verifyOtpCode($event)"/>
 </ng-template>

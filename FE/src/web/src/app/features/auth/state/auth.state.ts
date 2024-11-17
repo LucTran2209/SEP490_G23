@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '../../../configs/status-code.config';
 import { IPayLoad } from '../../../interfaces/account.interface';
 import { StatusProcess } from '../../../interfaces/anonymous.interface';
 
@@ -12,5 +13,5 @@ export interface AuthState {
   isRecoveringPassword: boolean;
   isRecoveredPassword: boolean;
   isHasConditionRegister: boolean;
-  dataRegister: any
+  statusCode: HttpStatusCode
 }

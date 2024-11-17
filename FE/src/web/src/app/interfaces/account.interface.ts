@@ -37,14 +37,9 @@ export interface IVerifyEmailRequest {
   email: string;
 }
 
-export interface IVerifyEmailResponse {
-  email: string;
-  code: string;
-}
 
 export interface IConfirmEmailRequest {
   email: string;
-  code: string;
   userComfirmCode: string;
 }
 
