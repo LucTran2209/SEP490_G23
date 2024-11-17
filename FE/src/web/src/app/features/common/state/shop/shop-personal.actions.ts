@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ProductItemResponse } from '../../../../interfaces/product.interface';
+import { ProductOutputDto } from '../../../../interfaces/product.interface';
 
 export const INIT_GET_LIST_PRODUCT_RENTAL = '[Shop rental product] get init';
 export const GET_LIST_PRODUCT_RENTAL_SUCCESS =
@@ -15,7 +15,7 @@ export const getListProductRentalShop = createAction(
 export const getListProductRentalShop_success = createAction(
   GET_LIST_PRODUCT_RENTAL_SUCCESS,
   props<{
-    productData: ProductItemResponse[];
+    productData: ProductOutputDto[];
     pageIndex: number;
     pageSize: number;
     totalCount: number;

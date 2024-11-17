@@ -23,11 +23,6 @@ export interface RentalShopOutputDto {
     isActive: boolean;
     description: string;
 }
-export interface RentalShopResultService {
-    statusCode: string;
-    message: string;
-    data: RentalShopOutputDto;
-}
 
 export interface RentalShopOutputDto {
     createDate?: string;

@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, mergeMap, Observable, of, Subscription, switchMap } from 'rxjs';
 import { OptionSelect } from '../../../../configs/anonymous.config';
 import { selectSortByOrder } from '../../../../configs/post.config';
-import {
-  ProductItemResponse
-} from '../../../../interfaces/product.interface';
+import { ProductItemResponse, ProductOutputDto } from '../../../../interfaces/product.interface';
 import { categoryOptions } from '../../../../mock/post';
 import { NavigationService } from '../../../../services/navigation.service';
 import { FeatureAppState } from '../../../../store/app.state';
@@ -14,15 +12,19 @@ import { updateFilter } from '../../../../store/filters/filter.actions';
 import { FilterParameters } from '../../../../store/filters/filter.reducers';
 import * as ShopRentalProductActions from '../../state/shop/shop-personal.actions';
 import * as selectShopRentalProduct from '../../state/shop/shop-personal.reducer';
+import { RentalShopOutputDto } from '../../../../interfaces/rental-shop.interface';
+import { RentalShopService } from '../../../../services/rental-shop.service';
 @Component({
   selector: 'app-shop-personal',
   templateUrl: './shop-personal.component.html',
   styleUrl: './shop-personal.component.scss',
 })
 export class ShopPersonalComponent implements OnInit, OnDestroy {
+  //infoShop
+  shopInfo$: Observable<RentalShopOutputDto | null> = of(null);
   // param shop url
   paramHave: string | null;
-  productListShopFilter$?: Observable<ProductItemResponse[]>;
+  productListShopFilter$?: Observable<ProductOutputDto[]>;
   pageIndex$?: Observable<number>;
   pageTotal$?: Observable<number>;
   pageSize$?: Observable<number>;
@@ -31,6 +33,9 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
   selectedValue = null;
   groupOptionFilterSelect: OptionSelect[] = selectSortByOrder;
   visible = false;
+
+  //subscription
+  subScription?: Subscription;
 
   open(isOpen: boolean): void {
     this.visible = isOpen;
@@ -68,7 +73,6 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     }
   }
 
-
   onQueryParams() {
     this.route.paramMap
       .pipe(
@@ -91,23 +95,32 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
       });
   }
 
+  loadShopInfo() {
+    this.shopInfo$ = this.rentalShopService
+      .getRentalShop(this.paramHave ?? '')
+      .pipe(
+        mergeMap((res) => {
+          return of(res.data);
+        })
+      );
+  }
+
   ngOnInit(): void {
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
     this.onQueryParams();
+    this.loadShopInfo();
   }
 
-  ngOnDestroy(): void {
-    this.store.dispatch
-  }
+  ngOnDestroy(): void {}
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<FeatureAppState>,
-    private navigateService: NavigationService
+    private navigateService: NavigationService,
+    private rentalShopService: RentalShopService
   ) {
     this.paramHave = this.route.snapshot.paramMap.get('id');
   }
 }
-
