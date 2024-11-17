@@ -54,7 +54,7 @@
       ></span>
       <p class="text-sm">{{ product.evaluate }}</p>
     </div>
-    @if(isLessor){
+    @if((paramURL$ | async) === '/lessor/shop'){
     <button
       nz-button
       nzGhost
