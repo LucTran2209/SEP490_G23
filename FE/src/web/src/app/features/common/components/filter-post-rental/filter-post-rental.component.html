@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-5 justify-center">
   <!-- all category rental product -->
-  <div class="pb-5 border-[#ddd] border-b-2" *ngIf="!isSubcategoryPage">
+  <div class="pb-5 border-[#ddd] border-b-2">
     <p class="icon_text pb-3">
       <span nz-icon nzType="profile" nzTheme="outline"></span>
       Tất Cả Danh Mục Sản Phẩm Thuê
@@ -34,9 +34,9 @@
           [(ngModel)]="rentalPriceRange"
           [nzTipFormatter]="titleTemplate"
           [nzRange]="true"
-          [nzMin]="50000"
-          [nzMax]="10000000"
-          [nzStep]="50000"
+          [nzMin]="10000"
+          [nzMax]="5000000"
+          [nzStep]="10000"
           (ngModelChange)="onSliderChange($event)"
         ></nz-slider>
       </div>
@@ -59,7 +59,8 @@
 
 <ng-template #contentTemplate let-item>
   <div class="border-b-[1px] p-3">
-    <a class="font-semibold" [routerLink]="[item.href]">{{ item.label }}</a>
+    <!-- <a [routerLink]="[item.href]">{{ item.label }}</a> -->
+    <a (click)="onSelectSubCategory(item.label)">{{ item.label }}</a>
   </div>
 </ng-template>
 <ng-template #contenCheckboxTemplate let-item>

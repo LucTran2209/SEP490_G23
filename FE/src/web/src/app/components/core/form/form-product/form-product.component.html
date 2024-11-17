@@ -43,7 +43,7 @@
               nz-button
               nzType="default"
               nzDanger
-              type="reset"
+              type="button"
               (click)="handleCancel()"
             >
               Hủy
@@ -95,6 +95,8 @@
                     placeholder="Giá cho thuê"
                     id="rentalPrice"
                     formControlName="rentalPrice"
+                    [nzFormatter]="formatCurrency"
+                    [nzParser]="parseCurrency"
                   />
                 </nz-form-control>
               </nz-form-item>
@@ -113,14 +115,19 @@
                     placeholder="Giá cọc"
                     id="depositPrice"
                     formControlName="depositPrice"
+                    [nzFormatter]="formatCurrency"
+                    [nzParser]="parseCurrency"
                   />
                 </nz-form-control>
               </nz-form-item>
 
               <!-- Rent Limit Field -->
               <nz-form-item>
-                <nz-form-label nzFor="rentalLimitDays" nzSpan="6"
-                  >Giới hạn ngày thuê</nz-form-label
+                <nz-form-label
+                  [nzRequired]="true"
+                  nzFor="rentalLimitDays"
+                  nzSpan="6"
+                  >Giới hạn ngày</nz-form-label
                 >
                 <nz-form-control nzSpan="18">
                   <nz-input-number
@@ -180,7 +187,9 @@
         </div>
 
         <div nz-col nzSpan="12">
-          <p class="mb-2.5">Mô tả thiết bị</p>
+          <nz-form-label nzRequired nzFor="description"
+            >Mô Tả Thiết Bị</nz-form-label
+          >
           <nz-form-item>
             <textarea
               nz-input

@@ -17,7 +17,7 @@
           />
           <div class="flex flex-col items-start">
             <h2 class="text-md font-semibold text-white md:text-lg lg:text-xl">
-              {{ shopName }}
+              {{ shop.shopName }}
             </h2>
             <p class="text-xs text-gray-300 md:text-sm lg:text-base">
               Online 1 phút trước
@@ -41,7 +41,7 @@
             >
             <span
               class="text-blue-500 ml-1 text-xs md:text-sm lg:text-base truncate"
-              >118</span
+              >{{ total }}</span
             >
           </p>
         </div>
@@ -79,7 +79,7 @@
             >
             <span
               class="text-blue-500 ml-1 text-xs md:text-sm lg:text-base truncate"
-              >118</span
+              >{{shop.numberOfRenter}}</span
             >
           </p>
         </div>
@@ -96,7 +96,7 @@
             >
             <span
               class="text-blue-500 ml-1 text-xs md:text-sm lg:text-base truncate"
-              >3 Tháng Trước</span
+              >{{calculateTime(shop.createDate)}}</span
             >
           </p>
         </div>
@@ -199,6 +199,7 @@
   [productUpdate]="productInformation"
   [alertMessage]="alertMessage"
   [showAlert]="showAlert"
+  [rentalShopId]="shopid"
   (closeModal)="handleCloseModal()"
   (saveProduct)="handleCreateProduct($event)"
   (updateProduct)="handleUpdateProduct($event)"

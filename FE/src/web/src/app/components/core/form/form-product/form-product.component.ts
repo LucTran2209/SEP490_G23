@@ -33,6 +33,7 @@ export class FormProductComponent {
   @Input() title: string = '';
   @Input() showAlert: boolean = false;
   @Input() alertMessage: string = '';
+  @Input() rentalShopId: string = '';
   @Input() alertType: 'success' | 'error' = 'success';
   @Output() saveProduct = new EventEmitter<FormData>();
   @Output() updateProduct = new EventEmitter<FormData>();
@@ -50,7 +51,6 @@ export class FormProductComponent {
         description: new FormControl(this.product.description, [Validators.required]),
         quantity: new FormControl(this.product.quantity, [Validators.required, Validators.min(1)]),
         subCategoryId: new FormControl(this.product.subCategoryId, [Validators.required]),
-        rentalShopId: new FormControl(this.product.rentalShopId, [Validators.required]),
         rentalPrice: new FormControl(this.product.rentalPrice, [Validators.required, Validators.min(1)]),
         depositPrice: new FormControl(this.product.depositPrice, [Validators.min(0)]),
         rentalLimitDays: new FormControl(this.product.rentalLimitDays, [Validators.required, Validators.min(1)]),
@@ -80,6 +80,7 @@ export class FormProductComponent {
 
   ngOnInit(): void {
     this.loadSubCategories();
+    
   }
   
   ngOnChanges(changes: SimpleChanges): void {
@@ -108,13 +109,22 @@ export class FormProductComponent {
       depositPrice: this.productUpdate.depositPrice,
       rentalLimitDays: this.productUpdate.rentalLimitDays,
       evaluate: this.productUpdate.evaluate,
-      // images: this.productUpdate.images,
+      images: this.productUpdate.images,
     });
     
     if (this.productUpdate.images && this.productUpdate.images.length) {
       this.imageList = this.imageFileService.processImageList(this.productUpdate.images);
     }
-    console.log("line122: ", this.imageList);
+     // Đảm bảo trạng thái FormControl được cập nhật
+    Object.values(this.productForm.controls).forEach(control => {
+    control.markAsTouched();
+    control.updateValueAndValidity();
+    if (this.isEditMode) {
+      // Remove unnecessary controls for edit mode
+      this.productForm.removeControl('subCategoryId');
+      this.productForm.removeControl('rentalShopId');
+    }
+  });
   }
   get imagesControl(): AbstractControl<any> {
     return this.productForm.get('images') as AbstractControl<any>;
@@ -122,6 +132,13 @@ export class FormProductComponent {
   submitForm(){
     
     let formData = new FormData();
+    console.log('Form status:', this.productForm.status); // Kiểm tra trạng thái form
+    console.log('Form value:', this.productForm.value); // Kiểm tra giá trị hiện tại
+  
+    if (this.productForm.invalid) {
+      this.msg.error("Vui lòng điền đầy đủ thông tin trong biểu mẫu.");
+      return;
+    }
     if (this.isEditMode) {
       const formValue = this.productForm.value;
       Object.entries(formValue).forEach(([key, value]) => {
@@ -142,19 +159,15 @@ export class FormProductComponent {
       this.updateProduct.emit(formData);
     }else{
 
-      // if (this.productForm.invalid) {
-      //   this.msg.error("Vui lòng điền đầy đủ thông tin trong biểu mẫu.");
-      //   return;
-      // }
+      
       formData.append('ProductName', this.productForm.value.productName);
       formData.append('Description', this.productForm.value.description);
       formData.append('Quantity', this.productForm.value.quantity.toString());
       formData.append('RentalPrice', this.productForm.value.rentalPrice.toString());
       formData.append('DepositPrice', this.productForm.value.depositPrice.toString());
       formData.append('RentalLimitDays', this.productForm.value.rentalLimitDays.toString());
-      if(!this.isEditMode){
-        formData.append('SubCategoryId', this.productForm.value.subCategoryId);
-      } 
+      formData.append('SubCategoryId', this.productForm.value.subCategoryId);
+      formData.append('RentalShopId', this.rentalShopId);
       this.imageList.forEach((file: NzUploadFile) => {
         if (file.originFileObj) {
             formData.append('images', file.originFileObj);
@@ -170,16 +183,23 @@ export class FormProductComponent {
     this.productForm.reset({
       productName: '',
       description: '',
-      quantity: 0,
+      quantity: 1, // Giá trị mặc định hợp lệ
       subCategoryId: '',
       rentalShopId: '',
-      rentalPrice: 0,
-      depositPrice: 0,
-      rentalLimitDays: 0,
+      rentalPrice: 1, // Giá trị mặc định hợp lệ
+      depositPrice: 1,
+      rentalLimitDays: 1, // Giá trị mặc định hợp lệ
       evaluate: 0,
       images: []
     });
     this.imageList = [];
   }
+  formatCurrency = (value: number | string): string => {
+    return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' VND';
+  };
+  
+  parseCurrency = (value: string): string => {
+    return value.replace(/[^0-9.]/g, '');
+  };
 }
   

@@ -58,7 +58,12 @@
           <span nz-icon nzType="file-text" nzTheme="outline"></span>
           <span>Danh Sách Bài Đăng</span>
         </li>
-        <li nz-menu-item>
+        <li
+          nz-menu-item
+          [routerLink]="['./order']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
           <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
           <span>Danh Sách Người Thuê</span>
         </li>

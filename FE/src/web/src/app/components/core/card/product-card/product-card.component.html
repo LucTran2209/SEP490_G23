@@ -24,7 +24,27 @@
       </div>
     </ng-template>
   </nz-card-meta>
-  <div class="flex justify-between items-center flex-wrap mt-10">
+  <div class="flex justify-start items-center flex-wrap mt-2">
+    <nz-avatar-group>
+      <nz-avatar
+        nzSize="small"
+        nzIcon="user"
+        nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+      ></nz-avatar>
+      <nz-avatar
+        nzSize="small"
+        style="background-color: #f56a00"
+        nzText="U"
+      ></nz-avatar>
+      <nz-avatar
+        nzSize="small"
+        style="background-color: #fde3cf; color: #f56a00"
+        nzText="+2"
+      ></nz-avatar>
+    </nz-avatar-group>
+    <span class="text-sm mx-2 text-[#CCCCCC]">số người thuê</span>
+  </div>
+  <div class="flex justify-between items-center flex-wrap mt-2">
     <div class="flex justify-between items-center gap-x-3">
       <span
         nz-icon
@@ -34,7 +54,7 @@
       ></span>
       <p class="text-sm">{{ product.evaluate }}</p>
     </div>
-    @if((paramURL$ | async) === '/lessor/shop'){
+    @if(isLessor){
     <button
       nz-button
       nzGhost
@@ -47,13 +67,13 @@
     <div class="flex items-center gap-x-2">
       <button nz-button nzGhost nzType="primary">Chọn thuê</button>
       @if((paramURL$ | async) === 'shop'){
-        <button
-          nz-button
-          nzType="primary"
-          (click)="$event.stopPropagation(); onAddMoreClick()"
-        >
-          T
-        </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="$event.stopPropagation(); onAddMoreClick()"
+      >
+        T
+      </button>
       }
     </div>
     }

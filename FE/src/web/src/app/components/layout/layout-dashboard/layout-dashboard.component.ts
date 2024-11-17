@@ -14,6 +14,7 @@ export class LayoutDashboardComponent implements OnInit {
   readonly USERROLE = USER_ROLE;
   notificationCount: number = 5;
   isShopSlected = false;
+  isRenterSlected = false;
   shopId: string = '';
   userRole: USER_ROLE = USER_ROLE.LESSOR; // Set your default role
 
@@ -36,6 +37,7 @@ export class LayoutDashboardComponent implements OnInit {
   ) {
     this.router.events.subscribe(() => {
       this.checkActiveShopRoute();
+      this.checkRenterRoute();
     });
   }
   ngOnInit(): void {
@@ -62,5 +64,9 @@ export class LayoutDashboardComponent implements OnInit {
   checkActiveShopRoute() {
     const currentUrl = this.router.url;
     this.isShopSlected = currentUrl.startsWith('/lessor/shop');
+  }
+  checkRenterRoute() {
+    const currentUrl = this.router.url;
+    this.isRenterSlected = currentUrl.startsWith('/lessor/order');
   }
 }

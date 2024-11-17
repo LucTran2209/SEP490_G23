@@ -106,6 +106,15 @@ export class ListMyOrderComponent implements OnInit {
       ordersNull: true,
       placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
       isShowBtn1: true,
+    },
+    {
+      title: 'HỦY ĐƠN',
+      status: 6,
+      searchText: '',
+      orders: [],
+      ordersNull: true,
+      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
+      isShowBtn1: false,
     }
   ];
   ngOnInit() {

@@ -20,6 +20,7 @@ export class ProductCardComponent implements OnInit, AfterContentInit {
   @Input() isRenter: boolean = false;
   paramURL$?: Observable<string>;
   currentIndex: number = 0;
+  isLessor: boolean = false;
   @Output() editProduct = new EventEmitter<
     ProductOutputDto>();
   user?: IPayLoad;
@@ -101,5 +102,9 @@ export class ProductCardComponent implements OnInit, AfterContentInit {
   }
   ngOnInit(): void {
     this.handleAssginInfo();
+    const currentRoute = this.router.url;
+    if (currentRoute.includes('/lessor/shop')){
+      this.isLessor = true;
+    }
   }
 }

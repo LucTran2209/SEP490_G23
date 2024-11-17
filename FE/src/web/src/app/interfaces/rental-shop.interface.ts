@@ -26,13 +26,19 @@ export interface RentalShopOutputDto {
 
 export interface RentalShopOutputDto {
     createDate?: string;
+    numberOfRenter?: number;
     id: string;
     userId: string;
     shopName: string;
+    imageFont: string | null;
+    imageBack: string | null;
+    taxNumber: string | null;
+    businessLicenseFile: string | null;
     rentalScale: number;
     address: string;
     phoneNumber: string;
     email: string;
+    status: number;
     isActive: boolean;
     description: string;
 }

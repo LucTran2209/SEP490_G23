@@ -23,8 +23,8 @@ export class ProductRentalListComponent {
   totalProducts = 0;     
   currentPage = 1;    
   pageSize = 12;
-  isSubcategoryPage: boolean = false;
   subCategory: string = '';
+  subcategoryFilter: string = '';
   searchText: string = '';
   groupOptionFilterSelect: OptionSelect[] = selectSortByOrder;
   loading$?: Observable<StatusProcess>;
@@ -43,7 +43,6 @@ export class ProductRentalListComponent {
       this.searchText = params['searchText'] || '';
       this.subCategory = params['subCategory'] || '';
       this.currentPage = +params['page'] || 1;
-      this.isSubcategoryPage = false;
       // Tải danh sách sản phẩm dựa vào tham số hiện tại
       this.loadProducts();
     });
@@ -55,7 +54,6 @@ export class ProductRentalListComponent {
       if (slug && caid) {
         // Chỉ khi URL có cả `slug` và `caid`, thì mới gán vào `subCategory`
         this.subCategory = slug;
-        this.isSubcategoryPage =true;
       } else {
         this.subCategory = ''; // Nếu không có, xóa subCategory
       }
@@ -65,12 +63,12 @@ export class ProductRentalListComponent {
     });
   }
 
-  loadProducts(address?: string[]) {
+  loadProducts(address?: string[], subcategory?: string, minPrice?: number, maxPrice?: number) {
     // Xác định thuật ngữ tìm kiếm sẽ sử dụng
     const searchTerm = this.search || this.searchText || this.subCategory;
     
     this.loadingService.setLoading();
-    this.productService.listProduct(this.currentPage, this.pageSize, searchTerm, address).subscribe((res: ProductDtoResponse) => {
+    this.productService.listProduct(this.currentPage, this.pageSize, searchTerm, address, subcategory, minPrice, maxPrice).subscribe((res: ProductDtoResponse) => {
       this.productList = res.data.products.items;
       this.shop = res.data.rentalShops[0];
       this.totalProducts = res.data.products.totalCount;
@@ -109,7 +107,21 @@ export class ProductRentalListComponent {
   onLocationsSelected(locations: string[]){
     this.currentPage = 1; // Đặt lại về trang 1 khi thực hiện tìm kiếm mới
     this.updateQueryParams();
+    this.locations = locations;
     this.loadProducts(locations);
     console.log(locations);
   }
+  onSubCategorySelected(subcategory: string){
+    this.currentPage = 1; // Đặt lại về trang 1 khi thực hiện tìm kiếm mới
+    this.updateQueryParams();
+    this.loadProducts(this.locations, subcategory);
+    this.subcategoryFilter = subcategory;
+    console.log(subcategory);
+  }
+  onPriceRangeSelected(range: number[]){
+    this.currentPage = 1; // Đặt lại về trang 1 khi thực hiện tìm kiếm mới
+    this.updateQueryParams();
+    this.loadProducts(this.locations, this.subcategoryFilter, range[0], range[1]);
+  }
+  
 }

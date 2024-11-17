@@ -33,7 +33,9 @@ export class ProductService {
     pageSize: number,
     Search?: string,
     Addresses?: string[],
-    SubCategory?: string[],
+    SubCategory?: string,
+    MinPrice?: number,
+    MaxPrice?: number,
     Evaluates?: string[],
   ): Observable<ProductDtoResponse> {
     let params: any = {
@@ -41,19 +43,13 @@ export class ProductService {
       PageIndex: pageIndex.toString(),
     };
     if (Search) params.Search = Search;
+    if (SubCategory) params.SubCategory = SubCategory;
+    if (Evaluates) params.Evaluates = Evaluates;
+    if (MinPrice) params.MinPrice = MinPrice;
+    if (MaxPrice) params.MaxPrice = MaxPrice;
     if (Addresses) {
       Addresses.forEach(address => {
         params.Addresses = Addresses.join('&Addresses=');
-      });
-    }
-    if (SubCategory) {
-      SubCategory.forEach(subCat => {
-        params.SubCategory = SubCategory.join('&SubCategory=');
-      });
-    }
-    if (Evaluates) {
-      Evaluates.forEach(evaluate => {
-        params.Evaluates = Evaluates.join('&Evaluates=');
       });
     }
     return this.httpClient.get<ProductDtoResponse>(ProductSlug.ListProduct.api, params);
