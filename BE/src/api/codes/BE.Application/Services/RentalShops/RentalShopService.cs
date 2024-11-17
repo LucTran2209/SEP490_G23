@@ -1,6 +1,5 @@
 ﻿using BE.Application.Services.RentalShops.RentalShopServiceInputDto;
 using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
-using Microsoft.AspNetCore.Http;
 
 namespace BE.Application.Services.RentalShops
 {
@@ -137,8 +136,8 @@ namespace BE.Application.Services.RentalShops
                 FirstOrDefault(r => r.RoleId == Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff"))!.CreatedDate.DateTime;
 
             result.NumberOfRenter = unitOfWork.OrderRepository.GetRentalShopOrder(id)
-                    .GroupBy(o => o.UserId).ToList().Count;
-
+                                                        .Where(o => o.OrderStatuses!.Any(s => s.Status != RequestStatus.Cancel))
+                                                        .ToList().Count;
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
