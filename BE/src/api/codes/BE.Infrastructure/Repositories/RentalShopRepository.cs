@@ -42,7 +42,10 @@ namespace BE.Infrastructure.Repositories
 
         public async Task<RentalShop?> GetRentalShopByIdAsync(Guid id)
         {
-            return await context.RentalShops.FirstOrDefaultAsync(rs => rs.Id == id);
+            return await context.RentalShops
+                .Include(rs => rs.User)
+                    .ThenInclude(u => u.UserRoles)
+                .FirstOrDefaultAsync(rs => rs.Id == id);
         }
 
         public async Task<RentalShop?> GetRentalShopByNotActiveAsync(Guid Id)

@@ -2,11 +2,12 @@
 {
     public enum RequestStatus
     {
-        WaitApprove,
-        Approved,
-        Rejected,
-        Cancel,
-        Transit,
-        Completed,
+        WaitingForConfirm = 0,
+        WaitingForDeposit = 1,
+        WaitingForTransit = 2,
+        Recieved = 3,
+        WaitingForReturn = 4,
+        ReturnComplete = 5,
+        Cancel = 6,
     }
 }

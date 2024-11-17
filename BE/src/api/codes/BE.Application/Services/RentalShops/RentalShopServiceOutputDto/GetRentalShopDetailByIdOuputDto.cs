@@ -4,7 +4,9 @@ namespace BE.Application.Services.RentalShops.RentalShopServiceOutputDto
 {
     public class GetRentalShopDetailByIdOuputDto : RentalShopDto
     {
-        public DateTime? CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
+
+        public int NumberOfRenter {  get; set; }
 
         public class Mapping : Profile
         {

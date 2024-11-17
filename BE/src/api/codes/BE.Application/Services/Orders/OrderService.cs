@@ -40,7 +40,7 @@ namespace BE.Application.Services.Orders
             {
                 OrderId = order.Id,
                 Message = string.Empty,
-                Status = RequestStatus.WaitApprove,
+                Status = RequestStatus.WaitingForConfirm,
                 FileAttach = null
             };
 
