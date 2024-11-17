@@ -1,0 +1,10 @@
+<ngx-slick-carousel
+  [config]="slideConfig"
+  (breakpoint)="breakpoint($event)"
+  (afterChange)="afterChange($event)"
+  (beforeChange)="beforeChange($event)"
+>
+  <div ngxSlickItem *ngFor="let item of productRelatedList" class="mx-2">
+    <app-product-card [product]="item"> </app-product-card>
+  </div>
+</ngx-slick-carousel>

@@ -1,0 +1,23 @@
+<nz-radio-group
+  class="w-full"
+  [(ngModel)]="selectedValue"
+  nzName="radioMethodPay"
+  (ngModelChange)="onValueChange($event)"
+  nzSize="large"
+>
+  <label
+    *ngFor="let option of options"
+    nz-radio
+    [nzValue]="option.value"
+    class="radio-option flex gap-x-4 items-start p-4 border rounded-md mb-2 cursor-pointer"
+    [ngClass]="{
+      'bg-blue-50': selectedValue === option.value,
+      'border-gray-300': selectedValue !== option.value
+    }"
+  >
+    <div class="flex gap-x-4 items-center">
+      <span nz-icon [nzType]="option.icon" nzTheme="outline"></span>
+      <span class="font-medium">{{ option.label }}</span>
+    </div>
+  </label>
+</nz-radio-group>

@@ -1,0 +1,84 @@
+<div class="flex flex-col gap-5 justify-center">
+  <!-- all category rental product -->
+  <div class="pb-5 border-[#ddd] border-b-2">
+    <p class="icon_text pb-3">
+      <span nz-icon nzType="profile" nzTheme="outline"></span>
+      Tất Cả Danh Mục Sản Phẩm Thuê
+    </p>
+    <app-view-more-item
+      *ngIf="categoryOptions.length > 0"
+      [items]="categoryOptions"
+      [itemTemplate]="contentTemplate"
+    ></app-view-more-item>
+  </div>
+  <!-- filter -->
+  <div class="pb-2">
+    <p class="icon_text pb-5">
+      <span nz-icon nzType="filter" nzTheme="outline"></span>Bộ Lọc Tìm Kiếm
+    </p>
+
+    <div class="pl-3">
+      <!-- location -->
+      <div class="pb-5 mb-5 border-[#ddd] border-b-2">
+        <p class="icon_text pb-3 font-semibold">Nơi Bán</p>
+        <app-view-more-item
+          [items]="selectLocationOptions"
+          [itemTemplate]="contenCheckboxTemplate"
+        >
+        </app-view-more-item>
+      </div>
+      <!-- range price -->
+      <div class="pb-5 mb-5 border-[#ddd] border-b-2">
+        <p class="icon_text pb-3 font-semibold">Khoảng Giá Cho Thuê</p>
+        <nz-slider
+          [(ngModel)]="rentalPriceRange"
+          [nzTipFormatter]="titleTemplate"
+          [nzRange]="true"
+          [nzMin]="10000"
+          [nzMax]="5000000"
+          [nzStep]="10000"
+          (ngModelChange)="onSliderChange($event)"
+        ></nz-slider>
+      </div>
+      <!-- review  -->
+      <div class="pb-5">
+        <p class="icon_text pb-1 font-semibold">Đánh Giá</p>
+        <app-view-more-item
+          [items]="rateStar"
+          [itemTemplate]="contentRateTemplate"
+        >
+        </app-view-more-item>
+      </div>
+    </div>
+  </div>
+  <!-- remove all filter -->
+  <div>
+    <button nz-button class="" nzType="primary" nzBlock>Xóa Tất Cả</button>
+  </div>
+</div>
+
+<ng-template #contentTemplate let-item>
+  <div class="border-b-[1px] p-3">
+    <!-- <a [routerLink]="[item.href]">{{ item.label }}</a> -->
+    <a (click)="onSelectSubCategory(item.label)">{{ item.label }}</a>
+  </div>
+</ng-template>
+<ng-template #contenCheckboxTemplate let-item>
+  <div class="p-3">
+    <label
+      nz-checkbox
+      [(ngModel)]="item.selected"
+      (ngModelChange)="onCheckboxChange(item)"
+      >{{ item.label }}</label
+    >
+  </div>
+</ng-template>
+<ng-template #contentRateTemplate let-item>
+  <div class="py-2 px-3 flex justify-between gap-3">
+    <nz-rate [ngModel]="item.level" nzDisabled class=""></nz-rate>
+    <span>{{ item?.text }}</span>
+  </div>
+</ng-template>
+<ng-template #titleTemplate let-value>
+  <span>{{ onConvertPrice(value) }}</span>
+</ng-template>

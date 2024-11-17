@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
+import { ManageRegisterLessorComponent } from './components/manage-register-lessor/manage-register-lessor.component';
 
 const routes: Routes = [
   {
@@ -14,8 +15,12 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'users',
+    path: 'manage-users',
     component: ManageUserComponent,
+  },
+  {
+    path: 'manage-register-lessor',
+    component: ManageRegisterLessorComponent,
   },
 ];
 

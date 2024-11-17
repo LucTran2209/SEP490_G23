@@ -1,0 +1,106 @@
+<nz-card class="mt-3 w-full">
+  <div class="card-title pb-2 border-b-2 border-zinc-300">
+    <div class="flex justify-between">
+      <div class="flex">
+        <div class="flex">
+          <p
+            class="text-2xl font-extralight"
+            nz-icon
+            nzType="shop"
+            nzTheme="outline"
+          ></p>
+          <p class="text-xl font-semibold mx-1.5">
+            {{ order.rentalShopName }}
+          </p>
+        </div>
+        <div class="flex">
+          <button class="mx-5" nz-button nzType="primary" nzGhost>
+            Chat Ngay
+          </button>
+          <button nz-button nzType="primary" (click)="goToShop()">
+            Xem Shop
+          </button>
+        </div>
+      </div>
+      <p class="text-[#676767] font-semibold text-xl">
+        {{ order.startDate | date : "dd/MM/yyyy" }}
+        <!-- 20/10/2024 -->
+      </p>
+    </div>
+  </div>
+  <div
+    class="order-item py-3 cursor-pointer"
+    [routerLink]="['./order-detail', order.id]"
+  >
+    <div nz-row nzGutter="16" class="p-4">
+      <div nz-col [nzSpan]="6">
+        <img
+          [src]="order.orderDetails[0].product.productImages[0].link"
+          alt="ảnh sản phẩm cố định"
+          class="w-full rounded-md"
+          [height]="200"
+        />
+      </div>
+      <div nz-col [nzSpan]="12" class="pl-4">
+        <div nz-typography>
+          <h4 class="font-semibold text-lg uppercase">
+            Mã đơn hàng: <span class="ml-1">24119SGDR</span>
+          </h4>
+          <p class="font-semibold text-base text-[#676767] uppercase">
+            Thời gian thuê:
+            <span class="ml-3 font-light"
+              >từ {{ order.startDate | date : "dd/MM/yyyy" }} đến
+              {{ order.endDate | date : "dd/MM/yyyy" }}</span
+            >
+          </p>
+        </div>
+        <div class="columns-2 gap-2">
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Tổng giá thuê:
+          </p>
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Giá cọc:
+          </p>
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Số lượng sản phẩm:
+          </p>
+          <p class="font-semibold text-base uppercase text-[#676767] pb-1">
+            Trạng thái:
+          </p>
+          <p class="font-light text-base uppercase text-[#676767] pb-1">
+            {{ order.totalRentPrice | currency : "VND" : "" : "1.0-0" }} VND
+          </p>
+          <p class="font-light text-base uppercase text-[#676767] pb-1">
+            {{ order.totalDepositPrice | currency : "VND" : "" : "1.0-0" }} VND
+          </p>
+          <p class="font-light text-base uppercase text-[#676767] pb-1">
+            {{ totalQuantity }}
+          </p>
+          <!-- <p
+            class="p-2 border-2 text-lime-500 border-lime-500 bg-lime-100 text-xs w-28"
+          >
+            Đang phê duyệt
+          </p> -->
+          <p [class]="orderStatusClass">{{ orderStatusMessage }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer mt-3 flex justify-end gap-10">
+    <button
+      *ngIf="isShowBtn1"
+      class="px-5"
+      nz-button
+      nzType="primary"
+      (click)="onClickBtn1()"
+    >
+      Đánh Giá
+    </button>
+    <button *ngIf="isShowBtn2" class="px-5" nz-button nzType="primary" nzGhost>
+      Chi TIết
+    </button>
+    <button *ngIf="isShowBtn3" class="px-5" nz-button nzType="primary" nzGhost>
+      Mua Lại
+    </button>
+  </div>
+</nz-card>

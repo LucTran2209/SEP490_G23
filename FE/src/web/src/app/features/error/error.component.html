@@ -1,0 +1,21 @@
+<nz-result
+  [nzStatus]="nzStatusConfig"
+  [nzTitle]="errorWrapperTitle"
+  [nzSubTitle]="errorWrapperContent"
+  class="flex flex-col items-center fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+>
+  <div nz-result-extra>
+    <button nz-button nzType="primary" (click)="navigage()" >Trở lại trang chủ</button>
+  </div>
+</nz-result>
+
+<ng-template #errorWrapperContent>
+  <div>
+    <p class="">{{ errorMessage }}</p>
+  </div>
+</ng-template>
+<ng-template #errorWrapperTitle>
+  <div>
+    <p class="text-[30px]">{{ nzStatusConfig }}</p>
+  </div>
+</ng-template>

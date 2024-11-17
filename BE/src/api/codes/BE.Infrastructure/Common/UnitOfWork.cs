@@ -1,35 +1,64 @@
 ﻿using BE.Domain.Abstractions;
 using BE.Domain.Abstractions.IEntities;
 using BE.Domain.Abstractions.UnitOfWork;
-using BE.Domain.Entities.Users;
+using BE.Domain.Interfaces;
 using BE.Infrastructure.Repositories;
 using BE.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
-using System.Security.Claims;
 
 namespace BE.Infrastructure.Common
 {
-    public class UnitOfWork : IUnitOfWork , IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext context;
-        private readonly ClaimsPrincipal claimsPrincipal;
         private IDbContextTransaction? _currentTransaction;
+        private readonly IUser user;
         public IDbContextTransaction? GetCurrentTransaction()
         {
             return _currentTransaction;
         }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, IUser user)
         {
-            this.context = context;          
+            this.context = context;
+            this.user = user;
         }
 
         // Interface Repository
         public IUserRepository userRepository;
         public IUserRepository UserRepository => userRepository = new UserRepository(context);
-     
+
+        public IProductRepository productRepository;
+
+        public IProductRepository ProductRepository => productRepository = new ProductRepository(context);
+
+        public IRentalShopRepository rentalShopRepository;
+
+        public IRentalShopRepository RentalShopRepository => rentalShopRepository = new RentalShopRepository(context);
+
+        public IFeedbackRepository feedbackRepository;
+        public IFeedbackRepository FeedbackRepository => feedbackRepository = new FeedbackRepository(context);
+
+        public IOrderRepository orderRepository;
+        public IOrderRepository OrderRepository => orderRepository = new OrderRepository(context);
+
+        public IOrderDeatilRepository orderDeatilRepository;
+        public IOrderDeatilRepository OrderDeatilRepository => orderDeatilRepository = new OrderDetailRepository(context);
+
+        public IOrderStatusRepository orderStatusRepository;
+        public IOrderStatusRepository OrderStatusRepository => orderStatusRepository = new OrderStatusRepository(context);
+
+        public ICategoryRepository categoryRepository;
+        public ICategoryRepository CategoryRepository => categoryRepository = new CategoryRepository(context);
+
+        public ISubCategoryRepository subCategoryRepository;
+        public ISubCategoryRepository SubCategoryRepository => subCategoryRepository = new SubCategoryRepository(context);
+
+        public IProductImageRepository productImageRepository;
+        public IProductImageRepository ProductImageRepository => productImageRepository = new ProductImageRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
@@ -98,10 +127,17 @@ namespace BE.Infrastructure.Common
                             added.CreatedDate = DateTime.UtcNow;
                         }
 
-                        if (entry.Entity is IUserTracking<Guid> hasTrace)
+                        if (entry.Entity is IUserTracking hasTrace)
                         {
-                            hasTrace.CreatedBy = new Guid(); //this.claimsPrincipal.GetUserId();
-                            hasTrace.CreatedByName = "Admin"; //this.claimsPrincipal.GetUserName();
+                            try
+                            {
+                                hasTrace.CreatedBy = user.Id;
+                            }
+                            catch (Exception)
+                            {
+                                hasTrace.CreatedBy = Guid.Empty;
+                            }
+                            
                         }
 
                         break;
@@ -111,10 +147,16 @@ namespace BE.Infrastructure.Common
                             modified.LastModifiedDate = DateTime.UtcNow;
                         }
 
-                        if (entry.Entity is IUserTracking<Guid> trace)
+                        if (entry.Entity is IUserTracking trace)
                         {
-                            trace.ModifiedBy = new Guid(); //claimsPrincipal.GetUserId();
-                            trace.ModifiedByName = "Admin"; // claimsPrincipal.GetUserName();
+                            try
+                            {
+                                trace.CreatedBy = user.Id;
+                            }
+                            catch (Exception)
+                            {
+                                trace.CreatedBy = Guid.Empty;
+                            }
                         }
 
                         break;
@@ -134,6 +176,6 @@ namespace BE.Infrastructure.Common
         }
 
         public async void Dispose() => await context.DisposeAsync();
-        
+
     }
 }

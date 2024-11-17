@@ -1,0 +1,10 @@
+::ng-deep .ant-menu-item.ant-menu-item-selected {
+    border-left: 4px solid #1890ff;
+}
+
+::ng-deep .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+    border: none
+}
+::ng-deep .ant-collapse > .ant-collapse-item.ant-collapse-no-arrow > .ant-collapse-header{
+    display: block;
+}

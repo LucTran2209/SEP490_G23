@@ -20,3 +20,21 @@ export function matchValidator(
         : { matching: true };
     };
   }
+  export function ageValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const dateOfBirth = control.value;
+      if (!dateOfBirth) {
+        return null;
+      }
+  
+      const today = new Date();
+      const birthDate = new Date(dateOfBirth);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+      const dayDifference = today.getDate() - birthDate.getDate();
+      if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+        age--;
+      }
+    return age < 18 ? { under18: true } : null;
+    };
+  }

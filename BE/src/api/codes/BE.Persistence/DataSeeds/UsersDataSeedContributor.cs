@@ -1,4 +1,4 @@
-﻿using BE.Domain.Entities.Users;
+﻿using BE.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BE.Persistence.DataSeeds;
@@ -22,8 +22,8 @@ public class UsersDataSeedContributor : IDataSeedContributor
             {
                 Id = Guid.NewGuid(),
                 FullName = "Admin",
-                UserName = "Admin",
-                Password = "password",
+                UserName = "admin",
+                Password = "Pass123@",
                 Email = email,
                 PhoneNumber = "1234567890",
                 Address = "Ha Noi",

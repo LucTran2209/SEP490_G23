@@ -1,0 +1,40 @@
+@mixin status-style($bg-color, $text-color) {
+    background-color: $bg-color;
+    color: $text-color;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid $text-color;
+    display: inline-block;
+  }
+  
+  .status-success {
+    @include status-style(#e6f7ec, #00b141);
+  }
+  
+  .status-warning {
+    @include status-style(#fff3e9, #ff831e);
+  }
+  
+  .status-error {
+    @include status-style(#f2dede, #a94442);
+  }
+  
+  .status-pending_approval {
+    @include status-style(#EAF1FF, #2F74FF);
+  }
+  
+  .status-pending_payment {
+    @include status-style(#FFEEEA, #E87817);
+  }
+  .status-pending_delivery {
+    @include status-style(#EAFEFF, #08A9AE);
+  }
+  .status-received {
+    @include status-style(#EAF7E6, #ADDB8A);
+  }
+  .status-refund {
+    @include status-style(#F6F7E6, #DBD28A);
+  }
+  .status-deposit_refund {
+    @include status-style(#E6F7EC, #8ADBA8);
+  }

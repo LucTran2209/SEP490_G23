@@ -1,0 +1,85 @@
+<app-navbar-headear
+  [isCollapsed]="isSidebarCollapsed"
+  [notificationCount]="notificationCount"
+  (toggleSidebar)="onToggleSidebar($event)"
+  (avatarClick)="onAvatarClick()"
+>
+</app-navbar-headear>
+<nz-layout class="main-layout">
+  <nz-sider
+    style="width: 250px; min-width: 100px"
+    nzCollapsible
+    [(nzCollapsed)]="isSidebarCollapsed"
+    [nzTrigger]="null"
+    nzTheme="light"
+  >
+    <ul nz-menu nzTheme="light" nzMode="inline" class="mt-10">
+      <li nz-menu-item [routerLink]="['../common/home']">
+        <span nz-icon nzType="home" nzTheme="outline"></span>
+        <span>Trang Chủ</span>
+      </li>
+      <!-- Admin Role -->
+      <ng-container *ngIf="userRole === USERROLE.ADMIN">
+        <li nz-menu-item>
+          <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
+          <span>Thống Kê</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./manage-users']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span nz-icon nzType="user" nzTheme="outline"></span>
+          <span>Quản Lý Người Dùng</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./manage-register-lessor']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span nz-icon nzType="solution" nzTheme="outline"></span>
+          <span>Danh Sách Đơn Yêu Cầu</span>
+        </li>
+        <li nz-menu-item>
+          <span nz-icon nzType="shop" nzTheme="outline"></span>
+          <span>Danh Sách Cửa Hàng</span>
+        </li>
+      </ng-container>
+
+      <!-- Lessor Role -->
+      <ng-container *ngIf="hasLessorRole()">
+        <li nz-menu-item>
+          <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
+          <span>Thông Kê</span>
+        </li>
+        <li nz-menu-item>
+          <span nz-icon nzType="file-text" nzTheme="outline"></span>
+          <span>Danh Sách Bài Đăng</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./order']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
+          <span>Danh Sách Người Thuê</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./shop', shopId]"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span nz-icon nzType="shop" nzTheme="outline"></span>
+          <span>Cửa Hàng</span>
+        </li>
+      </ng-container>
+    </ul>
+  </nz-sider>
+  <nz-content style="min-height: calc(100vh - 65px)">
+    <router-outlet></router-outlet>
+  </nz-content>
+</nz-layout>

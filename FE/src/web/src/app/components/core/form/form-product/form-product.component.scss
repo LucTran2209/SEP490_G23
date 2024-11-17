@@ -1,0 +1,10 @@
+::ng-deep .ant-modal-footer{
+    display: none;
+
+}
+::ng-deep .ant-upload.ant-upload-select-picture-card{
+    width: 100%;
+}
+::ng-deep .ant-upload-list-item-error   {
+    border-color: rgb(90, 200, 116) !important;
+}

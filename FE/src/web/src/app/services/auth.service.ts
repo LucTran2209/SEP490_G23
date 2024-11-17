@@ -1,32 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  debounceTime,
-  map,
-  Observable,
-  of,
-  tap,
-} from 'rxjs';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { jwtDecode } from 'jwt-decode';
-import { RouteData } from '../configs/anonymous.config';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import {
+  RouteData
+} from '../configs/anonymous.config';
 import { AuthSlug } from '../configs/api.configs';
+import { ErrorStatusCode } from '../configs/status-code.config';
+import { selectIsAuthenticated } from '../features/auth/state/auth.feature';
 import {
   IChangePassword,
+  IConfirmEmailRequest,
   IExternalLoginRequest,
   IForgotPassword,
   ILoginRequest,
   ILoginResponse,
-  IOtpCodeResponse,
+  IPayLoad,
   IRegisterRequest,
   IResetPassword,
+  IVerifyEmailRequest
 } from '../interfaces/account.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
-import { FeatureAppState } from '../store/featureApp.state';
-import { decodeBase64 } from '../utils/anonymous.helper';
+import { FeatureAppState } from '../store/app.state';
 import { LocalStorageKey, STRING } from '../utils/constant';
 import {
   getCookie,
@@ -34,66 +30,58 @@ import {
   replaceCookie,
 } from '../utils/cookie.helper';
 import { AppHttpClientService } from './app-http-client.service';
+import { MessageResponseService } from './message-response.service';
 import { StorageService } from './storage.service';
+import { UserFireStoreService } from './user-fire-store.service';
 import { UserProfileService } from './user-profile.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  //test
-  private BASE_URL = 'https://dummyjson.com/auth';
-  //test
-
-  private isLoggedSubject = new BehaviorSubject<boolean>(
-    this.checkInitialLoginStatus()
-  );
   public routerLinkRedirectURLSubject = new BehaviorSubject<string>('');
-
-  isLoggedIn$: Observable<boolean> = this.isLoggedSubject.asObservable();
-  routerLinkRedirectURL$: Observable<string> =
+  private routerLinkRedirectURL$: Observable<string> =
     this.routerLinkRedirectURLSubject.asObservable();
 
   constructor(
     private httpClient: AppHttpClientService,
-    private http: HttpClient,
     private router: Router,
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
-    private storageService: StorageService
-  ) {}
-
-  private checkInitialLoginStatus(): boolean {
-    return (
-      !!getCookie(STRING.ACCESS_TOKEN) && !!getCookie(STRING.REFRESH_TOKEN)
-    );
-  }
+    private storageService: StorageService,
+    private errorPage: MessageResponseService,
+    private userFireStoreService: UserFireStoreService
+  ) { }
 
   get token() {
     return getCookie(STRING.ACCESS_TOKEN);
+  }
+
+  get isAuthenticated$() {
+    return this.store.select(selectIsAuthenticated);
   }
 
   checkUserLogin$(
     route: ActivatedRouteSnapshot,
     url: any
   ): Observable<boolean> {
-    //check isLoggedIn$ && data user
     const data = route.data as RouteData;
-    //  const user = this.userProfileService.currentUser ??
-    const user = { role: 'admin' }; //fixed: cứng admin test
-    console.log('line 56:', user);
-    return this.isLoggedIn$.pipe(
+    const roleCheck: string[] = ([] as string[]).concat(
+      this.userProfileService.roleCurrentUser ?? []
+    );
+    const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
+    const hasExpectedRole = expectedRole.some((val, index) => roleCheck.includes(val));
+    return this.isAuthenticated$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          if (data.expectedRole && !data.expectedRole.includes(user.role)) {
-            // Redirect to login or error page if role does not match
-            this.router.navigate(['/auth/login']);
+          if (!hasExpectedRole) {
+            this.errorPage.setErrorCode(ErrorStatusCode.FORBIDDEN);
+            this.router.navigate(['error']);
             return false;
           }
           return true;
         } else {
-          // Redirect to login page if not authenticated
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['auth/login']);
           return false;
         }
       })
@@ -102,72 +90,59 @@ export class AuthService {
 
   /**
    *
-   * @param otpcode
-   */
-  checkOtpCode(otpcode: string): Observable<boolean> {
-    let savecodefirst = getCookie(STRING.OTPCODE);
-    if (savecodefirst) {
-      let decodeotpcode = decodeBase64(savecodefirst);
-      if (otpcode === decodeotpcode) {
-        return of(true);
-      }
-    } else {
-      return of(false);
-    }
-    return of(false);
-  }
-  /**
-   *
    * @param token
    * @returns
    * @description
    */
-  decodedTokenToGiveInfo(token: string): any {
-    console.log(token);
-    let decoded = jwtDecode(token);
-    console.log(decoded);
+  decodedTokenToGiveInfo(token: string) {
+    let decoded = jwtDecode<IPayLoad>(token);
     return decoded;
   }
 
-  /**
-   *
-   * @param token
-   */
-  isTokenExpired(token: string): boolean {
-    const expiry = jwtDecode(token).exp;
-    if (expiry) {
-      return Math.floor(new Date().getTime() / 1000) >= expiry;
+  isTokenExpired(): boolean {
+    if (!this.token) {
+      return true;
     }
-    return false;
+    try {
+      const { exp } = jwtDecode(this.token);
+      if (exp) {
+        const currentTime = Math.floor(new Date().getTime() / 1000);
+        return currentTime >= exp;
+      }
+      return true;
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return true;
+    }
   }
 
-  //test
-  startSession({ accesstoken, refreshToken }: any): void {
-    replaceCookie(STRING.ACCESS_TOKEN, accesstoken, null, '/');
-    // replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null);
+  startSession(accessToken: string, refreshToken: string): void {
+    const userPayLoad = this.decodedTokenToGiveInfo(accessToken);
+
+    replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
+    replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
+    this.userFireStoreService.addUserInToFireStore({ displayName: userPayLoad.FullName, photoURL: userPayLoad.Avatar, uid: userPayLoad.UserId })
     this.storageService.set(
       LocalStorageKey.currentUser,
-      JSON.stringify(this.decodedTokenToGiveInfo(accesstoken))
+      JSON.stringify(userPayLoad)
     );
-    this.isLoggedSubject.next(true);
+    // this.routerLinkRedirectURLSubject.next(redirectUrl);
 
-    // this.redirectToPageAfter();
+    this.redirectToPageAfter();
   }
 
-  redirectToPageAfter() {
+  redirectToPageAfter(): void {
     this.routerLinkRedirectURL$.subscribe((toUrl) => {
-      const redirectUrl = toUrl ? this.router.parseUrl(toUrl) : '/test';
+      const redirectUrl = toUrl ? this.router.parseUrl(toUrl) : '/common/home';
       this.router.navigateByUrl(redirectUrl);
     });
   }
 
-  //logout with user
   endSession(): void {
-    this.userProfileService.currentUser = null;
     removeAllCookies();
-    this.router.navigate(['/auth/login']);
+    window.localStorage.clear();
+    window.location.href = '/common/home';
   }
-  //test
 
   /**
    *
@@ -191,44 +166,38 @@ export class AuthService {
 
   logout() {
     this.endSession();
-    removeAllCookies();
-    this.storageService.unset(LocalStorageKey.currentUser);
   }
 
-  forgotPassWord(
-    data: IForgotPassword
-  ): Observable<BaseResponseApi<IOtpCodeResponse>> {
-    return this.httpClient.post<BaseResponseApi<IOtpCodeResponse>>(
+  forgotPassWord(data: IForgotPassword): Observable<BaseResponseApi<null>> {
+    return this.httpClient.post<BaseResponseApi<null>>(
       AuthSlug.ForgotPassWord.api,
       data
     );
   }
 
   resetPassword(data: IResetPassword): Observable<BaseResponseApi<any>> {
-    return this.httpClient.put<BaseResponseApi<any>>(
-      AuthSlug.ChangePassword.api
+    return this.httpClient.post<BaseResponseApi<any>>(
+      AuthSlug.ResetPassWord.api,
+      data
     );
   }
 
-  register(
-    data: IRegisterRequest
-  ): Observable<BaseResponseApi<IRegisterRequest>> {
-    return this.httpClient.post<BaseResponseApi<IRegisterRequest>>(
+  register(data: IRegisterRequest): Observable<BaseResponseApi<null>> {
+    return this.httpClient.post<BaseResponseApi<null>>(
       AuthSlug.Register.api,
       data
     );
   }
 
-  renewToken(): Observable<BaseResponseApi<string>> {
-    return this.httpClient.post(AuthSlug.RenewToken.api, {
-      refreshToken: getCookie(STRING.REFRESH_TOKEN),
-    });
-  }
-  //test
-  // changepassword(data: IChangePassword): Observable<ResultService>{
-  //   return this.httpClient.post(AuthSlug.ChangePassWord.api, { changePasswordInputDto: data});
-  // }
   changepassword(data: IChangePassword) {
     return this.httpClient.post(AuthSlug.ChangePassword.api, data);
+  }
+
+  verifyEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<any>> {
+    return this.httpClient.post<BaseResponseApi<any>>(AuthSlug.VerifyEmail.api, data);
+  }
+
+  confirmVerifyEmail(data: IConfirmEmailRequest): Observable<BaseResponseApi<any>> {
+    return this.httpClient.post(AuthSlug.ConfirmEmail.api,data)
   }
 }

@@ -1,0 +1,28 @@
+<button nz-dropdown class="w-[200px] border-2 py-1 px-3 flex justify-between items-center"
+[nzClickHide]="overlayMenuToggle" (click)="onToogleMenu()" nzTrigger="click" [nzDropdownMenu]="menu">
+  Tất Cả
+  <span nz-icon nzType="down"></span>
+</button>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item>
+        <label
+        nz-checkbox
+        [(ngModel)]="allChecked"
+        (ngModelChange)="updateAllChecked()"
+        [nzIndeterminate]="indeterminate"
+      >
+      Tất cả
+      </label>
+    </li>
+    <li nz-menu-item *ngFor="let item of listOptionCheckBox">
+      <label nz-checkbox [(ngModel)]="item.checked">
+        {{ item.label }}
+      </label>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item>
+        <button nz-button nzType="primary" (click)="onApply()">Áp dụng</button>
+    </li>
+  </ul>
+</nz-dropdown-menu>

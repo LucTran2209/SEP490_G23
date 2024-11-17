@@ -1,0 +1,103 @@
+<div class="container mt-3">
+  <div class="grid grid-cols-12 gap-5">
+    <section class="col-span-3">
+      <app-filter-product-rental
+        (locationNames)="onLocationsSelected($event)"
+        (SubCategorySelected)="onSubCategorySelected($event)"
+        (PriceRangeSelected)="onPriceRangeSelected($event)"
+        class="m-5"
+      ></app-filter-product-rental>
+    </section>
+    <section class="col-span-9 flex flex-col justify-between">
+      <div>
+        @if(search && shop){
+        <div class="flex justify-between">
+          <p class="font-light text-lg pt-3 text-[#696969] uppercase">
+            Shop liên quan đến "{{ search }}"
+          </p>
+
+          <button
+            nz-button
+            nzType="link"
+            nzShape="round"
+            (click)="goAllShopRelated()"
+            class="font-base text-base pt-3"
+          >
+            Thêm Kết Quả <i nz-icon nzType="arrow-right" class="ml-2"></i>
+          </button>
+        </div>
+        <app-header-shop [shop]="shop"></app-header-shop>
+        }
+        <!-- <div class="flex justify-start">
+          <p class="text-center font-light text-lg py-5 text-[#696969]">
+            ({{ totalProducts }} kết quả {{ search }} tìm thấy)
+          </p>
+        </div> -->
+        <div class="flex justify-between py-5">
+          <p
+            class="text-center font-light text-lg text-[#696969]"
+            *ngIf="search"
+          >
+            ({{ totalProducts }} kết quả "{{ search }} "tìm thấy)
+          </p>
+          <p
+            class="text-center font-light text-lg text-[#696969]"
+            *ngIf="!search"
+          >
+            ({{ totalProducts }} kết quả tìm thấy)
+          </p>
+          <!-- <nz-input-group [nzSuffix]="suffixIconSearch" class="max-w-[40%]">
+            <input
+              type="text"
+              nz-input
+              placeholder="Tìm kiếm thiết bị cho thuê"
+              [(ngModel)]="searchText"
+              (keyup.enter)="onSearch()"
+            />
+          </nz-input-group> -->
+
+          <div class="min-w-[20%]">
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="sắp xếp theo thứ tự"
+              [(ngModel)]="selectedValue"
+              class="w-full"
+            >
+              @for (item of groupOptionFilterSelect; track $index) {
+              <nz-option
+                [nzLabel]="item.label"
+                [nzKey]="$index"
+                [nzValue]="item.value"
+              ></nz-option>
+              }
+            </nz-select>
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-3 pb-3">
+          <div *ngFor="let product of productList" class="col-span-4">
+            <app-product-card
+              [product]="product"
+              [isRenter]="true"
+            ></app-product-card>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <!-- pagination -->
+        <div class="flex justify-center items-end m-5">
+          <nz-pagination
+            [nzPageSize]="pageSize"
+            [nzTotal]="totalProducts"
+            [(nzPageIndex)]="currentPage"
+            (nzPageIndexChange)="handlePageChange($event)"
+          >
+          </nz-pagination>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>

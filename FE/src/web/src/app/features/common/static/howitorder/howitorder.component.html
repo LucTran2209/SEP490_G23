@@ -1,0 +1,990 @@
+<div class="container">
+  <div
+    class="relative bg-[url('/assets/images/bg-1.1.png')] h-[40vh] min-h-[450px] rounded-lg mt-[80px] bg-cover"
+  >
+    <div class="absolute inset-0 bg-black opacity-35 rounded-lg"></div>
+    <div
+      class="text-[#f7fbff] text-center font-semibold text-[3.5rem] relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+    >
+      Hưỡng dẫn đặt thuê sản phẩm & Quy chế
+    </div>
+  </div>
+  <div class="py-[80px] grid grid-cols-5 gap-4">
+    <div class="col-span-1">
+      <ul nz-menu>
+        @for (item of menuSatic; track $index;) {
+        <li
+          nz-menu-item
+          [nzSelected]="$index === 0"
+          (click)="onViewTabLeft($index, item.slug)"
+          class="border-t border-solid border-t-[#ededed]"
+        >
+          {{ item.label }}
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="col-span-4">
+      @switch (tabLeftChoose) { @case (0) {
+      <ng-container *ngTemplateOutlet="common"></ng-container>
+      } @case (1) {
+      <ng-container *ngTemplateOutlet="rentalProduct"></ng-container>
+      } @case (2) {
+      <ng-container *ngTemplateOutlet="rentalProduct_payment"></ng-container>
+      } @case (3) {
+      <ng-container *ngTemplateOutlet="operating_regulations"></ng-container>
+      } @default {
+      <ng-container *ngTemplateOutlet="common"></ng-container>
+      } }
+    </div>
+  </div>
+</div>
+
+<ng-template #common>
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="font-bold text-[2rem]">
+      {{
+        tabChoose === 0
+          ? " Quy trình cho thuê sản phẩm / thiết bị"
+          : " Quy trình thuê sản phẩm / thiết bị"
+      }}
+    </h3>
+    <nz-tabset
+      [nzSelectedIndex]="tabChoose"
+      (nzSelectChange)="chooseTab($event)"
+    >
+      <nz-tab nzTitle="Bên cho thuê"></nz-tab>
+      <nz-tab nzTitle="Bên thuê"></nz-tab>
+    </nz-tabset>
+  </div>
+  @if(tabChoose === 0){
+  <div class="grid grid-cols-3 gap-4">
+    @for (itemCommonProcess of commonProcessRental_lessor; track $index) {
+    <card-static [obj]="itemCommonProcess" />
+    }
+  </div>
+  }@else {
+  <div class="grid grid-cols-3 gap-4">
+    @for (itemCommonProcess of commonProcessRental_renter; track $index) {
+    <card-static [obj]="itemCommonProcess" />
+    }
+  </div>
+  }
+</ng-template>
+<ng-template #rentalProduct>
+  <div class="w-full max-w mx-auto mt-3.5">
+    <h3 class="font-bold text-[2rem] mb-8">Hướng dẫn chi tiết đặt xe</h3>
+
+    <nz-collapse nzBordered="false" nzGhost>
+      <!-- Step 1 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate1"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRentalProductSections[0]"
+        (click)="toggleRentalProductSection(0)"
+      >
+        <ng-template #headerTemplate1>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[0] }"
+          >
+            <span class="text-2xl font-medium"
+              >1. Đăng ký/Đăng nhập tài khoản</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRentalProductSections[0] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight">
+            Bạn vui lòng đăng nhập bằng tài khoản đã có ở ERMS hoặc đăng nhập
+            thông qua Facebook/Google.
+          </p>
+          <p class="text-lg font-extralight">
+            Trong trường hợp chưa đăng ký tài khoản, bạn có thể chọn nút "đăng
+            ký" để tạo tài khoản tại ERMS.com
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.1.92c92c96.png"
+              alt="login"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 2 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate2"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRentalProductSections[1]"
+        (click)="toggleRentalProductSection(1)"
+      >
+        <ng-template #headerTemplate2>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[1] }"
+          >
+            <span class="text-2xl font-medium">2. Tìm kiếm thiết bị</span>
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRentalProductSections[1] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight">
+            Bạn có thể tìm xe theo 3 cách sau:
+          </p>
+          <p class="text-lg font-extralight">
+            A. Tìm theo địa chỉ bạn nhập ở thanh tìm kiếm
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.2.616a33a1.png"
+              alt="search"
+            />
+          </div>
+          <p class="text-lg font-extralight">
+            B. Tìm theo danh mục các địa điểm nổi bật
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.3.03fdefb7.png"
+              alt="address"
+            />
+          </div>
+          <p class="text-lg font-extralight">
+            C. Tìm theo danh mục các thiết bị nổi bật được thuê nhiều trên ERMS
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.4.16061a18.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 3 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate3"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRentalProductSections[2]"
+        (click)="toggleRentalProductSection(2)"
+      >
+        <ng-template #headerTemplate3>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[2] }"
+          >
+            <span class="text-2xl font-medium"
+              >3. Sử dụng bộ lọc tìm kiếm thiết bị mong muốn</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRentalProductSections[2] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap">
+            <b style="font-weight: bold">A. Loại thiết bị:</b> Hệ thống đang mặc
+            định hiển thị tất cá thiết bị. Bạn có thể lựa chọn chỉ xem riêng các
+            danh sách thiết bị bằng cách bấm vào ô tương ứng.
+          </p>
+          <p class="text-lg font-extralight text-wrap">
+            <b style="font-weight: bold">B. Các tiêu chí thiết bị:</b> Các thiết
+            bị đang ở chế độ cho phép "Giao nhận thiết bị tận nơi", hoặc cho
+            phép "Thuê ngay" (không cần chủ cho thuê phê duyệt),...
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.5.0ab83380.png"
+              alt="popular"
+            />
+          </div>
+          <p class="text-lg font-extralight text-wrap">
+            <b style="font-weight: bold">Nâng cao:</b> Thể hiện các tính năng
+            tìm kiếm nâng cao (sắp xếp thiết bị theo giá thấp đến giá cao,
+            khoảng cách gần nhất hoặc các thiết bị có điểm đánh giá cao nhất;
+            mức giá và nhiều điều kiện lọc nâng cao khác...) để dễ dàng tìm đúng
+            những thiết bị bạn mong muốn.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.6.851e948c.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 4 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate4"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRentalProductSections[3]"
+        (click)="toggleRentalProductSection(3)"
+      >
+        <ng-template #headerTemplate4>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[3] }"
+          >
+            <span class="text-2xl font-medium"
+              >4. Lựa chọn thiết bị mong muốn và gửi yêu cầu thuê thiết bị</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRentalProductSections[3] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap">
+            <b style="font-weight: bold">A. Kiểm tra thông tin thiết bị: </b>
+            Hình ảnh thiết bị,các thông tin hao phí của thiết bị, đánh giá của
+            các khách thuê, mô tả thiết bị và các tính năng liên quan.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.7.d23d6b8a.png"
+              alt="popular"
+            />
+          </div>
+          <p class="text-lg font-extralight text-wrap">
+            <b style="font-weight: bold">B. Kiểm tra vị trí thiết bị: </b>
+            Hệ thống sẽ khoanh vùng vị trí của thiết bị trên bản đồ. Địa chỉ cụ
+            thể của thiết bị sẽ được hiển thị sau khi khách hàng hoàn tất thanh
+            toán đặt cọc.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.8.fc215ff9.png"
+              alt="popular"
+            />
+          </div>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-3.9.8a15db28.png"
+              alt="popular"
+            />
+          </div>
+          <p class="text-lg font-extralight text-wrap">
+            <b style="font-weight: bold"
+              >C. Kiểm tra yêu cầu giấy tờ thuê thiết bị và xem thông tin chủ
+              thiết bị:
+            </b>
+          </p>
+          <ul class="list-disc px-5">
+            <li>
+              <p class="text-lg font-extralight text-wrap">
+                Sau khi hoàn tất đặt cọc, khách thuê sẽ nhận được thông tin liên
+                hệ của chủ thiết bị qua SMS hoặc thông báo trên ứng dụng/Website
+                ERMS. Khách thuê liên hệ với chủ thiết bị để xác nhận thời gian
+                thuê và chuẩn bị các giấy tờ cần thiết, chẳng hạn như giấy tờ
+                tùy thân (hình ảnh CCCD/Hộ chiếu), giấy chứng nhận năng lực
+                chuyên môn nếu thiết bị yêu cầu.
+              </p>
+            </li>
+            <li>
+              <p class="text-lg font-extralight text-wrap">
+                Khi nhận thiết bị, khách hàng cần xuất trình đầy đủ các giấy tờ
+                liên quan cho chủ thiết bị, bao gồm các bản gốc để đối chiếu.
+                Ngoài ra, khách hàng sẽ thực hiện đặt cọc tài sản thế chấp, có
+                thể là một khoản tiền mặt hoặc tài sản khác tùy theo thỏa thuận
+                với chủ thiết bị.
+              </p>
+            </li>
+            <li>
+              <p class="text-lg font-extralight text-wrap">
+                Chính sách miễn thế chấp: Trong một số trường hợp, chủ thiết bị
+                có thể miễn yêu cầu thế chấp cho khách hàng. Các chi phí phát
+                sinh trong quá trình sử dụng thiết bị sẽ được thanh toán trực
+                tiếp cho chủ thiết bị khi trả thiết bị.
+              </p>
+            </li>
+            <li>
+              <p class="text-lg font-extralight text-wrap">
+                Khách hàng cần kiểm tra kỹ các yêu cầu về giấy tờ để đảm bảo đủ
+                điều kiện thuê thiết bị và tránh trường hợp hủy yêu cầu thuê do
+                không đáp ứng đủ giấy tờ.
+              </p>
+            </li>
+            <li>
+              <p class="text-lg font-extralight text-wrap">
+                Hỗ trợ khách hàng: Khách hàng có thể liên hệ bộ phận CSKH của
+                ERMS để được hỗ trợ qua số hotline hoặc trang liên hệ trên
+                website ERMS.
+              </p>
+            </li>
+          </ul>
+          <p class="text-lg font-extralight text-wrap px-4">
+            <b style="font-weight: bold">Thông tin chủ thiết bị: </b>
+            Mục này hiển thị điểm đánh giá và nhận xét về chủ thiết bị từ các
+            khách hàng khác. Bạn nên ưu tiên chọn các chủ thiết bị có đánh giá
+            cao và thời gian phản hồi nhanh.
+          </p>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 5 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate5"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRentalProductSections[4]"
+        (click)="toggleRentalProductSection(4)"
+      >
+        <ng-template #headerTemplate5>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[4] }"
+          >
+            <span class="text-2xl font-medium">5. Thanh toán đặt cọc</span>
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRentalProductSections[4] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap">
+            Sau khi nhận được phản hồi đồng ý từ chủ thiết bị (qua cả 2 hình
+            thức: tin nhắn SMS và thông báo trên website/ứng dụng ERMS hoặc
+            Zalo), bạn vui lòng tiến hành thanh toán đặt cọc 30% giá trị thuê
+            thiết bị trong thời gian sớm nhất để hoàn tất quá trình đặt thuê
+            thiết bị. Phần còn lại (70% chi phí thuê) sẽ được thanh toán trực
+            tiếp cho chủ thiết bị khi nhận thiết bị
+          </p>
+          <p class="text-lg font-extralight text-wrap">
+            Các hình thức đặt cọc tại ERMS:
+          </p>
+          <ol class="list-decimal px-6 py-3">
+            <li class="text-lg">
+              <p class="text-lg font-extralight text-wrap">
+                Chuyển khoản ngân hàng
+              </p>
+            </li>
+            <li class="text-lg">
+              <p class="text-lg font-extralight text-wrap">
+                Thanh toán trực tuyến - Ví điện tử
+              </p>
+            </li>
+            <li class="text-lg">
+              <p class="text-lg font-extralight text-wrap">
+                Thanh toán trực tuyến - Thẻ quốc tế (Visa, Master, JCB)
+              </p>
+            </li>
+            <li class="text-lg">
+              <p class="text-lg font-extralight text-wrap">
+                Thanh toán trực tuyến - Thẻ nội địa (ATM)
+              </p>
+            </li>
+            <li class="text-lg">
+              <p class="text-lg font-extralight text-wrap">
+                Thanh toán qua thẻ của tôi
+              </p>
+            </li>
+            <li class="text-lg">
+              <p class="text-lg font-extralight text-wrap">
+                Dùng thẻ quà Voucher
+              </p>
+            </li>
+          </ol>
+          <p class="text-lg font-extralight text-wrap">
+            Để được hướng dẫn chi tiết hơn, bạn vui lòng vào trang "Hướng dẫn
+            thanh toán" trên website ERMS.
+          </p>
+          <p class="text-lg font-extralight text-wrap">
+            Sau khi thanh toán đặt cọc thành công, bạn sẽ nhận được số điện
+            thoại và địa chỉ chính xác của chủ thiết bị. Hãy liên hệ sớm với chủ
+            thiết bị để xác nhận lại các thông tin cần thiết như lịch trình giao
+            nhận thiết bị và các giấy tờ yêu cầu. Điều này sẽ giúp đảm bảo quá
+            trình thuê thiết bị diễn ra thuận lợi và thành công.
+          </p>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+</ng-template>
+<ng-template #rentalProduct_payment>
+  <div class="w-full max-w mx-auto mt-3.5">
+    <h3 class="font-bold text-[2rem] mb-8">Hướng dẫn thanh toán</h3>
+
+    <nz-collapse nzBordered="false" nzGhost>
+      <!-- Step 1 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate1"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[0]"
+        (click)="togglePaymentSection(0)"
+      >
+        <ng-template #headerTemplate1>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openPaymentSections[0] }"
+          >
+            <span class="text-2xl font-medium"
+              >1. Thanh toán bằng hình thức chuyển khoản ngân hàng</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openPaymentSections[0] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4">
+            Trước tiên, bạn cần bấm "Thuê" để xác nhận hình thức thanh toán
+            chuyển khoản. Sau đó, tiến hành chuyển khoản qua tài khoản ngân hàng
+            của ERMS trong thời gian sớm nhất bạn nhé.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-4.5.4a75003e.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 2 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate2"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[1]"
+        (click)="togglePaymentSection(1)"
+      >
+        <ng-template #headerTemplate2>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openPaymentSections[1] }"
+          >
+            <span class="text-2xl font-medium"
+              >2. Thanh toán trực tuyến - Ví điện tử</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openPaymentSections[1] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4">
+            Bạn cần có tài khoản ví điện tử để có thể thanh toán bằng hình thức
+            này. Hiện tại ERMS đang hỗ trợ thanh toán thông qua các ví điện tử
+            phổ biến hiện nay như Momo, ZaloPay, VNPay, Viettel Money..... Các
+            bước thực hiện khá đơn giản:
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4">
+            Chọn ví điện tử mà bạn muốn sử dụng - Bấm thanh toán để chuyển đến
+            ví điện tử - Nhập các thông tin tài khoản hoặc quét mã thanh toán.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-4.2.963bc9a1.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 3 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate3"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[2]"
+        (click)="togglePaymentSection(2)"
+      >
+        <ng-template #headerTemplate3>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[2] }"
+          >
+            <span class="text-2xl font-medium"
+              >3. Thanh toán qua thẻ tín dụng/thẻ ghi nợ VISA, Master</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRentalProductSections[2] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4">
+            Bạn cần có thẻ Visa, Master để thanh toán bằng hình thức này. Các
+            bước thực hiện khá đơn giản:
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4">
+            Chọn cổng thanh toán - Bấm thanh toán để chuyển đến cổng thanh toán
+            - Nhập các thông tin trên thẻ và hoàn tất quá trình thanh toán.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-4.3.f7923700.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 4 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate4"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[3]"
+        (click)="togglePaymentSection(3)"
+      >
+        <ng-template #headerTemplate4>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openPaymentSections[3] }"
+          >
+            <span class="text-2xl font-medium"
+              >4. Thanh toán qua thẻ ATM đã đăng ký thanh toán trực tuyến</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openPaymentSections[3] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4">
+            Thẻ của bạn phải đăng ký dịch vụ thanh toán trực tuyến với ngân hàng
+            để thực hiện thanh toán bằng hình thức này.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4">
+            Chọn cổng thanh toán - Bấm thanh toán để chuyển đến cổng thanh toán
+            - Nhập các thông tin trên thẻ và hoàn tất quá trình thanh toán.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-4.4.fbd16ba6.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+
+      <!-- Step 5 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate5"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[4]"
+        (click)="togglePaymentSection(4)"
+      >
+        <ng-template #headerTemplate5>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openPaymentSections[4] }"
+          >
+            <span class="text-2xl font-medium"
+              >5. Thanh toán bằng hình thức dùng thẻ quà (voucher)</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openPaymentSections[4] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4">
+            Chọn phương thức thanh toán dùng thẻ quà, chọn nhà cung cấp tương
+            ứng sau đó nhập mã thanh toán. Lưu ý, bạn có thể kế hợp với các
+            phương thức thanh toán khác nếu mã thanh toán không đủ.
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-4.6.8e0c8ec4.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+      <!-- Step 6 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate6"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[5]"
+        (click)="togglePaymentSection(5)"
+      >
+        <ng-template #headerTemplate6>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[5] }"
+          >
+            <span class="text-2xl font-medium"
+              >6. Thanh toán qua thẻ của tôi</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openPaymentSections[5] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4">
+            Bạn cần có thẻ Visa credit, Master credit để thanh toán bằng hình
+            thức này. Các bước thực hiện khá đơn giản:
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4">
+            Chọn thẻ credit bạn đã thêm tại Thẻ của tôi hoặc Thêm thẻ để thanh
+            toán
+          </p>
+          <div class="flex justify-center my-3">
+            <img
+              src="https://www.mioto.vn/static/media/tutorialWeb-4.1.af0053b4.png"
+              alt="popular"
+            />
+          </div>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+    <h3 class="font-bold text-[2rem] m-8">Quy trình thanh toán</h3>
+    <nz-collapse nzBordered="false" nzGhost>
+      <!-- Step 1 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate7"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[6]"
+        (click)="togglePaymentSection(6)"
+      >
+        <ng-template #headerTemplate7>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[6] }"
+          >
+            <span class="text-2xl font-medium"
+              >1. Quy trình thanh toán giữa khách hàng và chủ thuê</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openPaymentSections[6] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Chủ thiết bị và khách hàng thỏa thuận về phương thức thanh toán phù
+            hợp (Chuyển khoản/tiền mặt)
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 1: Khách hàng tìm hiểu thông tin về dịch vụ, loại thiết bị muốn
+            thuê, thời gian thuê, và phí dịch vụ trước khi tiến hành đặt thuê
+            thiết bị.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 2: Công ty sẽ kiểm tra, liên hệ và xác nhận thông tin đặt thiết
+            bị cuối cùng qua email, tin nhắn điện thoại, thông báo trên ứng dụng
+            ERMS hoặc qua Zalo.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 3: Khách hàng thanh toán đặt cọc 30% phí thuê thiết bị qua ERMS
+            bằng các hình thức thanh toán: chuyển khoản ngân hàng, ví điện tử,
+            liên kết thẻ...
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 4: Công ty gửi thông báo xác nhận đơn hàng đã đặt cọc thành
+            công cho Khách hàng và Chủ thiết bị qua email, tin nhắn điện thoại,
+            thông báo trên ứng dụng ERMS hoặc qua Zalo.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 5: Khách hàng thanh toán phần còn lại cho chủ thiết bị tại thời
+            điểm nhận thiết bị (Chuyển khoản/tiền mặt).
+          </p>
+        </div>
+      </nz-collapse-panel>
+      <!-- Step 2 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate8"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openPaymentSections[7]"
+        (click)="togglePaymentSection(7)"
+      >
+        <ng-template #headerTemplate8>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRentalProductSections[7] }"
+          >
+            <span class="text-2xl font-medium"
+              >2. Quy trình thanh toán giữa Chủ thuê và Doanh nghiệp</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openPaymentSections[7] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2">
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Chủ thiết bị thực hiện thanh toán phí quảng bá dịch vụ cho Công ty
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 1: Đăng ký thiết bị cho thuê trên Sàn giao dịch TMĐT ERMS.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 2: Xem xét và phê duyệt yêu cầu thuê thiết bị từ phía khách
+            hàng. Theo đó, công ty sẽ tính phí quảng bá dịch vụ dựa trên phần
+            trăm phí thuê thiết bị được hiển thị trên thông tin thuê (tham khảo
+            lại Mục 3 - Quy trình dành cho Khách hàng - Bước 4).
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 3: Định kỳ hàng tháng, công ty sẽ tổng hợp phí quảng bá dịch vụ
+            cho các lần thuê thiết bị đã thực hiện trong tháng, sau đó xuất hóa
+            đơn cho chủ thiết bị. Chủ thiết bị sẽ thanh toán phí dịch vụ sàn
+            theo các phương thức sau:
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            3a. Hình thức cấn trừ công nợ: Công ty sẽ cấn trừ tổng số tiền phí
+            quảng bá dịch vụ trong tháng với tổng số tiền đặt cọc thuê thiết bị
+            mà khách hàng đã trả. Nếu tổng số tiền phí quảng bá dịch vụ lớn hơn
+            tổng số tiền đặt cọc thuê thiết bị, chủ thiết bị sẽ thanh toán phần
+            chênh lệch cho công ty bằng hình thức chuyển khoản hoặc qua đơn vị
+            thanh toán trung gian.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            3b. Chuyển khoản: Chủ thiết bị chuyển khoản vào tài khoản ngân hàng
+            của công ty được niêm yết trên website ERMS.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            3c. Thanh toán qua đơn vị thanh toán trung gian: Chủ thiết bị thanh
+            toán qua ví điện tử của mình tại các đơn vị thanh toán trung gian
+            cho công ty.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Công ty trả tiền thu hộ từ khách hàng cho chủ thiết bị
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 1: Khách hàng đặt cọc 30% phí thuê thiết bị được hiển thị trên
+            thông tin thuê (tham khảo lại Mục 3 - Quy trình dành cho Khách hàng
+            - Bước 4).
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            Bước 2: Công ty trả lại tiền thu hộ cho chủ thiết bị theo phương
+            thức sau:
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            2a. Hình thức cấn trừ công nợ: Công ty sẽ cấn trừ tổng số tiền phí
+            quảng bá dịch vụ trong tháng với tổng số tiền đặt cọc thuê thiết bị
+            mà khách hàng đã trả. Nếu tổng số tiền đặt cọc thuê thiết bị lớn hơn
+            tổng số tiền phí quảng bá dịch vụ, công ty sẽ thanh toán phần chênh
+            lệch cho chủ thiết bị bằng hình thức chuyển khoản hoặc qua đơn vị
+            thanh toán trung gian.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            2b. Chuyển khoản: Công ty chuyển khoản vào tài khoản ngân hàng của
+            chủ thiết bị.
+          </p>
+          <p class="text-lg font-extralight text-wrap px-4 py-2">
+            2c. Qua đơn vị thanh toán trung gian: Công ty chuyển tiền qua ví
+            điện tử của mình tại các đơn vị thanh toán trung gian cho chủ thiết
+            bị.
+          </p>
+        </div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+</ng-template>
+<ng-template #operating_regulations>
+  <div class="w-full max-w mx-auto mt-3.5">
+    <h3 class="font-bold text-[2rem] mb-8">Quy chế hoạt động</h3>
+
+    <nz-collapse nzBordered="false" nzGhost>
+      <!-- Step 1 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate1"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRegulationSections[0]"
+        (click)="toggleRegulationSection(0)"
+      >
+        <ng-template #headerTemplate1>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRegulationSections[0] }"
+          >
+            <span class="text-2xl font-medium">I. Nguyên tắc chung</span>
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRegulationSections[0] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2"></div>
+      </nz-collapse-panel>
+
+      <!-- Step 2 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate2"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRegulationSections[1]"
+        (click)="toggleRegulationSection(1)"
+      >
+        <ng-template #headerTemplate2>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRegulationSections[1] }"
+          >
+            <span class="text-2xl font-medium">II. Quy định chung</span>
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRegulationSections[1] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2"></div>
+      </nz-collapse-panel>
+
+      <!-- Step 3 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate3"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRegulationSections[2]"
+        (click)="toggleRegulationSection(2)"
+      >
+        <ng-template #headerTemplate3>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRegulationSections[2] }"
+          >
+            <span class="text-2xl font-medium">III. Quy trình giao dịch</span>
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRegulationSections[2] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2"></div>
+      </nz-collapse-panel>
+
+      <!-- Step 4 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate4"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRegulationSections[3]"
+        toggleRegulationSection
+      >
+        <ng-template #headerTemplate4>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRegulationSections[3] }"
+          >
+            <span class="text-2xl font-medium"
+              >IV. Đảm bảo an toàn giao dịch</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRegulationSections[3] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2"></div>
+      </nz-collapse-panel>
+
+      <!-- Step 5 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate5"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRegulationSections[4]"
+        (click)="toggleRegulationSection(4)"
+      >
+        <ng-template #headerTemplate5>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRegulationSections[4] }"
+          >
+            <span class="text-2xl font-medium"
+              >V. Bảo vệ thông tin cá nhân Khách hàng thuê xe</span
+            >
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRegulationSections[4] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2"></div>
+      </nz-collapse-panel>
+      <!-- Step 6 -->
+      <nz-collapse-panel
+        [nzHeader]="headerTemplate6"
+        [nzShowArrow]="false"
+        class="step-panel"
+        [nzActive]="openRegulationSections[5]"
+        (click)="toggleRegulationSection(5)"
+      >
+        <ng-template #headerTemplate6>
+          <div
+            class="flex justify-between items-center"
+            [ngClass]="{ 'text-blue-600': openRegulationSections[5] }"
+          >
+            <span class="text-2xl font-medium">VI. Quản lý thông tin xấu</span>
+            <span
+              class="text-xl"
+              nz-icon
+              [nzType]="openRegulationSections[4] ? 'minus' : 'plus'"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </ng-template>
+        <div class="step-content p-2"></div>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+</ng-template>

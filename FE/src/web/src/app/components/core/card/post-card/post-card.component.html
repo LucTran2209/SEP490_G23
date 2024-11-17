@@ -1,0 +1,39 @@
+
+  <div class="mb-4 hover-card">
+    <a [routerLink]="['/common/product-detail', slug, 'i.' + productId]">
+    <nz-card
+      [nzCover]="coverTemplate"
+      [nzActions]="[actionRental, actionViewReview, actionEllipsis]"
+    >
+      <a
+        class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-sm"
+        >Liên hệ ngay</a
+      >
+      <h1 class="mt-2 font-bold text-lg">{{ post.postName }}</h1>
+    </nz-card>
+    <ng-template #coverTemplate>
+      <img class="h-60" alt="example" src="{{ post.postImg }}" />
+    </ng-template>
+    <ng-template #actionRental>
+      <p>Thuê Ngay</p>
+    </ng-template>
+    <ng-template #actionViewReview> Xem Đánh Giá </ng-template>
+    <ng-template #actionEllipsis>
+      <span nz-icon nzType="ellipsis"></span>
+    </ng-template>
+  </a>
+    <nz-card>
+      <nz-card-meta
+        [nzAvatar]="avatarTemplate"
+        nzTitle="{{ post.authorName }}"
+        nzDescription="{{ post.authorAddress }}"
+        [routerLink]="['/common/shop','12345']"
+      ></nz-card-meta>
+    </nz-card>
+    <ng-template #avatarTemplate>
+      <nz-avatar
+        nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+      ></nz-avatar>
+    </ng-template>
+  </div>
+

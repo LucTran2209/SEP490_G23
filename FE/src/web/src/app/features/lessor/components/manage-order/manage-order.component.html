@@ -1,0 +1,84 @@
+<div class="p-5 my-3 bg-white rounded-md">
+  <h3 class="text-xl text-[#111]">Danh sách yêu cầu thuê</h3>
+  <section class="py-3">
+    <app-form-order
+      (resetLoad)="onloadOrder()"
+      (formValueFilter)="onSubmitForm($event)"
+    />
+  </section>
+</div>
+<div class="p-5 my-3 bg-white rounded-md">
+  <div class="flex items-center justify-start gap-x-2 pb-3">
+    <p class="font-medium">Dữ liệu hiển thị</p>
+    <app-header-table (handleChooseCell)="handleChooseViewCell($event)" />
+  </div>
+  <section>
+    <nz-table
+      [nzCustomColumn]="customColumn"
+      [nzScroll]="{ x: '1150px' }"
+      #basicTable
+      [nzData]="listData"
+      [nzBordered]="true"
+      [nzPaginationPosition]="'bottom'"
+      nzFrontPagination="false"
+      nzShowSizeChanger="true"
+      [nzShowPagination]="true"
+      [nzShowTotal]="showTotal"
+      [nzPageIndex]="(pageIndex$ | async) ?? 1"
+      [nzTotal]="(pageTotal$ | async) ?? 0"
+      [nzPageSize]="(pageSize$ | async) ?? 10"
+      (nzPageIndexChange)="onPageIndexChange($event)"
+      (nzPageSizeChange)="onPageSizeChange($event)"
+    >
+      <thead>
+        <tr>
+          <th nzCellControl="maDonHang">Mã đơn hàng</th>
+          <th nzCellControl="ngayTao">Ngày tạo</th>
+          <th nzCellControl="nguoiThue">Người thuê</th>
+          <th nzCellControl="soDienThoai">Số điện thoại</th>
+          <th nzCellControl="thoiGianThue">Thời gian thuê</th>
+          <th nzCellControl="giaCoc">Giá cọc</th>
+          <th nzCellControl="tongTien">Tổng tiền</th>
+          <th nzCellControl="noiDung">Nội dung</th>
+          <th nzCellControl="trangThaiDonHang" nzRight>Trạng thái đơn hàng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let data of basicTable.data; let i = index"
+          (click)="onSelectDetail(data)"
+        >
+          <td nzCellControl="maDonHang">{{ data.code ?? i + 1 }}</td>
+          <td nzCellControl="ngayTao">{{ data.startDate | date: "dd/MM/yyyy hh:mm a" }}</td>
+          <td nzCellControl="nguoiThue">{{ data.user.userName }}</td>
+          <td nzCellControl="soDienThoai">{{ data.recipientPhoneNumber }}</td>
+          <td nzCellControl="thoiGianThue">
+            {{ convertRentalDay(data.startDate, data.endDate) }} ngày
+          </td>
+          <td nzCellControl="giaCoc">
+            {{ data.totalDepositPrice | currency : "VND" }}
+          </td>
+          <td nzCellControl="tongTien">
+            {{ data.totalRentPrice | currency : "VND" }}
+          </td>
+          <td nzCellControl="noiDung">{{ data.note }}</td>
+          <td nzCellControl="trangThaiDonHang" nzRight>
+            @if(data.orderStatuses.length !== 0){
+            <app-status-label
+              [label]="convertStatus(data.orderStatuses[0].status)"
+              [statusType]="data.orderStatuses[0].status"
+            />
+            }@else { UNKNOWN }
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </section>
+</div>
+
+<ng-template #showTotal>
+    <div class="text-[14px] font-medium text-[#333]">
+      Hiển thị thứ tự 1- {{ pageSize$ | async }} trong
+      {{ pageTotal$ | async }} kết quả
+    </div>
+</ng-template>

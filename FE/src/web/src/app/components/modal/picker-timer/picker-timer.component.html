@@ -1,0 +1,46 @@
+<nz-tabset class="">
+  <nz-tab nzTitle="Thuê theo ngày">
+    <nz-range-picker
+      nzInline
+      class="mb-3"
+      [(ngModel)]="rangeDatePicker"
+      [nzDisabledDate]="disabledDate"
+    ></nz-range-picker>
+    <div class="flex justify-between items-center pb-3">
+      <nz-select
+        class="flex-1"
+        [(ngModel)]="timePickerTo"
+        nzAllowClear
+        nzPlaceHolder="Chọn thời gian bắt đầu"
+      >
+        @for (option of timeChooseStart; track option) {
+        <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        }
+      </nz-select>
+      <div class="rounded-full bg-white p-3">
+        <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
+      </div>
+      <nz-select
+        class="flex-1"
+        [(ngModel)]="timePickerEnd"
+        nzAllowClear
+        nzPlaceHolder="Chọn thời gian kết thúc"
+      >
+        @for (option of timeChooseEnd; track option) {
+        <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        }
+      </nz-select>
+    </div>
+  </nz-tab>
+</nz-tabset>
+<div class="flex justify-between items-center">
+  <button
+    nz-button
+    nzType="primary"
+    (click)="handleOkPickTime()"
+    [disabled]="!isDisabled"
+  >
+    Tiếp tục
+  </button>
+</div>
+

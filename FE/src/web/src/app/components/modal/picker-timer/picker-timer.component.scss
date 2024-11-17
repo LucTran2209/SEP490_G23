@@ -1,0 +1,133 @@
+:host ::ng-deep .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
+.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+  justify-content: center !important;
+}
+
+:host ::ng-deep .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list,
+.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-list {
+  width: 100%;
+  justify-content: center;
+}
+
+:host ::ng-deep .ant-tabs-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  font-size: 14px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+}
+
+:host ::ng-deep .ant-tabs-tab + .ant-tabs-tab {
+  margin: 0;
+}
+
+:host ::ng-deep .ant-picker-range {
+  position: relative;
+  justify-content: center;
+  display: flex;
+}
+
+:host ::ng-deep .ant-picker-date-panel .ant-picker-content th {
+  width: 43px;
+}
+
+:host ::ng-deep .ant-picker-content th {
+  height: 43px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 30px;
+}
+
+:host ::ng-deep .ant-picker-cell .ant-picker-cell-inner {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  min-width: 35px;
+  height: 37px;
+  line-height: 34px;
+  border-radius: 2px;
+  transition: background 0.3s, border 0.3s;
+}
+
+:host
+  ::ng-deep
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-start:not(
+    .ant-picker-cell-in-range
+  ):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end)::after,
+.ant-picker-cell-in-view.ant-picker-cell-range-hover-end:not(
+    .ant-picker-cell-in-range
+  ):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end)::after,
+.ant-picker-cell-in-view.ant-picker-cell-range-hover-start.ant-picker-cell-range-start-single::after,
+.ant-picker-cell-in-view.ant-picker-cell-range-hover-start.ant-picker-cell-range-start.ant-picker-cell-range-end.ant-picker-cell-range-end-near-hover::after,
+.ant-picker-cell-in-view.ant-picker-cell-range-hover-end.ant-picker-cell-range-start.ant-picker-cell-range-end.ant-picker-cell-range-start-near-hover::after,
+.ant-picker-cell-in-view.ant-picker-cell-range-hover-end.ant-picker-cell-range-end-single::after,
+.ant-picker-cell-in-view.ant-picker-cell-range-hover:not(
+    .ant-picker-cell-in-range
+  )::after {
+  position: absolute;
+  top: 50%;
+  z-index: 0;
+  height: 37px;
+  border-top: 1px dashed #7ec1ff;
+  border-bottom: 1px dashed #7ec1ff;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  content: "";
+}
+
+:host
+  ::ng-deep
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-end:not(
+    .ant-picker-cell-in-range
+  ):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end)::after {
+    height: 37px;
+  }
+  :host
+  ::ng-deep
+  .ant-picker-cell::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: 37px;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  content: "";
+}
+
+:host ::ng-deep .ant-picker-date-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 326px;
+}
+
+:host
+  ::ng-deep
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover:not(
+    .ant-picker-cell-in-range
+  )::after {
+  position: absolute;
+  top: 50%;
+  z-index: 0;
+  min-height: 37px;
+  border-top: 1px dashed #7ec1ff;
+  border-bottom: 1px dashed #7ec1ff;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  content: "";
+}
+
+:host ::ng-deep .ant-picker-footer-extra {
+  text-align: end;
+  padding: 10px;
+}
+
+:host ::ng-deep .ant-picker-dropdown-range {
+  padding: 0;
+}

@@ -5,37 +5,42 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
 
-import { FormsModule } from '@angular/forms';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { registerLocaleData } from '@angular/common';
 import {
-  provideHttpClient,
-  HttpClientModule,
-  withInterceptors,
   HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
   withFetch,
+  withInterceptors,
 } from '@angular/common/http';
-import { SharedModule } from './components/shared/shared.module';
-import { META_REDUCERS, StoreModule } from '@ngrx/store';
+import en from '@angular/common/locales/en';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { authFeature } from './features/auth/state/auth.feature';
-import { AuthEffect } from './features/auth/state/auth.effects';
-import { userFeature } from './features/users/state/user.feature';
-import { UserEffects } from './features/users/state/user.effects';
-import { LayoutDashboardComponent } from './components/core/layout-dashboard/layout-dashboard.component';
-import { LayoutUserComponent } from './components/core/layout-user/layout-user.component';
-import { metaReducers } from './store';
-import { HydrationEffects } from './store/hydration/hydration.effects';
-import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
-import { responseInterceptor } from './interceptors/response.interceptor';
-import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { AuthLayoutComponent } from './components/layout/auth-layout/auth-layout.component';
+import { LayoutDashboardComponent } from './components/layout/layout-dashboard/layout-dashboard.component';
+import { LayoutUserComponent } from './components/layout/layout-user/layout-user.component';
+import { SharedModule } from './components/shared/shared.module';
+import { AuthEffect } from './features/auth/state/auth.effects';
+import { authFeature } from './features/auth/state/auth.feature';
+import { httpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { httpRequestInterceptor } from './interceptors/http-request.interceptor';
+import { responseInterceptor } from './interceptors/response.interceptor';
+import { metaReducers } from './store';
+import { ProvinceEffect } from './store/province/province.effects';
 import { addressFeature } from './store/province/province.reducer';
-
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { environment } from '../environments/environment.development';
+import {AngularFireModule} from '@angular/fire/compat'
+import { chatResizeFeature } from './features/chat/state/chat.reducer';
 registerLocaleData(en);
 
 @NgModule({
@@ -46,6 +51,8 @@ registerLocaleData(en);
     LayoutUserComponent,
   ],
   imports: [
+    AngularFireModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     SharedModule,
     BrowserModule,
     AppRoutingModule,
@@ -53,12 +60,9 @@ registerLocaleData(en);
     FormsModule,
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature(authFeature),
+    StoreModule.forFeature(chatResizeFeature),
     StoreModule.forFeature(addressFeature),
-    EffectsModule.forRoot([
-      HydrationEffects,
-      AuthEffect,
-      //  UserEffects
-    ]),
+    EffectsModule.forRoot([AuthEffect, ProvinceEffect]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,
@@ -75,6 +79,11 @@ registerLocaleData(en);
       withFetch(),
       withInterceptors([httpRequestInterceptor, responseInterceptor])
     ),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    provideDatabase(() => getDatabase()),
+    provideMessaging(() => getMessaging()),
+    provideStorage(() => getStorage()),
   ],
   bootstrap: [AppComponent],
 })

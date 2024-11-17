@@ -1,0 +1,102 @@
+<div
+  class="h-[524px] px-[6px] flex flex-col justify-end relative overflow-hidden"
+  style="
+    background-image: linear-gradient(
+      to right top,
+      #ffffff,
+      #fcfcfd,
+      #f9f8fb,
+      #f5f5f9,
+      #f2f2f7
+    );
+    padding-bottom: calc(60px);
+  "
+>
+  @if(messages$ | async; as messages){
+  <div
+    class="grid grid-cols-1 overflow-y-auto"
+    *ngIf="
+      messages.length > 0 && (userGetCurrent$ | async) as currentOwnUser;
+      else noMessages
+    "
+    #messageContainer
+  >
+    <div *ngFor="let message of messages" class="mb-4">
+      <div
+        class="py-2 px-3 rounded-l-lg rounded-tr-lg w-fit text-white bg-[#1890FF] break-all"
+        [ngClass]="{
+          'bg-[#E1E1E1] text-[#242426] rounded-r-lg rounded-l-none rounded-tl-lg':
+            message.senderId !== currentOwnUser.uid,
+          'float-right': message.senderId === currentOwnUser.uid
+        }"
+      >
+        {{ message.text }}
+      </div>
+    </div>
+    <div #endOfChat></div>
+  </div>
+
+  }
+  <div class="absolute w-full bottom-0 -mx-[6px] bg-white px-3">
+    <div
+      class="flex justify-start items-end gap-x-3 border border-solid border-[#e1e1e1] -mx-[13px] p-[7px]"
+    >
+      <div
+        class="flex pb-1 items-center gap-x-2 cursor-pointer"
+        (click)="showPreventAccess()"
+      >
+        <label for="inputFileChat">
+          <span
+            nz-icon
+            nzType="plus-circle"
+            class="text-[20px] text-[#1890FF]"
+            nzTheme="outline"
+          ></span>
+          <input
+            type="file"
+            name=""
+            id="inputFileChat"
+            class="hidden"
+            (change)="$event.stopPropagation(); onFileSelect($event)"
+          />
+        </label>
+        <span
+          nz-icon
+          nzType="file-image"
+          class="text-[20px] text-[#1890FF]"
+          nzTheme="outline"
+        ></span>
+      </div>
+      <div class="flex-1 flex items-end gap-x-2">
+        <textarea
+          type="text"
+          class="bg-[#f9f9f9] rounded-sm"
+          placeholder="Aa"
+          [formControl]="textBoxChat"
+          nz-input
+        ></textarea>
+        <button
+          nz-button
+          class="bg-none border-none outline-none"
+          [nzLoading]="isSending"
+          (click)="sendChat()"
+        >
+          <span
+            nz-icon
+            nzType="aliwangwang"
+            nzTheme="fill"
+            class="text-[#1890FF]"
+          ></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noMessages>
+  <img
+    src="assets/images/message-empty.png"
+    alt=""
+    class="w-[300px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+  />
+</ng-template>

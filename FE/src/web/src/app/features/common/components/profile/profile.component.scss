@@ -1,0 +1,31 @@
+.divide{
+    border-left: 1px solid rgb(227, 224, 224);
+}
+
+::ng-deep .ant-message-success {
+    background-color: rgba(207, 241, 207, 0.5);
+    color: rgb(31, 194, 31);
+    border: 1px solid rgb(31, 194, 31);
+    border-radius: 4px !important;
+    padding: 36px !important;
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ::ng-deep .ant-message-error {
+    background-color: rgb(207, 111, 111, 0.5) !important;
+    color: #e71212 !important;
+    border: 1px solid #e71212;
+    border-radius: 4px !important;
+    padding: 36px !important;
+    margin: 0 !important;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+  }
+  ::ng-deep .ant-message-notice-content {
+    // box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }

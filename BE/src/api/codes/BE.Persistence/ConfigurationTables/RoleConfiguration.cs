@@ -1,4 +1,4 @@
-﻿using BE.Domain.Entities.Roles;
+﻿using BE.Domain.Entities;
 using BE.Persistence.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,7 +13,8 @@ namespace BE.Persistence.ConfigurationTables
             builder.HasKey(x => x.Id);
             builder.HasMany(r => r.UserRoles)
                     .WithOne(ur => ur.Role)
-                    .HasForeignKey(ur => ur.RoleId);
+                    .HasForeignKey(ur => ur.RoleId)
+                    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

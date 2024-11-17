@@ -3,14 +3,16 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, delay, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
+import { HttpStatusCode } from '../../../configs/status-code.config';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
+import { MessageResponseService } from '../../../services/message-response.service';
 import { StorageService } from '../../../services/storage.service';
-import { encodeBase64 } from '../../../utils/anonymous.helper';
 import { STRING } from '../../../utils/constant';
-import { replaceCookie } from '../../../utils/cookie.helper';
 import * as AuthActions from './auth.actions';
+import { removeCookie, replaceCookie } from '../../../utils/cookie.helper';
+import { IErrorApi } from '../../../interceptors/http-error.interceptor';
 
 @Injectable()
 export class AuthEffect {
@@ -21,7 +23,8 @@ export class AuthEffect {
     private store: Store,
     private loadingSerivce: LoadingService,
     private storageService: StorageService,
-    private messageNZ: NzMessageService
+    private messageNZ: NzMessageService,
+    private toastMT: MessageResponseService
   ) {}
   loginProcess$ = createEffect(
     () =>
@@ -31,11 +34,18 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.login(data).pipe(
             map((res) => {
-              return AuthActions.login_success({ user: res });
+              console.log('res', res);
+              return AuthActions.login_success({
+                accessToken: res.data.accessToken,
+                refreshToken: res.data.refreshToken,
+              });
             }),
             catchError((error) => {
-              console.log('line 37:', error);
-              return of(AuthActions.login_failure({ error }));
+              const errorMessage = error.error?.message || 'Đã xảy ra lỗi!';
+              const statusCode = error.status;
+              return of(
+                AuthActions.login_failure({ error: errorMessage, statusCode })
+              );
             })
           )
         )
@@ -51,9 +61,13 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.loginwithGoogle(data).pipe(
             map((res) => {
-              return AuthActions.login_external_success({ user: res });
+              return AuthActions.login_external_success({
+                accessToken: res.data.accessToken,
+                refreshToken: res.data.refreshToken,
+              });
             }),
             catchError((error) => {
+              console.log('error', error);
               return of(AuthActions.login_external_failure({ error }));
             })
           )
@@ -73,7 +87,6 @@ export class AuthEffect {
           this.authService.forgotPassWord(data).pipe(
             map((res) => {
               return AuthActions.forgotPassword_success({
-                otpCode: res.data,
                 email: data.email,
               });
             }),
@@ -99,7 +112,7 @@ export class AuthEffect {
               return AuthActions.register_success({ message: data.message });
             }),
             catchError((err) =>
-              of(AuthActions.register_failure({ error: err.message }))
+              of(AuthActions.register_failure({ error: 'Đã xảy ra lỗi' }))
             )
           )
         )
@@ -107,31 +120,6 @@ export class AuthEffect {
     {
       dispatch: true,
     }
-  );
-
-  checkOtpSendtoEmail$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(AuthActions.checkOtpCode),
-      tap(() => this.loadingSerivce.setLoading()),
-      switchMap(({ otpCode }) =>
-        this.authService.checkOtpCode(otpCode).pipe(
-          map((isValid) => {
-            if (isValid) {
-              return AuthActions.checkOtpCode_success();
-            } else {
-              throw catchError;
-            }
-          }),
-          catchError((err) =>
-            of(
-              AuthActions.resetPassword_failure({
-                error: 'Xác nhận mật khẩu mới thất bại',
-              })
-            )
-          )
-        )
-      )
-    )
   );
 
   resetPassword$ = createEffect(
@@ -142,15 +130,90 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.resetPassword(data).pipe(
             map((res) => {
-              return AuthActions.resetPassword_success();
+              if (res.statusCode != HttpStatusCode.OK) {
+                throw Error;
+              } else {
+                return AuthActions.resetPassword_success();
+              }
             }),
-            catchError((err) =>
-              of(
-                AuthActions.checkOtpCode_failure({
-                  error: 'Mã xác nhận không hợp lệ vui lòng thử lại',
+            catchError((err) => {
+              const errorMessage = err.error?.message || 'Đã xảy ra lỗi!';
+              const statusCode = err.status;
+              return of(
+                AuthActions.resetPassword_failure({
+                  error: 'Đường dẫn hết thời gian thay đổi mật khẩu!',
+                  statusCode: statusCode,
                 })
-              )
-            )
+              );
+            })
+          )
+        )
+      ),
+    {
+      dispatch: true,
+    }
+  );
+
+  verifyEmailProcess$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.verifyEmail),
+        tap(() => {
+          this.loadingSerivce.setLoading();
+        }),
+        switchMap(({ email }) =>
+          this.authService.verifyEmail({ email }).pipe(
+            map(({ statusCode }) =>
+              AuthActions.verifyEmail_success({ statusCode })
+            ),
+            catchError((err) => {
+              return of(
+                AuthActions.verifyEmail_failure({
+                  error: 'Có lỗi xảy ra vui lòng thử lại',
+                })
+              );
+            })
+          )
+        )
+      ),
+    {
+      dispatch: true,
+    }
+  );
+  confirmVerifyEmailProcess$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.confirmVerifyEmail),
+        tap(() => {
+          this.loadingSerivce.setLoading();
+        }),
+        switchMap(({ data, dataRegister }) =>
+          this.authService.confirmVerifyEmail(data).pipe(
+            switchMap(({ statusCode }) => {
+              if (statusCode === HttpStatusCode.OK) {
+                return this.authService.register(dataRegister).pipe(
+                  map((data) => {
+                    return AuthActions.register_success({
+                      message: data.message,
+                    });
+                  }),
+                  catchError((err) =>
+                    of(AuthActions.register_failure({ error: 'Đã xảy ra lỗi trong khi tạo tài khoản' }))
+                  )
+                )
+              } else {
+                return of(
+                  AuthActions.verifyEmail_failure({ error: 'Mã OTP không hợp lệ!' })
+                );
+              }
+            }),
+            catchError((err) => {
+              return of(
+                AuthActions.verifyEmail_failure({
+                  error: 'Có lỗi xảy ra vui lòng thử lại',
+                })
+              );
+            })
           )
         )
       ),
@@ -163,9 +226,20 @@ export class AuthEffect {
     () =>
       this.action$.pipe(
         ofType(AuthActions.login_success, AuthActions.login_external_success),
-        tap(({ user }) => {
-          this.loadingSerivce.setOtherLoading('loaded');
-          this.authService.startSession(user.data);
+        tap((data) => {
+          if (data) {
+            this.loadingSerivce.setOtherLoading('loaded');
+            this.authService.startSession(data.accessToken, data.refreshToken);
+          } else {
+            this.loadingSerivce.setOtherLoading('error');
+            catchError((err) =>
+              of(
+                AuthActions.checkOtpCode_failure({
+                  error: 'Mã xác nhận không hợp lệ vui lòng thử lại',
+                })
+              )
+            );
+          }
         })
       ),
     { dispatch: false }
@@ -175,15 +249,10 @@ export class AuthEffect {
     () =>
       this.action$.pipe(
         ofType(AuthActions.forgotPassword_success),
-        tap(({ otpCode: { optcode }, email }) => {
+        tap(({ email }) => {
           let date = new Date();
-          let currentRoute = this.router.routerState.snapshot.url;
           this.loadingSerivce.setOtherLoading('loaded');
-          this.messageNZ.create('success', 'Chúng tôi đã gửi otpCode cho bạn!');
-          let encodeCode = encodeBase64(optcode);
-          date.setTime(date.getTime() + 1 * 60 * 1000);
           this.storageService.setSession(STRING.EMAIL, email);
-          replaceCookie(STRING.OTPCODE, encodeCode, date, currentRoute);
         })
       ),
     { dispatch: false }
@@ -234,6 +303,48 @@ export class AuthEffect {
     }
   );
 
+  logout$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => {
+          this.authService.logout();
+        })
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  verifyEmail_success$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.verifyEmail_success),
+        tap(({}) => {
+          this.loadingSerivce.setOtherLoading('loaded');
+          // const timestamp15MinutesLater = Math.floor(Date.now() / 1000) + 15 * 60;
+          // replaceCookie(STRING.OTPCODE, code, timestamp15MinutesLater, '/'); //15 minutes
+          // replaceCookie(STRING.EMAIL, email, timestamp15MinutesLater, '/'); //15 minutes
+          // window.location.reload();
+        })
+      ),
+    {
+      dispatch: false,
+    }
+  );
+  confirmVerifyEmail_success$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.confirmVerifyEmail_success),
+        tap(() => {
+          this.loadingSerivce.setOtherLoading('loaded');
+        })
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
   processFailure$ = createEffect(
     () =>
       this.action$.pipe(
@@ -243,11 +354,13 @@ export class AuthEffect {
           AuthActions.forgotPassword_failure,
           AuthActions.checkOtpCode_failure,
           AuthActions.register_failure,
-          AuthActions.resetPassword_failure
+          AuthActions.resetPassword_failure,
+          AuthActions.verifyEmail_failure,
+          AuthActions.confirmVerifyEmail_failure
         ),
         tap((action) => {
           this.loadingSerivce.setOtherLoading('error');
-          this.messageNZ.create('error', action.error);
+          this.toastMT.handleError(action.error);
         })
       ),
     { dispatch: false }

@@ -1,0 +1,97 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzMaskClosable]="true"
+  [nzWidth]="'1000px'"
+>
+  <ng-container *nzModalContent>
+    <div class="px-10 pt-5" nz-row nzJustify="space-between" nzAlign="middle">
+      <!-- Display images side by side -->
+      <div nz-col [nzSpan]="11">
+        <img
+          [src]="requestDetail.imageFont"
+          alt="Image Font"
+          class="w-full h-52"
+        />
+      </div>
+      <div nz-col [nzSpan]="11">
+        <img
+          [src]="requestDetail.imageBack"
+          alt="Image Back"
+          class="w-full h-52"
+        />
+      </div>
+    </div>
+
+    <nz-divider></nz-divider>
+
+    <!-- Display other details below the images -->
+    <div class="flex justify-center py-5 font-mono">
+      <div class="columns-2 gap-12">
+        <p class="font-bold mb-4 text-xl">Tên Cửa Hàng:</p>
+        <p class="font-bold mb-4 text-xl">Email:</p>
+        <p class="font-bold mb-4 text-xl">Số Điện Thoại:</p>
+        <p class="font-bold mb-4 text-xl">Địa Chỉ:</p>
+        <p class="font-bold mb-4 text-xl">Mã Số Thuế:</p>
+        <p class="font-bold mb-4 text-xl">Hình Thức Kinh Doanh:</p>
+        <p class="font-bold mb-4 text-xl">Giấy Phép Kinh Doanh:</p>
+
+        <p class="text-xl mb-4">
+          {{ requestDetail.shopName || "chưa có thông tin" }}
+        </p>
+        <p class="text-xl mb-4">
+          {{ requestDetail.email || "chưa có thông tin" }}
+        </p>
+        <p class="text-xl mb-4">
+          {{ requestDetail.phoneNumber || "chưa có thông tin" }}
+        </p>
+        <p class="text-xl mb-4">
+          {{ requestDetail.address || "chưa có thông tin" }}
+        </p>
+        <p class="text-xl mb-4">
+          {{ requestDetail.taxNumber || "chưa có thông tin" }}
+        </p>
+        <p class="text-xl mb-4">
+          {{
+            requestDetail.rentalScale === 0
+              ? "Cá nhân"
+              : requestDetail.rentalScale === 1
+              ? "Doanh nghiệp"
+              : "Chưa có thông tin"
+          }}
+        </p>
+        <a
+          *ngIf="requestDetail.businessLicenseFile"
+          [href]="requestDetail.businessLicenseFile"
+          target="_blank"
+        >
+          <button nz-button nzType="primary">
+            Xem Giấy Phép Đăng Ký Kinh Doanh
+          </button>
+        </a>
+      </div>
+    </div>
+    <div class="flex justify-between py-5 px-40 font-mono">
+      <button
+        class="w-full mx-1"
+        nz-button
+        nzType="primary"
+        (click)="handleAccept()"
+        nzGhost
+      >
+        Duyệt Yêu Cầu
+      </button>
+      <button
+        class="w-full mx-1"
+        nz-button
+        nzType="default"
+        (click)="handleReject()"
+        nzDanger
+        nzGhost
+      >
+        Từ Chối Yêu Cầu
+      </button>
+    </div>
+  </ng-container>
+</nz-modal>

@@ -42,7 +42,9 @@ testem.log
 Thumbs.db
 
 
-<<<<<<< HEAD
 /src/environments
-=======
->>>>>>> dev/fe/base-source
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

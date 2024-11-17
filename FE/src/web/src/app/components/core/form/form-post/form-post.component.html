@@ -1,0 +1,298 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzMaskClosable]="true"
+  [nzWidth]="'1200px'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form>
+      <div nz-row nzGutter="16" class="mt-10">
+        <div nz-col nzSpan="18">
+          <nz-form-item>
+            <nz-form-control>
+              <input
+                class="w-96"
+                nz-input
+                placeholder="Tên Bài Đăng Cho Thuê"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="2">
+          <div class="flex">
+            <button class="mx-5" nz-button nzType="primary" nzGhost>
+              Lưu Và Tạo Mới
+            </button>
+            <button nz-button nzType="default" nzDanger>Hủy</button>
+          </div>
+        </div>
+      </div>
+
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="12" class="px-3">
+          <p class="mb-2.5">Ảnh thiết bị</p>
+          <nz-form-item>
+            <nz-upload
+              nzAction="https://jsonplaceholder.typicode.com/posts"
+              nzListType="picture-card"
+            >
+              <div>
+                <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
+                <div>Drag and drop upload</div>
+              </div>
+            </nz-upload>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+          <p class="mb-2.5">Giá cả</p>
+          <nz-form-item class="border-dashed border-2 p-5">
+            <nz-form-control>
+              <!-- Rental Price Field -->
+              <nz-form-item>
+                <nz-form-label
+                  [nzRequired]="true"
+                  nzFor="rentalPrice"
+                  nzSpan="6"
+                  >Giá cho thuê</nz-form-label
+                >
+                <nz-form-control nzSpan="18">
+                  <input
+                    nz-input
+                    placeholder="Giá cho thuê"
+                    id="rentalPrice"
+                    formControlName="rentalPrice"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <!-- Deposit Price Field -->
+              <nz-form-item>
+                <nz-form-label
+                  [nzRequired]="true"
+                  nzFor="depositPrice"
+                  nzSpan="6"
+                  >Giá cọc</nz-form-label
+                >
+                <nz-form-control nzSpan="18">
+                  <input
+                    nz-input
+                    placeholder="Giá cọc"
+                    id="depositPrice"
+                    formControlName="depositPrice"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <!-- Rent Limit Field -->
+              <nz-form-item>
+                <nz-form-label nzFor="rentLimit" nzSpan="6"
+                  >Giới hạn cho thuê</nz-form-label
+                >
+                <nz-form-control nzSpan="18">
+                  <input
+                    nz-input
+                    placeholder="Giới hạn cho thuê"
+                    id="rentLimit"
+                    formControlName="rentLimit"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Dòng 3: Xác nhận sản phẩm và khu vực -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="12">
+          <p class="mb-2.5">Xác nhận sản phẩm</p>
+          <nz-form-item class="border-dashed border-2 p-5">
+            <div class="flex justify-between w-full wrap">
+              <nz-form-item class="px-3 w-full">
+                <nz-input-group nzLayout="vertical">
+                  <nz-form-label nzRequired nzFor="quantity"
+                    >Số Lượng Thiết Bị</nz-form-label
+                  >
+                  <nz-form-control
+                    nzErrorTip="Vui Lòng chọn số lượng thiết bị!"
+                  >
+                    <nz-select
+                      nzPlaceHolder="Số lượng"
+                      id="quantity"
+                      formControlName="quantity"
+                    >
+                      <nz-option nzValue="Loại 1" nzLabel="Loại 1"></nz-option>
+                      <nz-option nzValue="Loại 2" nzLabel="Loại 2"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-input-group>
+              </nz-form-item>
+              <nz-form-item class="px-3 w-full">
+                <nz-input-group nzLayout="vertical">
+                  <nz-form-label nzRequired nzFor="style"
+                    >Loại Thiết Bị</nz-form-label
+                  >
+                  <nz-form-control nzErrorTip="Vui Lòng chọn loại thiết bị!">
+                    <nz-select
+                      nzPlaceHolder="Loại Thiết Bị"
+                      id="style"
+                      formControlName="style"
+                    >
+                      <nz-option nzValue="1" nzLabel="1"></nz-option>
+                      <nz-option nzValue="2" nzLabel="2"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-input-group>
+              </nz-form-item>
+            </div>
+            <div class="flex justify-between mt-3 w-full wrap">
+              <nz-form-item class="px-3 w-full">
+                <nz-input-group nzLayout="vertical">
+                  <nz-form-label nzRequired nzFor="status"
+                    >Tình Trạng</nz-form-label
+                  >
+                  <nz-form-control
+                    nzErrorTip="Vui Lòng chọn tình trạng của thiết bị!"
+                  >
+                    <nz-select
+                      nzPlaceHolder="Trạng thái"
+                      id="status"
+                      formControlName="status"
+                    >
+                      <nz-option nzValue="New" nzLabel="Mới"></nz-option>
+                      <nz-option nzValue="Used" nzLabel="Đã dùng"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-input-group>
+              </nz-form-item>
+              <nz-form-item class="px-3 w-full">
+                <nz-input-group nzLayout="vertical">
+                  <nz-form-label nzFor="brand" nzRequired>
+                    Hãng Thiết Bị
+                  </nz-form-label>
+                  <nz-form-control
+                    nzErrorTip="Vui lòng nhập tên hãng thiết bị!"
+                  >
+                    <input nz-input formControlName="brand" />
+                  </nz-form-control>
+                </nz-input-group>
+              </nz-form-item>
+            </div>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+          <p class="mb-2.5">Xác nhận khu vực cho thuê</p>
+          <nz-form-item class="border-dashed border-2 p-5">
+            <div class="flex justify-between w-full wrap">
+              <nz-form-item class="px-3 w-full">
+                <nz-input-group nzLayout="vertical">
+                  <nz-form-label nzFor="area">Khu Vực</nz-form-label>
+                  <nz-form-control>
+                    <nz-select
+                      nzPlaceHolder="Khu Vực"
+                      id="area"
+                      formControlName="area"
+                    >
+                      <nz-option
+                        nzValue="Miền Bắc"
+                        nzLabel="Miền Bắc"
+                      ></nz-option>
+                      <nz-option
+                        nzValue="Miền Trung"
+                        nzLabel="Miền Trung"
+                      ></nz-option>
+                      <nz-option
+                        nzValue="Miền Nam"
+                        nzLabel="Miền Nam"
+                      ></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-input-group>
+              </nz-form-item>
+              <nz-form-item class="px-3 w-full">
+                <nz-input-group nzLayout="vertical">
+                  <nz-form-label nzFor="city">Tỉnh/ Thành Phố</nz-form-label>
+                  <nz-form-control>
+                    <nz-select
+                      nzPlaceHolder="Tỉnh/ Thành Phố"
+                      id="city"
+                      formControlName="city"
+                    >
+                      <nz-option nzValue="Hà Nội" nzLabel="Hà Nội"></nz-option>
+                      <nz-option
+                        nzValue="Tp.Hồ Chí Minh"
+                        nzLabel="Tp.Hồ Chí Minh"
+                      ></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-input-group>
+              </nz-form-item>
+            </div>
+            <nz-form-item class="mt-3 px-3 w-full">
+              <nz-input-group nzLayout="vertical">
+                <nz-form-label nzFor="other-area">
+                  Nếu muốn thêm một khu vực khác
+                </nz-form-label>
+                <nz-form-control>
+                  <input
+                    nz-input
+                    placeholder="Khu Vực Ship"
+                    formControlName="other-area"
+                  />
+                </nz-form-control>
+              </nz-input-group>
+            </nz-form-item>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Dòng 4: Mô tả và Điều khoản hợp đồng -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="12">
+          <p class="mb-2.5">Chi Tiết</p>
+          <nz-form-item>
+            <textarea
+              nz-input
+              placeholder="Thông tin chi tiết bài đăng"
+              [nzAutosize]="{ minRows: 2, maxRows: 4 }"
+            ></textarea>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <p class="mb-2.5">Điều khoản hợp đồng</p>
+          <nz-form-item class="border-dashed border-2 p-5">
+            @for (control of listOfControl; track control; let i = $index) {
+            <nz-form-item class="px-3 w-full">
+              <nz-form-control>
+                <nz-select class="w-5/6" nzPlaceHolder="Chọn Điều Khoản">
+                  <nz-option nzValue="DK1" nzLabel="Điều khoản 1"></nz-option>
+                  <nz-option nzValue="DK2" nzLabel="Điều khoản 2"></nz-option>
+                </nz-select>
+                <span
+                  nz-icon
+                  nzType="minus-circle-o"
+                  class="text-2xl mx-3"
+                  (click)="removeField(control, $event)"
+                ></span>
+              </nz-form-control>
+            </nz-form-item>
+            }
+            <nz-form-item class="px-3 w-full">
+              <nz-input-group nzLayout="vertical">
+                <nz-form-control>
+                  <button nz-button nzType="dashed" (click)="addField($event)">
+                    <span>Thêm Điều Khoản</span>
+                  </button>
+                </nz-form-control>
+              </nz-input-group>
+            </nz-form-item>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

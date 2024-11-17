@@ -1,54 +1,72 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
-  AbstractControl,
-  AbstractControlOptions,
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { confirmValidator } from '../../../../utils/validators';
-import { StorageService } from '../../../../services/storage.service';
-import { FeatureAppState } from '../../../../store/featureApp.state';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { getCookie } from '../../../../utils/cookie.helper';
-import { STRING } from '../../../../utils/constant';
+import { map, Observable, tap } from 'rxjs';
+import { StorageService } from '../../../../services/storage.service';
+import { FeatureAppState } from '../../../../store/app.state';
+import { confirmValidator } from '../../../../utils/validators';
 import { IResetPassword } from '../../../../interfaces/account.interface';
 import { resetPassword } from '../../state/auth.actions';
-
+interface objectParam {
+  token: string;
+  email: string;
+}
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnInit {
   passwordVisible = false;
   confirmPasswordVisible = false;
+  objParam$!: Observable<objectParam>;
   validateResetForm: FormGroup<{
     password: FormControl<string>;
     confirm: FormControl<string>;
   }>;
 
   submitForm(): void {
-    let emailSession = getCookie(STRING.EMAIL) || '';
-    const data: IResetPassword = {
-      email: emailSession,
-      currentPassword: this.validateResetForm.controls.password.value,
-      newPassword: this.validateResetForm.controls.confirm.value,
-    };
-    this.store.dispatch(resetPassword({ data }));
-    console.log('submit', this.validateResetForm.value);
+    
+    this.objParam$.subscribe((params) => {
+      const data: IResetPassword = {
+        email: params.email,
+        token: params.token,
+        newPassword: this.validateResetForm.controls.password.value
+      }
+      console.log('Submit Data:', data);
+      this.store.dispatch(resetPassword({ data }));
+    })
   }
 
   validateConfirmPassword(): void {
     this.validateResetForm.controls.confirm.updateValueAndValidity();
   }
 
+  getParam(): Observable<objectParam> {
+    return this.routeActivate.paramMap.pipe(
+      map((params) => ({
+        token: params.get('token') || '',
+        email: params.get('email') || '',
+      })),
+      tap((param) => console.log('Params:', param)) 
+    );
+  }
+
+  ngOnInit(): void {
+    this.objParam$ = this.getParam();
+  }
+
   constructor(
     private fb: NonNullableFormBuilder,
     private storageService: StorageService,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private routeActivate: ActivatedRoute
   ) {
     this.validateResetForm = this.fb.group({
       password: ['', [Validators.required]],

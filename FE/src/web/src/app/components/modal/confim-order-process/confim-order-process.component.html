@@ -1,0 +1,724 @@
+<ng-container *ngIf="productRentalDetail$ | async as productDetail">
+  <div class="flex justify-start items-start gap-x-3 pb-5">
+    <img
+      [src]="productDetail.images[0] || 'assets/images/6306486.jpg'"
+      class="object-cover w-[250px] h-[175px] rounded-lg"
+      alt="image_product.png"
+    />
+    <div class="flex-1">
+      <h3 class="text-2xl font-medium pb-1">{{ productDetail.productName }}</h3>
+      <div class="flex justify-start items-center pb-1">
+        <span
+          nz-icon
+          nzType="star"
+          nzTheme="fill"
+          class="text-yellow-300 text-xl"
+        ></span>
+        <p class="pt-1.5 px-3 text-lg font-light">5.0 ({{ 50 }})</p>
+      </div>
+      <div class="pb-1">
+        <p class="flex justify-start items-center text-lg gap-x-3">
+          <span nz-icon style="color: black">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM11.9998 20.9988C11.1898 20.0588 6.0498 14.0188 6.0498 10.0188C6.0498 6.73884 8.7198 4.06885 11.9998 4.06885C15.2798 4.06885 17.9498 6.73884 17.9498 10.0188C17.9498 13.3988 14.1198 18.5988 11.9998 20.9988Z"
+                fill="black"
+              ></path>
+              <path
+                d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM8.87981 10.0188C8.87981 8.29884 10.2798 6.89885 11.9998 6.89885C13.7198 6.89885 15.1198 8.29884 15.1198 10.0188C15.1198 11.7388 13.7198 13.1389 11.9998 13.1389C10.2798 13.1389 8.87981 11.7388 8.87981 10.0188Z"
+                fill="black"
+              ></path>
+            </svg>
+          </span>
+          Hà Nội
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="pb-5" *ngIf="rangePickerTime$ | async as time">
+    <p class="font-semibold text-lg mb-2">Thời gian thiết bị</p>
+    <div class="grid grid-cols-2">
+      <div class="flex justify-start gap-x-2">
+        <div class="">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.85999 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M17.14 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.05 3.78003H5.95C4.18 3.78003 2.75 5.21003 2.75 6.98003V18.06C2.75 19.83 4.18 21.26 5.95 21.26H18.06C19.83 21.26 21.26 19.83 21.26 18.06V6.98003C21.25 5.21003 19.82 3.78003 18.05 3.78003Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M2.75 7.90002H21.25"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.5 11C18.5 11.2761 18.2761 11.5 18 11.5C17.7239 11.5 17.5 11.2761 17.5 11C17.5 10.7239 17.7239 10.5 18 10.5C18.2761 10.5 18.5 10.7239 18.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 11C14.5 11.2761 14.2761 11.5 14 11.5C13.7239 11.5 13.5 11.2761 13.5 11C13.5 10.7239 13.7239 10.5 14 10.5C14.2761 10.5 14.5 10.7239 14.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 11C10.5 11.2761 10.2761 11.5 10 11.5C9.72386 11.5 9.5 11.2761 9.5 11C9.5 10.7239 9.72386 10.5 10 10.5C10.2761 10.5 10.5 10.7239 10.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 11C6.5 11.2761 6.27614 11.5 6 11.5C5.72386 11.5 5.5 11.2761 5.5 11C5.5 10.7239 5.72386 10.5 6 10.5C6.27614 10.5 6.5 10.7239 6.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M18.5 14.49C18.5 14.7661 18.2761 14.99 18 14.99C17.7239 14.99 17.5 14.7661 17.5 14.49C17.5 14.2138 17.7239 13.99 18 13.99C18.2761 13.99 18.5 14.2138 18.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 14.49C14.5 14.7661 14.2761 14.99 14 14.99C13.7239 14.99 13.5 14.7661 13.5 14.49C13.5 14.2138 13.7239 13.99 14 13.99C14.2761 13.99 14.5 14.2138 14.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 14.49C10.5 14.7661 10.2761 14.99 10 14.99C9.72386 14.99 9.5 14.7661 9.5 14.49C9.5 14.2138 9.72386 13.99 10 13.99C10.2761 13.99 10.5 14.2138 10.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 14.49C6.5 14.7661 6.27614 14.99 6 14.99C5.72386 14.99 5.5 14.7661 5.5 14.49C5.5 14.2138 5.72386 13.99 6 13.99C6.27614 13.99 6.5 14.2138 6.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 17.97C14.5 18.2461 14.2761 18.47 14 18.47C13.7239 18.47 13.5 18.2461 13.5 17.97C13.5 17.6938 13.7239 17.47 14 17.47C14.2761 17.47 14.5 17.6938 14.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 17.97C10.5 18.2461 10.2761 18.47 10 18.47C9.72386 18.47 9.5 18.2461 9.5 17.97C9.5 17.6938 9.72386 17.47 10 17.47C10.2761 17.47 10.5 17.6938 10.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 17.97C6.5 18.2461 6.27614 18.47 6 18.47C5.72386 18.47 5.5 18.2461 5.5 17.97C5.5 17.6938 5.72386 17.47 6 17.47C6.27614 17.47 6.5 17.6938 6.5 17.97Z"
+              stroke="black"
+            ></path>
+          </svg>
+        </div>
+        <!-- @if() {
+              <p>
+                {{ (selectedTimeStart$ | async).value }}
+                {{ rangePickerTime[0] | date : "dd/MM/yyyy" }}
+                <span nz-icon nzType="minus" nzTheme="outline"></span>
+                {{ (selectedTimeEnd$ | async).value }}
+                {{ rangePickerTime[1] | date : "dd/MM/yyyy" }}
+              </p>
+              } -->
+        <div class="flex flex-col justify-start gap-y-1">
+          <p class="text-slate-400 font-light">Bắt đầu thuê thiết bị</p>
+          <p class="text-lg">
+            {{ (selectedTimeStart$ | async).value }} -
+            {{ time[0] | date : "dd/MM/yyyy" }}
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-x-2">
+        <div class="">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.85999 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M17.14 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.05 3.78003H5.95C4.18 3.78003 2.75 5.21003 2.75 6.98003V18.06C2.75 19.83 4.18 21.26 5.95 21.26H18.06C19.83 21.26 21.26 19.83 21.26 18.06V6.98003C21.25 5.21003 19.82 3.78003 18.05 3.78003Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M2.75 7.90002H21.25"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.5 11C18.5 11.2761 18.2761 11.5 18 11.5C17.7239 11.5 17.5 11.2761 17.5 11C17.5 10.7239 17.7239 10.5 18 10.5C18.2761 10.5 18.5 10.7239 18.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 11C14.5 11.2761 14.2761 11.5 14 11.5C13.7239 11.5 13.5 11.2761 13.5 11C13.5 10.7239 13.7239 10.5 14 10.5C14.2761 10.5 14.5 10.7239 14.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 11C10.5 11.2761 10.2761 11.5 10 11.5C9.72386 11.5 9.5 11.2761 9.5 11C9.5 10.7239 9.72386 10.5 10 10.5C10.2761 10.5 10.5 10.7239 10.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 11C6.5 11.2761 6.27614 11.5 6 11.5C5.72386 11.5 5.5 11.2761 5.5 11C5.5 10.7239 5.72386 10.5 6 10.5C6.27614 10.5 6.5 10.7239 6.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M18.5 14.49C18.5 14.7661 18.2761 14.99 18 14.99C17.7239 14.99 17.5 14.7661 17.5 14.49C17.5 14.2138 17.7239 13.99 18 13.99C18.2761 13.99 18.5 14.2138 18.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 14.49C14.5 14.7661 14.2761 14.99 14 14.99C13.7239 14.99 13.5 14.7661 13.5 14.49C13.5 14.2138 13.7239 13.99 14 13.99C14.2761 13.99 14.5 14.2138 14.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 14.49C10.5 14.7661 10.2761 14.99 10 14.99C9.72386 14.99 9.5 14.7661 9.5 14.49C9.5 14.2138 9.72386 13.99 10 13.99C10.2761 13.99 10.5 14.2138 10.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 14.49C6.5 14.7661 6.27614 14.99 6 14.99C5.72386 14.99 5.5 14.7661 5.5 14.49C5.5 14.2138 5.72386 13.99 6 13.99C6.27614 13.99 6.5 14.2138 6.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 17.97C14.5 18.2461 14.2761 18.47 14 18.47C13.7239 18.47 13.5 18.2461 13.5 17.97C13.5 17.6938 13.7239 17.47 14 17.47C14.2761 17.47 14.5 17.6938 14.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 17.97C10.5 18.2461 10.2761 18.47 10 18.47C9.72386 18.47 9.5 18.2461 9.5 17.97C9.5 17.6938 9.72386 17.47 10 17.47C10.2761 17.47 10.5 17.6938 10.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 17.97C6.5 18.2461 6.27614 18.47 6 18.47C5.72386 18.47 5.5 18.2461 5.5 17.97C5.5 17.6938 5.72386 17.47 6 17.47C6.27614 17.47 6.5 17.6938 6.5 17.97Z"
+              stroke="black"
+            ></path>
+          </svg>
+        </div>
+        <div class="flex flex-col justify-start gap-y-1">
+          <p class="text-slate-400 font-light">Kết thúc thuê thiết bị</p>
+          <p class="text-lg">
+            {{ (selectedTimeEnd$ | async).value }} -
+            {{ time[1] | date : "dd/MM/yyyy" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pb-5">
+    <h3 class="font-semibold text-lg mb-2">Địa chỉ giao sản phẩm khả dụng</h3>
+    <div class="px-2">
+      <!-- <p class="">Quận Phú Nhuận, TP. Hồ Chí Minh</p>
+      <p class="text-sm text-gray-300">
+        Địa chỉ cụ thể sẽ được hiển thị sau khi giữ chỗ.
+      </p> -->
+    </div>
+  </div>
+  <form
+  [nzAutoTips]="autoTips"
+    nz-form
+    action=""
+    nz-form
+    [formGroup]="infoOrderCommonForm"
+    (ngSubmit)="onOkClick()"
+  >
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Tên người nhận</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="text"
+          nz-input
+          formControlName="recipientName"
+          placeholder="Nhập tên người nhận"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Số điện thoại</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="text"
+          nz-input
+          formControlName="recipientPhoneNumber"
+          placeholder="Nhập số điện thoại liên hệ"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Email</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="email"
+          nz-input
+          formControlName="recipientEmail"
+          placeholder="Nhập email người nhận"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Địa chỉ người nhận</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="text"
+          nz-input
+          formControlName="recipientAddress"
+          placeholder="Nhập địa chỉ người nhận"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired>
+        Lời nhắc tới chủ cho thuê
+      </nz-form-label>
+      <nz-textarea-count [nzMaxCharacterCount]="100" class="w-full">
+        <textarea
+          formControlName="note"
+          rows="4"
+          placeholder="Nhập lời nhắc vào đây!"
+          nz-input
+        ></textarea>
+      </nz-textarea-count>
+    </nz-form-item>
+  </form>
+  <div class="pb-5">
+    <div class="flex items-center justify-start gap-x-2 mb-5">
+      <h1 class="font-semibold text-lg">Tài sản thế chấp</h1>
+      <span
+        nz-icon
+        nzType="question-circle"
+        class="text-lg"
+        nzTheme="outline"
+      ></span>
+    </div>
+    <app-select-radio-collateral
+    [(selectedValue)]="parentSelectedValue"
+    (listFileCollateral)="handleFileList($event)"
+></app-select-radio-collateral>
+  </div>
+  <div class="pb-5">
+    <app-price-list />
+  </div>
+  <div class="flex justify-between items-center w-full gap-x-3">
+    <button
+      class="w-full h-12 border border-[#0A66EB] bg-inherit"
+      (click)="onCancelClick()"
+      nz-button
+      nzType="default"
+    >
+      Hủy
+    </button>
+    <button
+      class="w-full h-12"
+      nz-button
+      nzType="primary"
+      (click)="onOkClick()"
+      [disabled]="!infoOrderCommonForm.valid"
+    >
+      Gửi yêu cầu thuê thiết bị
+      
+    </button>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="productRentalDetailArray$ | async as arrRentalProduct">
+  <div
+    class="flex justify-start items-start gap-x-3 pb-5"
+    *ngFor="let item of arrRentalProduct; let i; as: $index"
+  >
+    <img
+      [src]="item.images[0] || 'assets/images/6306486.jpg'"
+      class="object-cover w-[250px] h-[175px] rounded-lg"
+      alt="image_product.png"
+    />
+    <div class="flex-1">
+      <h3 class="text-2xl font-medium pb-1">{{ item.productName }}</h3>
+      <div class="flex justify-start items-center pb-1">
+        <span
+          nz-icon
+          nzType="star"
+          nzTheme="fill"
+          class="text-yellow-300 text-xl"
+        ></span>
+        <p class="pt-1.5 px-3 text-lg font-light">5.0 ({{ 50 }})</p>
+      </div>
+      <div class="pb-1">
+        <p class="flex justify-start items-center text-lg gap-x-3">
+          <span nz-icon style="color: black">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM11.9998 20.9988C11.1898 20.0588 6.0498 14.0188 6.0498 10.0188C6.0498 6.73884 8.7198 4.06885 11.9998 4.06885C15.2798 4.06885 17.9498 6.73884 17.9498 10.0188C17.9498 13.3988 14.1198 18.5988 11.9998 20.9988Z"
+                fill="black"
+              ></path>
+              <path
+                d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM8.87981 10.0188C8.87981 8.29884 10.2798 6.89885 11.9998 6.89885C13.7198 6.89885 15.1198 8.29884 15.1198 10.0188C15.1198 11.7388 13.7198 13.1389 11.9998 13.1389C10.2798 13.1389 8.87981 11.7388 8.87981 10.0188Z"
+                fill="black"
+              ></path>
+            </svg>
+          </span>
+          Hà Nội
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="pb-5" *ngIf="rangePickerTime$ | async as time">
+    <p class="font-semibold text-lg mb-2">Thời gian thiết bị</p>
+    <div class="grid grid-cols-2">
+      <div class="flex justify-start gap-x-2">
+        <div class="">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.85999 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M17.14 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.05 3.78003H5.95C4.18 3.78003 2.75 5.21003 2.75 6.98003V18.06C2.75 19.83 4.18 21.26 5.95 21.26H18.06C19.83 21.26 21.26 19.83 21.26 18.06V6.98003C21.25 5.21003 19.82 3.78003 18.05 3.78003Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M2.75 7.90002H21.25"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.5 11C18.5 11.2761 18.2761 11.5 18 11.5C17.7239 11.5 17.5 11.2761 17.5 11C17.5 10.7239 17.7239 10.5 18 10.5C18.2761 10.5 18.5 10.7239 18.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 11C14.5 11.2761 14.2761 11.5 14 11.5C13.7239 11.5 13.5 11.2761 13.5 11C13.5 10.7239 13.7239 10.5 14 10.5C14.2761 10.5 14.5 10.7239 14.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 11C10.5 11.2761 10.2761 11.5 10 11.5C9.72386 11.5 9.5 11.2761 9.5 11C9.5 10.7239 9.72386 10.5 10 10.5C10.2761 10.5 10.5 10.7239 10.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 11C6.5 11.2761 6.27614 11.5 6 11.5C5.72386 11.5 5.5 11.2761 5.5 11C5.5 10.7239 5.72386 10.5 6 10.5C6.27614 10.5 6.5 10.7239 6.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M18.5 14.49C18.5 14.7661 18.2761 14.99 18 14.99C17.7239 14.99 17.5 14.7661 17.5 14.49C17.5 14.2138 17.7239 13.99 18 13.99C18.2761 13.99 18.5 14.2138 18.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 14.49C14.5 14.7661 14.2761 14.99 14 14.99C13.7239 14.99 13.5 14.7661 13.5 14.49C13.5 14.2138 13.7239 13.99 14 13.99C14.2761 13.99 14.5 14.2138 14.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 14.49C10.5 14.7661 10.2761 14.99 10 14.99C9.72386 14.99 9.5 14.7661 9.5 14.49C9.5 14.2138 9.72386 13.99 10 13.99C10.2761 13.99 10.5 14.2138 10.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 14.49C6.5 14.7661 6.27614 14.99 6 14.99C5.72386 14.99 5.5 14.7661 5.5 14.49C5.5 14.2138 5.72386 13.99 6 13.99C6.27614 13.99 6.5 14.2138 6.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 17.97C14.5 18.2461 14.2761 18.47 14 18.47C13.7239 18.47 13.5 18.2461 13.5 17.97C13.5 17.6938 13.7239 17.47 14 17.47C14.2761 17.47 14.5 17.6938 14.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 17.97C10.5 18.2461 10.2761 18.47 10 18.47C9.72386 18.47 9.5 18.2461 9.5 17.97C9.5 17.6938 9.72386 17.47 10 17.47C10.2761 17.47 10.5 17.6938 10.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 17.97C6.5 18.2461 6.27614 18.47 6 18.47C5.72386 18.47 5.5 18.2461 5.5 17.97C5.5 17.6938 5.72386 17.47 6 17.47C6.27614 17.47 6.5 17.6938 6.5 17.97Z"
+              stroke="black"
+            ></path>
+          </svg>
+        </div>
+        <!-- @if() {
+          <p>
+            {{ (selectedTimeStart$ | async).value }}
+            {{ rangePickerTime[0] | date : "dd/MM/yyyy" }}
+            <span nz-icon nzType="minus" nzTheme="outline"></span>
+            {{ (selectedTimeEnd$ | async).value }}
+            {{ rangePickerTime[1] | date : "dd/MM/yyyy" }}
+          </p>
+          } -->
+        <div class="flex flex-col justify-start gap-y-1">
+          <p class="text-slate-400 font-light">Bắt đầu thuê thiết bị</p>
+          <p class="text-lg">
+            {{ (selectedTimeStart$ | async).value }} -
+            {{ time[0] | date : "dd/MM/yyyy" }}
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-x-2">
+        <div class="">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.85999 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M17.14 4.81V2.75"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.05 3.78003H5.95C4.18 3.78003 2.75 5.21003 2.75 6.98003V18.06C2.75 19.83 4.18 21.26 5.95 21.26H18.06C19.83 21.26 21.26 19.83 21.26 18.06V6.98003C21.25 5.21003 19.82 3.78003 18.05 3.78003Z"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M2.75 7.90002H21.25"
+              stroke="black"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M18.5 11C18.5 11.2761 18.2761 11.5 18 11.5C17.7239 11.5 17.5 11.2761 17.5 11C17.5 10.7239 17.7239 10.5 18 10.5C18.2761 10.5 18.5 10.7239 18.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 11C14.5 11.2761 14.2761 11.5 14 11.5C13.7239 11.5 13.5 11.2761 13.5 11C13.5 10.7239 13.7239 10.5 14 10.5C14.2761 10.5 14.5 10.7239 14.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 11C10.5 11.2761 10.2761 11.5 10 11.5C9.72386 11.5 9.5 11.2761 9.5 11C9.5 10.7239 9.72386 10.5 10 10.5C10.2761 10.5 10.5 10.7239 10.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 11C6.5 11.2761 6.27614 11.5 6 11.5C5.72386 11.5 5.5 11.2761 5.5 11C5.5 10.7239 5.72386 10.5 6 10.5C6.27614 10.5 6.5 10.7239 6.5 11Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M18.5 14.49C18.5 14.7661 18.2761 14.99 18 14.99C17.7239 14.99 17.5 14.7661 17.5 14.49C17.5 14.2138 17.7239 13.99 18 13.99C18.2761 13.99 18.5 14.2138 18.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 14.49C14.5 14.7661 14.2761 14.99 14 14.99C13.7239 14.99 13.5 14.7661 13.5 14.49C13.5 14.2138 13.7239 13.99 14 13.99C14.2761 13.99 14.5 14.2138 14.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 14.49C10.5 14.7661 10.2761 14.99 10 14.99C9.72386 14.99 9.5 14.7661 9.5 14.49C9.5 14.2138 9.72386 13.99 10 13.99C10.2761 13.99 10.5 14.2138 10.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 14.49C6.5 14.7661 6.27614 14.99 6 14.99C5.72386 14.99 5.5 14.7661 5.5 14.49C5.5 14.2138 5.72386 13.99 6 13.99C6.27614 13.99 6.5 14.2138 6.5 14.49Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M14.5 17.97C14.5 18.2461 14.2761 18.47 14 18.47C13.7239 18.47 13.5 18.2461 13.5 17.97C13.5 17.6938 13.7239 17.47 14 17.47C14.2761 17.47 14.5 17.6938 14.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M10.5 17.97C10.5 18.2461 10.2761 18.47 10 18.47C9.72386 18.47 9.5 18.2461 9.5 17.97C9.5 17.6938 9.72386 17.47 10 17.47C10.2761 17.47 10.5 17.6938 10.5 17.97Z"
+              stroke="black"
+            ></path>
+            <path
+              d="M6.5 17.97C6.5 18.2461 6.27614 18.47 6 18.47C5.72386 18.47 5.5 18.2461 5.5 17.97C5.5 17.6938 5.72386 17.47 6 17.47C6.27614 17.47 6.5 17.6938 6.5 17.97Z"
+              stroke="black"
+            ></path>
+          </svg>
+        </div>
+        <div class="flex flex-col justify-start gap-y-1">
+          <p class="text-slate-400 font-light">Kết thúc thuê thiết bị</p>
+          <p class="text-lg">
+            {{ (selectedTimeEnd$ | async).value }} -
+            {{ time[1] | date : "dd/MM/yyyy" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="pb-5">
+    <h3 class="font-semibold text-lg mb-2">Địa chỉ giao sản phẩm khả dụng</h3>
+    <div class="px-2">
+      <p class="">Quận Phú Nhuận, TP. Hồ Chí Minh</p>
+      <p class="text-sm text-gray-300">
+        Địa chỉ cụ thể sẽ được hiển thị sau khi giữ chỗ.
+      </p>
+    </div>
+  </div> -->
+  <form
+  [nzAutoTips]="autoTips"
+    nz-form
+    action=""
+    nz-form
+    [formGroup]="infoOrderCommonForm"
+    (ngSubmit)="onOkClick()"
+  >
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Tên người nhận</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="text"
+          nz-input
+          formControlName="recipientName"
+          placeholder="Nhập tên người nhận"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Số điện thoại</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="text"
+          nz-input
+          formControlName="recipientPhoneNumber"
+          placeholder="Nhập số điện thoại liên hệ"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Email</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="email"
+          nz-input
+          formControlName="recipientEmail"
+          placeholder="Nhập email người nhận"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+        >Địa chỉ người nhận</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          type="text"
+          nz-input
+          formControlName="recipientAddress"
+          placeholder="Nhập địa chỉ người nhận"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired>
+        Lời nhắc tới chủ cho thuê
+      </nz-form-label>
+      <nz-textarea-count [nzMaxCharacterCount]="100" class="w-full">
+        <textarea
+          formControlName="note"
+          rows="4"
+          placeholder="Nhập lời nhắc vào đây!"
+          nz-input
+        ></textarea>
+      </nz-textarea-count>
+    </nz-form-item>
+  </form>
+  <div class="pb-5">
+    <div class="flex items-center justify-start gap-x-2 mb-5">
+      <h1 class="font-semibold text-lg">Tài sản thế chấp</h1>
+      <span
+        nz-icon
+        nzType="question-circle"
+        class="text-lg"
+        nzTheme="outline"
+      ></span>
+    </div>
+    <app-select-radio-collateral
+    [(selectedValue)]="parentSelectedValue"
+    (listFileCollateral)="handleFileList($event)"
+></app-select-radio-collateral>
+  </div>
+  <div class="pb-5">
+    <app-price-list />
+  </div>
+  <div class="flex justify-between items-center w-full gap-x-3">
+    <button
+      class="w-full h-12 border border-[#0A66EB] bg-inherit"
+      (click)="onCancelClick()"
+      nz-button
+      nzType="default"
+    >
+      Hủy
+    </button>
+    <button
+      class="w-full h-12"
+      nz-button
+      nzType="primary"
+      (click)="onOkClick()"
+    >
+      Gửi yêu cầu thuê thiết bị
+    </button>
+  </div>
+</ng-container>

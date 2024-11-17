@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IWrappercontentImage } from '../../../configs/image_Register.config';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { ImageMocks } from '../../../configs/image.config';
 
 @Component({
   selector: 'app-auth-layout',
@@ -9,17 +9,15 @@ import { IWrappercontentImage } from '../../../configs/image_Register.config';
   encapsulation: ViewEncapsulation.None,
 })
 export class AuthLayoutComponent implements OnInit {
-  imageLogo: string = 'assets/images/logo.png';
-  imageWrapper!: IWrappercontentImage;
-  isLoadingImage: boolean = true;
-  constructor(private route: ActivatedRoute) {}
+  imageUse = ImageMocks;
+  currentRoute?: string;
+
+  get isVerifyEmailRoute(){
+    return this.currentRoute === 'verify-email'
+  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe((data) => {
-      this.imageWrapper = data['imageResolve'];
-      this.isLoadingImage = false;
-    });
-
-    console.log(this.imageWrapper);
-  }
+    this.currentRoute = this.router.url.split('/auth/')[1]
+}
 }

@@ -23,7 +23,7 @@ const initialValue: AddressProvinceVNState = {
   statusWard: 'idle',
 };
 
-export const reducer = createReducer(
+export const addressReducer = createReducer(
   initialValue,
   on(ProvinceActions.getProvince, (state) => ({
     ...state,
@@ -74,5 +74,14 @@ export const reducer = createReducer(
 
 export const addressFeature = createFeature({
   name: getFeatureKeyValue('addressVNFeature'),
-  reducer: reducer,
+  reducer: addressReducer,
 });
+
+export const {
+  selectDataDistrict,
+  selectDataProvince,
+  selectDataWard,
+  selectStatusDistrict,
+  selectStatusProvince,
+  selectStatusWard,
+} = addressFeature;

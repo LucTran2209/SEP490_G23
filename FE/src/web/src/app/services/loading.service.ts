@@ -4,21 +4,19 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { StatusProcess } from '../interfaces/anonymous.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoadingService {
-  loadingSub: BehaviorSubject<StatusProcess> = new BehaviorSubject<StatusProcess>('idle');
-  status$ = this.loadingSub.asObservable()
+  loadingSub: BehaviorSubject<StatusProcess> =
+    new BehaviorSubject<StatusProcess>('idle');
+  status$ = this.loadingSub.asObservable();
   /**
    * Contains in-progress loading requests
    */
   // loadingMap: Map<string, StatusProcess> = new Map<string, StatusProcess>();
 
-
-  constructor() { 
-    this.status$.subscribe((res) => {
-      console.log('line 20: ',res);
-    })
+  constructor() {
+    this.status$.subscribe((res) => {});
   }
 
   /**
@@ -35,11 +33,7 @@ export class LoadingService {
     this.loadingSub.next('loading');
   }
 
-  setOtherLoading( statusLoading: Exclude<StatusProcess, 'loading'>) {
-    
+  setOtherLoading(statusLoading: Exclude<StatusProcess, 'loading'>) {
     this.loadingSub.next(statusLoading);
   }
-
-
-  
 }

@@ -1,56 +1,44 @@
-<div class="grid grid-cols-12 gap-5">
-  <div class="col-start-2 col-span-4 p-3 border-r-2">
-    <p class="text-gray-500 text-lg font-semibold">
-      Hoàn thành các bước sau để trở thành người cho thuê
-    </p>
+<section
+  class="h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-white"
+>
+  <div class="bg-white p-10 min-w-[700px] rounded-xl shadow-lg my-8">
+    <div class="mb-6">
+      <p class="text-gray-600 text-lg font-semibold text-center uppercase py-3">
+        Hoàn thành các bước sau để trở thành người cho thuê
+      </p>
 
-    <nz-steps [nzCurrent]="current" nzDirection="vertical">
-      <nz-step
-        nzTitle="Thông tin chủ cho thuê"
-        nzDescription="Thông tin chủ cho thuê là cần thiết trong hệ thống"
-      ></nz-step>
-      <nz-step
-        nzTitle="Chụp ảnh thẻ căn cước 2 mặt"
-        nzDescription="Cần xác nhận mã định danh người dùng giúp cho tính bảo mật của hệ thống"
-      ></nz-step>
-      <nz-step
-        nzTitle="Thông tin cho thuê"
-        nzDescription="Việc thu thập thông tin thuế là bắt buộc theo quy định của luật an ninh mạng,
-        thương mại điện tử và thuế Việt Nam"
-      ></nz-step>
-    </nz-steps>
-  </div>
-  <div class="col-span-6 steps-content">
-    <ng-container *ngTemplateOutlet="stepProcess"></ng-container>
-
-    <div class="steps-action">
-      @if (current > 0) {
-      <button nz-button nzType="default" (click)="pre()">
-        <span>Previous</span>
-      </button>
-      } @if (current < 2) {
-      <button nz-button nzType="default" (click)="next()">
-        <span>Next</span>
-      </button>
-      } @if (current === 2) {
-      <button nz-button nzType="primary" (click)="done()">
-        <span>Done</span>
-      </button>
-      }
+      <nz-steps [nzCurrent]="current" nzDirection="horizontal" nzProgressDot>
+        <nz-step
+          nzTitle="Thông tin chủ cho thuê"
+          nzDescription="Thông tin chủ cho thuê là cần thiết trong hệ thống"
+        ></nz-step>
+        <nz-step
+          nzTitle="Chụp ảnh thẻ căn cước 2 mặt"
+          nzDescription="Cần xác nhận mã định danh người dùng giúp cho tính bảo mật của hệ thống"
+        ></nz-step>
+        <nz-step
+          nzTitle="Thông tin cho thuê"
+          nzDescription="Việc thu thập thông tin thuế là bắt buộc theo quy định của luật an ninh mạng,
+            thương mại điện tử và thuế Việt Nam"
+        ></nz-step>
+      </nz-steps>
+    </div>
+    <div class="steps-content">
+      <ng-container *ngTemplateOutlet="stepProcess"></ng-container>
     </div>
   </div>
-</div>
+</section>
 
 <ng-template #stepProcess>
-  <app-step-tax />
+  <ng-container *ngIf="current === 0">
+    <app-step-info (nextStep)="next()" />
+  </ng-container>
 
-  <!-- @if (current === 0) {
-  <app-step-info />
+  <ng-container *ngIf="current === 1">
+    <app-step-identify (nextStep)="next()" (prevStep)="pre()" />
+  </ng-container>
 
-  } @if (current === 1) {
-  <app-step-identify />
-
-  } @if (current === 2) {
-  <app-step-tax />
-  } -->
+  <ng-container *ngIf="current === 2">
+    <app-step-tax (nextStep)="done()" (prevStep)="pre()" />
+  </ng-container>
 </ng-template>

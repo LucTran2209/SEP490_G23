@@ -1,0 +1,134 @@
+<div class="bg-light">
+  <div class="row flex-nowrap">
+    <div class="col py-3 m-3">
+      <div class="card">
+        <h1 class="text-3xl">Danh sách Đơn Yêu Cầu</h1>
+        <nz-tabset class="mt-2">
+          <ng-container *ngFor="let tab of requestTabs">
+            <nz-tab [nzTitle]="tab.title">
+              <div class="flex justify-start mt-5">
+                <div class="search-bar w-25 ms-0">
+                  <div class="search-form d-flex align-items-center">
+                    <input
+                      class="form-control w-96"
+                      type="text"
+                      name="query"
+                      placeholder="Tìm kiếm đơn yêu cầu..."
+                      title="Enter search keyword"
+                      [(ngModel)]="tab.searchText"
+                      (keyup.enter)="onSearch(tab.status)"
+                      (keyup)="reset(tab.status)"
+                    />
+                    <button title="Search" (click)="onSearch(tab.status)">
+                      <span
+                        class="text-xl"
+                        nz-icon
+                        nzType="search"
+                        nzTheme="outline"
+                      ></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <nz-table
+                #basicTable
+                [nzData]="tab.data"
+                [nzFrontPagination]="false"
+                [nzPageSize]="pageSize"
+                [nzTotal]="tab.totalRequests"
+                [(nzPageIndex)]="tab.currentPage"
+                (nzPageIndexChange)="onPageChange(tab.status, $event)"
+                [nzLoading]="isloading"
+                class="mt-2"
+              >
+                <thead>
+                  <tr>
+                    <th class="m-1 text-secondary text-uppercase">
+                      <span class="name">No.</span>
+                    </th>
+                    <th class="m-1 text-secondary text-uppercase">
+                      <span class="name text-uppercase">Tên Cửa Hàng</span>
+                    </th>
+                    <th class="m-1 text-secondary text-uppercase">
+                      <span class="name text-uppercase">Địa Chỉ</span>
+                    </th>
+                    <th class="m-1 text-secondary text-uppercase">
+                      <span class="name text-uppercase">Số Điện Thoại</span>
+                    </th>
+                    <th class="m-1 text-secondary text-uppercase">
+                      <span class="name">Email</span>
+                    </th>
+                    <th
+                      class="m-1 text-secondary text-uppercase"
+                      nzCustomFilter
+                    >
+                      <span class="name" *ngIf="tab.status == 0">Chi Tiết</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let req of tab.data; let i = index"
+                    class="tr-product"
+                  >
+                    <td>
+                      <span class="name text-secondary p-3 text-center">
+                        {{
+                          i + 1 + (tab.currentPage - 1) * pageSize
+                            | number : "2.0"
+                        }}
+                      </span>
+                    </td>
+                    <td class="">
+                      <span class="name text-secondary p-3 text-center">
+                        {{ req.shopName }}
+                      </span>
+                    </td>
+                    <td class="">
+                      <span class="name text-secondary p-3 text-center">
+                        {{ req.address || "[CHƯA CÓ]" }}
+                      </span>
+                    </td>
+                    <td class="">
+                      <span class="name text-secondary p-3 text-center">
+                        {{ req.phoneNumber || "[CHƯA CÓ]" }}
+                      </span>
+                    </td>
+                    <td class="">
+                      <span class="name text-secondary p-3 text-center">
+                        {{ req.email || "[CHƯA CÓ]" }}
+                      </span>
+                    </td>
+                    <td *ngIf="req.status == 0">
+                      <div class="flex flex-wrap justify-center p-3">
+                        <a class="text-sky-600">
+                          <span
+                            nz-icon
+                            nzType="snippets"
+                            nzTheme="outline"
+                            (click)="viewDetail(req.id)"
+                          ></span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </nz-tab>
+          </ng-container>
+        </nz-tabset>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="isVisible && requestInformation">
+  <app-request-shop-card
+    [isVisible]="isVisible"
+    [requestDetail]="requestInformation"
+    (closeModal)="handleCloseModal()"
+    (acceptRequest)="handleAcceptRequest()"
+    (rejectRequest)="handleRejectRequest()"
+  >
+  </app-request-shop-card>
+</ng-container>

@@ -22,7 +22,10 @@ export const getProvince_failure = createAction(
   props<{ errorMessage: string }>()
 );
 
-export const getDistrict = createAction(DISTRICT_INIT, props<{ id: string }>());
+export const getDistrict = createAction(
+  DISTRICT_INIT,
+  props<{ id: string | number }>()
+);
 export const getDistrict_success = createAction(
   DISTRICT_OK,
   props<{ dataD: Province[] | [] }>()
@@ -34,7 +37,7 @@ export const getDistrict_failure = createAction(
 
 export const getWardOrCommume = createAction(
   WARD_OR_COMMUNE_INIT,
-  props<{ id: string }>()
+  props<{ id: string | number }>()
 );
 export const getWardOrCommume_success = createAction(
   WARD_OR_COMMUNE_OK,

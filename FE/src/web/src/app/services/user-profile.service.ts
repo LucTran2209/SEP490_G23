@@ -1,28 +1,60 @@
 import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
 import { LocalStorageKey } from '../utils/constant';
-import { IAccount } from '../interfaces/account.interface';
+import { StorageService } from './storage.service';
+import { IPayLoad } from '../interfaces/account.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserProfileService {
+  constructor(private storgageService: StorageService) {}
 
-  constructor(private storgageService: StorageService) { }
-
-  set currentUser(user: any | null) {
+  set currentUser(user: IPayLoad | null) {
     if (user) {
-      this.storgageService.set(LocalStorageKey.currentUser, JSON.stringify(user));
+      this.storgageService.set(
+        LocalStorageKey.currentUser,
+        JSON.stringify(user)
+      );
     } else {
       this.storgageService.unset(LocalStorageKey.currentUser);
     }
   }
 
-  get currentUser(): any {
+  get currentUser(): IPayLoad {
     try {
-      return JSON.parse(this.storgageService.get(LocalStorageKey.currentUser) || '{}');
+      return JSON.parse(
+        this.storgageService.get(LocalStorageKey.currentUser) || ''
+      );
     } catch (error) {
-      return JSON.parse('{}');
+      return JSON.parse('');
+    }
+  }
+
+  get roleCurrentUser(): string | string[] | undefined {
+    return this.currentUser.Role;
+  }
+  get UserId(): string {
+    return this.currentUser.UserId;
+  }
+  // Getter for avatar
+  get avatar(): string {
+    return this.currentUser.Avatar;
+  }
+  get rentalshopId(): string {
+    return this.currentUser.RentalShopId;
+  }
+
+  get email(): string {
+    return this.currentUser.Email;
+  }
+  
+
+  // Method to update avatar URL
+  setAvatar(avatarUrl: string): void {
+    const user = this.currentUser;
+    if (user) {
+      user.Avatar = avatarUrl;
+      this.currentUser = user; // Trigger setter to save updated user to storage
     }
   }
 }

@@ -1,0 +1,81 @@
+<ng-container *ngIf="orderError; else ordersContent">
+  <div class="flex justify-center">
+    <nz-result
+      nzStatus="500"
+      nzTitle="500"
+      nzSubTitle="Xin lỗi, có lỗi trên máy chủ."
+    ></nz-result>
+  </div>
+</ng-container>
+
+<ng-template #ordersContent>
+  <div class="mx-16 mt-3">
+    <h1 class="text-2xl">DANH SÁCH THUÊ CỦA TÔI</h1>
+    <nz-tabset class="mt-2">
+      <ng-container *ngFor="let tab of orderTabs">
+        <nz-tab [nzTitle]="tab.title">
+          <div class="mt-6 flex justify-between">
+            <div>
+              <nz-input-group
+                nzSearch
+                [nzPrefix]="suffixIconButton"
+                class="grow"
+              >
+                <input
+                  class="w-input"
+                  type="text"
+                  nz-input
+                  [placeholder]="tab.placeholder"
+                  [(ngModel)]="tab.searchText"
+                  (keydown.enter)="onSearch(tab.status)"
+                />
+              </nz-input-group>
+              <ng-template #suffixIconButton>
+                <button
+                  class="border-none"
+                  nz-button
+                  nzType="default"
+                  nzSearch
+                  (click)="onSearch(tab.status)"
+                >
+                  <span nz-icon nzType="search"></span>
+                </button>
+              </ng-template>
+            </div>
+            <nz-select [(ngModel)]="selectedFilter" style="width: 200px">
+              <nz-option [nzValue]="7" nzLabel="7 ngày gần đây"></nz-option>
+              <nz-option [nzValue]="30" nzLabel="30 ngày gần đây"></nz-option>
+            </nz-select>
+          </div>
+
+          <div *ngIf="!tab.ordersNull; else noData">
+            <div *ngFor="let order of tab.orders">
+              <app-shop-card
+                [order]="order"
+                [isShowBtn1]="tab.isShowBtn1"
+                (showFeedBack)="showFeedBack($event)"
+              ></app-shop-card>
+            </div>
+          </div>
+
+          <ng-template #noData>
+            <div class="flex justify-center">
+              <nz-result
+                nzTitle="Chưa có đơn hàng"
+                nzSubTitle="Bạn chưa có đơn hàng nào. Hãy bắt đầu mua sắm ngay!"
+              >
+              </nz-result>
+            </div>
+          </ng-template>
+        </nz-tab>
+      </ng-container>
+    </nz-tabset>
+  </div>
+
+  <app-form-feedback
+    [isVisible]="isVisible"
+    [order]="orderInformation"
+    (closeModal)="handleCloseModal()"
+    (saveFeedBack)="createFeedBack($event)"
+  ></app-form-feedback>
+</ng-template>

@@ -1,0 +1,205 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzMaskClosable]="true"
+  [nzWidth]="'1200px'"
+>
+  <ng-container *nzModalContent>
+    <nz-alert
+      class="my-2"
+      *ngIf="showAlert"
+      [nzType]="alertType"
+      [nzMessage]="alertMessage"
+      nzShowIcon
+    ></nz-alert>
+    <form [formGroup]="productForm" nz-form (ngSubmit)="submitForm()">
+      <div nz-row nzGutter="16" class="mt-10">
+        <div nz-col nzSpan="18">
+          <nz-form-item>
+            <nz-form-control>
+              <input
+                class="w-96"
+                nz-input
+                placeholder="Tên Thiết Bị Cho Thuê"
+                formControlName="productName"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="2">
+          <div class="flex">
+            <button
+              class="mx-5"
+              nz-button
+              nzType="primary"
+              nzGhost
+              type="submit"
+            >
+              Lưu Sản Phẩm
+            </button>
+            <button
+              nz-button
+              nzType="default"
+              nzDanger
+              type="button"
+              (click)="handleCancel()"
+            >
+              Hủy
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="12" class="px-3">
+          <p class="mb-2.5">Ảnh thiết bị</p>
+          <nz-form-item>
+            <nz-form-control
+              nzErrorTip="Please upload at least one image."
+              [nzValidateStatus]="imagesControl.status"
+            >
+              <nz-upload
+                [(nzFileList)]="imageList"
+                [nzLimit]="5"
+                [nzMultiple]="true"
+                nzListType="picture-card"
+                [nzBeforeUpload]="beforeUpload"
+                [nzShowUploadList]="true"
+                (nzChange)="handleImageChange($event)"
+              >
+                <div>
+                  <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
+                  <div>Drag and drop upload</div>
+                </div>
+              </nz-upload>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <p class="mb-2.5">Giá cả</p>
+          <nz-form-item class="border-dashed border-2 p-5">
+            <nz-form-control>
+              <!-- Rental Price Field -->
+              <nz-form-item>
+                <nz-form-label
+                  [nzRequired]="true"
+                  nzFor="rentalPrice"
+                  nzSpan="6"
+                  >Giá cho thuê</nz-form-label
+                >
+                <nz-form-control nzSpan="18">
+                  <nz-input-number
+                    class="w-full"
+                    placeholder="Giá cho thuê"
+                    id="rentalPrice"
+                    formControlName="rentalPrice"
+                    [nzFormatter]="formatCurrency"
+                    [nzParser]="parseCurrency"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <!-- Deposit Price Field -->
+              <nz-form-item>
+                <nz-form-label
+                  [nzRequired]="true"
+                  nzFor="depositPrice"
+                  nzSpan="6"
+                  >Giá cọc</nz-form-label
+                >
+                <nz-form-control nzSpan="18">
+                  <nz-input-number
+                    class="w-full"
+                    placeholder="Giá cọc"
+                    id="depositPrice"
+                    formControlName="depositPrice"
+                    [nzFormatter]="formatCurrency"
+                    [nzParser]="parseCurrency"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+
+              <!-- Rent Limit Field -->
+              <nz-form-item>
+                <nz-form-label
+                  [nzRequired]="true"
+                  nzFor="rentalLimitDays"
+                  nzSpan="6"
+                  >Giới hạn ngày</nz-form-label
+                >
+                <nz-form-control nzSpan="18">
+                  <nz-input-number
+                    class="w-full"
+                    placeholder="Giới hạn cho thuê"
+                    id="rentalLimitDays"
+                    formControlName="rentalLimitDays"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <!-- Dòng 3: Xác nhận sản phẩm và mô tả -->
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="12">
+          <p class="mb-2.5">Xác nhận sản phẩm</p>
+          <nz-form-item class="border-dashed border-2 p-5">
+            <nz-form-item class="px-3 w-full">
+              <nz-input-group nzLayout="vertical">
+                <nz-form-label nzRequired nzFor="quantity"
+                  >Số Lượng Thiết Bị</nz-form-label
+                >
+                <nz-form-control nzErrorTip="Vui Lòng chọn số lượng thiết bị!">
+                  <nz-input-number
+                    class="w-full"
+                    placeholder="Số lượng thiết bị cho thuê"
+                    id="quantity"
+                    formControlName="quantity"
+                  />
+                </nz-form-control>
+              </nz-input-group>
+            </nz-form-item>
+            <nz-form-item class="px-3 w-full" *ngIf="!isEditMode">
+              <nz-input-group nzLayout="vertical">
+                <nz-form-label nzRequired nzFor="subCategoryId"
+                  >Loại Thiết Bị</nz-form-label
+                >
+                <nz-form-control nzErrorTip="Vui Lòng chọn loại thiết bị!">
+                  <nz-select
+                    nzPlaceHolder="Loại Thiết Bị"
+                    id="subCategoryId"
+                    formControlName="subCategoryId"
+                  >
+                    <nz-option
+                      *ngFor="let subCategory of categories"
+                      [nzValue]="subCategory.id"
+                      [nzLabel]="subCategory.subCategoryName"
+                    ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-input-group>
+            </nz-form-item>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+          <nz-form-label nzRequired nzFor="description"
+            >Mô Tả Thiết Bị</nz-form-label
+          >
+          <nz-form-item>
+            <textarea
+              nz-input
+              placeholder="Thông tin thiết bị cho thuê"
+              formControlName="description"
+              [nzAutosize]="{ minRows: 6, maxRows: 12 }"
+            ></textarea>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

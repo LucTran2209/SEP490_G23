@@ -1,0 +1,61 @@
+<div class="h-full border-none">
+  <!-- header -->
+  <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+    <span class="text-red-500 font-bold">* &nbsp;</span>Giá thuê theo ngày
+  </div>
+  <!-- Main content container -->
+  <div class="pb-3">
+    <app-renter-item [pId]="productIdParam" />
+  </div>
+  <!-- Rental details section -->
+  <div class="pb-3">
+    <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+      <span class="text-red-500 font-bold">* &nbsp;</span>Thời gian thuê
+    </div>
+    <app-rental-period (handleOpenPeriod)="onChooseDateCustom()"></app-rental-period>
+  </div>
+   <!-- chọn ngày thuê có sẵn -->
+   <div class="pb-3">
+    <div class="leading-5 capitalize font-thin text-[#000] pb-3">
+      <span class="text-red-500 font-bold">* &nbsp;</span> Chọn thời gian thuê tiêu chuẩn
+    </div>
+    <app-select-radio-rental-day/>
+  </div>
+  <!-- voucher -->
+  <div class="pb-3">
+    <div class="leading-5 capitalize flex items-center justify-between font-thin text-[#000] pb-3">
+      <p><span class="text-red-500 font-bold">* &nbsp;</span> Chọn mã giảm giá</p>
+      <span nz-icon nzType="gift" nzTheme="outline" class="text-lg cursor-pointer"></span>
+    </div>
+  </div>
+  <div class="flex justify-between items-center">
+    <div class="leading-5 capitalize text-[#000] pb-3 font-medium">
+      <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá cọc
+    </div>
+    <p class="text-[20px]">
+      {{ depositPriceActual$ | async | currency : "VND" }}
+    </p>
+  </div>
+  <div class="flex justify-between items-center">
+    <div class="leading-5 capitalize text-[#000] pb-3 font-medium">
+      <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá thuê
+    </div>
+    <p class="text-[20px]">
+      {{ rentalPriceActual$ | async | currency : "VND" }} / ngày
+    </p>
+  </div>
+  <button
+    nz-button
+    class="w-full bg-[#0A66EB] h-12 text-white rounded-md hover:border-blue-600"
+    (click)="onChooseRental(modalTitle)"
+  >
+    Chọn thuê
+  </button>
+</div>
+
+
+<!-- header confirm order proccess -->
+<ng-template #modalTitle>
+  <h3 class="font-medium">Xác nhận đơn thuê sản phẩm</h3>
+</ng-template>
+<!-- header confirm order proccess -->

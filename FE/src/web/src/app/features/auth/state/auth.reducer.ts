@@ -1,10 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
-import { AuthState } from './auth.state';
-import * as AuthActions from './auth.actions';
 import { StatusProcess } from '../../../interfaces/anonymous.interface';
+import * as AuthActions from './auth.actions';
+import { AuthState } from './auth.state';
+import { HttpStatusCode } from '../../../configs/status-code.config';
 
 const initialState: AuthState = {
-  dataUser: [],
+  accessToken: null,
+  refreshToken: null,
   isAuthenticated: false,
   message: null,
   errorRegister: null,
@@ -12,6 +14,8 @@ const initialState: AuthState = {
   status: 'idle',
   isRecoveringPassword: false,
   isRecoveredPassword: false,
+  isHasConditionRegister: false,
+  statusCode: HttpStatusCode.UNKNOWN_ERROR
 };
 
 export const authReducer = createReducer(
@@ -23,7 +27,8 @@ export const authReducer = createReducer(
   on(AuthActions.login_success, (state, action) => ({
     ...state,
     status: 'loaded' as StatusProcess,
-    dataUser: action.user,
+    accessToken: action.accessToken,
+    refreshToken: action.refreshToken,
     isAuthenticated: true,
     message: 'ok',
   })),
@@ -40,7 +45,7 @@ export const authReducer = createReducer(
   on(AuthActions.login_external_success, (state, action) => ({
     ...state,
     status: 'loaded' as StatusProcess,
-    dataUser: action.user,
+    accessToken: action.accessToken,
     isAuthenticated: true,
     message: 'ok',
   })),
@@ -113,6 +118,41 @@ export const authReducer = createReducer(
   //----------------------------------register
   on(AuthActions.logout, (state, action) => ({
     ...initialState,
-  }))
+  })),
   //----------------------------------logout
+  on(AuthActions.verifyEmail, (state, action) => ({
+    ...state,
+    status: 'loading' as StatusProcess,
+  })),
+  on(AuthActions.verifyEmail_success, (state, action) => ({
+    ...initialState,
+    message: 'Mã xác minh đã được gửi đến hộp thư đến của bạn',
+    status: 'loaded' as StatusProcess,
+    statusCode: action.statusCode as HttpStatusCode
+  })),
+  on(AuthActions.verifyEmail_failure, (state, { error }) => ({
+    ...initialState,
+    message: error,
+    status: 'loading' as StatusProcess,
+  })),
+  //----------------------------------verify email
+  on(AuthActions.confirmVerifyEmail, (state, action) => ({
+    ...state,
+    status: 'loading' as StatusProcess,
+  })),
+  on(AuthActions.confirmVerifyEmail_success, (state, action) => ({
+    ...state,
+    isHasConditionRegister: true,
+    message: 'Email hợp lệ, tiếp tục đăng ký nào',
+    status: 'loaded' as StatusProcess,
+    statusCode: action.statusCode as HttpStatusCode
+  })),
+  on(AuthActions.confirmVerifyEmail_failure, (state, { error }) => ({
+    ...initialState,
+    message: error,
+    status: 'loading' as StatusProcess,
+  })),
+  //----------------------------------confirm verify email
+on(AuthActions.reset_state, () => ({...initialState}))
+  //----------------------------------reset state and reson something
 );

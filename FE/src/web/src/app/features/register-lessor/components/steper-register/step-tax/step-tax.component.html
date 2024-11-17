@@ -1,46 +1,136 @@
-<form nz-form>
+<form nz-form [formGroup]="formTax" (ngSubmit)="onSubmit()">
   <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>Quy mô kinh doanh</nz-form-label>
+    <nz-form-control>
+      <nz-radio-group formControlName="rentalScale">
+        <label nz-radio-button nzValue="0">Hộ kinh doanh</label>
+        <label nz-radio-button nzValue="1">Cá nhân</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="!isChooseRentalScalePersonal">
     <nz-form-label [nzSpan]="24" nzRequired
       >́Giấy phép đăng ký kinh doanh</nz-form-label
     >
     <nz-form-control [nzSpan]="24" class="relative">
-      <nz-upload
-        [nzHeaders]="{ authorization: 'authorization-text' }"
-        (nzChange)="handleChange($event)"
-      >
-        <button nz-button>
-          <span nz-icon nzType="upload"></span>
-          Tải giấy tờ
-        </button>
-      </nz-upload>
-      <div
-        class="absolute bg-gray-100 px-2 py-1 rounded-full top-0 right-0"
-        nzTooltipTitle="giấy tờ dc tải gồm 3 loại giấy tờ"
-        nzTooltipPlacement="bottomRight"
-        nz-button
-        nz-tooltip
-      >
-        <span nz-icon nzType="question" nzTheme="outline"></span>
-      </div>
+      <app-upload-list title="Tải Giáy phép đăng ký kinh doanh" boundTypeFile=".pdf"
+      (listFiles)="onSelectedFile($event)"
+      (removeAFile)="onRemoveAFile($event)"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item class="w-full">
+    <nz-form-label [nzSpan]="24" nzRequired
+      >Địa chỉ đăng ký kinh doanh</nz-form-label
+    >
+    <div class="flex items-center gap-x-3 w-full">
+      <nz-form-control>
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Chọn tỉnh thành"
+          formControlName="address_province"
+          [compareWith]="compareFn"
+          name="province"
+        >
+          @if((statusProvince$ | async) !== 'loading'){ @for (item of
+          (getListProvince$ | async); track $index) {
+          <nz-option
+            [nzLabel]="item.name"
+            [nzValue]="{ id: item.id, name: item.name }"
+          ></nz-option>
+          } } @else {
+          <nz-option nzDisabled nzCustomContent>
+            <span nz-icon nzType="loading" class="loading-icon"></span>
+            Đăng tải...
+          </nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+      <nz-form-control>
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Chọn quận, huyện"
+          formControlName="address_district"
+          name="disctrict"
+          [compareWith]="compareFn"
+          [nzDisabled]="!formTax.get('address_province')?.value"
+        >
+          @if((statusDistrict$ | async) !== 'loading'){ @for (item of
+          (getListDistrict$ | async); track $index) {
+          <nz-option
+            [nzLabel]="item.name"
+            [nzValue]="{ id: item.id, name: item.name }"
+          ></nz-option>
+          } } @else {
+          <nz-option nzDisabled nzCustomContent>
+            <span nz-icon nzType="loading" class="loading-icon"></span>
+            Đăng tải...
+          </nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+      <nz-form-control>
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Chọn phường, xã"
+          name="ward"
+          formControlName="address_ward"
+          [compareWith]="compareFn"
+          [nzDisabled]="!formTax.get('address_district')?.value"
+        >
+          @if((statusWard$ | async) !== 'loading'){ @for (item of (getListWard$
+          | async); track $index) {
+          <nz-option
+            [nzLabel]="item.name"
+            [nzValue]="{ id: item.id, name: item.name }"
+          ></nz-option>
+          } } @else {
+          <nz-option nzDisabled nzCustomContent>
+            <span nz-icon nzType="loading" class="loading-icon"></span>
+            Đăng tải...
+          </nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </div>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzRequired>́Mã số thuế</nz-form-label>
+    <nz-form-control [nzSpan]="24">
+      <input
+        nz-input
+        placeholder="Nhập mã số thuế vào đây"
+        type="text"
+        formControlName="taxCode"
+      />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzRequired
-      >Địa chỉ đăng ký kinh doanh</nz-form-label
+      >Mô tả về cửa hàng bạn</nz-form-label
     >
-    <!-- <nz-form-control [nzSpan]="24">
-      <input nz-input formControlName="mobile" placeholder="mobile" />
-    </nz-form-control> -->
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSpan]="24" nzRequired>́Mã số thuê</nz-form-label>
     <nz-form-control [nzSpan]="24">
-      <input
-        nz-input
-        formControlName="email"
-        placeholder="00000000000000"
-        type="text"
-      />
+      <nz-textarea-count [nzMaxCharacterCount]="100">
+        <textarea formControlName="description" rows="4" nz-input></textarea>
+      </nz-textarea-count>
     </nz-form-control>
   </nz-form-item>
+  <div class="flex gap-x-3">
+    <button nz-button class="w-full" nzType="primary" (click)="goBack()">
+      <span>Trở lại</span>
+    </button>
+    <button
+      nz-button
+      type="submit"
+      class="w-full"
+      nzType="default"
+      [disabled]="formTax.invalid"
+      (click)="onSubmit()"
+    >
+      <span>Xác nhận</span>
+    </button>
+  </div>
 </form>

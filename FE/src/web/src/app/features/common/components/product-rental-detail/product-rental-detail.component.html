@@ -1,0 +1,183 @@
+<div class="container">
+  <!-- breadcrumb -->
+  <!-- <div class="py-3" (click)="onPreventAccess()">
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        <a>Application List</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
+    </nz-breadcrumb>
+  </div> -->
+  <div class="mx-auto" *ngIf="productDetail$ | async as productDetail">
+    <div
+      class="flex justify-center items-stretch gap-5 rounded-sm bg-white p-5"
+    >
+      <!-- left side -->
+      <div class="w-[40%]">
+        <app-product-carouse
+          [images]="productDetail.images"
+        ></app-product-carouse>
+      </div>
+
+      <!-- right side -->
+      <div class="flex-1">
+        <div class="flex justify-between items-center">
+          <h1 class="w-[70%] font-medium text-4xl mb-6 capitalize">
+            {{ productDetail.productName }}
+          </h1>
+          <div class="w-[30%] flex justify-start items-center gap-4">
+            <div class="flex justify-start items-center">
+              <span
+                nz-icon
+                nzType="star"
+                nzTheme="fill"
+                class="text-yellow-300 text-2xl"
+              ></span>
+              <p class="pt-1.5 px-3 text-lg font-light">
+                0.0 ({{ productDetail.evaluate }})
+              </p>
+            </div>
+            <p class="pt-1.5 text-base font-medium">Hà Nội</p>
+          </div>
+        </div>
+        <app-form-rental-product />
+      </div>
+    </div>
+
+    <div class="my-5 rounded-sm bg-white p-5">
+      <div class="flex justify-start pb-6">
+        <nz-avatar
+          nzGap="4"
+          [nzSize]="64"
+          nzSrc="assets/images/image-group-demo.png"
+        ></nz-avatar>
+        <div class="mx-3">
+          <h1 class="mt-2 font-bold uppercase">
+            <a (click)="navigateToShop(productDetail.rentalShop.id)">{{
+              productDetail.rentalShop.shopName
+            }}</a>
+          </h1>
+          <button class="mt-2" nz-button nzType="primary" (click)="chatShop(productDetail)" nzGhost>
+            Chat Ngay
+          </button>
+        </div>
+      </div>
+      <div class="pb-6">
+        <h1 class="font-medium text-2xl mt-3">
+          Thông tin sản phẩm
+          <span class="capitalize">{{ productDetail.productName }}</span>
+        </h1>
+        <div class="grid grid-cols-5 p-5">
+          <div class="">
+            <h3 class="font-bold">Giá cho thuê</h3>
+            <div>
+              rentalPrice:{{ productDetail.rentalPrice | currency : "VND" }}
+            </div>
+            <div>
+              depositPrice: {{ productDetail.depositPrice | currency : "VND" }}
+            </div>
+          </div>
+          <div class="">
+            <span class="font-bold mx-2">Thời gian cho thuê</span>
+            <p>rentalLimitDays: {{ productDetail.rentalLimitDays }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="pb-6">
+        <div class="flex items-center justify-start gap-x-2 mb-5">
+          <h1 class="font-medium text-2xl">Tài sản thế chấp</h1>
+          <span
+            nz-icon
+            nzType="question-circle"
+            class="text-2xl"
+            nzTheme="outline"
+          ></span>
+        </div>
+        <div
+          class="flex gap-10 items-start py-4 px-6 bg-[#fef7f4] border-l-4 border-solid border-[#f26a3b] rounded-lg"
+        >
+          <p>Không yêu cầu khách thuê thế chấp Tiền mặt hoặc Xe máy</p>
+        </div>
+      </div>
+      <div class="pb-6">
+        <h1 class="font-medium text-2xl mt-3">Điều khoản</h1>
+        <div class="p-5">
+          <h4 class="font-thin pb-3">
+            <span class="text-red-500">* &nbsp;</span>Quy định khác:
+          </h4>
+          <ul class="font-thin list-disc flex flex-col gap-y-4">
+            <li>Sử dụng thiết bị đúng mục đích.</li>
+            <li>
+              Không sử dụng thiết bị thuê vào các hoạt động phi pháp hoặc trái
+              pháp luật
+            </li>
+            <li>Không sử dụng thiết bị thuê để cầm cố, thế chấp</li>
+            <li>Không làm bẩn, vẽ bậy, hoặc xả rác lên thiết bị</li>
+            <li>
+              Không sử dụng thiết bị để chứa hàng hóa dễ cháy nổ hoặc quốc cấm
+            </li>
+            <li>
+              Không sử dụng thiết bị để chứa thực phẩm hoặc các vật liệu nặng
+              mùi
+            </li>
+            <li>
+              Khi hoàn trả thiết bị, nếu thiết bị bẩn hoặc có mùi, khách hàng
+              vui lòng vệ sinh thiết bị hoặc gửi phụ thu phí vệ sinh
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="pb-6">
+        <h1 class="font-medium text-2xl">Vị trí thuê khả dụng</h1>
+
+        <div class="flex items-center justify-between p-5">
+          <p class="flex justify-start items-center text-lg gap-x-3">
+            <span nz-icon style="color: black">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM11.9998 20.9988C11.1898 20.0588 6.0498 14.0188 6.0498 10.0188C6.0498 6.73884 8.7198 4.06885 11.9998 4.06885C15.2798 4.06885 17.9498 6.73884 17.9498 10.0188C17.9498 13.3988 14.1198 18.5988 11.9998 20.9988Z"
+                  fill="black"
+                ></path>
+                <path
+                  d="M11.9998 2.56885C7.8898 2.56885 4.5498 5.90884 4.5498 10.0188C4.5498 14.9088 10.7298 21.8288 10.9898 22.1189C11.2498 22.4089 11.6198 22.5688 11.9998 22.5688C12.3798 22.5688 12.7498 22.4089 13.0098 22.1189C13.6698 21.3889 19.4498 14.7988 19.4498 10.0188C19.4498 5.90884 16.1098 2.56885 11.9998 2.56885ZM8.87981 10.0188C8.87981 8.29884 10.2798 6.89885 11.9998 6.89885C13.7198 6.89885 15.1198 8.29884 15.1198 10.0188C15.1198 11.7388 13.7198 13.1389 11.9998 13.1389C10.2798 13.1389 8.87981 11.7388 8.87981 10.0188Z"
+                  fill="black"
+                ></path>
+              </svg>
+            </span>
+            Hà Nội
+          </p>
+          <p class="flex justify-between items-center text-lg gap-x-3">
+            Xem Bản đồ
+            <span nz-icon nzType="arrow-right" nzTheme="outline"></span>
+          </p>
+        </div>
+      </div>
+      <div class="pb-6">
+        <h1 class="font-medium text-2xl mt-3">Đánh Giá</h1>
+        <div class="py-3 px-5">
+          <app-comment></app-comment>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-5">
+      <h1 class="font-bold text-center text-3xl">Đồ Thuê Liên Quan</h1>
+      <div class="flex justify-center mt-2 mb-5">
+        <div class="flex justify-between">
+          <div class="w-[60px] h-[4px] bg-[#007bff] rounded-sm"></div>
+          <div class="w-[10px] h-[4px] bg-[#007bff] rounded-sm ml-1"></div>
+        </div>
+      </div>
+      <div>
+        <app-product-related />
+      </div>
+    </div>
+  </div>
+</div>

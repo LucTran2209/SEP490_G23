@@ -1,0 +1,30 @@
+@if(!isChatOpen){
+<div
+  class="fixed-chat-icon bg-[#0d6dfa] text-white rounded-lg p-3 px-4"
+  (click)="openChat()"
+>
+  <span nz-icon nzType="message" nzTheme="outline" class="text-xl"></span>
+</div>
+}@else {
+<section
+  class="fixed bottom-0 right-0 z-99 w-[300px]  border border-solid border-[#E1E1E1] bg-white shadow-lg rounded-sm transition-all duration-100 ease-linear"
+  [ngClass]="{'w-[812px]' : resizeChat$ | async}"
+>
+  <app-chat-header (closeChat)="closeChat()"/>
+  <div class=""
+  [ngClass]="{'grid grid-cols-7': resizeChat$ | async}"
+  >
+    <div class="col-span-3 border border-r border-solid border-[#E1E1E1]"><app-chat-list (chooseChatRoom)="selectUserChatRoom($event)"/></div>
+    <div
+    class="col-span-4 border border-l border-solid border-[#E1E1E1]"
+    [ngClass]="{'hidden': !(resizeChat$ | async)}"
+  >
+        <div class="border-b border-solid border-[#E1E1E1] flex justify-start items-center gap-x-2 py-2 px-2">
+          <img [src]="currentUserChat?.chatPic" alt="" class="w-[44px] h-[44px] rounded-full">
+          <div class="font-semibold text-[15px]">{{currentUserChat?.chatName}}</div>
+        </div>
+        <app-chat-message [currentUserChat]="currentUserChat"/>
+      </div>
+  </div>
+</section>
+}

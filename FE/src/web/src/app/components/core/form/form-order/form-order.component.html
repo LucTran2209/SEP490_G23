@@ -1,0 +1,70 @@
+<form nz-form [formGroup]="filterFormOrder" (ngSubmit)="onSubmit()">
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzPrefixIcon="search">
+        <input formControlName="orderCode" nz-input placeholder="Mã đơn hàng" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <div class="grid grid-cols-4 gap-x-3">
+    <nz-form-item>
+      <nz-form-label class="font-medium" [nzSpan]="24"
+        >Trạng thái đơn hàng</nz-form-label
+      >
+      <nz-form-control>
+        <nz-select
+          id="orderStatus"
+          formControlName="orderStatus"
+          nzPlaceHolder="Chọn một giá trị"
+        >
+        @for (item of optionOrderStatus; track $index) {
+          <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+        }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-medium" [nzSpan]="24"
+        >Người thuê</nz-form-label
+      >
+      <nz-form-control>
+        <nz-input-group>
+          <input
+            formControlName="humanRental"
+            nz-input
+            placeholder="Nhập tên người thuê"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label class="font-medium" [nzSpan]="24"
+        >Số điện thoại</nz-form-label
+      >
+      <nz-form-control>
+        <nz-input-group>
+          <input
+            formControlName="phoneNumber"
+            nz-input
+            placeholder="Nhập số điện thoại"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="">
+      <nz-form-label class="font-medium" [nzSpan]="24">Thời gian</nz-form-label>
+      <nz-form-control>
+        <nz-range-picker
+          class="w-full"
+          formControlName="timeRange"
+        ></nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <nz-form-item class="text-end">
+    <nz-form-control>
+      <button nz-button type="submit" nzType="primary">Tìm kiếm</button> &nbsp;
+      <button nz-button (click)="resetForm()">Đặt lại</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

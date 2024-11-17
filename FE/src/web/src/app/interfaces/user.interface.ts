@@ -1,25 +1,43 @@
 // Interface for each user in the datas array
-export interface ListUserOutputDto {
+export interface UserOutputDto {
+  id: string;
   fullName: string;
   userName: string;
   email: string;
   phoneNumber: string;
   address: string;
-  gender: boolean;  // Assuming gender is stored as boolean
+  gender: boolean;  
   dateOfBirth: string;
+  avatarPersonal: string;
   isActive: boolean;
+  listRole: [];
   }
   export interface UserInputDto {
-    fullName: string;
     userName: string;
+    password: string,
+    fullName: string;
     email: string;
     phoneNumber: string;
     address: string;
-    gender: boolean;  // Assuming gender is stored as boolean
+    gender: boolean;  
     dateOfBirth: string;
+    introduction: string;
+    avatarPersonal: File | null;
+    isActive: boolean;
+    refreshToken: string;
+  }
+  export interface UserUpdateInputDto {
+    id: string,
+    fullName: string,
+    email: string,
+    phoneNumber: string,
+    address: string,
+    gender: boolean,
+    dateOfBirth: string
+    avatarPersonal?: File | string;
   }
   export interface ActiveUserInputDto{
-    userName: string;
+    id: string;
     isActive: boolean;
   }
   
@@ -27,12 +45,16 @@ export interface ListUserOutputDto {
   export interface UserResultService {
     statusCode: string;
     message: string;
-    datas: {
-      list: ListUserOutputDto[];
-    };  // Array of list users
+    data: {
+      items : UserOutputDto[];
+      pageSize: number;
+      pageIndex: number;
+      totalCount: number;
+    };
+    
   }
   export interface ProfileResultService {
     statusCode: string;
     message: string;
-    datas: UserInputDto; 
+    data: UserOutputDto; 
   }

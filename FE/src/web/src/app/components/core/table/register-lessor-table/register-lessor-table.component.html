@@ -1,0 +1,181 @@
+<!-- <nz-table
+          #basicTable
+          [nzData]="userList"
+          [nzFrontPagination]="false"
+          [nzPageSize]="pageSize"
+          [nzTotal]="totalUsers"
+          [(nzPageIndex)]="currentPage"
+          (nzPageIndexChange)="onPageChange($event)"
+          [nzLoading]="isloading"
+          class="mt-2"
+        >
+          <thead>
+            <tr>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name">No.</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name text-uppercase">Họ Tên</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleName"
+                    [nzActive]="searchFullName.length > 0"
+                    [nzDropdownMenu]="searchName"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name text-uppercase">Email</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleEmail"
+                    [nzActive]="searchEmail.length > 0"
+                    [nzDropdownMenu]="searchMail"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name">Địa Chỉ</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleAddress"
+                    [nzActive]="searchAddress.length > 0"
+                    [nzDropdownMenu]="searchAddr"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name">Số Điện Thoại</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visiblePhoneNumber"
+                    [nzActive]="searchPhoneNumber.length > 0"
+                    [nzDropdownMenu]="searchPhone"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th
+                class="m-1 text-secondary text-uppercase"
+                [nzFilters]="filterGender"
+                [nzFilterFn]="true"
+                (nzFilterChange)="onFilterChange($event)"
+              >
+                <span class="name">Giới Tính</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <div class="flex justify-between">
+                  <span class="name">Ngày Sinh</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="visibleDateOfBirth"
+                    [nzActive]="searchDateOfBirth.length > 0"
+                    [nzDropdownMenu]="searchDOB"
+                  >
+                    <span nz-icon nzType="search"></span>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th class="text-secondary text-uppercase">
+                <span class="name">Vai Trò</span>
+              </th>
+              <th class="text-secondary text-uppercase">
+                <span class="name">Trạng Thái</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name">Cấm</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of userList; let i = index" class="tr-product">
+              <td>
+                <span class="name text-secondary p-3 text-center">
+                  {{ i + 1 + (currentPage - 1) * pageSize | number : "2.0" }}
+                </span>
+              </td>
+              <td>
+                <div class="flex justify-start flex-wrap">
+                  <img
+                    class="rounded-full w-9 h-9"
+                    [src]="
+                      user.avatarPersonal
+                        ? user.avatarPersonal
+                        : 'assets/images/default-avatar.jpg'
+                    "
+                    alt="image-product"
+                  />
+                  <span class="name text-secondary p-3 mt-1">
+                    {{ user.fullName }}
+                  </span>
+                </div>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ user.email }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ user.address || "[CHƯA CÓ]" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ user.phoneNumber || "[CHƯA CÓ]" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{
+                    user.gender !== null && user.gender !== undefined
+                      ? user.gender
+                        ? "Nam"
+                        : "Nữ"
+                      : "[CHƯA CÓ]"
+                  }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{
+                    user.dateOfBirth
+                      ? (user.dateOfBirth | date : "dd/MM/yyyy")
+                      : "[CHƯA CÓ]"
+                  }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ user.listRole.join(", ") || "Không" }}
+                </span>
+              </td>
+              <td class="text-center">
+                @if(user.isActive){
+                <p class="active">Hoạt động</p>
+                }@else{
+                <p class="inactive">Không hoạt động</p>
+                }
+              </td>
+              <td>
+                <div class="flex flex-wrap justify-center p-3">
+                  <a class="text-red-600">
+                    <span
+                      class="text-lg name"
+                      nz-icon
+                      nzType="stop"
+                      nzTheme="outline"
+                      (click)="showDeleteConfirm(user.id)"
+                    ></span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table> -->
