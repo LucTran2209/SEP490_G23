@@ -93,8 +93,7 @@ namespace BE.Application.Services.Products
             var queryListProductInShop = unitOfWork.ProductRepository.GetListProductByRetalShopId(rentalShopId);
 
             queryListProductInShop = queryListProductInShop
-                .Filter(inputDto.Search, p => p.ProductName!.Contains(inputDto.Search))
-                .Filter(inputDto.Search, p => p.Description == null ? p.Description!.Contains(inputDto.Search) : false);
+                .Filter(inputDto.Search, p => p.ProductName!.Contains(inputDto.Search));
 
             var products = await queryListProductInShop.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                             .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)

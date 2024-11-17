@@ -133,6 +133,12 @@ namespace BE.Application.Services.RentalShops
 
             var result = _mapper.Map<GetRentalShopDetailByIdOuputDto>(rentalShop);
 
+            result.CreateDate = rentalShop.User.UserRoles!.
+                FirstOrDefault(r => r.RoleId == Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff"))!.CreatedDate.DateTime;
+
+            result.NumberOfRenter = unitOfWork.OrderRepository.GetRentalShopOrder(id)
+                    .GroupBy(o => o.UserId).ToList().Count;
+
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
