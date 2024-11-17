@@ -7,5 +7,7 @@ namespace BE.Application.Services.Products.ProductServiceInputDto
         public IEnumerable<string>? Addresses { get; set; }
         public IEnumerable<Guid>? SubCategory { get; set; }
         public IEnumerable<int>? Evaluates { get; set; }
-    }
+        public decimal? MinPrice { get; set; }
+        public decimal? MaxPrice { get; set; }
+    }   
 }
