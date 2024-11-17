@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { PostOutputDto, PostResultService } from '../../../../interfaces/post.interface';
-import { OptionSelect } from '../../../../configs/anonymous.config';
-import { PostService } from '../../../../services/post.service';
-import { selectSortByOrder } from '../../../../configs/post.config';
-import { ProductDtoResponse, ProductImage, ProductOutputDto, ProductResultService } from '../../../../interfaces/product.interface';
-import { ProductService } from '../../../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingService } from '../../../../services/loading.service';
-import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { Observable } from 'rxjs';
+import { OptionSelect } from '../../../../configs/anonymous.config';
+import { selectSortByOrder } from '../../../../configs/post.config';
+import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { ProductDtoResponse, ProductOutputDto } from '../../../../interfaces/product.interface';
 import { RentalShop } from '../../../../interfaces/rental-shop.interface';
+import { LoadingService } from '../../../../services/loading.service';
+import { ProductService } from '../../../../services/product.service';
 
 @Component({
   selector: 'app-product-rental-list',

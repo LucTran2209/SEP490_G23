@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { LoadingService } from '../../../../services/loading.service';
-import * as RentalShopProductActions from './shop-personal.actions';
-import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
-import { ProductService } from '../../../../services/product.service';
-import { MessageResponseService } from '../../../../services/message-response.service';
 import { select, Store } from '@ngrx/store';
+import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { LoadingService } from '../../../../services/loading.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
+import { ProductService } from '../../../../services/product.service';
+import { updateFilter } from '../../../../store/filters/filter.actions';
 import {
   FilterParameters,
   selectFeature_filterState,
 } from '../../../../store/filters/filter.reducers';
-import { updateFilter } from '../../../../store/filters/filter.actions';
+import * as RentalShopProductActions from './shop-personal.actions';
 import { selectShopId } from './shop-personal.reducer';
 @Injectable()
 export class ShopRentalShopEffects {
