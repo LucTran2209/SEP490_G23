@@ -17,8 +17,9 @@ import { Subcategory, SubCategoryResultService } from '../../../../interfaces/ca
   styleUrl: './filter-post-rental.component.scss',
 })
 export class FilterProductRentalComponent implements OnInit {
-  @Input() isSubcategoryPage: boolean = false;
   @Output() locationNames = new EventEmitter<string[]>();
+  @Output() SubCategorySelected = new EventEmitter<string>();
+  @Output() PriceRangeSelected = new EventEmitter<number[]>();
   selectLocationOptions = selectLocationOptions;
   categoryOptions : IITemListNav[] = [];
   subCategory: Subcategory[] = [];
@@ -26,7 +27,7 @@ export class FilterProductRentalComponent implements OnInit {
   rateStar = rateStar;
   selectBranch = selectBranch;
   selectProductStatus = selectProductStatus;
-  rentalPriceRange: number[] = [100000, 5000000];
+  rentalPriceRange: number[] = [10000, 1000000];
   constructor(
     private categoryService: CategoryService,
   ){
@@ -36,6 +37,7 @@ export class FilterProductRentalComponent implements OnInit {
   onSliderChange(value: number[]): void {
     console.log('Selected rental price range: ', value);
     this.rentalPriceRange = value;
+    this.PriceRangeSelected.emit(this.rentalPriceRange);
   }
 
   onCategory(item: IITemListNav) {
@@ -70,5 +72,16 @@ export class FilterProductRentalComponent implements OnInit {
       this.locations = this.locations.filter(location => location !== item.label); // Remove if unselected
     }
     this.locationNames.emit(this.locations);
+  }
+  onSelectSubCategory(subcategoryName: string) {
+    // Tìm subcategory dựa trên subcategoryName
+    const selectedSubCategory = this.subCategory.find(
+      (subcategory) => subcategory.subCategoryName === subcategoryName
+    );
+  
+    if (selectedSubCategory) {
+      // Phát id của subcategory nếu tìm thấy
+      this.SubCategorySelected.emit(selectedSubCategory.id);
+    } 
   }
 }

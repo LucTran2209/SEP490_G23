@@ -82,4 +82,5 @@ export enum ORDER_STATUS {
   RECEIVED = 3,
   REFUND = 4,
   DEPOSIT_REFUND = 5,
+  CANCEL = 6,
 }

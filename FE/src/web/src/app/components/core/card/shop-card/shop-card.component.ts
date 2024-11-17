@@ -43,24 +43,28 @@ export class ShopCardComponent {
     const status = this.order?.orderStatuses[0]?.status;
     if (status === 0) {
       this.orderStatusMessage = 'Đang phê duyệt';
-      this.orderStatusClass = 'p-2 border-2 text-lime-500 border-lime-500 bg-lime-100 text-xs w-28';
+      this.orderStatusClass = 'status-success text-xs w-28';
       
     } else if (status === 1) {
       this.orderStatusMessage = 'Chờ Thanh Toán';
-      this.orderStatusClass = 'p-2 border-2 text-yellow-500 border-yellow-500 bg-yellow-100 text-xs w-28';
+      this.orderStatusClass = 'status-warning text-xs w-28';
       // this.isShowBtn1 = true;
     } else if (status === 2){
       this.orderStatusMessage = 'Chờ Giao Hàng';
-      this.orderStatusClass = 'p-2 border-2 text-gray-500 border-gray-500 bg-gray-100 text-xs w-28';
+      this.orderStatusClass = 'status-pending_delivery text-xs w-28';
     } else if (status === 3){
       this.orderStatusMessage = 'Đã Nhận Hàng';
-      this.orderStatusClass = 'p-2 border-2 text-gray-500 border-gray-500 bg-gray-100 text-xs w-28';
+      this.orderStatusClass = 'status-received text-xs w-28';
     } else if (status === 4){
       this.orderStatusMessage = 'Chờ Hoàn Trả';
-      this.orderStatusClass = 'p-2 border-2 text-gray-500 border-gray-500 bg-gray-100 text-xs w-28';
+      this.orderStatusClass = 'status-refund text-xs w-28';
     } else if (status === 5){
       this.orderStatusMessage = 'Hoàn Thành';
-      this.orderStatusClass = 'p-2 border-2 text-gray-500 border-gray-500 bg-gray-100 text-xs w-28';
+      this.orderStatusClass = 'status-deposit_refund text-xs w-28';
+      
+    } else if (status === 6){
+      this.orderStatusMessage = 'Hủy Đơn';
+      this.orderStatusClass = 'status-error text-xs w-28';
       
     }
   }

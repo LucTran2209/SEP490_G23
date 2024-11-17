@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { ImageFileService } from '../../../../services/image-file.service';
 import { RentalShopService } from '../../../../services/rental-shop.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
-import { RentalShopResultService } from '../../../../interfaces/rental-shop.interface';
+import { RentalShopOutputDto, RentalShopResultService } from '../../../../interfaces/rental-shop.interface';
 import { LoadingService } from '../../../../services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
@@ -28,6 +28,7 @@ export class ManagerShopComponent  implements OnInit{
   productInformation!: UpdateProductInputDto;
   title: string = '';
   totalProducts = 0;     
+  total = 0;     
   currentPage = 1;    
   pageSize = 12;  
   isEditMode: boolean = false;
@@ -36,7 +37,7 @@ export class ManagerShopComponent  implements OnInit{
   currentId: string = '';
   userid: string = '';
   shopid: string = '';
-  shopName: string = '';
+  shop!: RentalShopOutputDto;
   searchText: string = '';
   productListNull = true;
   selectedValue = null;
@@ -100,7 +101,7 @@ export class ManagerShopComponent  implements OnInit{
       this.shopid = params['id']; // Get rentalShopId from route params
       if (this.shopid) {
         this.rentalShopService.getRentalShop(this.shopid).subscribe((res: RentalShopResultService) => {
-          this.shopName = res.data.shopName;
+          this.shop = res.data;
           this.loadProducts(this.shopid, this.currentPage, this.pageSize);    
       });
       }
@@ -119,6 +120,9 @@ export class ManagerShopComponent  implements OnInit{
       this.productList = res.data.items;
       this.productListNull = !this.productList || this.productList.length === 0;
       this.totalProducts = res.data.totalCount;
+      if(!search){
+        this.total = res.data.totalCount;
+      }
       this.loadingService.setOtherLoading('loaded');
       console.log(res)
     });
@@ -136,7 +140,7 @@ export class ManagerShopComponent  implements OnInit{
   }
   handleCreateProduct(productData: FormData): void {
     //chưa có get rentalshopId nên tự viết id trong database ở đây
-      productData.append('rentalShopId', this.shopid);
+      // productData.append('rentalShopId', this.shopid);
 
       this.productService.createProduct(productData).subscribe({
         next: (response) => {
@@ -172,5 +176,32 @@ export class ManagerShopComponent  implements OnInit{
     queryParamsHandling: 'merge', // This will merge with existing parameters
   });
     this.loadProducts(this.shopid, this.currentPage,this.pageSize, this.searchText);
+  }
+  calculateTime(inputTime: string | undefined): string {
+    if (!inputTime) {
+      return 'Không có ngày tạo';
+    }
+  
+    const inputDate = new Date(inputTime);
+    const currentDate = new Date();
+  
+    if (isNaN(inputDate.getTime())) {
+      return 'Ngày không hợp lệ';
+    }
+  
+    const diffInMilliseconds = currentDate.getTime() - inputDate.getTime();
+    const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+    const daysInMonth = 30;
+    const monthsInYear = 12;
+  
+    if (diffInDays > daysInMonth * monthsInYear) {
+      const years = Math.floor(diffInDays / (daysInMonth * monthsInYear));
+      return `${years} năm`;
+    } else if (diffInDays > daysInMonth) {
+      const months = Math.floor(diffInDays / daysInMonth);
+      return `${months} tháng`;
+    } else {
+      return `${diffInDays} ngày`;
+    }
   }
 }
