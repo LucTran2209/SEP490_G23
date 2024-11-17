@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, delay, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
 import { HttpStatusCode } from '../../../configs/status-code.config';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
@@ -12,6 +12,7 @@ import { StorageService } from '../../../services/storage.service';
 import { STRING } from '../../../utils/constant';
 import * as AuthActions from './auth.actions';
 import { removeCookie, replaceCookie } from '../../../utils/cookie.helper';
+import { IErrorApi } from '../../../interceptors/http-error.interceptor';
 
 @Injectable()
 export class AuthEffect {
@@ -162,14 +163,16 @@ export class AuthEffect {
         }),
         switchMap(({ email }) =>
           this.authService.verifyEmail({ email }).pipe(
-            map((res) => AuthActions.verifyEmail_success({ data: res.data })),
-            catchError((err) =>
-              of(
+            map(({ statusCode }) =>
+              AuthActions.verifyEmail_success({ statusCode })
+            ),
+            catchError((err) => {
+              return of(
                 AuthActions.verifyEmail_failure({
                   error: 'Có lỗi xảy ra vui lòng thử lại',
                 })
-              )
-            )
+              );
+            })
           )
         )
       ),
@@ -184,16 +187,33 @@ export class AuthEffect {
         tap(() => {
           this.loadingSerivce.setLoading();
         }),
-        switchMap(({ data }) =>
+        switchMap(({ data, dataRegister }) =>
           this.authService.confirmVerifyEmail(data).pipe(
-            map((res) => AuthActions.confirmVerifyEmail_success()),
-            catchError((err) =>
-              of(
+            switchMap(({ statusCode }) => {
+              if (statusCode === HttpStatusCode.OK) {
+                return this.authService.register(dataRegister).pipe(
+                  map((data) => {
+                    return AuthActions.register_success({
+                      message: data.message,
+                    });
+                  }),
+                  catchError((err) =>
+                    of(AuthActions.register_failure({ error: 'Đã xảy ra lỗi trong khi tạo tài khoản' }))
+                  )
+                )
+              } else {
+                return of(
+                  AuthActions.verifyEmail_failure({ error: 'Mã OTP không hợp lệ!' })
+                );
+              }
+            }),
+            catchError((err) => {
+              return of(
                 AuthActions.verifyEmail_failure({
                   error: 'Có lỗi xảy ra vui lòng thử lại',
                 })
-              )
-            )
+              );
+            })
           )
         )
       ),
@@ -300,11 +320,11 @@ export class AuthEffect {
     () =>
       this.action$.pipe(
         ofType(AuthActions.verifyEmail_success),
-        tap(({ data: { code, email } }) => {
+        tap(({}) => {
           this.loadingSerivce.setOtherLoading('loaded');
-          const timestamp15MinutesLater = Math.floor(Date.now() / 1000) + 15 * 60;
-          replaceCookie(STRING.OTPCODE, code, timestamp15MinutesLater, '/'); //15 minutes
-          replaceCookie(STRING.EMAIL, email, timestamp15MinutesLater, '/'); //15 minutes
+          // const timestamp15MinutesLater = Math.floor(Date.now() / 1000) + 15 * 60;
+          // replaceCookie(STRING.OTPCODE, code, timestamp15MinutesLater, '/'); //15 minutes
+          // replaceCookie(STRING.EMAIL, email, timestamp15MinutesLater, '/'); //15 minutes
           // window.location.reload();
         })
       ),
@@ -318,9 +338,6 @@ export class AuthEffect {
         ofType(AuthActions.confirmVerifyEmail_success),
         tap(() => {
           this.loadingSerivce.setOtherLoading('loaded');
-          // removeCookie(STRING.OTPCODE);
-          this.messageNZ.success("Hãy tiếp tục đăng ký tài khoản nào");
-          this.router.navigate(['auth/register']);
         })
       ),
     {

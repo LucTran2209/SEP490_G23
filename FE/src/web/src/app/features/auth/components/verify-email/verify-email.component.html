@@ -1,51 +1,34 @@
-@if (emailGenerate && codeGenerate) {
-<ng-container *ngTemplateOutlet="verifyCodeDesc"></ng-container>
-
-} @else {
 <section class="p-10">
-    <div class="text-center flex items-center flex-col justify-center gap-y-4">
-        <div class="bg-[#f7fafe] rounded-full px-3 py-3 border-2 border-solid border-[#1FA2FF]">
-            <span nz-icon nzType="key" nzTheme="outline" class="text-[#1FA2FF] text-[25px]"></span>
-        </div>
-        <h2 class="font-semibold capitalize text-[#222438] text-[22px]">Làm ơn hãy xác thực email của bạn</h2>
-        <p class="text-[15px] text-[#938D8A] whitespace-normal text-wrap">Làm ơn hãy xác thực bạn muốn đăng ký tài khoản
-            với địa chỉ email. <a class="text-[#1FA2FF] underline underline-offset-2 decoration-pink-500/30"><strong>Chỉ
-                    khi email hợp lệ</strong></a> bạn mới có thể bắt
-            đầu tạo tài khoản</p>
+  <div class="text-center flex items-center flex-col justify-center gap-y-4">
+    <div
+      class="bg-[#f7fafe] rounded-full px-3 py-3 border-2 border-solid border-[#1FA2FF]"
+    >
+      <span
+        nz-icon
+        nzType="key"
+        nzTheme="outline"
+        class="text-[#1FA2FF] text-[25px]"
+      ></span>
     </div>
-    <nz-divider nzPlain nzText="Email"></nz-divider>
-    <input type="text" placeholder="email@example.com" class="w-full outline-none mb-2 py-2  border-b border-[#ccc]"
-        [ngClass]="{'border-red-500': inputEmail.invalid && (inputEmail.dirty || inputEmail.touched)}"
-        [formControl]="inputEmail" (keyup.enter)="verifyEmailSubmit()">
-    @if(inputEmail.invalid && (inputEmail.dirty || inputEmail.touched)){
-    <span class="text-red-500" *ngIf="inputEmail.hasError('required')">Nhập email đăng ký tài khoản</span>
-    <span class="text-red-500" *ngIf="inputEmail.hasError('email')">Nhập email không hợp lệ</span>
-    }
-    <button class="w-full rounded-sm h-[43px]" nz-button nzType="primary" (click)="verifyEmailSubmit()">Xác thực
-        email</button>
+    <p class="text-[15px] text-[#111] whitespace-normal text-wrap">
+      Mã xác nhận đã được gửi tới email
+      <strong>'{{ emailGenerate }}'</strong>
+    </p>
+    <p class="text-[15px] text-[#938D8A] whitespace-normal text-wrap">
+      Làm ơn hãy kiểm tra hộp thư đến và nhập mã xác thức bên dưới. Mã xác thực
+      có thời hạn trong <strong>30:00</strong>
+    </p>
+  </div>
+  <code-input
+    #codeInput
+    [codeLength]="4"
+    (codeChanged)="onCodeChanged($event)"
+    (codeCompleted)="onCodeCompleted($event)"
+    class="my-3"
+  >
+  </code-input>
+  <div class="flex items-center justify-between">
+    <button nz-button class="font-medium" nzType="link" (click)="reSendCode()">Gửi mã lại</button>
+    <button nz-button class="font-medium" nzType="link" (click)="changeEmail()">Thay đổi email</button>
+  </div>
 </section>
-}
-
-
-<ng-template #verifyCodeDesc>
-    <section class="p-10">
-        <div class="text-center flex items-center flex-col justify-center gap-y-4">
-            <div class="bg-[#f7fafe] rounded-full px-3 py-3 border-2 border-solid border-[#1FA2FF]">
-                <span nz-icon nzType="key" nzTheme="outline" class="text-[#1FA2FF] text-[25px]"></span>
-            </div>
-            <p class="text-[15px] text-[#111] whitespace-normal text-wrap">Mã xác nhận đã được gửi tới email
-                <strong>'{{emailGenerate}}'</strong>
-            </p>
-            <p class="text-[15px] text-[#938D8A] whitespace-normal text-wrap">Làm ơn hãy kiểm tra hộp thư đến và nhập mã
-                xác
-                thức bên dưới. Mã xác thực có thời hạn trong <strong>12:55</strong></p>
-        </div>
-        <code-input #codeInput [codeLength]="4" (codeChanged)="onCodeChanged($event)"
-            (codeCompleted)="onCodeCompleted($event)" class="my-3">
-        </code-input>
-        <div class="flex items-center justify-between">
-            <button nz-button class="font-medium" nzType="link">Gửi mã lại</button>
-            <button nz-button class="font-medium" nzType="link">Thay đổi email</button>
-        </div>
-    </section>
-</ng-template>

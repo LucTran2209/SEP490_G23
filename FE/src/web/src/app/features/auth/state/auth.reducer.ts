@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { StatusProcess } from '../../../interfaces/anonymous.interface';
 import * as AuthActions from './auth.actions';
 import { AuthState } from './auth.state';
+import { HttpStatusCode } from '../../../configs/status-code.config';
 
 const initialState: AuthState = {
   accessToken: null,
@@ -14,7 +15,7 @@ const initialState: AuthState = {
   isRecoveringPassword: false,
   isRecoveredPassword: false,
   isHasConditionRegister: false,
-  dataRegister: null
+  statusCode: HttpStatusCode.UNKNOWN_ERROR
 };
 
 export const authReducer = createReducer(
@@ -120,13 +121,14 @@ export const authReducer = createReducer(
   })),
   //----------------------------------logout
   on(AuthActions.verifyEmail, (state, action) => ({
-    ...initialState,
+    ...state,
     status: 'loading' as StatusProcess,
   })),
   on(AuthActions.verifyEmail_success, (state, action) => ({
     ...initialState,
     message: 'Mã xác minh đã được gửi đến hộp thư đến của bạn',
     status: 'loaded' as StatusProcess,
+    statusCode: action.statusCode as HttpStatusCode
   })),
   on(AuthActions.verifyEmail_failure, (state, { error }) => ({
     ...initialState,
@@ -135,7 +137,7 @@ export const authReducer = createReducer(
   })),
   //----------------------------------verify email
   on(AuthActions.confirmVerifyEmail, (state, action) => ({
-    ...initialState,
+    ...state,
     status: 'loading' as StatusProcess,
   })),
   on(AuthActions.confirmVerifyEmail_success, (state, action) => ({
@@ -143,6 +145,7 @@ export const authReducer = createReducer(
     isHasConditionRegister: true,
     message: 'Email hợp lệ, tiếp tục đăng ký nào',
     status: 'loaded' as StatusProcess,
+    statusCode: action.statusCode as HttpStatusCode
   })),
   on(AuthActions.confirmVerifyEmail_failure, (state, { error }) => ({
     ...initialState,

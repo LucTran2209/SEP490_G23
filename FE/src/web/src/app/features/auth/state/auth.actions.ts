@@ -6,8 +6,8 @@ import {
   ILoginRequest,
   IRegisterRequest,
   IResetPassword,
-  IVerifyEmailResponse,
 } from '../../../interfaces/account.interface';
+import { HttpStatusCode } from '../../../configs/status-code.config';
 
 export const LOGIN_INIT = '[Auth] login init';
 export const LOGIN_SUCCESS = '[Auth] login success';
@@ -129,7 +129,7 @@ export const verifyEmail = createAction(
 
 export const verifyEmail_success = createAction(
   VERIFY_EMAIL_SUCCESS,
-  props<{ data: IVerifyEmailResponse }>()
+  props<{ statusCode: string | number }>()
 );
 
 export const verifyEmail_failure = createAction(
@@ -138,11 +138,11 @@ export const verifyEmail_failure = createAction(
 );
 export const confirmVerifyEmail = createAction(
   CONFIRM_VERIFY_EMAIL,
-  props<{ data: IConfirmEmailRequest }>()
+  props<{ data: IConfirmEmailRequest, dataRegister: IRegisterRequest }>()
 );
 
 export const confirmVerifyEmail_success = createAction(
-  CONFIRM_VERIFY_EMAIL_SUCCESS
+  CONFIRM_VERIFY_EMAIL_SUCCESS,  props<{ statusCode: string | number }>()
 );
 
 export const confirmVerifyEmail_failure = createAction(

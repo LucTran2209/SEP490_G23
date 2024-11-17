@@ -19,8 +19,7 @@ import {
   IPayLoad,
   IRegisterRequest,
   IResetPassword,
-  IVerifyEmailRequest,
-  IVerifyEmailResponse,
+  IVerifyEmailRequest
 } from '../interfaces/account.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
 import { FeatureAppState } from '../store/app.state';
@@ -33,8 +32,8 @@ import {
 import { AppHttpClientService } from './app-http-client.service';
 import { MessageResponseService } from './message-response.service';
 import { StorageService } from './storage.service';
-import { UserProfileService } from './user-profile.service';
 import { UserFireStoreService } from './user-fire-store.service';
+import { UserProfileService } from './user-profile.service';
 
 @Injectable({
   providedIn: 'root',
@@ -194,8 +193,8 @@ export class AuthService {
     return this.httpClient.post(AuthSlug.ChangePassword.api, data);
   }
 
-  verifyEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<IVerifyEmailResponse>> {
-    return this.httpClient.post<BaseResponseApi<IVerifyEmailResponse>>(AuthSlug.VerifyEmail.api, data);
+  verifyEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<any>> {
+    return this.httpClient.post<BaseResponseApi<any>>(AuthSlug.VerifyEmail.api, data);
   }
 
   confirmVerifyEmail(data: IConfirmEmailRequest): Observable<BaseResponseApi<any>> {

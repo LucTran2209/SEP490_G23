@@ -1,20 +1,21 @@
 import {
   ChangeDetectorRef,
   Component,
-  input,
+  EventEmitter,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CodeInputComponent } from 'angular-code-input';
-import { MyValidators } from '../../../../utils/validators';
 import { Store } from '@ngrx/store';
-import { GlobalState } from '../../../../store/app.state';
-import * as AuthActions from '../../state/auth.actions';
-import { getCookie } from '../../../../utils/cookie.helper';
-import { STRING } from '../../../../utils/constant';
+import { CodeInputComponent } from 'angular-code-input';
 import { IConfirmEmailRequest } from '../../../../interfaces/account.interface';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { GlobalState } from '../../../../store/app.state';
+import { STRING } from '../../../../utils/constant';
+import { getCookie } from '../../../../utils/cookie.helper';
+import { MyValidators } from '../../../../utils/validators';
+import * as AuthActions from '../../state/auth.actions';
 import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-verify-email',
@@ -29,6 +30,9 @@ export class VerifyEmailComponent implements OnInit {
   isVerificationComplete: boolean = false;
   codeGenerate: string | null = null;
   emailGenerate: string | null = null;
+  @Output() onResendCode = new EventEmitter();
+  @Output() onChangeEmailStepFirst = new EventEmitter();
+  @Output() onVerifyOtpCode = new EventEmitter<string>();
   @ViewChild('codeInput') codeInput!: CodeInputComponent;
 
   onCodeChanged(code: string) {
@@ -36,41 +40,21 @@ export class VerifyEmailComponent implements OnInit {
   }
 
   onCodeCompleted(code: string) {
-    if (code !== this.codeGenerate) {
-      this.toastMS.handleError(
-        'Mã xác minh không trùng khớp, vui lòng thử lại!',
-        400
-      );
-      return;
-    }
-    if (this.codeGenerate && this.emailGenerate && code) {
-      const data: IConfirmEmailRequest = {
-        code: this.codeGenerate,
-        email: this.emailGenerate,
-        userComfirmCode: code,
-      };
-      this.isVerificationComplete = true;
-      this.store.dispatch(AuthActions.confirmVerifyEmail({ data }));
-    } else {
-      console.log('error what');
-    }
+    this.onVerifyOtpCode.emit(code);
+    this.isVerificationComplete = true;
   }
 
-  verifyEmailSubmit() {
-    if (this.inputEmail.valid && this.inputEmail.value) {
-      this.store.dispatch(
-        AuthActions.verifyEmail({ email: this.inputEmail.value })
-      );
-    } else {
-      console.log(this.inputEmail.value, 'email input invalid');
-    }
+  reSendCode() {
+    this.onResendCode.emit();
+  }
+
+  changeEmail() {
+    this.store.dispatch(AuthActions.reset_state());
+    this.onChangeEmailStepFirst.emit();
   }
 
   constructor(
     private store: Store<GlobalState>,
-    private cdRef: ChangeDetectorRef,
-    private toastMS: MessageResponseService,
-    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
