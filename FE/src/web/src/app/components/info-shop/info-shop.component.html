@@ -16,8 +16,7 @@
             class="rounded-full w-[54px] h-[54px] mr-4 object-cover"
           />
           <div class="flex flex-col items-start">
-            <h2 class="text-xl font-semibold text-white">VD GROUP VN</h2>
-            <p class="text-xs text-white">Online 1 phút trước</p>
+            <h2 class="text-xl font-semibold text-white">{{shopInfo?.shopName}}</h2>
           </div>
         </div>
       </div>
@@ -72,7 +71,7 @@
               nzTheme="outline"
             ></span>
             <span class="text-lg mx-2"> Tham Gia: </span>
-            <span class="text-blue-500 ml-1 text-lg">3 Tháng Trước</span>
+            <span class="text-blue-500 ml-1 text-lg">{{shopInfo?.createDate | date: 'short'}}</span>
           </p>
         </div>
         <div class="col-span-2 p-5">

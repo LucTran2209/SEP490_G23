@@ -1,29 +1,27 @@
-import { AfterContentChecked, AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { first, map, Observable, of } from 'rxjs';
+import * as RentalActions from '../../../../features/common/state/rental/rental.actions';
 import { IPayLoad } from '../../../../interfaces/account.interface';
 import {
-  ProductImage,
-  ProductItemResponse,
-  ProductOutputDto,
+  ProductOutputDto
 } from '../../../../interfaces/product.interface';
 import { StorageService } from '../../../../services/storage.service';
-import { LocalStorageKey } from '../../../../utils/constant';
-import * as RentalActions from '../../../../features/common/state/rental/rental.actions';
-import { Store } from '@ngrx/store';
 import { FeatureAppState } from '../../../../store/app.state';
-import { first, map, Observable, of, take } from 'rxjs';
+import { LocalStorageKey } from '../../../../utils/constant';
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent implements OnInit, AfterContentInit {
-  @Input() product!: ProductOutputDto | ProductItemResponse; // Union Type
+  @Input() product!: ProductOutputDto; // Union Type
   @Input() isRenter: boolean = false;
   paramURL$?: Observable<string>;
   currentIndex: number = 0;
   @Output() editProduct = new EventEmitter<
-    ProductOutputDto | ProductItemResponse>();
+    ProductOutputDto>();
   user?: IPayLoad;
 
   onEditClick(): void {
@@ -47,17 +45,11 @@ export class ProductCardComponent implements OnInit, AfterContentInit {
     })
    )
   }
-  private isProductOutputDto(product: ProductOutputDto | ProductItemResponse): product is ProductOutputDto {
-    return (product as ProductOutputDto).productImages !== undefined;
-  }
   get currentImage() {
-    if (this.isProductOutputDto(this.product)) {
-      // If the product is ProductOutputDto and productImages exist
       if (this.isRenter && this.product.productImages && this.product.productImages.length > 0) {
         const currentProductImage = this.product.productImages[this.currentIndex];
-        return currentProductImage?.link || null; // Return link or empty string if not found
+        return currentProductImage?.link || null; 
       }
-    }
 
     // If it's not ProductOutputDto or no productImages, fallback to string[]
     if (this.product.images && this.product.images.length > 0) {

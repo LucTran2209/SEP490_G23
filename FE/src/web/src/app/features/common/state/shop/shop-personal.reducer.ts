@@ -1,13 +1,13 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
-import { ProductItemResponse } from '../../../../interfaces/product.interface';
+import { ProductItemResponse, ProductOutputDto } from '../../../../interfaces/product.interface';
 import * as RentalShopProductActions from './shop-personal.actions';
 import { feature_key } from '../../../../configs/feature_key.config';
 export interface RentalShopProductState {
   message: string | null;
   status: StatusProcess;
   shopId: string;
-  productItemResponse: ProductItemResponse[];
+  productItemResponse: ProductOutputDto[];
   pageIndex: number;
   pageSize: number;
   totalCount: number;

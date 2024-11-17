@@ -34,7 +34,7 @@
       ></span>
       <p class="text-sm">{{ product.evaluate }}</p>
     </div>
-    @if((paramURL$ | async) !== '/lessor/shop' && !isRenter){
+    @if((paramURL$ | async) === '/lessor/shop'){
     <button
       nz-button
       nzGhost
@@ -46,13 +46,15 @@
     }@else{
     <div class="flex items-center gap-x-2">
       <button nz-button nzGhost nzType="primary">Chọn thuê</button>
-      <button
-        nz-button
-        nzType="primary"
-        (click)="$event.stopPropagation(); onAddMoreClick()"
-      >
-        T
-      </button>
+      @if((paramURL$ | async) === 'shop'){
+        <button
+          nz-button
+          nzType="primary"
+          (click)="$event.stopPropagation(); onAddMoreClick()"
+        >
+          T
+        </button>
+      }
     </div>
     }
   </div>

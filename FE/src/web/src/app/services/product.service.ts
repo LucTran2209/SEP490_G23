@@ -8,10 +8,11 @@ import {
 import {
   ProductDtoResponse,
   ProductItemResponse,
+  ProductOutputDto,
   ProductResultService,
 } from '../interfaces/product.interface';
-import { AppHttpClientService } from './app-http-client.service';
 import { cleanParams } from '../utils/anonymous.helper';
+import { AppHttpClientService } from './app-http-client.service';
 
 @Injectable({
   providedIn: 'root',
@@ -115,9 +116,9 @@ export class ProductService {
   listProductShopCommon(
     filters: any,
     id: string | number
-  ): Observable<BaseResponseApiV2<ProductItemResponse>> {
+  ): Observable<BaseResponseApiV2<ProductOutputDto>> {
     const cleanedParams = cleanParams(filters); 
-    return this.httpClient.get<BaseResponseApiV2<ProductItemResponse>>(
+    return this.httpClient.get<BaseResponseApiV2<ProductOutputDto>>(
       `${ProductSlug.RentalShopProduct.api}/${id}`,
       cleanedParams
     );
