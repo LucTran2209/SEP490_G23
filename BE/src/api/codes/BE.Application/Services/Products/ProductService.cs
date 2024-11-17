@@ -63,7 +63,9 @@ namespace BE.Application.Services.Products
                 .Filter(inputDto.SubCategory?.ToString(),
                     p => (inputDto.SubCategory == null) ? true : inputDto.SubCategory.Any(s => p.SubCategoryId == s))
                 .Filter(inputDto.Evaluates?.ToString(),
-                    p => (inputDto.Evaluates == null) ? true : inputDto.Evaluates.Any(e => e == Decimal.ToInt32(p.Evaluate)));
+                    p => (inputDto.Evaluates == null) ? true : inputDto.Evaluates.Any(e => e == Decimal.ToInt32(p.Evaluate)))
+                .Filter(inputDto.MinPrice.ToString(),
+                    p => (inputDto.MinPrice <= p.RentalPrice) && (inputDto.MaxPrice >= p.RentalPrice));
 
             var products = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                 .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
