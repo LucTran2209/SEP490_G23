@@ -65,7 +65,7 @@ namespace BE.Application.Services.Products
                 .Filter(inputDto.Evaluates?.ToString(),
                     p => (inputDto.Evaluates == null) ? true : inputDto.Evaluates.Any(e => e == Decimal.ToInt32(p.Evaluate)))
                 .Filter(inputDto.MinPrice.ToString(),
-                    p => (inputDto.MinPrice < p.RentalPrice) && (inputDto.MaxPrice > p.RentalPrice));
+                    p => (inputDto.MinPrice <= p.RentalPrice) && (inputDto.MaxPrice >= p.RentalPrice));
 
             var products = await query.OrderBy(inputDto.OrderBy, inputDto.OrderByDesc)
                 .ThenBy(inputDto.ThenBy, inputDto.ThenByDesc)
