@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-notification-item',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './notification-item.component.scss'
 })
 export class NotificationItemComponent {
+ @Input() data: any = dataMock;
+}
 
+const dataMock = {
+  text: 'New inspection assigned QW0001 - Pepsi Asia',
+  time: '19/11/2024',
+  isRead: false
 }

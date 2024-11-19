@@ -7,6 +7,8 @@ import { FeatureAppState } from '../../../store/app.state';
 import { logout } from '../../../features/auth/state/auth.actions';
 import { Store } from '@ngrx/store';
 import { UserProfileService } from '../../../services/user-profile.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationPopupComponent } from '../../../features/notification/components/notification-popup/notification-popup.component';
 
 @Component({
   selector: 'app-navbar-headear',
@@ -15,7 +17,7 @@ import { UserProfileService } from '../../../services/user-profile.service';
 })
 export class NavbarHeadearComponent implements OnInit {
   @Input() isCollapsed: boolean = false; 
-  @Input() notificationCount: number = 0;
+  @Input() notificationCount: number = 5;
   user?: IPayLoad; 
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
@@ -30,6 +32,7 @@ export class NavbarHeadearComponent implements OnInit {
     private storageService: StorageService,
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +41,15 @@ export class NavbarHeadearComponent implements OnInit {
     this.avatarPersonal = this.userProfileService.avatar;
     this.rentalShopId = this.userProfileService.rentalshopId;
   }
+/**
+ * test
+ */
+
+
+ openNotifcationAvailable(){
+  
+ }
+
   handleToggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed; 
     this.toggleSidebar.emit(this.isCollapsed); 

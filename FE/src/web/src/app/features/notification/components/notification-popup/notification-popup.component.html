@@ -1,0 +1,48 @@
+<nz-badge
+  [nzCount]="5"
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  class="cursor-pointer"
+  (click)="isToggleBell()"
+>
+  @if(toggleBell){
+  <span
+    class="text-lg text-[#0f6cf8]"
+    nz-icon
+    nzType="bell"
+    nzTheme="outline"
+  ></span>
+  }@else{
+  <span
+    nz-icon
+    nzType="bell"
+    class="text-lg text-[#0f6cf8]"
+    nzTheme="fill"
+  ></span>
+  }
+</nz-badge>
+<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+  <ng-container *ngIf="notifications.length !== 0; else isEmptyNotification">
+    <div class="menu-header">
+      <h3 class="text-[20px] font-semibold p-3">
+        Thông báo ({{ notifications.length }})
+      </h3>
+    </div>
+    <nz-divider></nz-divider>
+    <nz-list nzItemLayout="horizontal">
+      @for (notification of notifications; track notification) {
+      <nz-list-item
+        class="transition-all duration-200 ease-linear hover:bg-[#F8F8F8]"
+      >
+        <app-notification-item />
+      </nz-list-item>
+      }
+    </nz-list>
+    <nz-divider></nz-divider>
+    <button nz-button nzType="link">Xem tất cả thông báo</button>
+  </ng-container>
+</mat-menu>
+
+<ng-template #isEmptyNotification>
+  <nz-list-empty />
+</ng-template>

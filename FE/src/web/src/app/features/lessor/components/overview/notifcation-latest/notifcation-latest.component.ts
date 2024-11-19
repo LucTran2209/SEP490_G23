@@ -19,6 +19,9 @@ export class NotifcationLatestComponent {
     },
     {
       title: 'Ant Design Title 4'
-    }
+    },
+    {
+      title: 'Ant Design Title 5'
+    },
   ];
 }

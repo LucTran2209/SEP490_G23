@@ -119,6 +119,8 @@ import { ChangeStatusOrderComponent } from '../modal/change-status-order/change-
 import { SelectViewStatisticComponent } from '../core/select/select-view-statistic/select-view-statistic.component';
 import { SelectDateRangeComponent } from '../core/select/select-date-range/select-date-range.component';
 import { NotificationItemComponent } from '../notification-item/notification-item.component';
+import { NotificationPopupComponent } from '../../features/notification/components/notification-popup/notification-popup.component';
+import { MatMenuModule } from '@angular/material/menu';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
@@ -168,9 +170,9 @@ const ANTD_MODULES = [
   NzTypographyModule,
   NzCollapseModule,
 ];
-
-const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
+const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule, MatMenuModule];
 const SHARED_MODULES = [
+  NotificationPopupComponent,
   NotificationItemComponent,
   SelectDateRangeComponent,
   SelectViewStatisticComponent,
