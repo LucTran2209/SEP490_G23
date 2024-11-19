@@ -6,5 +6,6 @@
         public Guid? RentalShopId { get;}
         public string? UserName { get;}
         public string? FullName { get;}
+        public decimal? Balance { get;}
     }
 }

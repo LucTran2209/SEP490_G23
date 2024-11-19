@@ -33,5 +33,6 @@ namespace BE.Persistence
         public DbSet<SubCategory> SubCategories => this.Set<SubCategory>();
         public DbSet<Feedback> Feedbacks => this.Set<Feedback>();
         public DbSet<ProductImage> ProductImages => this.Set<ProductImage>();
+        public DbSet<RechargeHistory> RechargeHistories => this.Set<RechargeHistory>();
     }
 }

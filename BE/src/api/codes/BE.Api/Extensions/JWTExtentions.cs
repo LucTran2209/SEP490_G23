@@ -1,6 +1,7 @@
 ﻿using BE.Api.Services;
 using BE.Application.DependencyInjections;
 using BE.Domain.Interfaces;
+using BE.Infrastructure.VnPaySandbox.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -18,6 +19,7 @@ namespace BE.Api.Extensions
             services.Configure<SystemConfig>(configuration.GetSection("SystemConfig"));
             services.Configure<SmtpConfig>(configuration.GetSection("SmtpConfig"));
             services.Configure<AzureConfig>(configuration.GetSection("AzureConfig"));
+            services.Configure<VnpayConfig>(configuration.GetSection("VnpayConfig"));
 
             services.AddAuthentication(options =>
             {
