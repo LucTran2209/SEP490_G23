@@ -22,6 +22,7 @@ export class UserNavbarHeaderComponent implements OnInit {
   userRole: USER_ROLE = USER_ROLE.LESSOR;
   avatarPersonal: string = '';
   rentalShopId: string = '';
+  userName: string = '';
 
 
   constructor(
@@ -37,6 +38,7 @@ export class UserNavbarHeaderComponent implements OnInit {
     this.checkRole();
     this.avatarPersonal = this.userProfileService.avatar;
     this.rentalShopId = this.userProfileService.rentalshopId;
+    this.userName = this.userProfileService.currentUser.UserName;
     this.activatedRoute.queryParams.subscribe(params => {
       const currentRoute = this.router.url; // Get current route
       if (currentRoute.includes('/common/product-search')) {

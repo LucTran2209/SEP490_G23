@@ -1,0 +1,66 @@
+<div class="p-5 my-3 bg-white rounded-md">
+  <div class="bg-[#116DFC] rounded-md p-5 text-white text-center h-48">
+    <h3 class="text-xl font-semibold uppercase text-white">ERMSPAY</h3>
+    <div class="flex justify-center mt-3">
+      <p class="mr-2 text-lg">Số Dư Ví</p>
+      <a (click)="toggleShow()">
+        <span
+          *ngIf="!isShow"
+          nz-icon
+          nzType="eye-invisible"
+          nzTheme="outline"
+        ></span>
+        <span *ngIf="isShow" nz-icon nzType="eye" nzTheme="outline"></span>
+      </a>
+    </div>
+    <p *ngIf="!isShow" class="mt-3 text-lg">*** VND</p>
+    <p *ngIf="isShow" class="mt-3 text-lg">20.000 VND</p>
+  </div>
+</div>
+<div class="mx-30 p-8 grid grid-cols-1 md:grid-cols-5 gap-6 option-payment">
+  <div class="bg-white p-3 rounded-xl shadow-lg text-center">
+    <span
+      nz-icon
+      nzType="plus-square"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">Nạp Tiền</h3>
+  </div>
+  <div class="bg-white p-3 rounded-xl shadow-lg text-center">
+    <span
+      nz-icon
+      nzType="credit-card"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">Phương Thức Thanh Toán</h3>
+  </div>
+  <div class="bg-white p-3 rounded-xl shadow-lg text-center">
+    <span
+      nz-icon
+      nzType="qrcode"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">QR Thanh Toán</h3>
+  </div>
+  <div class="bg-white p-3 rounded-xl shadow-lg text-center">
+    <span
+      nz-icon
+      nzType="transaction"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">Chuyển Tiền</h3>
+  </div>
+  <div class="bg-white p-3 rounded-xl shadow-lg text-center">
+    <span
+      nz-icon
+      nzType="bank"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">Rút Tiền</h3>
+  </div>
+</div>

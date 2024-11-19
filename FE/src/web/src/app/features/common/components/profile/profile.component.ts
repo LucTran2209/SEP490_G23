@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   OnInit
 } from '@angular/core';
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private loadingService: LoadingService,
     private messageService: MessageResponseService,
+    private cdRef: ChangeDetectorRef,
   ) {
     this.loading$ = this.loadingService.status$;
   }
@@ -65,6 +67,7 @@ export class ProfileComponent implements OnInit {
     }
     console.log(this.userInformation);
     this.isVisible = true;
+    this.cdRef.detectChanges();
   }
   handleCloseModal() {
     this.isVisible = false;

@@ -12,6 +12,7 @@ import { USER_ROLE } from '../../../utils/constant';
 })
 export class LayoutProfileComponent implements OnInit {
   isAccountOpen = false;
+  isPaymentOpen = false;
   isOrderSlected= false;
   userName: string = '';
   avatarPersonal: string = '';
@@ -31,6 +32,7 @@ export class LayoutProfileComponent implements OnInit {
   checkActiveAccountRoute() {
     const currentUrl = this.router.url;
     this.isAccountOpen = currentUrl.startsWith('/common/user/account');
+    this.isPaymentOpen = currentUrl.startsWith('/common/user/payment');
   }
   checkActiveOrderRoute() {
     const currentUrl = this.router.url;

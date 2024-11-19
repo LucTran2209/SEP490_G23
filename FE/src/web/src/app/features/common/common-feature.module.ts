@@ -26,6 +26,7 @@ import { featureOrderRentalProduct } from './state/order/order.reducer';
 import { OrderProductsEffects } from './state/order/order.effects';
 import { ShopRentalListComponent } from './components/shop-rental-list/shop-rental-list.component';
 import { NotificationListComponent } from './components/notification-list/notification-list.component';
+import { MyWalletComponent } from './components/my-wallet/my-wallet.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { NotificationListComponent } from './components/notification-list/notifi
     HowitorderComponent,
     ShopRentalListComponent,
     NotificationListComponent,
+    MyWalletComponent,
   ],
   imports: [
     CommonModule, SharedModule,

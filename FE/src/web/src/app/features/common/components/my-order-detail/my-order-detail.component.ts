@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from '../../../../services/loading.service';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { Observable } from 'rxjs';
+import { ORDER_STATUS } from '../../../../utils/constant';
+import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 
 @Component({
   selector: 'app-my-order-detail',
@@ -55,7 +57,6 @@ export class MyOrderDetailComponent implements OnInit {
         this.loadingService.setOtherLoading('loaded');
         this.calculateNumberOfRentalDays();
         this.calculateTotalRentAndDeposit();
-        this.setStatusMessage();
         console.log(this.order);
       },
       error: () => {
@@ -77,29 +78,7 @@ export class MyOrderDetailComponent implements OnInit {
   calculateTotalRentAndDeposit(): void {
     this.totalPrice = this.order.totalRentPrice * this.numberofRentalDays + this.order.totalDepositPrice;
   }
-  setStatusMessage(): void {
-    const status = this.order?.orderStatuses[0]?.status;
-    if (status === 0) {
-      this.orderStatusMessage = 'Đang phê duyệt';
-      this.orderStatusClass = 'p-2 status-success text-xs';
-    } else if (status === 1) {
-      this.orderStatusMessage = 'Chờ Thanh Toán';
-      this.orderStatusClass = 'p-2 status-warning text-xs';
-    } else if (status === 2){
-      this.orderStatusMessage = 'Chờ Giao Hàng';
-      this.orderStatusClass = 'p-2 status-pending_delivery text-xs';
-    } else if (status === 3){
-      this.orderStatusMessage = 'Đã Nhận Hàng';
-      this.orderStatusClass = 'p-2 status-received text-xs';
-    } else if (status === 4){
-      this.orderStatusMessage = 'Chờ Hoàn Trả';
-      this.orderStatusClass = 'p-2 status-refund text-xs';
-    } else if (status === 5){
-      this.orderStatusMessage = 'Hoàn Thành';
-      this.orderStatusClass = 'p-2 status-deposit_refund text-xs';
-    } else if (status === 6){
-      this.orderStatusMessage = 'Hủy Đơn';
-      this.orderStatusClass = 'p-2 status-error text-xs w-28';
-    }
+  convertStatus(orderStatus: ORDER_STATUS) {
+    return convertStatusOrder(orderStatus);
   }
 }

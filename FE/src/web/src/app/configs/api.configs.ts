@@ -201,6 +201,16 @@ export const RentalShopSlug = {
     label: 'Get Rental Shop',
     title: 'Get Rental Shop | ERMS',
     api: 'RentalShop/',
+  },
+  UpdateRentalShop: {
+    label: 'Update Rental Shop',
+    title: 'Update Rental Shop | ERMS',
+    api: 'RentalShop/',
+  },
+  ListRentalShop: {
+    label: 'List Rental Shop',
+    title: 'List Rental Shop | ERMS',
+    api: 'RentalShop/AllRequestShop',
   }
 
 }

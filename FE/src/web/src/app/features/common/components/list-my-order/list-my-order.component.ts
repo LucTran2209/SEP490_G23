@@ -54,7 +54,7 @@ export class ListMyOrderComponent implements OnInit {
     isShowBtn1: boolean;
   }[] = [
     {
-      title: 'CHỜ PHÊ DUYỆT',
+      title: 'CHỜ XÁC NHẬN',
       status: 0,
       searchText: '',
       orders: [],

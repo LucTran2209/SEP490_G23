@@ -11,6 +11,7 @@ import { MyOrderDetailComponent } from './components/my-order-detail/my-order-de
 import { HowitorderComponent } from './static/howitorder/howitorder.component';
 import { ShopRentalListComponent } from './components/shop-rental-list/shop-rental-list.component';
 import { NotificationListComponent } from './components/notification-list/notification-list.component';
+import { MyWalletComponent } from './components/my-wallet/my-wallet.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,12 @@ const routes: Routes = [
         path: 'account', 
         children: [
           { path: 'profile', component: ProfileComponent  },
+        ],
+      },
+      { 
+        path: 'payment', 
+        children: [
+          { path: 'my-wallet', component: MyWalletComponent  },
         ],
       },
       {

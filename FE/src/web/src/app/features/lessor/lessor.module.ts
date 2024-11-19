@@ -19,6 +19,7 @@ import { OrderStatisticComponent } from './components/overview/statistics/order-
 import { RevenueStatisticComponent } from './components/overview/statistics/revenue-statistic/revenue-statistic.component';
 import { SubCategoryStatisticComponent } from './components/overview/statistics/sub-category-statistic/sub-category-statistic.component';
 import { NotifcationLatestComponent } from './components/overview/notifcation-latest/notifcation-latest.component';
+import { ManageVoucherComponent } from './components/manage-voucher/manage-voucher.component';
 @NgModule({
   declarations: [
     ManagePostComponent,
@@ -32,6 +33,7 @@ import { NotifcationLatestComponent } from './components/overview/notifcation-la
     OrderStatisticComponent,
     OrderLatestComponent,
     NotifcationLatestComponent,
+    ManageVoucherComponent,
   ],
   imports: [
     LessorRoutingModule,
@@ -40,7 +42,7 @@ import { NotifcationLatestComponent } from './components/overview/notifcation-la
     StoreModule.forFeature(orderDetailFeature),
     EffectsModule.forFeature([OrderDetailEffects]),
     SharedModule,
-    BaseChartDirective
+    // BaseChartDirective
   ],
 })
 export class LessorModule {}

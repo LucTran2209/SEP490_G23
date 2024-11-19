@@ -48,15 +48,16 @@
     </div>
   </ng-container>
   <ng-container *ngIf="user">
-    <div nz-dropdown [nzDropdownMenu]="menu">
+    <div class="flex justify-between" nz-dropdown [nzDropdownMenu]="menu">
       <nz-avatar
-        nzGap="4"
+        class="mt-1"
         [nzSrc]="
           avatarPersonal ? avatarPersonal : 'assets/images/default-avatar.jpg'
         "
-        nzSize="large"
-        class="align-middle bg-green-500 ml-10"
+        nzSize="default"
+        class="align-middle ml-10"
       ></nz-avatar>
+      <p class="text-gray-400 mx-3 pt-1">{{ userName }}</p>
     </div>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
