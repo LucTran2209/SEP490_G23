@@ -16,6 +16,12 @@ public class ExceptionHandlingMiddleware : IMiddleware
     {
         try
         {
+            // Set the timezone globally (use SE Asia Standard Time for UTC+7)
+            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+
+            // Optionally, store the timezone in HttpContext.Items if needed later
+            context.Items["TimeZone"] = timeZoneInfo;
+
             await next.Invoke(context);
         }
         catch (Exception ex)

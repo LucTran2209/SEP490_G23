@@ -127,7 +127,7 @@ namespace BE.Infrastructure.Common
                     case EntityState.Added:
                         if (entry.Entity is EntityAuditBase added)
                         {
-                            added.CreatedDate = DateTime.UtcNow;
+                            added.CreatedDate = DateTime.Now;
                         }
 
                         if (entry.Entity is IUserTracking hasTrace)
@@ -147,7 +147,7 @@ namespace BE.Infrastructure.Common
                     case EntityState.Modified:
                         if (entry.Entity is EntityAuditBase modified)
                         {
-                            modified.LastModifiedDate = DateTime.UtcNow;
+                            modified.LastModifiedDate = DateTime.Now;
                         }
 
                         if (entry.Entity is IUserTracking trace)

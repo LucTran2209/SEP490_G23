@@ -2,6 +2,7 @@
 using BE.Domain.Interfaces;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BE.Infrastructure.Repositories
 {
@@ -21,14 +22,16 @@ namespace BE.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<RechargeHistory?> FindByIdAsync(Guid id)
+        public async Task<RechargeHistory?> FindByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await context.RechargeHistories.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task UpdateAsync(RechargeHistory entity)
         {
-            throw new NotImplementedException();
+            context.RechargeHistories.Update(entity);
+
+            return Task.CompletedTask;
         }
     }
 }
