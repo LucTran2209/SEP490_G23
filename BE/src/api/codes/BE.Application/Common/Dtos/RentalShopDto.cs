@@ -4,7 +4,7 @@
     {
         public Guid? Id { get; set; }
         public Guid UserId { get; set; }
-        public string? AvatarShop {  get; set; }
+        public string? AvatarShop { get; set; }
         public string? ShopName { get; set; }
         public string? ImageFont { get; set; }
         public string? ImageBack { get; set; }
@@ -17,5 +17,6 @@
         public RequestShop Status { get; set; }
         public bool IsActive { get; set; }
         public string? Description { get; set; }
+        public string? AdminNote { get; set; }
     }
 }

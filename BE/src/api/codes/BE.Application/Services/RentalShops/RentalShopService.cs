@@ -62,12 +62,7 @@ namespace BE.Application.Services.RentalShops
                 return new ResultService { StatusCode = (int)HttpStatusCode.NotFound, Message = "Rental shop not found." };
 
             rentalShop.ShopName = inputDto.ShopName;
-            rentalShop.Email = inputDto.Email;
-            rentalShop.PhoneNumber = inputDto.PhoneNumber;
-            rentalShop.Address = inputDto.Address;
-            rentalShop.Description = inputDto.Description;
-            rentalShop.Status = inputDto.Status;
-            rentalShop.IsActive = inputDto.IsActive;
+            rentalShop.AvatarShop = inputDto.AvatarShop;
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
 
@@ -228,6 +223,7 @@ namespace BE.Application.Services.RentalShops
                 };
             }
             rentalShop.IsActive = input.IsActive;
+            rentalShop.AdminNote = input.AdminNote;
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
             return new ResultService

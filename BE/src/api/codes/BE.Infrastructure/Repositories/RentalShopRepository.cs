@@ -1,4 +1,5 @@
-﻿using BE.Domain.Entities;
+﻿using BE.Domain.Abstractions.Enums;
+using BE.Domain.Entities;
 using BE.Domain.Interfaces;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
@@ -55,7 +56,7 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<RentalShop?> GetAllRentalShopByNotActiveAsync()
         {
-            return context.RentalShops.Where(rs => rs.Status == 0).AsQueryable();
+            return context.RentalShops.Where(rs => rs.Status == RequestShop.Approval).AsQueryable();
         }
     }
 }

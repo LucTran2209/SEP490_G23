@@ -10,5 +10,6 @@
         public RequestShop Status { get; set; }
         public bool IsActive { get; set; }
         public string Description { get; set; } = string.Empty;
+        public string? AdminNote { get; set; }
     }
 }
