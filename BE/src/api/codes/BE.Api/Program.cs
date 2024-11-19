@@ -2,6 +2,7 @@ using BE.Api.Extensions;
 using BE.Api.Middlewares;
 using BE.Application.DependencyInjections;
 using BE.Persistence.DependencyInjections;
+using BE.Infrastructure.DependencyInjections;
 using BE.Persistence.Extensions;
 
 namespace BE.Api
@@ -21,15 +22,19 @@ namespace BE.Api
 
             // # DI PersistenceService
             builder.Services.AddPersistenceServices(builder.Configuration);
+            
+            // # DI InfrastructureService
+            builder.Services.AddInfrastructureService(builder.Configuration);
 
             // # DI ApplicationService
             builder.Services.AddApplicationServices(builder.Configuration);
 
+            // # MIDDELWARE
             builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
             builder.Services.AddMemoryCache();
 
-            // CORS
+            // # CORS
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
