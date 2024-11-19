@@ -1,0 +1,22 @@
+<div class="bg-white my-3 p-6 rounded-md">
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="font-semibold text-[22px]">Top sản phẩm được thuê nhiều nhất</h3>
+    <div>
+      <app-select-view-statistic
+        [defaultValue]="'0'"
+        [optionSelect]="chooseFollowDate"
+        (chooseItemOption)="loadData($event)"
+      />
+    </div>
+  </div>
+  <canvas
+    baseChart
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [type]="barChartType"
+    (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)"
+    [type]="'bar'"
+  >
+  </canvas>
+</div>

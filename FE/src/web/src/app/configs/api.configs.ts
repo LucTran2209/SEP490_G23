@@ -177,6 +177,11 @@ export const OrderSlug = {
     title: 'Active Order | ERMS',
     api: 'ActiveOrder',
   },
+  RequestOrder: {
+    label: 'Request Order',
+    title: 'Request Order | ERMS',
+    api: 'api/Order/orderstatus',
+  },
 };
 export const CategorySlug = {
   ListCategory: {

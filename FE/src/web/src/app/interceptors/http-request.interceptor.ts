@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { finalize, switchMap, throwError, timer } from 'rxjs';
 import { MessageResponseService } from '../services/message-response.service';
-import { AuthSlug, CategorySlug, ProductSlug } from '../configs/api.configs';
+import { AuthSlug, CategorySlug, ProductSlug, RentalShopSlug } from '../configs/api.configs';
 
 const ignoredUrls: string[] = [
   AuthSlug.Login.api,
@@ -16,7 +16,9 @@ const ignoredUrls: string[] = [
   CategorySlug.ListSubCategory.api,
   'https://esgoo.net/api-tinhthanh/',
   ProductSlug.RentalShopProduct.api,
-  ProductSlug.GetDetailProduct.api
+  ProductSlug.GetDetailProduct.api,
+  ProductSlug.ListProduct.api,
+  RentalShopSlug.GetRentalShop.api
 ];
 
 export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {

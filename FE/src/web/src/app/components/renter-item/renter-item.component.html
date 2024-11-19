@@ -1,8 +1,8 @@
 <div
-  class="flex justify-between items-center border border-gray-300 rounded-lg p-3"
+  class="relative flex justify-between items-center gap-x-3 border border-gray-300 rounded-lg p-3"
   *ngIf="productRentalFollowId$ | async as productRental"
 >
-  <div class=""></div>
+
   <div class="flex-1 flex gap-2 items-center">
     @if(productRental.images && productRental.images.length !== 0){
     <img
@@ -32,4 +32,7 @@
     [nzMin]="1"
     [nzStep]="1"
   ></nz-input-number>
+  <div class="cursor-pointer" *ngIf="isRentalMore" (click)=" $event.stopPropagation(); deleteOneItem()">
+    <span nz-icon nzType="delete" nzTheme="outline"></span>
+  </div>
 </div>

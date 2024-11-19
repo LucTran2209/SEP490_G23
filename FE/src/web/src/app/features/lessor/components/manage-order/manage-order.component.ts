@@ -1,14 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzCustomColumn } from 'ng-zorro-antd/table';
-import {
-  catchError,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap
-} from 'rxjs';
+import { catchError, map, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { OptionSelectCheckBox } from '../../../../configs/anonymous.config';
 import { OrderListResponse } from '../../../../interfaces/order.interface';
 import { LoadingService } from '../../../../services/loading.service';
@@ -28,7 +21,7 @@ interface CustomColumns extends NzCustomColumn {
   templateUrl: './manage-order.component.html',
   styleUrl: './manage-order.component.scss',
 })
-export class ManageOrderComponent implements OnInit {
+export class ManageOrderComponent implements OnInit, OnDestroy {
   listData: OrderListResponse[] = [];
   pageIndex$: Observable<number> = of(1);
   pageTotal$?: Observable<number>;
@@ -116,6 +109,8 @@ export class ManageOrderComponent implements OnInit {
     },
   ];
 
+  subscription?: Subscription
+
   handleChooseViewCell(arr: OptionSelectCheckBox[]) {
     this.customColumn = this.customColumn.map((item, index) => ({
       ...item,
@@ -186,26 +181,26 @@ export class ManageOrderComponent implements OnInit {
     });
   }
 
-
   async onloadOrder(paramFilter?: any) {
-    this.loadingSerivce.setLoading();
-    this.orderService.listOrderLessor(paramFilter ?? {}).pipe(
-      map((res) => {
-        const {
-          data: { items, pageIndex, pageSize, totalCount },
-        } = res;
-        this.listData = items;
-        this.pageIndex$ = of(pageIndex);
-        this.pageTotal$ = of(totalCount);
-        this.pageSize$ = of(pageSize);
-        this.loadingSerivce.setOtherLoading('loaded');
-      }),
-      catchError((err) => {
-        this.loadingSerivce.setOtherLoading('error');
-        console.error('Order loading error:', err);
-        return of([]);
-      })
-    ).subscribe();
+  this.loadingSerivce.setLoading();
+  this.subscription = this.orderService
+      .listOrderLessor(paramFilter ?? {})
+      .subscribe({
+        next: (res) => {
+          const {
+            data: { items, pageIndex, pageSize, totalCount },
+          } = res;
+          this.listData = items;
+          this.pageIndex$ = of(pageIndex);
+          this.pageTotal$ = of(totalCount);
+          this.pageSize$ = of(pageSize);
+          this.loadingSerivce.setOtherLoading('loaded');
+        },
+        error: (err) => {
+          this.loadingSerivce.setOtherLoading('error');
+          console.error('Order loading error:', err);
+        },
+      });
   }
 
   onQueryParams() {
@@ -221,7 +216,9 @@ export class ManageOrderComponent implements OnInit {
           };
           return filters;
         }),
-        tap((filters) => {this.navigateService.updateParams(filters);}),
+        tap((filters) => {
+          this.navigateService.updateParams(filters);
+        }),
         switchMap((filters) => this.onloadOrder(filters))
       )
       .subscribe();
@@ -239,5 +236,9 @@ export class ManageOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.onQueryParams();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

@@ -9,7 +9,9 @@ export const feature_key = {
   rentalProductFeature: 'feature_rentalProductFeature',
   filtersFeature: "feature_filter",
   orderProductFeature: "feature_orderProduct",
-  resizeChatFeature: 'feature_resize'
+  resizeChatFeature: 'feature_resize',
+  orderRequestFeature: 'feature_orderrequest',
+  orderDetailFeature: 'feature_orderdetail',
 } as const;
 
 export type FeatureKeyValues = (typeof feature_key)[keyof typeof feature_key];

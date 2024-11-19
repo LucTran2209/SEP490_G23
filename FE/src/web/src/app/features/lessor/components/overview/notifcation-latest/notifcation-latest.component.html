@@ -1,0 +1,20 @@
+<div class="bg-white my-3 p-6 rounded-md h-full max-h-[620px]">
+    <div class="mb-3 flex items-center justify-between">
+        <h3 class="font-semibold text-[20px]">Thông báo mới nhất</h3>
+        <div>
+            <button [routerLink]="[ '#Order']" nzType="link" nz-button>Xem thêm</button>
+        </div>
+    </div>
+    <div>
+        <nz-list nzItemLayout="horizontal" >
+            @for (item of data; track item) {
+              <nz-list-item class="transition-all duration-200 ease-linear hover:bg-[#F8F8F8] ">
+               <app-notification-item/>
+              </nz-list-item>
+            }
+            @if (data.length === 0) {
+              <nz-list-empty />
+            }
+          </nz-list>
+    </div>
+</div>

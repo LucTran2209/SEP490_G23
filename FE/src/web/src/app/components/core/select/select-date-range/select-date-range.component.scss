@@ -1,0 +1,66 @@
+   ::ng-deep .ant-picker-date-panel .ant-picker-content th {
+    width: 43px !important;
+  }
+   ::ng-deep .ant-picker-content th {
+    height: 43px !important;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 30px !important;
+  }
+   ::ng-deep .ant-picker-cell .ant-picker-cell-inner {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    min-width: 35px;
+    height: 37px !important;
+    line-height: 34px !important;
+    border-radius: 2px;
+    transition: background 0.3s, border 0.3s;
+  }
+  
+    ::ng-deep
+    .ant-picker-cell-in-view.ant-picker-cell-range-hover-end:not(
+      .ant-picker-cell-in-range
+    ):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end)::after {
+      height: 37px !important;
+    }
+
+    ::ng-deep
+    .ant-picker-cell::before {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 37px !important;
+    transform: translateY(-50%);
+    transition: all 0.3s;
+    content: "";
+  }
+   ::ng-deep .ant-picker-date-panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 326px;
+  }
+  
+    ::ng-deep
+    .ant-picker-cell-in-view.ant-picker-cell-range-hover:not(
+      .ant-picker-cell-in-range
+    )::after {
+    position: absolute;
+    top: 50%;
+    z-index: 0;
+    min-height: 37px !important;
+    border-top: 1px dashed #7ec1ff;
+    border-bottom: 1px dashed #7ec1ff;
+    transform: translateY(-50%);
+    transition: all 0.3s;
+    content: "";
+  }
+   ::ng-deep .ant-picker-footer-extra {
+    text-align: end;
+    padding: 10px;
+  }
+   ::ng-deep .ant-picker-dropdown-range {
+    padding: 0;
+  }
+  

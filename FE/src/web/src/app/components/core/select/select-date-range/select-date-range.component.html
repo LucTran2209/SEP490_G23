@@ -1,0 +1,9 @@
+<nz-range-picker
+  [nzSize]="nzSize"
+  [nzMode]="nzMode"
+  [nzFormat]="formatDate"
+  [nzRenderExtraFooter]="footerRender"
+  [nzPopupStyle]="{ borderRadius: '8px' }"
+  class="rounded-md"
+></nz-range-picker>
+<ng-template #footerRender> 'extra footer'</ng-template>

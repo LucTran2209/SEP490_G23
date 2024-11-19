@@ -12,13 +12,6 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/common/home' },
   { path: 'base', component: AnonymousComponent },
   {
-    path: 'chat-demo',
-    loadChildren: () =>
-      import('./features/chat-demo/chat-demo.module').then(
-        (m) => m.ChatDemoModule
-      ),
-  },
-  {
     path: 'admin',
     canActivate: [authGuard],
     component: LayoutDashboardComponent,

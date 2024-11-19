@@ -1,4 +1,23 @@
 <div class="py-5">
- <app-card-overview/>
- 
+  <app-card-overview />
+  <div class="grid grid-cols-3 gap-5">
+    <div class="col-span-2">
+      <ngx-slick-carousel class="carousel" [config]="slideConfig">
+        <div ngxSlickItem *ngFor="let component of components" class="slide">
+          <ng-container *ngComponentOutlet="component"></ng-container>
+        </div>
+      </ngx-slick-carousel>
+    </div>
+    <div class="col-span-1">
+      <app-notifcation-latest />
+    </div>
+  </div>
+  <div class="grid grid-cols-3 gap-5">
+    <div class="col-span-1">
+      <app-order-latest />
+    </div>
+    <div class="col-span-2">
+      <app-order-statistic />
+    </div>
+  </div>
 </div>

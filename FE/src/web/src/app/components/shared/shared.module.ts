@@ -3,8 +3,8 @@ import {
   SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
-import { NgModule } from '@angular/core';
+import localeVI from '@angular/common/locales/vi';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -115,7 +115,13 @@ import { HeaderShopComponent } from '../core/header-shop/header-shop.component';
 import { CodeInputModule } from 'angular-code-input';
 import { CodeInputComponent } from 'angular-code-input';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-registerLocaleData(en);
+import { ChangeStatusOrderComponent } from '../modal/change-status-order/change-status-order.component';
+import { SelectViewStatisticComponent } from '../core/select/select-view-statistic/select-view-statistic.component';
+import { SelectDateRangeComponent } from '../core/select/select-date-range/select-date-range.component';
+import { NotificationItemComponent } from '../notification-item/notification-item.component';
+import { NotificationPopupComponent } from '../../features/notification/components/notification-popup/notification-popup.component';
+import { MatMenuModule } from '@angular/material/menu';
+registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
   NzStatisticModule,
@@ -164,9 +170,13 @@ const ANTD_MODULES = [
   NzTypographyModule,
   NzCollapseModule,
 ];
-
-const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
+const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule, MatMenuModule];
 const SHARED_MODULES = [
+  NotificationPopupComponent,
+  NotificationItemComponent,
+  SelectDateRangeComponent,
+  SelectViewStatisticComponent,
+  ChangeStatusOrderComponent,
   ChatListComponent,
   ChatMessageComponent,
   ChatInputComponent,
@@ -250,6 +260,7 @@ const SHARED_MODULES = [
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    { provide: LOCALE_ID, useValue: 'vi' },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

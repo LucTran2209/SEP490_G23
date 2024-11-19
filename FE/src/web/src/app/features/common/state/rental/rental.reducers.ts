@@ -122,4 +122,8 @@ export const rentalOrderReducer = createReducer(
     return { ...state, orders: updatedOrders };
   }),
 
+  on(RentalActions.removeOneOrder, (state, action) => {
+    const updatedOrders = state.orders.filter(order => order.productId !== action.pid);
+    return { ...state, orders: [...updatedOrders] };
+  })
 );

@@ -1,6 +1,17 @@
-<div class="sticky-order-card card-layout">
-  <nz-card style="width: 370px" nzTitle="Card Title">
-    <p>Card content goes here.</p>
-    <p>More content inside the card.</p>
-  </nz-card>
+<div class="flex pb-4 cursor-pointer">
+  <img
+    src="./assets/images/6306486.jpg"
+    alt="Product Image"
+    class="w-32 h-24 rounded-md mr-4"
+  />
+  <div>
+    <p class="font-semibold cursor-pointer" [routerLink]="['#']">
+      {{ "Mã code order" }}
+    </p>
+    <div class="columns-2 gap-6 mt-2">
+      <p>Số lượng sản phẩm: <span class="font-semibold">2</span></p>
+      <p>Giá thuê: <span class="font-semibold">{{1000000 | currency:'VND':'VND':'1.0-0':'vi'}}</span></p>
+      <p>Ngày tạo: <span class="font-semibold">{{'12/12/2024'}}</span></p>
+    </div>
+  </div>
 </div>

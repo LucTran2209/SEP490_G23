@@ -10,15 +10,15 @@
       ></span>
     </div>
     <div class="flex justify-between">
-      <div class="mt-1">
-        <nz-badge [nzCount]="notificationCount">
-          <span
-            class="noffication text-lg"
-            nz-icon
-            nzType="bell"
-            nzTheme="outline"
-          ></span>
-        </nz-badge>
+      <div class="mt-1 cursor-pointer">
+        <!-- <nz-badge
+          [nzCount]="0"
+          (click)="openNotifcationAvailable()"
+        > -->
+          <!-- <span class="text-lg text-[#0f6cf8]" nz-icon nzType="bell" nzTheme="outline"></span> -->
+          <!-- <span nz-icon nzType="bell" class="text-lg text-[#0f6cf8]" nzTheme="fill"></span> -->
+        <!-- </nz-badge> -->
+         <app-notification-popup/>
       </div>
       <div nz-dropdown [nzDropdownMenu]="menu">
         <nz-avatar

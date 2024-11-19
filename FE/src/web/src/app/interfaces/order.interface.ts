@@ -109,13 +109,13 @@ export interface OrderCreateRequest {
   voucherId: string | null;
   recipientName: string;
   recipientPhoneNumber: string;
-  recipientEmail: string;
+  recipientEmail?: string;
   recipientAddress: string;
   startDate: string;
   endDate: string;
   totalRentPrice: number;
   totalDepositPrice: number;
-  note: string;
+  note?: string;
   mortgagePaperType: string;
   mortgagePaperImageFont: File;
   mortgagePaperImageBack: File;

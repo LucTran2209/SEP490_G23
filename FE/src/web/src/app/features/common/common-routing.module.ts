@@ -10,6 +10,7 @@ import { ShopPersonalComponent } from './components/shop-personal/shop-personal.
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
 import { HowitorderComponent } from './static/howitorder/howitorder.component';
 import { ShopRentalListComponent } from './components/shop-rental-list/shop-rental-list.component';
+import { NotificationListComponent } from './components/notification-list/notification-list.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,10 @@ const routes: Routes = [
           { path: 'order-detail/:id', component: MyOrderDetailComponent },
       ]
       },
+      {
+        path:'notification',
+        component: NotificationListComponent
+      }
     ]
   },
   {

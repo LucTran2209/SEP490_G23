@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter, Observable, Subscription } from 'rxjs';
+import { removeOneOrder, resetRentalProduct } from '../../../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../../../features/common/state/rental/rental.reducers';
 import {
   selectAllProductRental,
@@ -13,9 +14,8 @@ import { MessageResponseService } from '../../../../services/message-response.se
 import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
-import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
 import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
-import { resetRentalProduct } from '../../../../features/common/state/rental/rental.actions';
+import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
 
 interface IProductShortSearch {
   id: string | number;
@@ -35,8 +35,6 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   isConfirmLoading = false;
   isVisible = false;
   inputValue?: string;
-  options: Array<IProductShortSearch> = [];
-  tags?: IProductShortSearch[];
   productRentalDetailArray$?: Observable<OrderState[]>;
 
   rentalPriceActualAll$?: Observable<string | number>;
@@ -47,14 +45,7 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   private routeSubscription?: Subscription;
   //date time
 
-  sliceTagName(tag: string): string {
-    const isLongTag = tag.length > 20;
-    return isLongTag ? `${tag.slice(0, 20)}...` : tag;
-  }
-
-  handleCloseTag(removedTag: {}): void {
-    this.tags = this.tags?.filter((tag) => tag !== removedTag);
-  }
+  
 
   onChooseRental(titleTemplate: TemplateRef<any>) {
     this.modal.create({
@@ -77,29 +68,11 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
     });
   }
 
-  onSearchProductShort(e: Event): void {
-    const value = (e.target as HTMLInputElement).value;
-    this.options = new Array(this.getRandomInt(5, 15))
-      .join('.')
-      .split('.')
-      .map((_item, idx) => ({
-        id: idx + 1,
-        productName: `${value}${idx}`,
-        depositPrice: 20000,
-        images:
-          'https://cdn.tgdd.vn/Files/2014/12/06/586947/y-nghia-cua-toc-do-quay-vat-tren-may-giat-6.jpg',
-        rentalLimitDays: 12,
-        rentalPrice: 30000,
-      }));
-  }
+onRemoveRow(pid: string | number){
+  console.log('pid',pid);
+this.store.dispatch(removeOneOrder({pid}))
+}
 
-  onSelectProduct(e: IProductShortSearch) {
-    this.tags?.push(e);
-  }
-
-  private getRandomInt(max: number, min: number = 0): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
 
   showModal(): void {
     this.isVisible = true;
