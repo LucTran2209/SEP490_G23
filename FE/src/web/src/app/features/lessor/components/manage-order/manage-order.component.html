@@ -65,8 +65,8 @@
           <td nzCellControl="trangThaiDonHang" nzRight>
             @if(data.orderStatuses.length !== 0){
             <app-status-label
-              [label]="convertStatus(data.orderStatuses[0].status)"
-              [statusType]="data.orderStatuses[0].status"
+              [label]="convertStatus(data.orderStatuses[data.orderStatuses.length - 1].status)"
+              [statusType]="data.orderStatuses[data.orderStatuses.length - 1].status"
             />
             }@else { UNKNOWN }
           </td>
