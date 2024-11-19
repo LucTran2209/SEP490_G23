@@ -134,6 +134,8 @@ namespace BE.Application.Services.Authentication
 
             var user = _mapper.Map<User>(inputDto);
 
+            user.Balance = 0;
+
             var hashPassword = AuthenExtention.HashPassword(user.Password!);
 
             user.Password = hashPassword;
@@ -215,6 +217,7 @@ namespace BE.Application.Services.Authentication
                 new Claim("FullName", user.FullName!),
                 new Claim("UserName", user.UserName!),
                 new Claim("Avatar", user.AvatarPersonal ?? string.Empty),
+                new Claim("Balance", user.Balance.ToString() ?? "0"),
                 new Claim("RentalShopId", user.RentalShops?.FirstOrDefault()?.Id.ToString() ?? string.Empty),
             };
 

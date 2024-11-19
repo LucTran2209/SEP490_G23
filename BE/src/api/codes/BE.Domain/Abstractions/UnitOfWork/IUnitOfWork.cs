@@ -5,7 +5,7 @@ namespace BE.Domain.Abstractions.UnitOfWork
     public interface IUnitOfWork
     {
         public IUserRepository UserRepository { get; }
-
+        public IRechargeHistoryRepository RechargeHistoryRepository { get; }
         public IProductRepository ProductRepository { get; }
         public IProductImageRepository ProductImageRepository { get; }
         public IRentalShopRepository RentalShopRepository { get; }

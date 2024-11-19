@@ -24,5 +24,6 @@ namespace BE.Domain.Entities
         public virtual ICollection<RecipientAddress>? RecipientAddresses { get; set; }
         public virtual ICollection<UserVoucher>? UserVouchers { get; set; }
         public virtual ICollection<UserRole>? UserRoles { get; set; }
+        public virtual ICollection<RechargeHistory>? RechargeHistories { get; set; }
     }
 }

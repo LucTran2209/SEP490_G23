@@ -59,6 +59,9 @@ namespace BE.Infrastructure.Common
         public IProductImageRepository productImageRepository;
         public IProductImageRepository ProductImageRepository => productImageRepository = new ProductImageRepository(context);
 
+        public IRechargeHistoryRepository rechargeHistoryRepository;
+        public IRechargeHistoryRepository RechargeHistoryRepository => rechargeHistoryRepository = new RechargeHistoryRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
