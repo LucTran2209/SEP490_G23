@@ -68,17 +68,10 @@
           <div class="">
             <h3 class="font-bold">Giá cho thuê</h3>
             <div>
-              rentalPrice:{{
-                productDetail.rentalPrice
-                  | currency : "VND" : "VND" : "1.0-0" : "vi"
-              }}
+              rentalPrice:{{ productDetail.rentalPrice | currency:'VND':'VND':'1.0-0':'vi' }}
             </div>
             <div>
-              depositPrice:
-              {{
-                productDetail.depositPrice
-                  | currency : "VND" : "VND" : "1.0-0" : "vi"
-              }}
+              depositPrice: {{ productDetail.depositPrice | currency:'VND':'VND':'1.0-0':'vi' }}
             </div>
           </div>
           <div class="">
