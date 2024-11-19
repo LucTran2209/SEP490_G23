@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { map, Observable, of, switchMap, take } from 'rxjs';
+import { map, Observable, of, Subscription, switchMap, take } from 'rxjs';
 import { ChangeStatusOrderComponent } from '../../../../../components/modal/change-status-order/change-status-order.component';
 import { OrderListResponse } from '../../../../../interfaces/order.interface';
 import { RentalTimerService } from '../../../../../services/rental-timer.service';

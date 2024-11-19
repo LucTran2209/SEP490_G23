@@ -1,3 +1,4 @@
+import { OptionSelect } from '../configs/anonymous.config';
 import { HttpStatusCode } from '../configs/status-code.config';
 
 export enum STRING {
@@ -84,3 +85,19 @@ export enum ORDER_STATUS {
   DEPOSIT_REFUND = 5,
   CANCEL = 6,
 }
+
+
+export const chooseFollowDate: OptionSelect[] = [
+  {
+    label: 'Theo ngày',
+    value:'0'
+  },
+  {
+    label: 'Theo tuần',
+    value:'1'
+  },
+  {
+    label: 'Theo tháng',
+    value:'2'
+  }
+]

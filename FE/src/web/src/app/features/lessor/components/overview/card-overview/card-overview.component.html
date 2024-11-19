@@ -21,10 +21,9 @@
     </nz-card>
     <nz-card class="shadow rounded-lg border-l-0 border-r-0 border-b-0 border-t-4 border-solid border-[#0F6CF8]">
       <nz-statistic
-        [nzValue]="(1128 | number)!"
+        [nzValue]="(1000000 | currency:'VND':'VND':'1.0-0':'vi')!"
         [nzTitle]="title_revenueTpl"
         [nzPrefix]="prefixTpl"
-        [nzSuffix]="'VND'"
       ></nz-statistic>
       <ng-template #prefixTpl
         ><span nz-icon nzType="transaction"></span

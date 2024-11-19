@@ -1,0 +1,13 @@
+<div class="bg-white my-3 p-6 rounded-md h-[620px]">
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="font-semibold text-[22px]">Thống kê doanh thu</h3>
+    <div>
+      <app-select-view-statistic
+        [defaultValue]="'0'"
+        [optionSelect]="chooseFollowDate"
+        (chooseItemOption)="loadData($event)"
+      />
+    </div>
+  </div>
+  <canvas baseChart [data]="barChartData" [options]="barChartOptions"></canvas>
+</div>

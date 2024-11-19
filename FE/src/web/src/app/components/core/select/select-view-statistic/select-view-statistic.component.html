@@ -1,0 +1,5 @@
+<nz-select [(ngModel)]="selectedValue" (ngModelChange)="chooseItem($event)">
+    @for (item of optionSelect; track $index) {
+        <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+    }
+  </nz-select>

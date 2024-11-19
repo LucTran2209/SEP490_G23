@@ -13,7 +13,12 @@ import { CommonModule } from '@angular/common';
 import { OrderDetailEffects } from './state/order-detail.effects';
 import { StoreModule } from '@ngrx/store';
 import { orderDetailFeature } from './state/order-detail.reducer';
-
+import { BaseChartDirective } from 'ng2-charts';
+import { OrderLatestComponent } from './components/overview/order-latest/order-latest.component';
+import { OrderStatisticComponent } from './components/overview/statistics/order-statistic/order-statistic.component';
+import { RevenueStatisticComponent } from './components/overview/statistics/revenue-statistic/revenue-statistic.component';
+import { SubCategoryStatisticComponent } from './components/overview/statistics/sub-category-statistic/sub-category-statistic.component';
+import { NotifcationLatestComponent } from './components/overview/notifcation-latest/notifcation-latest.component';
 @NgModule({
   declarations: [
     ManagePostComponent,
@@ -22,6 +27,11 @@ import { orderDetailFeature } from './state/order-detail.reducer';
     OrderDetailComponent,
     OverviewComponent,
     CardOverviewComponent,
+    SubCategoryStatisticComponent,
+    RevenueStatisticComponent,
+    OrderStatisticComponent,
+    OrderLatestComponent,
+    NotifcationLatestComponent,
   ],
   imports: [
     LessorRoutingModule,
@@ -30,6 +40,7 @@ import { orderDetailFeature } from './state/order-detail.reducer';
     StoreModule.forFeature(orderDetailFeature),
     EffectsModule.forFeature([OrderDetailEffects]),
     SharedModule,
+    BaseChartDirective
   ],
 })
 export class LessorModule {}

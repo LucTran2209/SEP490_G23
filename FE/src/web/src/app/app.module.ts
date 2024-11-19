@@ -41,6 +41,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment.development';
 import {AngularFireModule} from '@angular/fire/compat'
 import { chatResizeFeature } from './features/chat/state/chat.reducer';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 registerLocaleData(localeVI);
 
 @NgModule({
@@ -84,6 +85,7 @@ registerLocaleData(localeVI);
     provideDatabase(() => getDatabase()),
     provideMessaging(() => getMessaging()),
     provideStorage(() => getStorage()),
+    provideCharts(withDefaultRegisterables()),
   ],
   bootstrap: [AppComponent],
 })

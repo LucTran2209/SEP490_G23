@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatRoomComponent } from './chat-room.component';
+import { OrderStatisticComponent } from './order-statistic.component';
 
-describe('ChatRoomComponent', () => {
-  let component: ChatRoomComponent;
-  let fixture: ComponentFixture<ChatRoomComponent>;
+describe('OrderStatisticComponent', () => {
+  let component: OrderStatisticComponent;
+  let fixture: ComponentFixture<OrderStatisticComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChatRoomComponent]
+      declarations: [OrderStatisticComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ChatRoomComponent);
+    fixture = TestBed.createComponent(OrderStatisticComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatRoomListComponent } from './chat-room-list.component';
+import { SelectDateRangeComponent } from './select-date-range.component';
 
-describe('ChatRoomListComponent', () => {
-  let component: ChatRoomListComponent;
-  let fixture: ComponentFixture<ChatRoomListComponent>;
+describe('SelectDateRangeComponent', () => {
+  let component: SelectDateRangeComponent;
+  let fixture: ComponentFixture<SelectDateRangeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChatRoomListComponent]
+      declarations: [SelectDateRangeComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ChatRoomListComponent);
+    fixture = TestBed.createComponent(SelectDateRangeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
