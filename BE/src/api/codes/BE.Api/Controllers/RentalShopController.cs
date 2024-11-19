@@ -43,7 +43,7 @@ namespace BE.Api.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateRentalShopInputDto inputDto)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateRentalShopInputDto inputDto)
         {
             var output = await rentalShopService.UpdateAsync(inputDto, id);
 

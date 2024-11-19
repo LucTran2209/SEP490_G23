@@ -62,7 +62,7 @@ namespace BE.Application.Services.RentalShops
                 return new ResultService { StatusCode = (int)HttpStatusCode.NotFound, Message = "Rental shop not found." };
 
             rentalShop.ShopName = inputDto.ShopName;
-            rentalShop.AvatarShop = inputDto.AvatarShop;
+            rentalShop.AvatarShop = await _azureService.UpLoadFileAsync(inputDto.AvatarShop!);
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
 
