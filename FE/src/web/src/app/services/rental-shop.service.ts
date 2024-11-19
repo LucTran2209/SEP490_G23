@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
-import { RentalShopResultService } from '../interfaces/rental-shop.interface';
+import { RentalShopResultService, UpdateRentalShop } from '../interfaces/rental-shop.interface';
 import { Observable } from 'rxjs';
 import { RentalShopSlug, RequestShopSlug } from '../configs/api.configs';
 import { ChangeStatusRequestShop, RequestShopDetailResultService, RequestShopResultService } from '../interfaces/request-shop.interface';
@@ -15,6 +15,16 @@ export class RentalShopService {
   constructor(private http: HttpClient, private httpClient: AppHttpClientService) { }
   getRentalShop(id: string): Observable<RentalShopResultService>{
     return this.httpClient.get<RentalShopResultService>(RentalShopSlug.GetRentalShop.api + id);
+  }
+  updateRentalShop(formData: FormData,id: string): Observable<BaseResponseApi<null>>{
+    return this.httpClient.put<BaseResponseApi<null>>(RentalShopSlug.UpdateRentalShop.api  + id, formData );
+  }
+  listRentalShop(pageIndex: number, pageSize: number): Observable<RequestShopResultService> {
+    let params: any = {
+      PageSize: pageSize.toString(),
+      PageIndex: pageIndex.toString(),
+    };
+    return this.httpClient.get<RequestShopResultService>(RentalShopSlug.ListRentalShop.api, params );
   }
   requestShopList(pageIndex: number, pageSize: number, ShopName?: string): Observable<RequestShopResultService>{
     let params: any = {

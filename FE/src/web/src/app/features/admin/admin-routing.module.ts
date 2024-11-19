@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
 import { ManageRegisterLessorComponent } from './components/manage-register-lessor/manage-register-lessor.component';
+import { ManageShopsComponent } from './components/manage-shops/manage-shops.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'manage-register-lessor',
     component: ManageRegisterLessorComponent,
+  },
+  {
+    path: 'manage-shops',
+    component: ManageShopsComponent,
   },
 ];
 

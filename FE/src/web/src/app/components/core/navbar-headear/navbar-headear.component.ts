@@ -23,6 +23,7 @@ export class NavbarHeadearComponent implements OnInit {
   userRole: USER_ROLE = USER_ROLE.LESSOR;
   avatarPersonal: string = '';
   rentalShopId: string = '';
+  userName: string = '';
 
   @Output() toggleSidebar = new EventEmitter<boolean>(); 
   @Output() avatarClick = new EventEmitter<void>(); 
@@ -40,6 +41,7 @@ export class NavbarHeadearComponent implements OnInit {
     this.checkRole();
     this.avatarPersonal = this.userProfileService.avatar;
     this.rentalShopId = this.userProfileService.rentalshopId;
+    this.userName = this.userProfileService.currentUser.UserName;
   }
 /**
  * test

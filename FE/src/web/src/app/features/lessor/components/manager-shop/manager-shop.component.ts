@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductInputDto, ProductOutputDto, ProductResultService, UpdateProductInputDto } from '../../../../interfaces/product.interface';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ProductService } from '../../../../services/product.service';
@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { ImageFileService } from '../../../../services/image-file.service';
 import { RentalShopService } from '../../../../services/rental-shop.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
-import { RentalShopOutputDto, RentalShopResultService } from '../../../../interfaces/rental-shop.interface';
+import { RentalShopOutputDto, RentalShopResultService, UpdateRentalShop } from '../../../../interfaces/rental-shop.interface';
 import { LoadingService } from '../../../../services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
@@ -23,6 +23,7 @@ import { selectSortByOrderProduct } from '../../../../configs/product.config';
   styleUrl: './manager-shop.component.scss',
 })
 export class ManagerShopComponent  implements OnInit{
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   isVisible : boolean = false;
   productList: ProductOutputDto[] = [];
   productInformation!: UpdateProductInputDto;
@@ -44,6 +45,9 @@ export class ManagerShopComponent  implements OnInit{
   loading$?: Observable<StatusProcess>;
   groupOptionFilterSelect: OptionSelect[] = selectSortByOrderProduct;
   alertType: 'success' | 'error' = 'success';
+  isUpdateShop = false;
+  shopData!: UpdateRentalShop;
+  avatarUrl: string | null = null; // Thêm biến này để lưu URL của ảnh preview
   constructor(private modal: NzModalService, 
     private productService: ProductService,
     private storageService: StorageService,
@@ -96,14 +100,12 @@ export class ManagerShopComponent  implements OnInit{
     this.isVisible = false;
   }
   ngOnInit(): void {
+    this.isUpdateShop = false;
     this.loadingService.setLoading();
     this.route.params.subscribe(params => {
       this.shopid = params['id']; // Get rentalShopId from route params
       if (this.shopid) {
-        this.rentalShopService.getRentalShop(this.shopid).subscribe((res: RentalShopResultService) => {
-          this.shop = res.data;
-          this.loadProducts(this.shopid, this.currentPage, this.pageSize);    
-      });
+        this.loadShop();
       }
     });
     this.route.queryParams.subscribe(params => {
@@ -112,6 +114,12 @@ export class ManagerShopComponent  implements OnInit{
       this.loadProducts(this.shopid, this.currentPage, this.pageSize, this.searchText);
     }); 
     this.title = 'Thông tin Thiết Bị';
+  }
+  loadShop(){
+    this.rentalShopService.getRentalShop(this.shopid).subscribe((res: RentalShopResultService) => {
+      this.shop = res.data;
+      this.loadProducts(this.shopid, this.currentPage, this.pageSize);    
+  });
   }
   
   loadProducts(rentalShopId: string ,pageIndex: number, pageSize: number, search?: string){
@@ -203,5 +211,82 @@ export class ManagerShopComponent  implements OnInit{
     } else {
       return `${diffInDays} ngày`;
     }
+  }
+  triggerFileInput(): void {
+    this.fileInput.nativeElement.click(); // Mở hộp thoại chọn file
+  }
+
+  handleAvatarChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+  
+      // Cập nhật avatar với file chọn
+      this.shopData.avatarShop = file;
+  
+      // Tạo URL preview từ file đã chọn
+      this.avatarUrl = URL.createObjectURL(file);
+    }
+  }
+  async editShopInfo() {
+    this.isUpdateShop = true;
+    const response = await fetch(this.shop.avatarShop);
+    const blob = await response.blob();
+    const fileName = 'avatar.png'; // Đặt tên cho file tải về
+    const avatar = new File([blob], fileName, { type: blob.type });
+    if (typeof this.shop.avatarShop === 'string' && this.shop.avatarShop) {
+      this.shopData = {
+        shopName: this.shop.shopName,
+        avatarShop: avatar, // Gán File thay vì URL
+      };
+  
+      // Tạo URL preview nếu có file
+      if (avatar) {
+        this.avatarUrl = URL.createObjectURL(avatar);
+      } else {
+        this.avatarUrl = null;
+      }
+    } else {
+      // Nếu avatarShop không phải là chuỗi hoặc là null
+      this.shopData = {
+        shopName: this.shop.shopName,
+        avatarShop: null, // Đặt avatarShop là null nếu không có URL hoặc không phải URL
+      };
+      this.avatarUrl = null; // Đặt lại avatarUrl nếu không có ảnh
+    }
+    this.cdRef.detectChanges();
+  }
+  saveChanges() {
+    if (this.shopData.avatarShop instanceof File || this.shopData.avatarShop === null) {
+      const formData = new FormData();
+  
+      // Thêm các trường dữ liệu khác vào FormData
+      formData.append('shopName', this.shopData.shopName);
+  
+      // Nếu avatarShop có giá trị là File, thêm nó vào FormData
+      if (this.shopData.avatarShop instanceof File) {
+        formData.append('avatarShop', this.shopData.avatarShop);
+      }
+  
+      // Gửi request cập nhật
+      this.rentalShopService.updateRentalShop(formData, this.shopid).subscribe({
+        next: () => {
+          this.loadShop();
+          this.messageService.showSuccess('Cập nhật thành công!');
+        },
+        error: () => {
+          this.messageService.handleError('Cập nhật thất bại!');
+        },
+      });
+    } else {
+      this.messageService.handleError('Ảnh đại diện không hợp lệ!');
+    }
+    this.isUpdateShop = false;
+  }
+  
+  cancelChanges() {
+    this.isUpdateShop = false;
+    this.shopData = { avatarShop: null, shopName: this.shop.shopName };
+    this.avatarUrl = this.shop.avatarShop;
   }
 }

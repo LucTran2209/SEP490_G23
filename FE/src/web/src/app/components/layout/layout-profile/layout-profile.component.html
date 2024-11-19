@@ -40,9 +40,21 @@
           <li nz-menu-item>Đổi Mật Khẩu</li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="Tiền Của Tôi" nzIcon="wallet">
+      <li
+        [nzOpen]="isPaymentOpen"
+        nz-submenu
+        nzTitle="Tiền Của Tôi"
+        nzIcon="wallet"
+      >
         <ul>
-          <li nz-menu-item>Ví Tiền</li>
+          <li
+            nz-menu-item
+            [routerLink]="['./payment/my-wallet']"
+            routerLinkActive="ant-menu-item-selected"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Ví Tiền
+          </li>
           <li nz-menu-item>Lịch Sử Giao Dịch</li>
         </ul>
       </li>

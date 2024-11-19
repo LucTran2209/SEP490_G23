@@ -41,6 +41,7 @@ export interface RentalShopOutputDto {
     status: number;
     isActive: boolean;
     description: string;
+    avatarShop: string;
 }
 export interface RentalShopResultService {
     statusCode: string;
@@ -65,4 +66,8 @@ export interface RentalShop  {
     status: number;
     isActive: boolean;
     description: string;
-  }
+}
+export interface UpdateRentalShop {
+    shopName: string;
+    avatarShop: File | null;
+}
