@@ -1,5 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Feedbacks.FeedbackServiceInputDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Api.Controllers
@@ -16,6 +17,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize]
         public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackInputDto inputDto)
         {
             var result = await _feedbackService.CreateFeedbackAsync(inputDto);

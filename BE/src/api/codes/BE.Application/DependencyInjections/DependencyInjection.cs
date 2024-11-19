@@ -7,6 +7,7 @@ using BE.Application.Services.Products;
 using BE.Application.Services.RentalShops;
 using BE.Application.Services.SubCategories;
 using BE.Application.Services.Users;
+using BE.Application.Services.Vouchers;
 using BE.Application.Services.Wallets;
 using BE.Infrastructure.Common;
 using Microsoft.Extensions.Configuration;
@@ -34,7 +35,7 @@ namespace BE.Application.DependencyInjections
             services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
             services.AddScoped(typeof(ISubCategoryService), typeof(SubCategoryService));
             services.AddScoped(typeof(IWalletService), typeof(WalletService));
-
+            services.AddScoped(typeof(IVoucherService), typeof(VoucherService));
             return services;
         }
     }

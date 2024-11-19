@@ -17,5 +17,6 @@
         internal const string Categories = nameof(Categories);
         internal const string FieldCategories = nameof(FieldCategories);
         internal const string Products = nameof(Products);
+        internal const string Vouchers = nameof(Vouchers);
     }
 }

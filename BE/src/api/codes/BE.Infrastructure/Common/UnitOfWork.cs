@@ -62,6 +62,9 @@ namespace BE.Infrastructure.Common
         public IRechargeHistoryRepository rechargeHistoryRepository;
         public IRechargeHistoryRepository RechargeHistoryRepository => rechargeHistoryRepository = new RechargeHistoryRepository(context);
 
+        public IVoucherRepository voucherRepository;
+        public IVoucherRepository VoucherRepository => voucherRepository = new VoucherRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
