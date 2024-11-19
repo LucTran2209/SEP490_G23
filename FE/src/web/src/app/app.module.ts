@@ -13,7 +13,7 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import en from '@angular/common/locales/en';
+import localeVI from '@angular/common/locales/vi';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -41,7 +41,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment.development';
 import {AngularFireModule} from '@angular/fire/compat'
 import { chatResizeFeature } from './features/chat/state/chat.reducer';
-registerLocaleData(en);
+registerLocaleData(localeVI);
 
 @NgModule({
   declarations: [

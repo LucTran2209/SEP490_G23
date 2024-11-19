@@ -29,6 +29,7 @@ import { StorageService } from '../../../services/storage.service';
 import { FeatureAppState } from '../../../store/app.state';
 import { LocalStorageKey } from '../../../utils/constant';
 import { MyValidators } from '../../../utils/validators';
+import { convertToLocalISOString } from '../../../utils/timer.helper';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -83,7 +84,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
       ],
       recipientPhoneNumber: ['', [MyValidators.required, MyValidators.mobile]],
       recipientAddress: ['', [MyValidators.required]],
-      recipientEmail: ['', [MyValidators.required, MyValidators.email]],
+      recipientEmail: ['', [ MyValidators.email]],
       note: [''],
     }) as FormGroup<{
       recipientName: FormControl<string>;
@@ -199,8 +200,8 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             voucherId: '',
             totalDepositPrice: Number(res[1]),
             totalRentPrice: Number(res[2]),
-            startDate: res[3][0].toISOString(),
-            endDate: res[3][1].toISOString(),
+            startDate: convertToLocalISOString(res[3][0]) ,
+            endDate: convertToLocalISOString(res[3][1]),
             mortgagePaperType: this.parentSelectedValue,
             mortgagePaperImageFont: res[6][0],
             mortgagePaperImageBack: res[6][1],

@@ -69,16 +69,15 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
         this.rangeDatePicker[1],
         this.timePickerEnd.value
       );
-
+      console.log('this.rangeDatePicker', this.rangeDatePicker); 
+      console.log('this.rangeDatePicker 1', this.rangeDatePicker[0].toISOString()); 
+      console.log('this.rangeDatePicker 2', this.rangeDatePicker[1].toISOString()); 
       const diffInDays = this.rentalTimerService.convertRentalDays(
         this.rangeDatePicker
       );
 
       this.pickerTimeSubscription = this.selectAllProductRental$
         ?.pipe(
-          tap((res) => {
-            console.log('data', res);
-          }),
           take(1)
         )
         .subscribe((orders) => {

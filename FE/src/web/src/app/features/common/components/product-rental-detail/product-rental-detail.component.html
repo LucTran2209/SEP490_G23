@@ -1,14 +1,4 @@
 <div class="container">
-  <!-- breadcrumb -->
-  <!-- <div class="py-3" (click)="onPreventAccess()">
-    <nz-breadcrumb>
-      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        <a>Application List</a>
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
-    </nz-breadcrumb>
-  </div> -->
   <div class="mx-auto" *ngIf="productDetail$ | async as productDetail">
     <div
       class="flex justify-center items-stretch gap-5 rounded-sm bg-white p-5"
@@ -72,10 +62,10 @@
           <div class="">
             <h3 class="font-bold">Giá cho thuê</h3>
             <div>
-              rentalPrice:{{ productDetail.rentalPrice | currency : "VND" }}
+              rentalPrice:{{ productDetail.rentalPrice | currency:'VND':'VND':'1.0-0':'vi' }}
             </div>
             <div>
-              depositPrice: {{ productDetail.depositPrice | currency : "VND" }}
+              depositPrice: {{ productDetail.depositPrice | currency:'VND':'VND':'1.0-0':'vi' }}
             </div>
           </div>
           <div class="">

@@ -33,7 +33,7 @@
       <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá cọc
     </div>
     <p class="text-[20px]">
-      {{ depositPriceActual$ | async | currency : "VND" }}
+      {{ depositPriceActual$ | async | currency:'VND':'VND':'1.0-0':'vi' }}
     </p>
   </div>
   <div class="flex justify-between items-center">
@@ -41,7 +41,7 @@
       <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá thuê
     </div>
     <p class="text-[20px]">
-      {{ rentalPriceActual$ | async | currency : "VND" }} / ngày
+      {{ rentalPriceActual$ | async | currency:'VND':'VND':'1.0-0':'vi' }} / ngày
     </p>
   </div>
   <button

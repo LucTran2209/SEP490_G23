@@ -27,4 +27,9 @@ export const checkIsQuantityExceed = createAction(
   props<{ pid: string | number; quantityRequest: string | number }>()
 );
 
+export const removeOneOrder = createAction(
+  '[Rental] Remove one order',
+  props<{ pid: string | number }>()
+);
+
 export const resetRentalProduct = createAction('[Rental] reset rental product');

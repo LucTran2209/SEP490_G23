@@ -3,7 +3,7 @@ import {
   SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
+import localeVI from '@angular/common/locales/vi';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -115,7 +115,8 @@ import { HeaderShopComponent } from '../core/header-shop/header-shop.component';
 import { CodeInputModule } from 'angular-code-input';
 import { CodeInputComponent } from 'angular-code-input';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-registerLocaleData(en);
+import { ChangeStatusOrderComponent } from '../modal/change-status-order/change-status-order.component';
+registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
   NzStatisticModule,
@@ -167,6 +168,7 @@ const ANTD_MODULES = [
 
 const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
 const SHARED_MODULES = [
+  ChangeStatusOrderComponent,
   ChatListComponent,
   ChatMessageComponent,
   ChatInputComponent,

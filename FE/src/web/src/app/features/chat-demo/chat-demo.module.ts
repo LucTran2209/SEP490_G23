@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
+import { SharedModule } from '../../components/shared/shared.module';
+import { ChatDemoLayoutComponent } from './chat-demo-layout/chat-demo-layout.component';
 import { ChatDemoRoutingModule } from './chat-demo-routing.module';
 import { ChatRoomListComponent } from './chat-room-list/chat-room-list.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
-import { SharedModule } from '../../components/shared/shared.module';
-import { ChatDemoLayoutComponent } from './chat-demo-layout/chat-demo-layout.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +12,6 @@ import { ChatDemoLayoutComponent } from './chat-demo-layout/chat-demo-layout.com
     ChatRoomComponent,
     ChatDemoLayoutComponent,
   ],
-  imports: [SharedModule, CommonModule, ChatDemoRoutingModule],
+  imports: [SharedModule,  ChatDemoRoutingModule],
 })
 export class ChatDemoModule {}

@@ -13,10 +13,10 @@
             <p>{{ order.productName }}</p>
           </td>
           <td>
-            <p>đ{{ order.depositPrice }} x {{ order.quantityRequest }} (số lượng)</p>
+            <p>{{ order.depositPrice | currency:'VND':'VND':'1.0-0':'vi' }} x {{ order.quantityRequest }} (số lượng)</p>
           </td>
           <td class="text-end">
-            <p class="font-semibold">đ{{ order.depositActualPrice }}</p>
+            <p class="font-semibold">{{ order.depositActualPrice | currency:'VND':'VND':'1.0-0':'vi' }}</p>
           </td>
         </tr>
       </tbody>
@@ -35,10 +35,10 @@
             <p>{{ order.productName }}</p>
           </td>
           <td>
-            <p>đ{{ order.rentalPrice }}</p>
+            <p>{{ order.rentalPrice | currency:'VND':'VND':'1.0-0':'vi' }}</p>
           </td>
           <td class="text-end">
-            <p class="font-semibold">đ{{ order.rentalActualPrice }}</p>
+            <p class="font-semibold">{{ order.rentalActualPrice | currency:'VND':'VND':'1.0-0':'vi' }}</p>
           </td>
         </tr>
       </tbody>
@@ -81,7 +81,7 @@
   <!-- Total Price Section -->
   <div class="flex justify-between items-center">
     <h6 class="font-semibold text-base my-3">Thành tiền</h6>
-    <p class="font-semibold">đ{{ calculateTotalAmount(allProductRental) }}</p>
+    <p class="font-semibold">{{ calculateTotalAmount(allProductRental) | currency:'VND':'VND':'1.0-0':'vi'}}</p>
   </div>
 
 </ng-container>
