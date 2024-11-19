@@ -24,12 +24,12 @@ namespace BE.Api.Controllers
             return ReturnFollowStatusCode(result);
         }
 
-        //[HttpGet("/Home/PaymentCallback")]
-        //public IActionResult PaymentCallback([FromQuery] VnpayResponse query)
-        //{
-        //    var response = _vnPaySandboxService.PaymentExecute(Request.Query);
+        [HttpGet("Recharge/PaymentCallback")]
+        public IActionResult PaymentCallback([FromQuery] VnpayResponse query)
+        {
+            var result = _walletService.PaymentExecuteAsync(Request.Query);
 
-        //    return Ok(response);
-        //}
+            return ReturnFollowStatusCode(result);
+        }
     }
 }

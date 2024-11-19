@@ -18,7 +18,7 @@ namespace BE.Application.Services.Wallets
         {
             _vnPaySandboxService = vnPaySandboxService;
             _mapper = mapper;
-        }
+        }      
 
         public async Task<ResultService> RechargeMoneyAsync(RechargeMoneyInputDto inputDto, HttpContext context)
         {
@@ -43,6 +43,17 @@ namespace BE.Application.Services.Wallets
             return new ResultService
             {
                 Datas = url,
+                StatusCode = (int)HttpStatusCode.OK,
+            };
+        }
+
+        public ResultService PaymentExecuteAsync(IQueryCollection query)
+        {
+            var status = _vnPaySandboxService.PaymentExecute(query);
+
+            return new ResultService()
+            {
+                Datas = status,
                 StatusCode = (int)HttpStatusCode.OK,
             };
         }
