@@ -27,6 +27,9 @@ namespace BE.Application.Services.Orders
         {
             await createOrderValidator.ValidateAndThrowAsync(inputDto);
 
+            inputDto.StartDate = inputDto.StartDate.CurrentTimeZone();
+            inputDto.EndDate = inputDto.EndDate.CurrentTimeZone();
+
             inputDto.OrderDetails = JsonConvert.DeserializeObject<List<ProductOrder>>(inputDto.OrderDetailsJson!);
 
             var order = _mapper.Map<Order>(inputDto);

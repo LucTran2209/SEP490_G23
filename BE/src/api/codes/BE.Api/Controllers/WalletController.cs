@@ -1,6 +1,7 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Wallets.WalletServiceInputDto;
 using BE.Infrastructure.VnPaySandbox.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Api.Controllers
@@ -16,6 +17,7 @@ namespace BE.Api.Controllers
             _walletService = walletService;
         }
 
+        [Authorize]
         [HttpPost("recharge")]
         public async Task<IActionResult> CreatePaymentUrl([FromBody] RechargeMoneyInputDto input)
         {
@@ -23,11 +25,11 @@ namespace BE.Api.Controllers
 
             return ReturnFollowStatusCode(result);
         }
-
+        
         [HttpGet("Recharge/PaymentCallback")]
-        public IActionResult PaymentCallback([FromQuery] VnpayResponse query)
+        public async Task<IActionResult> PaymentCallback([FromQuery] VnpayResponse query)
         {
-            var result = _walletService.PaymentExecuteAsync(Request.Query);
+            var result = await _walletService.PaymentExecuteAsync(Request.Query);
 
             return ReturnFollowStatusCode(result);
         }
