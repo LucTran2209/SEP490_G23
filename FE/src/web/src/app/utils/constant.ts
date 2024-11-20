@@ -76,6 +76,7 @@ export const FormatDate = {
   DDMMYYYY: 'dd/MM/YYYY',
 };
 
+export const ORDER_STATUS_MAX = 6;
 export enum ORDER_STATUS {
   PENDING_APPROVAL = 0,
   PENDING_PAYMENT = 1,
@@ -89,15 +90,11 @@ export enum ORDER_STATUS {
 
 export const chooseFollowDate: OptionSelect[] = [
   {
-    label: 'Theo ngày',
+    label: 'Theo tuần',
     value:'0'
   },
   {
-    label: 'Theo tuần',
-    value:'1'
-  },
-  {
     label: 'Theo tháng',
-    value:'2'
+    value:'1'
   }
 ]

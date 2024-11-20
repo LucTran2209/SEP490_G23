@@ -120,7 +120,7 @@ export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
     return 'Chờ xác nhận';
   }
   if (orderstatus === ORDER_STATUS.DEPOSIT_REFUND) {
-    return 'Đã thanh toán cọc';
+    return 'Đã hoàn cọc';
   }
   if (orderstatus === ORDER_STATUS.PENDING_DELIVERY) {
     return 'Chờ giao hàng';
@@ -130,6 +130,9 @@ export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
   }
   if (orderstatus === ORDER_STATUS.RECEIVED) {
     return 'Đã nhận hàng';
+  }
+  if (orderstatus === ORDER_STATUS.CANCEL) {
+    return 'Đã hủy';
   } else {
     return 'Hoàn tiền';
   }
