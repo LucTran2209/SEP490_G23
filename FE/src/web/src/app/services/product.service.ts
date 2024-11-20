@@ -31,7 +31,7 @@ export class ProductService {
   listProduct(
     pageIndex: number,
     pageSize: number,
-    Search?: string,
+    Search: string,
     Addresses?: string[],
     SubCategory?: string,
     MinPrice?: number,
@@ -41,8 +41,8 @@ export class ProductService {
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
+      Search: Search
     };
-    if (Search) params.Search = Search;
     if (SubCategory) params.SubCategory = SubCategory;
     if (Evaluates) params.Evaluates = Evaluates;
     if (MinPrice) params.MinPrice = MinPrice;

@@ -1,0 +1,42 @@
+<form nz-form [formGroup]="filterFormVoucher" (ngSubmit)="onSubmit()">
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzPrefixIcon="search">
+        <input
+          formControlName="voucherCode"
+          nz-input
+          placeholder="Mã khuyến mãi"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <div class="grid grid-cols-2 gap-x-3">
+    <nz-form-item>
+      <nz-form-label class="font-medium" [nzSpan]="24">Ngày Tạo</nz-form-label>
+      <nz-form-control>
+        <nz-input-group>
+          <nz-date-picker
+            class="w-full"
+            formControlName="createdDate"
+            (ngModelChange)="onChange($event)"
+          ></nz-date-picker>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="">
+      <nz-form-label class="font-medium" [nzSpan]="24">Thời gian</nz-form-label>
+      <nz-form-control>
+        <nz-range-picker
+          class="w-full"
+          formControlName="timeRange"
+        ></nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <nz-form-item class="text-end">
+    <nz-form-control>
+      <button nz-button type="submit" nzType="primary">Tìm kiếm</button> &nbsp;
+      <button nz-button (click)="resetForm()">Đặt lại</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

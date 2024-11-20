@@ -121,6 +121,7 @@ import { SelectDateRangeComponent } from '../core/select/select-date-range/selec
 import { NotificationItemComponent } from '../notification-item/notification-item.component';
 import { NotificationPopupComponent } from '../../features/notification/components/notification-popup/notification-popup.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { FormSearchVoucherComponent } from '../core/form/form-search-voucher/form-search-voucher.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
@@ -234,6 +235,7 @@ const SHARED_MODULES = [
   ProductRelatedComponent,
   RequestShopCardComponent,
   HeaderShopComponent,
+  FormSearchVoucherComponent,
 ];
 
 @NgModule({

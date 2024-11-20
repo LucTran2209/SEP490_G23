@@ -1,6 +1,6 @@
 export interface FeedBackInputDto{
     productId: string;
-    userName: string;
+    userId: string;
     rating: number;
     comment: string;
 }
@@ -10,4 +10,12 @@ export interface FeedbackOutputDto{
     rating: number;
     userName: string;
     comment: string;
+    users?: any;
+    avatarPersonal?: string;
+    createdDate?: string;
 }
+export interface FeedbackResultService {
+    statusCode: number;
+    message: string;
+    data: FeedbackOutputDto[];
+  }

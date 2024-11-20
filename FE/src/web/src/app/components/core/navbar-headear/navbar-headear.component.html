@@ -21,18 +21,19 @@
          <app-notification-popup/>
       </div>
       <div nz-dropdown [nzDropdownMenu]="menu">
-        <nz-avatar
-          nzGap="4"
-          [nzSrc]="
-            avatarPersonal ? avatarPersonal : 'assets/images/default-avatar.jpg'
-          "
-          nzSize="large"
-          style="
-            vertical-align: middle;
-            background-color: green;
-            margin-left: 40px;
-          "
-        ></nz-avatar>
+        <div class="flex justify-between">
+          <nz-avatar
+            class="mt-4"
+            [nzSrc]="
+              avatarPersonal
+                ? avatarPersonal
+                : 'assets/images/default-avatar.jpg'
+            "
+            nzSize="default"
+            style="vertical-align: middle; margin-left: 40px"
+          ></nz-avatar>
+          <p class="text-gray-400 mx-3">{{ userName }}</p>
+        </div>
       </div>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
