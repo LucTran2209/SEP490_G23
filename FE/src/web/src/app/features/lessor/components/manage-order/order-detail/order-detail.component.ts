@@ -1,21 +1,22 @@
-import { Component, inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { ChangeStatusOrderComponent } from '../../../../../components/modal/change-status-order/change-status-order.component';
 import { OrderListResponse } from '../../../../../interfaces/order.interface';
 import { RentalTimerService } from '../../../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../../../store/app.state';
 import { convertStatusOrder } from '../../../../../utils/anonymous.helper';
 import { ORDER_STATUS } from '../../../../../utils/constant';
-import { getOrderDetail, resetStateOrderDetail } from '../../../state/order-detail.actions';
+import {
+  getOrderDetail,
+  resetStateOrderDetail,
+} from '../../../state/order-detail.actions';
 import {
   selectOrderDetail,
   selectTotalQuantity,
 } from '../../../state/order-detail.reducer';
-import { requestOrder_resetState } from '../../../state/order-request.actions';
-import { MatDialog } from '@angular/material/dialog';
 
 interface IOrderDetail {
   nguoiThue: string;
@@ -41,8 +42,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   orderDetail$?: Observable<OrderListResponse | null>;
   totalQuantity$?: Observable<number | null>;
   private rentalModalRef: NzModalRef | null = null;
-  readonly dialog = inject(MatDialog);
-
+  subScription?: Subscription;
   onAllChecked(checked: boolean): void {}
 
   onItemChecked(): void {}
@@ -66,14 +66,11 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   }
 
   dispatchActionNessarray() {
-    this.activateRoute.paramMap
+    this.subScription = this.activateRoute.paramMap
       .pipe(
         map((p) => {
           const pid = p.get('id');
-          if (pid){
-            
-            this.store.dispatch(getOrderDetail({ pid: pid }));
-          }
+          if (pid) this.store.dispatch(getOrderDetail({ pid: pid }));
         })
       )
       .subscribe();
@@ -93,7 +90,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     if (this.rentalModalRef)
       this.rentalModalRef.afterClose.subscribe((result) => {
         if (result === 'updated') {
-          this.store.dispatch(requestOrder_resetState());
           this.rentalModalRef = null;
         }
       });
@@ -107,6 +103,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('OnDestroy call');
+    this.subScription?.unsubscribe();
     this.store.dispatch(resetStateOrderDetail());
   }
 
