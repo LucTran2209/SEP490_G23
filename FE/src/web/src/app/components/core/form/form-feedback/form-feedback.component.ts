@@ -33,7 +33,7 @@ export class FormFeedbackComponent implements OnInit{
     if (this.order && this.order.orderDetails) {
       this.feedBackList = this.order.orderDetails.map(detail => ({
         productId: detail.product.id,
-        userName: this.order.user.userName, // Hoặc lấy tên người dùng nếu có
+        userId: this.order.userId, // Hoặc lấy tên người dùng nếu có
         rating: 3,             // Giá trị mặc định cho đánh giá
         comment: ''            // Chuỗi nhận xét trống ban đầu
       }));

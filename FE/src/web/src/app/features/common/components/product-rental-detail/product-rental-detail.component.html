@@ -48,7 +48,13 @@
               productDetail.rentalShop.shopName
             }}</a>
           </h1>
-          <button class="mt-2" nz-button nzType="primary" (click)="chatShop(productDetail)" nzGhost>
+          <button
+            class="mt-2"
+            nz-button
+            nzType="primary"
+            (click)="chatShop(productDetail)"
+            nzGhost
+          >
             Chat Ngay
           </button>
         </div>
@@ -62,10 +68,17 @@
           <div class="">
             <h3 class="font-bold">Giá cho thuê</h3>
             <div>
-              rentalPrice:{{ productDetail.rentalPrice | currency:'VND':'VND':'1.0-0':'vi' }}
+              rentalPrice:{{
+                productDetail.rentalPrice
+                  | currency : "VND" : "VND" : "1.0-0" : "vi"
+              }}
             </div>
             <div>
-              depositPrice: {{ productDetail.depositPrice | currency:'VND':'VND':'1.0-0':'vi' }}
+              depositPrice:
+              {{
+                productDetail.depositPrice
+                  | currency : "VND" : "VND" : "1.0-0" : "vi"
+              }}
             </div>
           </div>
           <div class="">
@@ -151,8 +164,10 @@
       </div>
       <div class="pb-6">
         <h1 class="font-medium text-2xl mt-3">Đánh Giá</h1>
-        <div class="py-3 px-5">
-          <app-comment></app-comment>
+        <div *ngIf="comments.length > 0; else noData">
+          <div class="py-3 px-5" *ngFor="let comment of comments">
+            <app-comment [comment]="comment"></app-comment>
+          </div>
         </div>
       </div>
     </div>
@@ -171,3 +186,8 @@
     </div>
   </div>
 </div>
+<ng-template #noData>
+  <div class="flex justify-center">
+    <nz-result nzIcon="star-twotone" nzTitle="Chưa Có Đánh Giá!"> </nz-result>
+  </div>
+</ng-template>

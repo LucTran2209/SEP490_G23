@@ -42,7 +42,7 @@ import { ManageVoucherComponent } from './components/manage-voucher/manage-vouch
     StoreModule.forFeature(orderDetailFeature),
     EffectsModule.forFeature([OrderDetailEffects]),
     SharedModule,
-    // BaseChartDirective
+    BaseChartDirective
   ],
 })
 export class LessorModule {}

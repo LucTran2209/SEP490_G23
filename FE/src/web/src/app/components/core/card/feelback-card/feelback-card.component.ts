@@ -10,7 +10,7 @@ import {
   styleUrl: './feelback-card.component.scss',
 })
 export class FeelbackCardComponent {
-  @Input() feedBackDetail: FeedBackInputDto = feedbackData;
+  @Input() feedBackDetail: FeedbackOutputDto = feedbackData;
 }
 
 const feedbackData: FeedbackOutputDto = {

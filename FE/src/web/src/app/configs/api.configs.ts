@@ -238,6 +238,11 @@ export const FeedBackSlug = {
     label: 'Create Feedback',
     title: 'Create Feedback | ERMS',
     api: 'api/Feedback/create',
+  },
+  ListFeedBack: {
+    label: 'List Feedback',
+    title: 'List Feedback | ERMS',
+    api: 'api/Feedback/product/',
   }
 
 }
