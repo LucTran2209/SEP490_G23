@@ -41,7 +41,7 @@ namespace BE.Api.Controllers
             return ReturnFollowStatusCode(output);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/MyShop/{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateRentalShopInputDto inputDto)
         {
