@@ -18,7 +18,7 @@ namespace BE.Application.Services.Statisticals
             query = query
                 .Filter(inputDto.StartDate?.ToString(), rs => rs.Order.EndDate >= inputDto.StartDate)
                 .Filter(inputDto.EndDate?.ToString(), rs => rs.Order.EndDate <= inputDto.EndDate)
-                .Filter(inputDto.UserId.ToString(), rs => rs.Order.UserId == inputDto.UserId);
+                .Filter(inputDto.RentaiShopId.ToString(), rs => rs.Product.RentalShopId == inputDto.RentaiShopId);
 
             // Thực hiện thống kê và tính toán top 10 sản phẩm
             var productStatistics = await query
