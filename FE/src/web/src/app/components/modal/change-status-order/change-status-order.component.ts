@@ -1,22 +1,24 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import {
   combineLatest,
-  mergeMap,
+  concatMap,
+  map,
   Observable,
   of,
-  switchMap,
-  withLatestFrom,
+  Subscription,
+  tap
 } from 'rxjs';
-import { OrderListResponse } from '../../../interfaces/order.interface';
-import { ORDER_STATUS } from '../../../utils/constant';
-import { convertStatusOrder } from '../../../utils/anonymous.helper';
 import { OptionSelect } from '../../../configs/anonymous.config';
-import { FormControl, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { FeatureAppState } from '../../../store/app.state';
-import { requestOrderInit } from '../../../features/lessor/state/order-request.actions';
 import { getOrderDetail } from '../../../features/lessor/state/order-detail.actions';
+import { OrderListResponse } from '../../../interfaces/order.interface';
+import { MessageResponseService } from '../../../services/message-response.service';
+import { OrderService } from '../../../services/order.service';
+import { FeatureAppState } from '../../../store/app.state';
+import { convertStatusOrder } from '../../../utils/anonymous.helper';
+import { ORDER_STATUS } from '../../../utils/constant';
 type TypeSelectOrderStatus = OptionSelect & { statusType: ORDER_STATUS };
 @Component({
   selector: 'app-change-status-order',
@@ -30,6 +32,7 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
   selectedValue: FormControl<string | number | null> = new FormControl<
     string | number | null
   >(null, [Validators.required]);
+  subScription?: Subscription;
   noteMessage: FormControl<string | null> = new FormControl<string | null>('');
   handleCancel(): void {
     this.modalRef.triggerCancel();
@@ -82,27 +85,49 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
       this.modalRef.triggerOk();
       return;
     }
+    console.log(this.selectedValue.value);
     if (this.orderDetail$ && this.selectedValue.valid) {
       combineLatest([
         this.orderDetail$,
         of(this.selectedValue.value),
         of(this.noteMessage.value),
-      ]).subscribe(([order, selectStatus, noteMessage]) => {
-        const formData = new FormData();
-        formData.append('Id', '');
-        formData.append('OrderId', order.id.toString());
-        noteMessage && formData.append('Message', noteMessage);
-        selectStatus && formData.append('Status', selectStatus.toString());
-        formData.append('FileAttach', '');
-        this.store.dispatch(requestOrderInit({ formData, pid: order.id }));
+      ]).pipe(
+        concatMap(([order, selectStatus, noteMessage]) => {
+          const formData = new FormData();
+          formData.append('Id', '');
+          formData.append('OrderId', `${order.id}`);
+          formData.append('Message', `${noteMessage}`);
+           formData.append('Status', `${selectStatus}`);
+          formData.append('FileAttach', '');
+          return this.orderService.requestOrderStatus(formData).pipe(
+            map(() => ({
+              orderId: order.id, 
+            }))
+          );
+        }),
+        tap(({orderId }) => {
+          this.dispatchActionNessarray(orderId);
+        })
+      ).subscribe({
+        next: () => {
+          this.messageResponseMS.showSuccess('Cập nhật trạng thái thành công');
+          this.selectedValue.reset();
+        },
       });
     }
     this.modalRef.triggerOk();
   }
 
+  dispatchActionNessarray(pid: string) {
+    this.store.dispatch(getOrderDetail({ pid: pid }));
+  }
+
+
   constructor(
     private modalRef: NzModalRef,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private orderService: OrderService,
+    private messageResponseMS: MessageResponseService
   ) {}
 
   ngOnInit(): void {

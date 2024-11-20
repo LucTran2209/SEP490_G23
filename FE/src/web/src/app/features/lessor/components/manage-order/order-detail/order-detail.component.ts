@@ -1,16 +1,22 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { map, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { ChangeStatusOrderComponent } from '../../../../../components/modal/change-status-order/change-status-order.component';
 import { OrderListResponse } from '../../../../../interfaces/order.interface';
 import { RentalTimerService } from '../../../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../../../store/app.state';
 import { convertStatusOrder } from '../../../../../utils/anonymous.helper';
 import { ORDER_STATUS } from '../../../../../utils/constant';
-import { getOrderDetail } from '../../../state/order-detail.actions';
-import { selectOrderDetail, selectTotalQuantity } from '../../../state/order-detail.reducer';
+import {
+  getOrderDetail,
+  resetStateOrderDetail,
+} from '../../../state/order-detail.actions';
+import {
+  selectOrderDetail,
+  selectTotalQuantity,
+} from '../../../state/order-detail.reducer';
 
 interface IOrderDetail {
   nguoiThue: string;
@@ -31,11 +37,12 @@ interface IOrderDetail {
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.scss',
 })
-export class OrderDetailComponent implements OnInit {
+export class OrderDetailComponent implements OnInit, OnDestroy {
   allChecked = false;
   orderDetail$?: Observable<OrderListResponse | null>;
   totalQuantity$?: Observable<number | null>;
   private rentalModalRef: NzModalRef | null = null;
+  subScription?: Subscription;
   onAllChecked(checked: boolean): void {}
 
   onItemChecked(): void {}
@@ -59,16 +66,14 @@ export class OrderDetailComponent implements OnInit {
   }
 
   dispatchActionNessarray() {
-    const param = this.activateRoute.paramMap.pipe(
-      map(p => {
-        const pid = p.get('id')!;
-      this.store.dispatch(getOrderDetail({ pid: pid }));
-      })
-    ).subscribe();
-    // if (param) {
-      // this.store.dispatch(getOrderDetail({ pid: param }));
-      // console.log('param',param);
-    // }
+    this.subScription = this.activateRoute.paramMap
+      .pipe(
+        map((p) => {
+          const pid = p.get('id');
+          if (pid) this.store.dispatch(getOrderDetail({ pid: pid }));
+        })
+      )
+      .subscribe();
   }
 
   popUpChangeStatus(titleTpl: TemplateRef<any>) {
@@ -83,14 +88,23 @@ export class OrderDetailComponent implements OnInit {
     });
 
     if (this.rentalModalRef)
-      this.rentalModalRef.afterClose.subscribe(() => {
-        this.rentalModalRef = null;
+      this.rentalModalRef.afterClose.subscribe((result) => {
+        if (result === 'updated') {
+          this.rentalModalRef = null;
+        }
       });
   }
 
   ngOnInit(): void {
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
+    console.log('Oninit call');
+  }
+
+  ngOnDestroy(): void {
+    console.log('OnDestroy call');
+    this.subScription?.unsubscribe();
+    this.store.dispatch(resetStateOrderDetail());
   }
 
   constructor(
@@ -98,7 +112,5 @@ export class OrderDetailComponent implements OnInit {
     private timerCalculatorService: RentalTimerService,
     private modalService: NzModalService,
     private store: Store<FeatureAppState>
-  ) {
-   
-  }
+  ) {}
 }

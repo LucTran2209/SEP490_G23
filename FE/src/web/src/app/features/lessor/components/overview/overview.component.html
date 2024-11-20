@@ -1,6 +1,6 @@
 <div class="py-5">
   <app-card-overview />
-  <div class="grid grid-cols-3 gap-5">
+  <div class="grid grid-cols-3 gap-3">
     <div class="col-span-2">
       <ngx-slick-carousel class="carousel" [config]="slideConfig">
         <div ngxSlickItem *ngFor="let component of components" class="slide">
@@ -12,7 +12,7 @@
       <app-notifcation-latest />
     </div>
   </div>
-  <div class="grid grid-cols-3 gap-5">
+  <div class="grid grid-cols-3 gap-3">
     <div class="col-span-1">
       <app-order-latest />
     </div>

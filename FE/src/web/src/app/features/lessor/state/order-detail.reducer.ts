@@ -1,8 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { StatusProcess } from '../../../interfaces/anonymous.interface';
-import { OrderListResponse } from '../../../interfaces/order.interface';
-import * as OrderDetailActions from './order-detail.actions';
 import { feature_key } from '../../../configs/feature_key.config';
+import { StatusProcess } from '../../../interfaces/anonymous.interface';
+import * as OrderDetailActions from './order-detail.actions';
 export interface OrderDetailState {
   status: StatusProcess;
   message: string | null;
@@ -19,7 +18,7 @@ export const initialState: OrderDetailState = {
 const reducer = createReducer(
   initialState,
   on(OrderDetailActions.getOrderDetail, (state, action) => ({
-    ...state,
+    ...initialState,
     status: 'loading' as StatusProcess,
   })),
   on(OrderDetailActions.getOrderDetail_success, (state, action) => ({
@@ -32,7 +31,9 @@ const reducer = createReducer(
     ...state,
     errMessage: action.errMessage,
     status: 'error' as StatusProcess,
-  }))
+  })),
+  on(OrderDetailActions.resetStateOrderDetail, () => ({...initialState}))
+  
 );
 
 export const orderDetailFeature = createFeature({

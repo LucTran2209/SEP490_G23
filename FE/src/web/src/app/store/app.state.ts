@@ -4,7 +4,6 @@ import { ProductDetailState } from '../features/common/state/product/product-det
 import { RentalOrderState } from '../features/common/state/rental/rental.reducers';
 import { RentalShopProductState } from '../features/common/state/shop/shop-personal.reducer';
 import { OrderDetailState } from '../features/lessor/state/order-detail.reducer';
-import { OrderRequestState } from '../features/lessor/state/order-request.reducer';
 import { IRegisterLessorState } from '../features/register-lessor/state/register_lessor.reducer';
 import { FilterParameters } from './filters/filter.reducers';
 import { AddressProvinceVNState } from './province/province.reducer';
@@ -17,7 +16,6 @@ export interface FeatureAppState {
   featureRentalProduct: RentalOrderState,
   featureOrderRentalProduct: OrdeProductState,
   featureFilter: FilterParameters,
-  featureRequestOrder: OrderRequestState,
   featureOrderDetail: OrderDetailState
 }
 

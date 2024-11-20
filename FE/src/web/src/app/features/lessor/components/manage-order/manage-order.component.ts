@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzCustomColumn } from 'ng-zorro-antd/table';
-import { catchError, map, Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import { map, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { OptionSelectCheckBox } from '../../../../configs/anonymous.config';
 import { OrderListResponse } from '../../../../interfaces/order.interface';
 import { LoadingService } from '../../../../services/loading.service';
@@ -20,6 +20,7 @@ interface CustomColumns extends NzCustomColumn {
   selector: 'app-manage-order',
   templateUrl: './manage-order.component.html',
   styleUrl: './manage-order.component.scss',
+  
 })
 export class ManageOrderComponent implements OnInit, OnDestroy {
   listData: OrderListResponse[] = [];
