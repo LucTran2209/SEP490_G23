@@ -204,12 +204,12 @@ export class ManagerShopComponent  implements OnInit{
   
     if (diffInDays > daysInMonth * monthsInYear) {
       const years = Math.floor(diffInDays / (daysInMonth * monthsInYear));
-      return `${years} năm`;
+      return `${years} Năm Trước`;
     } else if (diffInDays > daysInMonth) {
       const months = Math.floor(diffInDays / daysInMonth);
-      return `${months} tháng`;
+      return `${months} Tháng Trước`;
     } else {
-      return `${diffInDays} ngày`;
+      return `${diffInDays} Ngày Trước`;
     }
   }
   triggerFileInput(): void {

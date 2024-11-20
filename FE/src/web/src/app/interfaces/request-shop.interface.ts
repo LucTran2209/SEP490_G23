@@ -19,6 +19,7 @@ export interface RequestShopResultService {
     status: number;
     isActive: boolean;
     description: string;
+    adminNote: string;
   }
   export interface ChangeStatusRequestShop {
     id: string;
@@ -46,4 +47,5 @@ export interface RequestShopResultService {
     status: number;
     isActive: boolean;
     description: string;
+    adminNote: string;
   }

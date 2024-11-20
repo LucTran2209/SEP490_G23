@@ -13,7 +13,7 @@ import {
 } from '../interfaces/order.interface';
 import { AppHttpClientService } from './app-http-client.service';
 import { cleanParams } from '../utils/anonymous.helper';
-import { FeedBackInputDto } from '../interfaces/feedback.interface';
+import { FeedBackInputDto, FeedbackResultService } from '../interfaces/feedback.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -104,6 +104,11 @@ export class OrderService {
     return this.httpClient.post<BaseResponseApi<null>>(
       FeedBackSlug.CreateFeedBack.api,
       data
+    );
+  }
+  listFeedBack(id: string): Observable<FeedbackResultService> {
+    return this.httpClient.get<FeedbackResultService>(
+      FeedBackSlug.ListFeedBack.api + id
     );
   }
 }

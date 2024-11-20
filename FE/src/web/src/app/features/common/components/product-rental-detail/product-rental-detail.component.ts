@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,6 +12,8 @@ import { ChatFireStoreService } from '../../../../services/chat-fire-store.servi
 import { IPayLoad } from '../../../../interfaces/account.interface';
 import { StorageService } from '../../../../services/storage.service';
 import { LocalStorageKey } from '../../../../utils/constant';
+import { FeedbackOutputDto, FeedbackResultService } from '../../../../interfaces/feedback.interface';
+import { OrderService } from '../../../../services/order.service';
 
 @Component({
   selector: 'app-product-rental-detail',
@@ -21,6 +23,7 @@ import { LocalStorageKey } from '../../../../utils/constant';
 })
 export class ProductRentalDetailComponent implements OnDestroy{
   isVisible: boolean = false;
+  comments: FeedbackOutputDto[] = [];
   productDetail$?: Observable<ProductItemResponse>;
   userCurrent?: IPayLoad
   navigateToShop(id: string) {
@@ -61,6 +64,23 @@ export class ProductRentalDetailComponent implements OnDestroy{
       this.store.dispatch(getDetailProductRental({ productId: param }));
     }
   }
+  loadComments() {
+    const productId = this.router.snapshot.paramMap.get('id');
+    if (productId) {
+      this.orderService.listFeedBack(productId).subscribe({
+        next: (res: FeedbackResultService) => {
+          this.comments = res.data;
+        },
+        error: (err) => {
+          console.error('Lỗi khi tải bình luận:', err);
+          this.messageResponseService.handleError('Không thể tải bình luận', 500);
+        },
+      });
+    } else {
+      console.warn('Không tìm thấy productId');
+    }
+   
+  }
 
   constructor(
     private router: ActivatedRoute,
@@ -68,10 +88,12 @@ export class ProductRentalDetailComponent implements OnDestroy{
     private store: Store<FeatureAppState>,
     private messageResponseService: MessageResponseService,
     private chatFireStoreService: ChatFireStoreService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private orderService: OrderService,
   ) {}
 
   ngOnInit(): void {
+    this.loadComments();
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
     this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
