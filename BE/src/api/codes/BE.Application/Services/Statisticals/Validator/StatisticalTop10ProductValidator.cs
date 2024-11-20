@@ -6,7 +6,7 @@ namespace BE.Application.Services.Statisticals.Validator
     {
         public StatisticalTop10ProductValidator(IUnitOfWork unitOfWork)
         {
-            RuleFor(r => r.UserId)
+            RuleFor(r => r.RentaiShopId)
                  .NotEmpty().WithMessage("Shop status is required.")
                  .Must(Id => Id != Guid.Empty).WithMessage("RentalShopId cannot be empty Guid.")
                // Kiểm tra Id trong database
