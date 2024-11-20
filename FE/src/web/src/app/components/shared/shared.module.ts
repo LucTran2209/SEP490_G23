@@ -122,7 +122,8 @@ import { NotificationItemComponent } from '../notification-item/notification-ite
 import { NotificationPopupComponent } from '../../features/notification/components/notification-popup/notification-popup.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormSearchVoucherComponent } from '../core/form/form-search-voucher/form-search-voucher.component';
-import {MatDialogModule} from '@angular/material/dialog'
+import {MatDialogModule} from '@angular/material/dialog';
+import { ConfirmDeleteRequestOrderComponent } from '../modal/confirm-delete-request-order/confirm-delete-request-order.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
@@ -174,6 +175,7 @@ const ANTD_MODULES = [
 ];
 const MATERIAL_MODULES = [MatDialogModule, MatButtonModule, MatSnackBarModule, MatInputModule, MatMenuModule];
 const SHARED_MODULES = [
+ConfirmDeleteRequestOrderComponent,
   NotificationPopupComponent,
   NotificationItemComponent,
   SelectDateRangeComponent,

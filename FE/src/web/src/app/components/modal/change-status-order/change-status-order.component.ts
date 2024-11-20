@@ -34,47 +34,6 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
   >(null, [Validators.required]);
   subScription?: Subscription;
   noteMessage: FormControl<string | null> = new FormControl<string | null>('');
-  handleCancel(): void {
-    this.modalRef.triggerCancel();
-  }
-
-  selectStatusOrder: TypeSelectOrderStatus[] = [
-    {
-      label: this.convertStatus(ORDER_STATUS.PENDING_APPROVAL),
-      value: ORDER_STATUS.PENDING_APPROVAL,
-      statusType: ORDER_STATUS.PENDING_APPROVAL,
-    },
-    {
-      label: this.convertStatus(ORDER_STATUS.PENDING_PAYMENT),
-      value: ORDER_STATUS.PENDING_PAYMENT,
-      statusType: ORDER_STATUS.PENDING_PAYMENT,
-    },
-    {
-      label: this.convertStatus(ORDER_STATUS.PENDING_DELIVERY),
-      value: ORDER_STATUS.PENDING_DELIVERY,
-      statusType: ORDER_STATUS.PENDING_DELIVERY,
-    },
-    {
-      label: this.convertStatus(ORDER_STATUS.RECEIVED),
-      value: ORDER_STATUS.RECEIVED,
-      statusType: ORDER_STATUS.RECEIVED,
-    },
-    {
-      label: this.convertStatus(ORDER_STATUS.REFUND),
-      value: ORDER_STATUS.REFUND,
-      statusType: ORDER_STATUS.REFUND,
-    },
-    {
-      label: this.convertStatus(ORDER_STATUS.DEPOSIT_REFUND),
-      value: ORDER_STATUS.DEPOSIT_REFUND,
-      statusType: ORDER_STATUS.DEPOSIT_REFUND,
-    },
-    {
-      label: this.convertStatus(ORDER_STATUS.CANCEL),
-      value: ORDER_STATUS.CANCEL,
-      statusType: ORDER_STATUS.CANCEL,
-    },
-  ];
 
   convertStatus(orderStatus: ORDER_STATUS) {
     return convertStatusOrder(orderStatus);
@@ -85,7 +44,7 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
       this.modalRef.triggerOk();
       return;
     }
-    console.log(this.selectedValue.value);
+    console.log(this.selectedValue.value, 'line 85');
     if (this.orderDetail$ && this.selectedValue.valid) {
       combineLatest([
         this.orderDetail$,
@@ -120,6 +79,12 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
 
   dispatchActionNessarray(pid: string) {
     this.store.dispatch(getOrderDetail({ pid: pid }));
+  }
+
+  getOrderStatusLatest(orderDetail: OrderListResponse): number{
+     const val = orderDetail.orderStatuses.reduce((max, item) => Math.max(max, item.status), -Infinity);
+     this.selectedValue.setValue(val + 1);
+     return val;
   }
 
 

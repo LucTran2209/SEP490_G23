@@ -79,19 +79,24 @@
               Trạng thái đơn hàng
             </td>
             <td class="font-medium py-[4px]">
-              <app-status-label [label]="convertStatus(orderDetails.orderStatuses[orderDetails.orderStatuses.length - 1].status)"
-                [statusType]="orderDetails.orderStatuses[orderDetails.orderStatuses.length - 1].status" />
+              <app-status-label [label]="convertStatus(getOrderStatusLatest(orderDetails))"
+                [statusType]="getOrderStatusLatest(orderDetails)" />
             </td>
+            
           </tr>
         </tbody>
       </table>
       <section class="flex flex-col gap-2 pt-3">
-        <button nz-button class="w-full" nzType="primary" (click)="popUpChangeStatus(modalTitle)">
-          Xét duyệt yêu cầu
-        </button>
-        <button nz-button class="w-full" nzType="default">
-          Từ chối yêu cầu
-        </button>
+        @if(getOrderStatusLatest(orderDetails) < (preventContinueChangeStatus - 1) ){
+          <button nz-button class="w-full" nzType="primary" (click)="popUpChangeStatus(modalTitle)">
+            Xác nhận {{convertStatus(getOrderStatusLatest(orderDetails))}}
+          </button>
+        }
+        @if(availableCancelRequestOrder.includes(getOrderStatusLatest(orderDetails))){
+          <button nz-button class="w-full" nzType="default" (click)="popUpCancelOrderStatus()">
+            Hủy yêu cầu
+          </button>
+        }
       </section>
     </section>
     <section class="flex-1 p-5 bg-white rounded-md">

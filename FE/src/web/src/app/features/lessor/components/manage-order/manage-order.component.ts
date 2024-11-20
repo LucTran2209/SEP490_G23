@@ -119,6 +119,10 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
     }));
   }
 
+  getOrderStatusLatest(orderDetail: OrderListResponse): number{
+    return orderDetail.orderStatuses.reduce((max, item) => Math.max(max, item.status), -Infinity);
+  }
+  
   convertRentalDay(startDate: string, endDate: string) {
     let diffDate_start = new Date(startDate);
     let diffDate_end = new Date(endDate);
