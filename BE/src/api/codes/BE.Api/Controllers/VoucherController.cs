@@ -7,7 +7,7 @@ namespace BE.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VoucherController : ControllerBase
+    public class VoucherController : BaseController
     {
         private readonly IVoucherService _voucherService;
 
@@ -21,7 +21,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> GetListVoucherAsync()
         {
             var result = await _voucherService.GetListVoucherAsync();
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("create")]
@@ -29,7 +29,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> CreateVoucherAsync([FromBody] CreateVoucherInputDto inputDto)
         {
             var result = await _voucherService.CreateVoucherAsync(inputDto);
-            return StatusCode(result.StatusCode, result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPut("{voucherId}")]
@@ -37,7 +37,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> UpdateVoucherAsync(Guid voucherId, [FromBody] UpdateVoucherInputDto inputDto)
         {
             var result = await _voucherService.UpdateVoucherAsync(voucherId, inputDto);
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
 
@@ -46,7 +46,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> DeactivateVoucherAsync(Guid voucherId)
         {
             var result = await _voucherService.DeactivateVoucherAsync(voucherId);
-            return StatusCode(result.StatusCode, result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpDelete("{voucherId}")]
@@ -54,7 +54,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> DeleteVoucherAsync(Guid voucherId)
         {
             var result = await _voucherService.DeleteVoucherAsync(voucherId);
-            return StatusCode(result.StatusCode, result);
+            return ReturnFollowStatusCode(result);
         }
 
         //[HttpGet("{voucherId}")]
