@@ -16,6 +16,8 @@ namespace BE.Domain.Abstractions.UnitOfWork
         public ICategoryRepository CategoryRepository { get; }
         public ISubCategoryRepository SubCategoryRepository { get; }
 
+        public IVoucherRepository VoucherRepository { get; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         Task BeginTransactionAsync();
