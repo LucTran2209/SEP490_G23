@@ -27,6 +27,7 @@ export class StatusLabelComponent implements OnInit {
       case ORDER_STATUS.PENDING_PAYMENT:
         return 'status-warning';
       case 'error':
+      case ORDER_STATUS.CANCEL:
         return 'status-error';
       case ORDER_STATUS.PENDING_APPROVAL:
         return 'status-pending_approval';

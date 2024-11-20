@@ -2,13 +2,20 @@ import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { map, Observable, Subscription } from 'rxjs';
+import {
+  combineLatest,
+  concatMap,
+  map,
+  Observable,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { ChangeStatusOrderComponent } from '../../../../../components/modal/change-status-order/change-status-order.component';
 import { OrderListResponse } from '../../../../../interfaces/order.interface';
 import { RentalTimerService } from '../../../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../../../store/app.state';
 import { convertStatusOrder } from '../../../../../utils/anonymous.helper';
-import { ORDER_STATUS } from '../../../../../utils/constant';
+import { ORDER_STATUS, ORDER_STATUS_MAX } from '../../../../../utils/constant';
 import {
   getOrderDetail,
   resetStateOrderDetail,
@@ -17,21 +24,10 @@ import {
   selectOrderDetail,
   selectTotalQuantity,
 } from '../../../state/order-detail.reducer';
+import { ConfirmDeleteRequestOrderComponent } from '../../../../../components/modal/confirm-delete-request-order/confirm-delete-request-order.component';
+import { OrderService } from '../../../../../services/order.service';
+import { MessageResponseService } from '../../../../../services/message-response.service';
 
-interface IOrderDetail {
-  nguoiThue: string;
-  soDienThoai: string;
-  email: string;
-  ngayTao: string;
-  thoiGianThue: string;
-  maDonHang: string | number;
-  quantityProduct: number | string;
-  giaCoc: string;
-  tongTien: string;
-  trangThaiDonHang: string;
-  trangThaiThanhToan: string;
-  address: string;
-}
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
@@ -39,6 +35,12 @@ interface IOrderDetail {
 })
 export class OrderDetailComponent implements OnInit, OnDestroy {
   allChecked = false;
+  preventContinueChangeStatus: number = ORDER_STATUS_MAX;
+  availableCancelRequestOrder: number[] = [
+    ORDER_STATUS.PENDING_APPROVAL,
+    ORDER_STATUS.PENDING_DELIVERY,
+    ORDER_STATUS.PENDING_PAYMENT,
+  ];
   orderDetail$?: Observable<OrderListResponse | null>;
   totalQuantity$?: Observable<number | null>;
   private rentalModalRef: NzModalRef | null = null;
@@ -63,6 +65,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   selectStateFromNgRx() {
     this.totalQuantity$ = this.store.select(selectTotalQuantity);
     this.orderDetail$ = this.store.select(selectOrderDetail);
+  }
+  getOrderStatusLatest(orderDetail: OrderListResponse): number {
+    return orderDetail.orderStatuses.reduce(
+      (max, item) => Math.max(max, item.status),
+      -Infinity
+    );
   }
 
   dispatchActionNessarray() {
@@ -95,6 +103,45 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  popUpCancelOrderStatus() {
+    this.rentalModalRef = this.modalService.create({
+      nzContent: ConfirmDeleteRequestOrderComponent,
+      nzCloseIcon: '',
+      nzFooter: null,
+      nzBodyStyle: { padding: '12px' },
+    });
+
+    const instance = this.rentalModalRef.getContentComponent();
+    instance.noteReasonCancel.subscribe((noteMessage: string) => {
+      combineLatest([ this.activateRoute.paramMap])
+        .pipe(
+          concatMap(([p]) => {
+            const pid = p.get('id');
+            const formData = new FormData();
+            formData.append('Id', '');
+            formData.append('OrderId', `${pid}`);
+            formData.append('Message', `${noteMessage}`);
+            formData.append('Status', `${ORDER_STATUS.CANCEL}`);
+            formData.append('FileAttach', '');
+            return this.orderService.requestOrderStatus(formData);
+          }),
+          tap(() => {
+            this.dispatchActionNessarray();
+          })
+        )
+        .subscribe({
+          next: () => {
+            this.messageResponseMS.showInfo(
+              'Sẽ thông báo đơn hàng hủy tới bên thuê'
+            );
+          },
+          error: (err) => {
+            console.error('Lỗi xử lý:', err);
+          },
+        });
+    });
+  }
+
   ngOnInit(): void {
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
@@ -111,6 +158,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     private activateRoute: ActivatedRoute,
     private timerCalculatorService: RentalTimerService,
     private modalService: NzModalService,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private orderService: OrderService,
+    private messageResponseMS: MessageResponseService
   ) {}
 }

@@ -1,41 +1,29 @@
 @if(orderDetail$ | async; as orderDetail ){
-    <div class="mb-3 p-4 bg-gray-50 border border-gray-200 rounded-md shadow-sm">
-        <div class="text-gray-600 mb-3">
-          Bạn muốn chuyển trạng thái đơn hàng <span class="font-semibold text-black">#{{orderDetail.code}}</span> ?
-        </div>
-        <div class="flex items-center justify-around">
-         <div class="relative">
-          <app-status-label [label]="convertStatus(orderDetail.orderStatuses[orderDetail.orderStatuses.length - 1].status)"
-          [statusType]="orderDetail.orderStatuses[orderDetail.orderStatuses.length - 1].status" />
-          <div class="absolute inset-0  bg-gray-300 opacity-65"></div>
-         </div>
-          <span nz-icon nzType="double-right" nzTheme="outline"></span>
-          <div>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn trạng thái muốn chuyển đổi" [formControl]="selectedValue">
-            @for (item of selectStatusOrder; track $index) {
-              <nz-option *ngIf="orderDetail.orderStatuses[orderDetail.orderStatuses.length - 1].status !== item.statusType" nzCustomContent [nzLabel]="item.label" [nzValue]="item.value">
-                <app-status-label [label]="item.label"
-          [statusType]="item.statusType" />
-              </nz-option>
-            }
-            </nz-select>
-          </div>
-        </div>
-      </div>
-      <div class="mb-3">
-        <textarea
-          class="bg-gray-50 border border-gray-200 rounded-md shadow-sm"
-          placeholder="Nhập tin nhắn gửi tới người thuê"
-          nz-input
-          [formControl]="noteMessage"
-          [nzAutosize]="{ minRows: 5, maxRows: 5 }"
-        ></textarea>
-      </div>
-      <div class="modal-footer flex items-center justify-end gap-x-3">
-        <button nz-button nzType="default" (click)="confirm('cancel')">Hủy bỏ</button>
-        <button nz-button nzType="primary" (click)="confirm('approve')" [disabled]="selectedValue.invalid">
-          Xét duyệt
-        </button>
-      </div>
+<div class="mb-3 p-4 bg-gray-50 border border-gray-200 rounded-md shadow-sm">
+  <div class="text-gray-600 mb-3">
+    Bạn muốn chuyển trạng thái đơn hàng
+    <span class="font-semibold text-black">#{{ orderDetail.code }}</span> ?
+  </div>
+  <div class="flex items-center justify-around">
+    <p class="text-gray-400">
+      <s>{{ convertStatus(getOrderStatusLatest(orderDetail)) }}</s>
+    </p>
+    <span nz-icon nzType="double-right" nzTheme="outline"></span>
+    <p>{{ convertStatus(getOrderStatusLatest(orderDetail) + 1) }}</p>
+  </div>
+</div>
+<div class="mb-3">
+  <textarea
+    class="bg-gray-50 border border-gray-200 rounded-md shadow-sm"
+    placeholder="Nhập tin nhắn gửi tới người thuê"
+    nz-input
+    [formControl]="noteMessage"
+    [nzAutosize]="{ minRows: 5, maxRows: 5 }"
+  ></textarea>
+</div>
+<div class="modal-footer flex items-center justify-end gap-x-3">
+  <button nz-button nzType="primary" (click)="confirm('approve')">
+    Xét duyệt
+  </button>
+</div>
 }
-
