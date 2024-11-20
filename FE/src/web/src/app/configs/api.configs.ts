@@ -205,7 +205,7 @@ export const RentalShopSlug = {
   UpdateRentalShop: {
     label: 'Update Rental Shop',
     title: 'Update Rental Shop | ERMS',
-    api: 'RentalShop/',
+    api: 'MyShop/',
   },
   ListRentalShop: {
     label: 'List Rental Shop',
