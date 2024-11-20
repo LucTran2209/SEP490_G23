@@ -33,7 +33,7 @@
       </div>
       <div class="modal-footer flex items-center justify-end gap-x-3">
         <button nz-button nzType="default" (click)="confirm('cancel')">Hủy bỏ</button>
-        <button nz-button nzType="primary" (click)="confirm('approve')" [disabled]="selectedValue.invalid">
+        <button nz-button nzType="primary" (click)="$event.stopPropagation(); confirm('approve')" [disabled]="selectedValue.invalid">
           Xét duyệt
         </button>
       </div>

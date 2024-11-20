@@ -55,7 +55,12 @@
 
       <!-- Lessor Role -->
       <ng-container *ngIf="hasLessorRole()">
-        <li nz-menu-item>
+        <li nz-menu-item 
+        nz-menu-item
+        [routerLink]="['./dashboard']"
+        routerLinkActive="ant-menu-item-selected"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thông Kê</span>
         </li>

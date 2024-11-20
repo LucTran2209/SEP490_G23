@@ -1,19 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import {
-  catchError,
-  map,
-  of,
-  switchMap,
-  tap
-} from 'rxjs';
+import { catchError, concatMap, map, of, takeUntil, tap } from 'rxjs';
 import { LoadingService } from '../../../services/loading.service';
 import { MessageResponseService } from '../../../services/message-response.service';
 import { OrderService } from '../../../services/order.service';
-import { FeatureAppState } from '../../../store/app.state';
 import * as RequestOrderActions from './order-request.actions';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 @Injectable()
 export class OrderRequestEffects {
   constructor(
@@ -21,8 +13,7 @@ export class OrderRequestEffects {
     private loadingService: LoadingService,
     private messageResponseMS: MessageResponseService,
     private orderService: OrderService,
-    private store: Store<FeatureAppState>,
-    private route: Router
+    private router: Router
   ) {}
 
   processOrderRequest$ = createEffect(
@@ -30,27 +21,35 @@ export class OrderRequestEffects {
       this.actions$.pipe(
         ofType(RequestOrderActions.requestOrderInit),
         tap(() => this.loadingService.setLoading()),
-        switchMap(({ formData, pid }) =>
+        concatMap(({ formData, pid }) =>
           this.orderService.requestOrderStatus(formData).pipe(
-            map((res) => RequestOrderActions.requestOrder_sucess({ pid })),
+            map(({}) => RequestOrderActions.requestOrder_sucess({ pid })),
             catchError((err) => {
               return of(RequestOrderActions.requestOrder_failure());
             })
           )
-        )
+        ),
+        // takeUntil(
+        //   this.actions$.pipe(
+        //     ofType(RequestOrderActions.requestOrder_resetState)
+        //   )
+        // )
       ),
+
     {
       dispatch: true,
     }
   );
-  processOrderRequest_success$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(RequestOrderActions.requestOrder_sucess),
-      tap(() => {
-        this.loadingService.setOtherLoading('loaded');
-        this.messageResponseMS.showSuccess('Cập nhật trạng thái thành công');
-      }),
-    ),
+  processOrderRequest_success$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(RequestOrderActions.requestOrder_sucess),
+        tap(() => {
+          this.loadingService.setOtherLoading('loaded');
+          this.messageResponseMS.showSuccess('Cập nhật trạng thái thành công');
+          this.router.navigateByUrl('/lessor/order');
+        }),
+      ),
     {
       dispatch: false,
     }

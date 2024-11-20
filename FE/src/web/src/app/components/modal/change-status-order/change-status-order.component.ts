@@ -1,28 +1,26 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import {
-  combineLatest,
-  mergeMap,
-  Observable,
-  of,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs';
-import { OrderListResponse } from '../../../interfaces/order.interface';
-import { ORDER_STATUS } from '../../../utils/constant';
-import { convertStatusOrder } from '../../../utils/anonymous.helper';
-import { OptionSelect } from '../../../configs/anonymous.config';
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
+import { combineLatest, Observable, of } from 'rxjs';
+import { OptionSelect } from '../../../configs/anonymous.config';
+import { requestOrder_resetState, requestOrderInit } from '../../../features/lessor/state/order-request.actions';
+import { OrderListResponse } from '../../../interfaces/order.interface';
 import { FeatureAppState } from '../../../store/app.state';
-import { requestOrderInit } from '../../../features/lessor/state/order-request.actions';
-import { getOrderDetail } from '../../../features/lessor/state/order-detail.actions';
+import { convertStatusOrder } from '../../../utils/anonymous.helper';
+import { ORDER_STATUS } from '../../../utils/constant';
 type TypeSelectOrderStatus = OptionSelect & { statusType: ORDER_STATUS };
 @Component({
   selector: 'app-change-status-order',
   templateUrl: './change-status-order.component.html',
   styleUrl: './change-status-order.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
   nzModalData: any = inject(NZ_MODAL_DATA);
@@ -94,7 +92,9 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
         noteMessage && formData.append('Message', noteMessage);
         selectStatus && formData.append('Status', selectStatus.toString());
         formData.append('FileAttach', '');
+        console.log('<<<<< 95>>>>>');
         this.store.dispatch(requestOrderInit({ formData, pid: order.id }));
+        this.modalRef.close('updated');
       });
     }
     this.modalRef.triggerOk();
@@ -103,10 +103,12 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
   constructor(
     private modalRef: NzModalRef,
     private store: Store<FeatureAppState>
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.orderDetail$ = this.nzModalData.orderDetail$;
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { 
+    this.store.dispatch(requestOrder_resetState());
+  }
 }

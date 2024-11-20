@@ -22,6 +22,7 @@ const reducer = createReducer(
     on(OrderRequestActions.requestOrderInit,(state, action) => ({...state, status: 'loading' as StatusProcess})),
     on(OrderRequestActions.requestOrderInit, (state, action) => ({...state, status: 'loaded' as StatusProcess, statusCode: HttpStatusCode.OK})),
     on(OrderRequestActions.requestOrderInit, (state, action) => ({...state,message:'', status: 'error' as StatusProcess, statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR})),
+    on(OrderRequestActions.requestOrder_resetState, () => ({...initialState}))
 )
 
 export const orderRequestFeature = createFeature({
