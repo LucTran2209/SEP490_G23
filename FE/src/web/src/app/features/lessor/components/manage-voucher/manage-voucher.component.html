@@ -1,10 +1,11 @@
 <div class="p-5 my-3 bg-white rounded-md">
   <h3 class="text-xl text-[#111]">Danh sách Khuyến Mãi Cửa Hàng Của Tôi</h3>
   <section class="py-3">
-    <app-form-search-voucher
-      (resetLoad)="onloadOrder()"
-      (formValueFilter)="onSubmitForm($event)"
-    />
+    <app-form-voucher
+      [voucher]="voucherInformation"
+      (saveVoucher)="onSubmitForm($event)"
+      (updateVoucher)="onUpdateSubmitForm($event)"
+    ></app-form-voucher>
   </section>
   <section>
     <nz-table
@@ -13,47 +14,40 @@
       #basicTable
       [nzData]="listData"
       [nzBordered]="true"
-      [nzPaginationPosition]="'bottom'"
-      nzFrontPagination="false"
       nzShowSizeChanger="true"
-      [nzShowPagination]="true"
-      [nzShowTotal]="showTotal"
-      [nzPageIndex]="(pageIndex$ | async) ?? 1"
-      [nzTotal]="(pageTotal$ | async) ?? 0"
-      [nzPageSize]="(pageSize$ | async) ?? 10"
-      (nzPageIndexChange)="onPageIndexChange($event)"
-      (nzPageSizeChange)="onPageSizeChange($event)"
     >
       <thead>
         <tr>
           <th nzCellControl="maVoucher">Mã Khuyến Mãi</th>
-          <th nzCellControl="ngayTao">Ngày tạo</th>
+          <th nzCellControl="giaTri">Giá trị Giảm Giá</th>
           <th nzCellControl="ngayBatDau">Ngày Bắt Đầu</th>
-          <th nzCellControl="ngayKetThuc">Ngày Kết Thúc</th>
+          <th nzCellControl="ngayKetThuc">Ngày Hết Hạn</th>
           <th nzCellControl="noiDung">Nội dung</th>
           <th nzCellControl="trangThai">Trạng thái</th>
           <th nzCellControl="chinhSua" nzRight>Chỉnh Sửa</th>
+          <th nzCellControl="xoa" nzRight>Xóa</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of basicTable.data; let i = index">
-          <td nzCellControl="maVoucher">{{ data.code ?? i + 1 }}</td>
-          <td nzCellControl="ngayTao">
+          <td nzCellControl="maVoucher">{{ data.code }}</td>
+          <td nzCellControl="giaTri">{{ data.discountValue }} %</td>
+          <td nzCellControl="ngayBatDau">
             {{ data.startDate | date : "dd/MM/yyyy hh:mm a" }}
           </td>
-          <td nzCellControl="ngayBatDau">{{ data.user.userName }}</td>
-          <td nzCellControl="ngayKetThuc">{{ data.recipientPhoneNumber }}</td>
-          <td nzCellControl="noiDung">{{ data.note }}</td>
+          <td nzCellControl="ngayKetThuc">
+            {{ data.expiryDate | date : "dd/MM/yyyy hh:mm a" }}
+          </td>
+          <td nzCellControl="noiDung">{{ data.description }}</td>
           <td nzCellControl="trangThai">
-            @if(data.orderStatuses.length !== 0){
-            <app-status-label
-              [label]="convertStatus(data.orderStatuses[0].status)"
-              [statusType]="data.orderStatuses[0].status"
-            />
-            }@else { UNKNOWN }
+            @if(data.isActive){
+            <p class="status-success">Đang Hoạt Động</p>
+            }@else {
+            <p class="status-error">Không Hoạt Động</p>
+            }
           </td>
           <td nzCellControl="chinhSua" nzRight>
-            <a class="text-blue-600">
+            <a class="text-blue-600" (click)="getVoucherById(data.id)">
               <span
                 nz-icon
                 nzType="form"
@@ -63,15 +57,33 @@
               <span class="mx-2">Chỉnh Sửa</span>
             </a>
           </td>
+          <td nzCellControl="xoa" nzRight>
+            <div class="flex justify-around">
+              <a class="text-red-600" (click)="deleteVoucher(data.id)">
+                <span
+                  nz-tooltip
+                  nzTooltipTitle="Xóa Khuyến Mãi"
+                  nz-icon
+                  nzType="delete"
+                  nzTheme="outline"
+                ></span>
+              </a>
+              @if(data.isActive){
+              <p class="text-gray-300">|</p>
+              <a class="text-red-600" (click)="deactiveVoucher(data.id)">
+                <span
+                  nz-tooltip
+                  nzTooltipTitle="Dừng Chương Trình"
+                  nz-icon
+                  nzType="stop"
+                  nzTheme="outline"
+                ></span>
+              </a>
+              }
+            </div>
+          </td>
         </tr>
       </tbody>
     </nz-table>
   </section>
 </div>
-
-<ng-template #showTotal>
-  <div class="text-[14px] font-medium text-[#333]">
-    Hiển thị thứ tự 1- {{ pageSize$ | async }} trong
-    {{ pageTotal$ | async }} kết quả
-  </div>
-</ng-template>

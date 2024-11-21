@@ -28,6 +28,7 @@
                   [placeholder]="tab.placeholder"
                   [(ngModel)]="tab.searchText"
                   (keydown.enter)="onSearch(tab.status)"
+                  (keyup)="reset(tab.status)"
                 />
               </nz-input-group>
               <ng-template #suffixIconButton>

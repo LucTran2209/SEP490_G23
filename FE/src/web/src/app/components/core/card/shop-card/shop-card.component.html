@@ -77,8 +77,8 @@
             {{ totalQuantity }}
           </p>
           <app-status-label
-            [label]="convertStatus(order.orderStatuses[0].status)"
-            [statusType]="order.orderStatuses[0].status"
+            [label]="convertStatus(order.orderStatuses[order.orderStatuses.length - 1].status)"
+            [statusType]="order.orderStatuses[order.orderStatuses.length - 1].status"
           />
         </div>
       </div>

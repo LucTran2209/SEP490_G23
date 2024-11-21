@@ -21,7 +21,7 @@ export class ListMyOrderComponent implements OnInit {
   selectedFilter = 7;
   isVisible : boolean = false;
   username: string = '';
-  totalUsers = 0;     
+  totalOrders = 0;     
   currentPage = 1;    
   pageSize = 10;  
   orderList: MyOrderOutputDto[] = [];
@@ -47,139 +47,91 @@ export class ListMyOrderComponent implements OnInit {
   orderTabs: {
     title: string;
     status: number;
+    currentPage: number;
+    totalOrders: number;
     searchText: string;
     orders: MyOrderOutputDto[];
     ordersNull: boolean;
     placeholder: string;
     isShowBtn1: boolean;
   }[] = [
-    {
-      title: 'CHỜ XÁC NHẬN',
-      status: 0,
-      searchText: '',
-      orders: [],
-      ordersNull: true,
-      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
-      isShowBtn1: false,
-    },
-    {
-      title: 'CHỜ THANH TOÁN',
-      status: 1,
-      searchText: '',
-      orders: [],
-      ordersNull: true,
-      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
-      isShowBtn1: false,
-    },
-    {
-      title: 'CHỜ GIAO HÀNG',
-      status: 2,
-      searchText: '',
-      orders: [],
-      ordersNull: true,
-      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
-      isShowBtn1: false,
-    },
-    {
-      title: 'ĐÃ NHẬN HÀNG',
-      status: 3,
-      searchText: '',
-      orders: [],
-      ordersNull: true,
-      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
-      isShowBtn1: false,
-    },
-    {
-      title: 'CHỜ HOÀN TRẢ',
-      status: 4,
-      searchText: '',
-      orders: [],
-      ordersNull: true,
-      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
-      isShowBtn1: false,
-    },
-    {
-      title: 'HOÀN THÀNH',
-      status: 5,
-      searchText: '',
-      orders: [],
-      ordersNull: true,
-      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
-      isShowBtn1: true,
-    },
-    {
-      title: 'HỦY ĐƠN',
-      status: 6,
-      searchText: '',
-      orders: [],
-      ordersNull: true,
-      placeholder: 'Tìm đơn hàng theo tên shop, mã đơn hàng, tên thiết biệt',
-      isShowBtn1: false,
-    }
+    { title: 'CHỜ XÁC NHẬN', status: 0, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...', isShowBtn1: false, },
+    { title: 'CHỜ THANH TOÁN', status: 1, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, },
+    { title: 'CHỜ GIAO HÀNG', status: 2, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false },
+    { title: 'ĐÃ NHẬN HÀNG', status: 3, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false },
+    { title: 'CHỜ HOÀN TRẢ', status: 4, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false },
+    { title: 'HOÀN THÀNH', status: 5, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: true },
+    { title: 'HỦY ĐƠN', status: 6, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false }
   ];
   ngOnInit() {
     this.loadingService.setLoading();
-    // this.route.queryParams.subscribe(params => {
-    //   const status = params['status'] || 0;
-    //   const filter = params['filter'] || 7;
-    //   const searchText = params['searchText'] || ''; 
-    //   this.statusOrder = status;
-    //   this.selectedFilter = filter;
-    //   this.searchText = searchText;
-    // });
     this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
   }
-  loadOrders(pageIndex: number, pageSize: number, nearDays: number){
-    this.loadingService.setLoading();
-    this.orderService.listMyOrder(pageIndex, pageSize, nearDays).subscribe({
+
+  loadOrders(pageIndex: number, pageSize: number, nearDays: number, search: string = '') {
+    // Gọi service với các tham số đã cung cấp
+    this.orderService.listMyOrder(pageIndex, pageSize, nearDays, search).subscribe({
       next: (res: OrderResultService) => {
         this.loadingService.setOtherLoading('loaded');
-        this.orderList = res.data.items;
+        this.orderList = res.data.items;  // Gán kết quả trả về
         this.orderListNull = !this.orderList || this.orderList.length === 0;
-        this.ListOrdersByStatus();
-        console.log(this.orderList);
+        this.ListOrdersByStatus();  // Lọc theo trạng thái
       },
       error: () => {
         this.orderError = true;
       }
     });
   }
+
+  // Phương thức lọc đơn hàng theo trạng thái
   ListOrdersByStatus() {
     this.orderTabs.forEach(tab => {
-      tab.orders = this.orderList.filter(order =>
-        order.orderStatuses.some(status => status.status === tab.status)
-      );
+      tab.orders = this.orderList.filter(order => {
+        const lastStatus = order.orderStatuses[order.orderStatuses.length - 1]; // Trạng thái cuối cùng
+        return lastStatus && lastStatus.status === tab.status;
+      });
       tab.ordersNull = tab.orders.length === 0;
-      // if (tab.status === 1 && tab.orders.length > 0) {
-      //   tab.isShowBtn1 = true;
-      // } else {
-      //   tab.isShowBtn1 = false;
-      // }
     });
-  
+
     this.cdRef.detectChanges();
   }
 
-  // Function to handle search
+  // Phương thức tìm kiếm trong tab cụ thể
   onSearch(status: number) {
     const tab = this.orderTabs.find(tab => tab.status === status);
     if (tab) {
+      // Cập nhật lại search text của tab và gọi phương thức lọc
+      // this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter, tab.searchText);
       this.filterOrders(tab);
     }
   }
+  reset(status: number){
+    const tab = this.orderTabs.find(tab => tab.status === status);
+    if (!tab?.searchText) {
+      this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
 
-  // Function to filter orders based on search text
-  filterOrders(tab: any) {
-    const filteredOrders = this.orderList.filter(order =>
-      order.orderStatuses.some(status => status.status === tab.status) &&
-      // Check each order detail for the product name
-      order.orderDetails.some(orderDetail =>
-        orderDetail.product.productName?.includes(tab.searchText) || orderDetail.product.id.includes(tab.searchText) || orderDetail.productId.includes(tab.searchText) // Search by productName, productId, or order code
-      )
-    );
-    tab.orders = filteredOrders;
-    tab.ordersNull = filteredOrders.length === 0;
+    }
   }
+
+  // Phương thức lọc đơn hàng theo chuỗi tìm kiếm
+  filterOrders(tab: any) {
+    tab.orders = this.orderList.filter(order => {
+      const lastStatus = order.orderStatuses?.[order.orderStatuses.length - 1];
+      return (
+        lastStatus &&
+        lastStatus.status === tab.status &&
+        (
+          order.orderDetails.some(detail => 
+            detail.product.productName?.toLowerCase().includes(tab.searchText.toLowerCase())
+          ) ||
+          order.id.includes(tab.searchText)  // Lọc theo mã đơn hàng
+        )
+      );
+    });
+  
+    tab.ordersNull = tab.orders.length === 0;
+  }
+
   showFeedBack(orderId: string){
     this.isVisible = true;
     this.orderService.getOrder(orderId).subscribe({

@@ -103,7 +103,7 @@
                   VND
                 </p>
                 <p class="text-right mb-2 text-[#525E6F]">
-                  {{ numberofRentalDays }} ngày
+                  {{ timeString }}
                 </p>
                 <p class="text-right mb-2 text-[#525E6F]">
                   {{ order.startDate | date : "HH:mm dd/MM/yyyy" }}
@@ -125,8 +125,15 @@
                 <p class="font-medium my-2">Trạng thái đơn hàng</p>
                 <div class="flex justify-end m-2">
                   <app-status-label
-                    [label]="convertStatus(order.orderStatuses[0].status)"
-                    [statusType]="order.orderStatuses[0].status"
+                    [label]="
+                      convertStatus(
+                        order.orderStatuses[order.orderStatuses.length - 1]
+                          .status
+                      )
+                    "
+                    [statusType]="
+                      order.orderStatuses[order.orderStatuses.length - 1].status
+                    "
                   />
                 </div>
               </div>

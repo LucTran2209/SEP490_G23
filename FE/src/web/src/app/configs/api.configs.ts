@@ -200,7 +200,7 @@ export const RentalShopSlug = {
   GetRentalShop: {
     label: 'Get Rental Shop',
     title: 'Get Rental Shop | ERMS',
-    api: 'RentalShop/',
+    api: 'RentalShop/detail/',
   },
   UpdateRentalShop: {
     label: 'Update Rental Shop',
@@ -244,5 +244,38 @@ export const FeedBackSlug = {
     title: 'List Feedback | ERMS',
     api: 'api/Feedback/product/',
   }
+
+}
+export const VoucherSlug = {
+  CreateVoucher: {
+    label: 'Create Voucher',
+    title: 'Create Voucher | ERMS',
+    api: 'Voucher/create',
+  },
+  UpdateVoucher: {
+    label: 'Update Voucher',
+    title: 'Update Voucher | ERMS',
+    api: 'Voucher/',
+  },
+  DeleteVoucher: {
+    label: 'Delete Voucher',
+    title: 'Delete Voucher | ERMS',
+    api: 'Voucher/',
+  },
+  DeactivateVoucher: {
+    label: 'Deactivate Voucher',
+    title: 'Deactivate Voucher | ERMS',
+    api: 'Voucher/',
+  },
+  ListVoucher: {
+    label: 'List Voucher',
+    title: 'List Voucher | ERMS',
+    api: 'Voucher/list',
+  },
+  GetVoucher: {
+    label: 'Get Voucher',
+    title: 'Get Voucher | ERMS',
+    api: 'Voucher/',
+  },
 
 }

@@ -10,6 +10,11 @@ import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 import { OrderListResponse } from '../../../../interfaces/order.interface';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { NzCustomColumn } from 'ng-zorro-antd/table';
+import { VoucherDetailResultService, VoucherEditInputDto, VoucherInputDto, VoucherOutputDto, VoucherResultService } from '../../../../interfaces/voucher.interface';
+import { VoucherService } from '../../../../services/voucher.service';
+import { UserProfileService } from '../../../../services/user-profile.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-manage-voucher',
@@ -17,10 +22,9 @@ import { NzCustomColumn } from 'ng-zorro-antd/table';
   styleUrl: './manage-voucher.component.scss',
 })
 export class ManageVoucherComponent {
-  listData: OrderListResponse[] = [];
-  pageIndex$: Observable<number> = of(1);
-  pageTotal$?: Observable<number>;
-  pageSize$: Observable<number> = of(10);
+  voucherInformation!: VoucherInputDto;
+  voucherId: string = '';
+  listData: VoucherOutputDto[] = [];
   customColumn: CustomColumns[] = [
     {
       name: 'Mã Khuyến Mãi',
@@ -31,8 +35,8 @@ export class ManageVoucherComponent {
       fixWidth: true,
     },
     {
-      name: 'Ngày tạo',
-      value: 'ngayTao',
+      name: 'Giá Trị Giảm Giá',
+      value: 'giaTri',
       default: true,
       position: 'left',
       width: 200,
@@ -86,16 +90,26 @@ export class ManageVoucherComponent {
       width: 200,
       fixWidth: true,
     },
+    {
+      name: 'Xóa',
+      value: 'xoa',
+      default: true,
+      position: 'left',
+      width: 200,
+      fixWidth: true,
+    },
   ];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private navigateService: NavigationService,
-    private orderService: OrderService,
+    private voucherService: VoucherService,
     private loadingSerivce: LoadingService,
-    private timerCalculatorService: RentalTimerService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private userProfileService: UserProfileService, 
+    private messageService: MessageResponseService,
+    private modal: NzModalService, 
   ) {}
 
   handleChooseViewCell(arr: OptionSelectCheckBox[]) {
@@ -105,107 +119,106 @@ export class ManageVoucherComponent {
     }));
   }
 
-  convertRentalDay(startDate: string, endDate: string) {
-    let diffDate_start = new Date(startDate);
-    let diffDate_end = new Date(endDate);
-    return this.timerCalculatorService.convertRentalDays([
-      diffDate_start,
-      diffDate_end,
-    ]);
-  }
-
-  convertStatus(orderStatus: ORDER_STATUS) {
-    return convertStatusOrder(orderStatus);
-  }
-
-  onSubmitForm(valGroup: any) {
-    const { voucherCode, createdDate, timeRange } =
-      valGroup;
-    const startDate =
-      timeRange && timeRange.length !== 0 ? timeRange[0].toISOString() : null;
-    const endDate =
-      timeRange && timeRange.length !== 0 ? timeRange[1].toISOString() : null;
-    this.onloadOrder({
-      pageIndex: 1,
-      pageSize: 10,
-      voucherCode,
-      createdDate,
-      startDate,
-      endDate,
+  onSubmitForm(voucher: VoucherInputDto) {
+    voucher.shopId = this.userProfileService.rentalshopId;
+    this.voucherService.createVoucher(voucher).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Tạo Voucher Mới Thành Công!');
+        this.onloadVoucher();
+        
+      },
+      error: (error) => {
+        this.messageService.handleError('Tạo Voucher Mới thất bại!');
+      }
     });
-
-    this.navigateService.updateParams({
-      pageIndex: 1,
-      pageSize: 10,
-      createdDate,
-      startDate,
-      endDate,
+  }
+  onUpdateSubmitForm(voucher: VoucherEditInputDto) {
+    this.voucherService.updateVoucher(this.voucherId, voucher).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Cập Nhật Voucher Thành Công!');
+        this.onloadVoucher();
+        
+      },
+      error: (error) => {
+        this.messageService.handleError('Cập Nhật Voucher thất bại!');
+      }
     });
   }
 
-  onPageSizeChange(newPageSize: number) {
-    this.onloadOrder({
-      pageSize: newPageSize,
-    });
-    this.navigateService.updateParams({
-      pageIndex: newPageSize,
-    });
-  }
-
-  onPageIndexChange(newPageIndex: number) {
-    this.onloadOrder({
-      pageIndex: newPageIndex,
-    });
-    this.navigateService.updateParams({
-      pageIndex: newPageIndex,
-    });
-  }
-
-
-  async onloadOrder(paramFilter?: any) {
+  async onloadVoucher() {
     this.loadingSerivce.setLoading();
-    this.orderService.listOrderLessor(paramFilter ?? {}).pipe(
-      map((res) => {
-        const {
-          data: { items, pageIndex, pageSize, totalCount },
-        } = res;
-        this.listData = items;
-        this.pageIndex$ = of(pageIndex);
-        this.pageTotal$ = of(totalCount);
-        this.pageSize$ = of(pageSize);
+    this.voucherService.listVoucher().subscribe((res: VoucherResultService) => {
+      this.listData = res.data
+      this.loadingSerivce.setOtherLoading('loaded');
+    });
+  }
+  getVoucherById(voucherId: string) {
+    this.loadingSerivce.setLoading();
+    this.voucherService.getVoucher(voucherId).subscribe({
+      next: (res: VoucherDetailResultService) => {
+        this.voucherInformation = res.data[0];
+        this.voucherId = voucherId;
+        console.log('Voucher Information:', this.voucherInformation);
         this.loadingSerivce.setOtherLoading('loaded');
-      }),
-      catchError((err) => {
-        this.loadingSerivce.setOtherLoading('error');
-        console.error('Order loading error:', err);
-        return of([]);
-      })
-    ).subscribe();
+      },
+      error: (error) => {
+        this.messageService.handleError('Lấy thông tin voucher thất bại!');
+        console.error('Error:', error);
+      },
+    });
   }
+  deactiveVoucher(voucherId: string){
+    this.modal.error({
+      nzTitle: '<b class="uppercase">Dừng Chương Trình Khuyến Mãi</b>',
+      nzContent: '<p class="py-3 text-red-300">Bạn chắc chắn muốn dừng chương trình khuyến mãi này không?</p>',
+      nzOkText: 'Dừng',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () =>
+      {
+        this.voucherService.deactivateVoucher(voucherId).subscribe({
+          next: (response) => {
+            this.messageService.showSuccess('Dừng Chương Trình Khuyến Mãi Thành Công!');
+            this.onloadVoucher();
+            
+          },
+          error: (error) => {
+            this.messageService.handleError('Dừng Chương Trình Khuyến Mãi thất bại!');
+          }
+        });
+      },
+      nzCancelText: 'Không',
+      nzOnCancel: () => this.messageService.showInfo('Bạn Đã Hủy! Không Dừng Chương Trình Khuyến Mãi!')
+    });
 
-  onQueryParams() {
-    this.route.paramMap
-      .pipe(
-        map((params) => {
-          const filters: any = {
-            pageIndex: +(params.get('pageIndex') ?? '1'),
-            pageSize: +(params.get('pageSize') ?? '10'),
-            orderStatus: params.get('orderStatus'),
-            phoneNumber: params.get('phoneNumber'),
-            humanRental: params.get('renter'),
-          };
-          return filters;
-        }),
-        tap((filters) => {this.navigateService.updateParams(filters);}),
-        switchMap((filters) => this.onloadOrder(filters))
-      )
-      .subscribe();
   }
-
-
+  deleteVoucher(voucherId: string){
+    this.modal.error({
+      nzTitle: '<b class="uppercase">Xóa Chương Trình Khuyến Mãi</b>',
+      nzContent: '<p class="py-3 text-red-300">Bạn chắc chắn muốn xóa chương trình khuyến mãi này không?</p>',
+      nzOkText: 'Xóa',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () =>
+      {
+        this.voucherService.deleteVoucher(voucherId).subscribe({
+          next: (response) => {
+            this.messageService.showSuccess('Xóa Khuyến Mãi Thành Công!');
+            this.onloadVoucher();
+            
+          },
+          error: (error) => {
+            this.messageService.handleError('Xóa Khuyến Mãi thất bại!');
+          }
+        });
+      },
+      nzCancelText: 'Không',
+      nzOnCancel: () => this.messageService.showInfo('Bạn Đã Hủy! Không Xóa Khuyến Mãi!')
+    });
+  }
 
   ngOnInit(): void {
-    this.onQueryParams();
+    this.onloadVoucher();
   }
 }
 
