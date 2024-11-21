@@ -20,7 +20,8 @@ export class MyOrderDetailComponent implements OnInit {
   order!: MyOrderDetailDto;
   totalPrice = 0;
   totalDailyRent: number = 0;
-  numberofRentalDays: number = 0;
+  numberofRentalTimes: number = 0;
+  timeString: string = '';
   loading$?: Observable<StatusProcess>;
   orderStatusMessage: string = '';
   orderStatusClass: string = '';
@@ -47,6 +48,7 @@ export class MyOrderDetailComponent implements OnInit {
       this.loadOrder(this.orderId);
     });
     console.log(this.orderId);
+    console.log(this.numberofRentalTimes);
     
   }
   loadOrder(orderId: string){
@@ -55,7 +57,7 @@ export class MyOrderDetailComponent implements OnInit {
       next: (res: OrderDetailResultService) => {
         this.order = res.data;
         this.loadingService.setOtherLoading('loaded');
-        this.calculateNumberOfRentalDays();
+        this.calculateTimeDifferenceInHours();
         this.calculateTotalRentAndDeposit();
         console.log(this.order);
       },
@@ -64,19 +66,51 @@ export class MyOrderDetailComponent implements OnInit {
     })
   }
 
-  calculateNumberOfRentalDays(): void {
+  calculateNumberOfRentalDays(): number {
     // Ensure the startDate and endDate are valid Date objects
     const startDate = new Date(this.order.startDate);
     const endDate = new Date(this.order.endDate);
-
+  
+    // Set both startDate and endDate to the start of the day
     startDate.setHours(0, 0, 0, 0);
     endDate.setHours(0, 0, 0, 0);
-
+  
+    // Calculate the time difference in milliseconds
     const timeDiff = endDate.getTime() - startDate.getTime();
-    this.numberofRentalDays = Math.floor(timeDiff / (1000 * 3600 * 24)); // Convert time diff to number of days
+  
+    // If the time difference is negative or zero, handle it as an invalid or same-day rental
+    if (timeDiff <= 0) {
+      this.numberofRentalTimes = 0;
+      return 0;
+    }
+  
+    // Tính số ngày cho thuê
+    return Math.floor(timeDiff / (1000 * 3600 * 24)); // Chuyển chênh lệch thời gian thành số ngày
+  }
+  
+  calculateTimeDifferenceInHours(): void {
+    const startDate = new Date(this.order.startDate);
+    const endDate = new Date(this.order.endDate);
+  
+    // Calculate the time difference in milliseconds
+    const timeDiff = endDate.getTime() - startDate.getTime();
+    
+    // Calculate the number of rental days and hours
+    const days = Math.floor(timeDiff / (1000 * 3600 * 24)); // Số ngày
+    const hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600)); // Số giờ
+  
+    if (days > 0 && this.order.startDate != this.order.endDate) {
+      // Nếu số ngày thuê lớn hơn 0, hiển thị theo số ngày
+      this.numberofRentalTimes = days;
+      this.timeString = `${this.numberofRentalTimes} ngày`;
+    } else {
+      // Nếu số ngày thuê bằng 0, hiển thị theo số giờ
+      this.numberofRentalTimes = hours;
+      this.timeString = `${this.numberofRentalTimes} giờ`;
+    }
   }
   calculateTotalRentAndDeposit(): void {
-    this.totalPrice = this.order.totalRentPrice * this.numberofRentalDays + this.order.totalDepositPrice;
+    this.totalPrice = this.order.totalRentPrice * this.numberofRentalTimes + this.order.totalDepositPrice;
   }
   convertStatus(orderStatus: ORDER_STATUS) {
     return convertStatusOrder(orderStatus);

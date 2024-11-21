@@ -55,7 +55,8 @@ export class ManageUserComponent implements OnInit {
     { text: 'Nữ', value: 'female' }
   ];
 
-  constructor(private modal: NzModalService, 
+  constructor(
+    private modal: NzModalService, 
     private userService: UserService,
     private storageService: StorageService,
     private cdRef: ChangeDetectorRef,

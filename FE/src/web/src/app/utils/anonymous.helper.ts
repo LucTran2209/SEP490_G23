@@ -1,7 +1,7 @@
 import { concatMap, delay, map, Observable, of, range, takeWhile } from 'rxjs';
 import { ItimeClock } from '../interfaces/anonymous.interface';
 import { OrderStatus } from '../interfaces/order.interface';
-import { ORDER_STATUS } from './constant';
+import { DISCOUNT_TYPE, ORDER_STATUS } from './constant';
 
 export function encodeBase64(str: string) {
   const bytes = new TextEncoder().encode(str);
@@ -136,4 +136,13 @@ export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
   } else {
     return 'Hoàn tiền';
   }
+};
+export const convertDiscountType = (discountType: DISCOUNT_TYPE): string => {
+  if (discountType === DISCOUNT_TYPE.PERCENTAGE) {
+    return 'Phần Trăm Theo Đơn Hàng';
+  }
+  if (discountType === DISCOUNT_TYPE.FIXED_AMOUNT) {
+    return 'Giá Cố Định Theo Đơn Hàng';
+  }
+  return ''; // Trả về chuỗi rỗng nếu không tìm thấy
 };

@@ -23,13 +23,15 @@ export class OrderService {
   listMyOrder(
     pageIndex: number,
     pageSize: number,
-    nearDays: number
+    nearDays: number,
+    Search?: string,
   ): Observable<OrderResultService> {
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
       NearDays: nearDays.toString(),
     };
+    if (Search) params.Search = Search;
     return this.httpClient.get<OrderResultService>(
       OrderSlug.ListMyOrder.api,
       params

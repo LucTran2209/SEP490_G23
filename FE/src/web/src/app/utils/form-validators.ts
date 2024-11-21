@@ -38,3 +38,28 @@ export function matchValidator(
     return age < 18 ? { under18: true } : null;
     };
   }
+
+  export function expiryDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const expiryDate = control.value;
+      if (expiryDate) {
+        const currentDate = new Date();
+        if (new Date(expiryDate) <= currentDate) {
+          return { expiryDateInvalid: true };
+        }
+      }
+      return null; // Nếu không có lỗi, trả về null
+    };
+  }
+
+  export function startDateBeforeExpiryDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const startDate = new Date(control.get('startDate')?.value);
+      const expiryDate = new Date(control.get('expiryDate')?.value);
+  
+      if (startDate && expiryDate && startDate >= expiryDate) {
+        return { startDateInvalid: true };
+      }
+      return null; // Không có lỗi nếu startDate nhỏ hơn expiryDate
+    };
+  }

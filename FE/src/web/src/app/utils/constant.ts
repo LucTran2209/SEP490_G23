@@ -86,6 +86,10 @@ export enum ORDER_STATUS {
   DEPOSIT_REFUND = 5,
   CANCEL = 6,
 }
+export enum DISCOUNT_TYPE {
+  PERCENTAGE = 0,
+  FIXED_AMOUNT = 1,
+}
 
 
 export const chooseFollowDate: OptionSelect[] = [
