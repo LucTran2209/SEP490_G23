@@ -7,5 +7,6 @@ namespace BE.Application.Abstractions.ServiceInterfaces
     {
         Task<ResultService> RechargeMoneyAsync(RechargeMoneyInputDto inputDto, HttpContext context);
         Task<ResultService> PaymentExecuteAsync(IQueryCollection query);
+        Task<ResultService> DepoitMoneyAsync(DepoitMoneyInputDto inputDto);
     }
 }

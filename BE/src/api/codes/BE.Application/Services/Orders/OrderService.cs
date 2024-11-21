@@ -66,7 +66,7 @@ namespace BE.Application.Services.Orders
         {
             var file = string.Empty;
 
-            if (inputDto.FileAttach != null)
+            if (inputDto.FileAttach !=  null)
             {
                 file = await _azureService.UpLoadFileAsync(inputDto.FileAttach);
             }
