@@ -10,14 +10,17 @@ namespace BE.Application.Services.Wallets
     public class WalletService : BaseService, IWalletService
     {
         private readonly IVnPaySandboxService _vnPaySandboxService;
+        private readonly IValidator<DepoitMoneyInputDto> _depoitMoneyValidator;
         private readonly IMapper _mapper;
 
         public WalletService(IUnitOfWork unitOfWork, IUser user,
                              IVnPaySandboxService vnPaySandboxService,
+                             IValidator<DepoitMoneyInputDto> depoitMoneyValidator,
                              IMapper mapper
             ) : base(unitOfWork, user)
         {
             _vnPaySandboxService = vnPaySandboxService;
+            _depoitMoneyValidator = depoitMoneyValidator;
             _mapper = mapper;
         }
 
@@ -98,6 +101,14 @@ namespace BE.Application.Services.Wallets
                 Datas = status,
                 StatusCode = (int)HttpStatusCode.OK,
             };
+        }
+
+        public async Task<ResultService> DepoitMoneyAsync(DepoitMoneyInputDto inputDto)
+        {
+            await _depoitMoneyValidator.ValidateAndThrowAsync(inputDto);
+
+
+            return new ResultService();
         }
     }
 }
