@@ -24,6 +24,7 @@
 	  <ProjectReference Include="..\BE.Persistence\BE.Persistence.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Services\Statisticals\StatisticalServiceOuputDto\" />
 	  <Folder Include="Services\Wallets\WalletServiceOutputDto\" />
 	</ItemGroup>
 

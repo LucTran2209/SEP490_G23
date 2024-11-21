@@ -64,6 +64,8 @@ namespace BE.Infrastructure.Common
 
         public IVoucherRepository voucherRepository;
         public IVoucherRepository VoucherRepository => voucherRepository = new VoucherRepository(context);
+        public IStatisticalRepository statisticalRepository;
+        public IStatisticalRepository StatisticalRepository => statisticalRepository = new StatisticalRepository(context);
 
         public async Task BeginTransactionAsync()
         {
@@ -143,7 +145,7 @@ namespace BE.Infrastructure.Common
                             {
                                 hasTrace.CreatedBy = Guid.Empty;
                             }
-                            
+
                         }
 
                         break;
