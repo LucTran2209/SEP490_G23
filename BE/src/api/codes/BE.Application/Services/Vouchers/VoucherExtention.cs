@@ -18,7 +18,6 @@ namespace BE.Application.Services.Vouchers
                 StartDate = inputDto.StartDate,
                 ExpiryDate = inputDto.ExpiryDate,
                 UsageLimit = inputDto.UsageLimit,
-                IsActive = inputDto.IsActive
             };
         }
 
@@ -33,8 +32,6 @@ namespace BE.Application.Services.Vouchers
             voucher.StartDate = inputDto.StartDate;
             voucher.ExpiryDate = inputDto.ExpiryDate;
             voucher.UsageLimit = inputDto.UsageLimit;
-            voucher.IsActive = inputDto.IsActive;
-
             return voucher;
         }
 

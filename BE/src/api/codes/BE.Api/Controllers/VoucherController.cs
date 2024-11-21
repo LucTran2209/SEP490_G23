@@ -57,12 +57,12 @@ namespace BE.Api.Controllers
             return ReturnFollowStatusCode(result);
         }
 
-        //[HttpGet("{voucherId}")]
-        //[Authorize]
-        //public async Task<IActionResult> GetVoucherByIdAsync(Guid voucherId)
-        //{
-        //    var result = await _voucherService.GetVoucherByIdAsync(voucherId);
-        //    return StatusCode(result.StatusCode, result);
-        //}
+        [HttpGet("{voucherId}")]
+        [Authorize]
+        public async Task<IActionResult> GetVoucherByIdAsync(Guid voucherId)
+        {
+            var result = await _voucherService.GetVoucherByIdAsync(voucherId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

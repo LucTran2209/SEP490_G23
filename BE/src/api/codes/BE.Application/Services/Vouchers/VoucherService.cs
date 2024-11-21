@@ -134,9 +134,28 @@ namespace BE.Application.Services.Vouchers
             };
         }
 
-        public Task<ResultService> GetVoucherByIdAsync(Guid voucherId)
+        public async Task<ResultService> GetVoucherByIdAsync(Guid voucherId)
         {
-            throw new NotImplementedException();
+            // Tìm voucher theo ID
+            var voucher = await unitOfWork.VoucherRepository.FindByIdAsync(voucherId);
+            if (voucher == null)
+            {
+                return new ResultService
+                {
+                    StatusCode = (int)HttpStatusCode.NotFound,
+                    Message = "Voucher not found."
+                };
+            }
+
+            // Ánh xạ dữ liệu từ entity sang DTO
+            var voucherDto = _mapper.Map<GetVoucherByIdOutputDto>(voucher);
+
+            return new ResultService
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "Voucher retrieved successfully.",
+                Datas = new List<GetVoucherByIdOutputDto> { voucherDto }
+            };
         }
     }
 }
