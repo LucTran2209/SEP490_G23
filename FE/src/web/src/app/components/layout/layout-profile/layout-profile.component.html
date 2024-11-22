@@ -1,4 +1,4 @@
-<nz-layout class="inner-layout h-full">
+<nz-layout class="inner-layout min-h-screen">
   <nz-sider nzWidth="250px" nzTheme="light">
     <div class="flex justify-start p-1 pt-5">
       <nz-avatar
@@ -58,7 +58,11 @@
           <li nz-menu-item>Lịch Sử Giao Dịch</li>
         </ul>
       </li>
-      <li nz-menu-item>
+      <li nz-menu-item
+      [routerLink]="['./notification']"
+      routerLinkActive="ant-menu-item-selected"
+      [routerLinkActiveOptions]="{ exact: false }"
+      >
         <span nz-icon nzType="bell" nzTheme="outline"></span>
         <span>Thông Báo</span>
       </li>

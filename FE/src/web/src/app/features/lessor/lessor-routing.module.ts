@@ -5,6 +5,7 @@ import { OrderDetailComponent } from './components/manage-order/order-detail/ord
 import { ManagerShopComponent } from './components/manager-shop/manager-shop.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { ManageVoucherComponent } from './components/manage-voucher/manage-voucher.component';
+import { ManageNotificationComponent } from './components/manage-notification/manage-notification.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: "voucher",
     component: ManageVoucherComponent
+  },
+  {
+    path: "notification",
+    component: ManageNotificationComponent
   },
 ];
 

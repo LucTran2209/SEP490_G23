@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { CustomColumns } from '../../../lessor/components/manage-order/manage-order.component';
 import { OptionSelect } from '../../../../configs/anonymous.config';
 import { FormControl } from '@angular/forms';
+import { CustomColumns } from '../manage-order/manage-order.component';
 
 @Component({
-  selector: 'app-notification-list',
-  templateUrl: './notification-list.component.html',
-  styleUrl: './notification-list.component.scss',
+  selector: 'app-manage-notification',
+  templateUrl: './manage-notification.component.html',
+  styleUrl: './manage-notification.component.scss'
 })
-export class NotificationListComponent {
+export class ManageNotificationComponent {
   listData = dataMock;
   listOptionViewNotification = listOptionChoose;
   allChecked = false;
@@ -161,4 +161,3 @@ const dataMock =[
     "status": "read"
   }
 ]
-
