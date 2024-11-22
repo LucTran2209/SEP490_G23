@@ -14,11 +14,14 @@
       </a>
     </div>
     <p *ngIf="!isShow" class="mt-3 text-lg">*** VND</p>
-    <p *ngIf="isShow" class="mt-3 text-lg">20.000 VND</p>
+    <p *ngIf="isShow" class="mt-3 text-lg">{{ formattedBalance }} VND</p>
   </div>
 </div>
 <div class="mx-30 p-8 grid grid-cols-1 md:grid-cols-5 gap-6 option-payment">
-  <div class="bg-white p-3 rounded-xl shadow-lg text-center">
+  <div
+    class="bg-white p-3 rounded-xl shadow-lg text-center"
+    (click)="toggleRecharge()"
+  >
     <span
       nz-icon
       nzType="plus-square"
@@ -63,4 +66,7 @@
     ></span>
     <h3 class="font-highlight text-slate-400 mt-2">Rút Tiền</h3>
   </div>
+</div>
+<div class="my-5 mb-10 flex justify-center" *ngIf="isRecharge">
+  <app-form-recharge (saveForm)="rechargeMoney($event)"></app-form-recharge>
 </div>

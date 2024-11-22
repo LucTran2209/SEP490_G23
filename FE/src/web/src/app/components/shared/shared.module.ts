@@ -125,6 +125,7 @@ import { FormSearchVoucherComponent } from '../core/form/form-search-voucher/for
 import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmDeleteRequestOrderComponent } from '../modal/confirm-delete-request-order/confirm-delete-request-order.component';
 import { FormVoucherComponent } from '../core/form/form-voucher/form-voucher.component';
+import { FormRechargeComponent } from '../core/form/form-recharge/form-recharge.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
@@ -241,7 +242,7 @@ ConfirmDeleteRequestOrderComponent,
   HeaderShopComponent,
   FormSearchVoucherComponent,
   FormVoucherComponent,
-  
+  FormRechargeComponent,
 ];
 
 @NgModule({

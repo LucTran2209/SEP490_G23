@@ -31,7 +31,8 @@ namespace BE.Api.Controllers
         {
             var result = await _walletService.PaymentExecuteAsync(Request.Query);
 
-            return ReturnFollowStatusCode(result);
+            //return ReturnFollowStatusCode(result);
+            return Redirect("http://localhost:4200/common/user/payment/my-wallet");
         }
     }
 }
