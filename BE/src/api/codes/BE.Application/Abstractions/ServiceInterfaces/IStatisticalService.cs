@@ -4,9 +4,10 @@ namespace BE.Application.Abstractions.ServiceInterfaces
 {
     public interface IStatisticalService
     {
-        Task<ResultService> StatisticalTop10ProductAsync(StatisticalTop10ProductInputDto inputDto);
+        Task<ResultService> StatisticalTop10SubProductAsync(StatisticalTop10ProductInputDto inputDto);
         Task<ResultService> GetStatisticProductAsync(StatisticalTop10ProductInputDto inputDto);
-        Task<ResultService> GetStatistic12MonthAsync(Guid rentalShopId);
-        Task<ResultService> GetRequestStatusStatisticsByMonthAsync(Guid rentalShopId);
+        Task<ResultService> GetStatisticTable2MAsync(StatisticalTop10ProductInputDto inputDto);
+        Task<ResultService> GetStatisticTable2WAsync(StatisticalTop10ProductInputDto inputDto);
+        Task<ResultService> GetStatisticTable3Async(StatisticalTop10ProductInputDto inputDto);
     }
 }

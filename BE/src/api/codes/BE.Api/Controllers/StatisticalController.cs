@@ -19,31 +19,39 @@ namespace BE.Api.Controllers
         }
 
         [HttpGet("table1")]
-        [Authorize]
+
         public async Task<IActionResult> GetUserByUserIdAsync([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
-            var output = await statisticalService.StatisticalTop10ProductAsync(inputDto);
+            var output = await statisticalService.StatisticalTop10SubProductAsync(inputDto);
 
             return Ok(output);
         }
         [HttpGet("table3")]
 
-        public async Task<IActionResult> GetRequestStatusStatisticsByMonth(Guid rentalShopId)
+        public async Task<IActionResult> GetRequestStatusStatisticsByMonth([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
-            var output = await statisticalService.GetRequestStatusStatisticsByMonthAsync(rentalShopId);
+            var output = await statisticalService.GetStatisticTable3Async(inputDto);
 
             return Ok(output);
         }
-        [HttpGet("table2")]
+        [HttpGet("table2ByMonth")]
 
-        public async Task<IActionResult> GetStatistic12Month(Guid rentalShopId)
+        public async Task<IActionResult> GetStatistic12Month([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
-            var output = await statisticalService.GetStatistic12MonthAsync(rentalShopId);
+            var output = await statisticalService.GetStatisticTable2MAsync(inputDto);
+
+            return Ok(output);
+        }
+        [HttpGet("table2ByWeek")]
+
+        public async Task<IActionResult> GetStatistic12Week([FromQuery] StatisticalTop10ProductInputDto inputDto)
+        {
+            var output = await statisticalService.GetStatisticTable2WAsync(inputDto);
 
             return Ok(output);
         }
         [HttpGet("StatisticProduct")]
-
+        [Authorize]
         public async Task<IActionResult> GetStatisticProduct([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
             var output = await statisticalService.GetStatisticProductAsync(inputDto);
