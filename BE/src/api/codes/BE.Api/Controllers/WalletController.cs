@@ -36,6 +36,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpPost("deposit")]
+        [Authorize]
         public async Task<IActionResult> DepositAsync([FromBody] DepoitMoneyInputDto inputDto)
         {
             var result = await _walletService.DepoitMoneyAsync(inputDto);
