@@ -18,13 +18,38 @@ namespace BE.Api.Controllers
             this.statisticalService = statisticalService;
         }
 
-        [HttpGet]
+        [HttpGet("table1")]
         [Authorize]
-        public async Task<IActionResult> GetUserByUserIdAsync(StatisticalTop10ProductInputDto inputDto)
+        public async Task<IActionResult> GetUserByUserIdAsync([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
             var output = await statisticalService.StatisticalTop10ProductAsync(inputDto);
 
             return Ok(output);
         }
+        [HttpGet("table3")]
+
+        public async Task<IActionResult> GetRequestStatusStatisticsByMonth(Guid rentalShopId)
+        {
+            var output = await statisticalService.GetRequestStatusStatisticsByMonthAsync(rentalShopId);
+
+            return Ok(output);
+        }
+        [HttpGet("table2")]
+
+        public async Task<IActionResult> GetStatistic12Month(Guid rentalShopId)
+        {
+            var output = await statisticalService.GetStatistic12MonthAsync(rentalShopId);
+
+            return Ok(output);
+        }
+        [HttpGet("StatisticProduct")]
+
+        public async Task<IActionResult> GetStatisticProduct([FromQuery] StatisticalTop10ProductInputDto inputDto)
+        {
+            var output = await statisticalService.GetStatisticProductAsync(inputDto);
+
+            return Ok(output);
+        }
+
     }
 }
