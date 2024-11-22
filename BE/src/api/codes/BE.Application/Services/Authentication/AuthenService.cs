@@ -17,6 +17,7 @@ namespace BE.Application.Services.Authentication
         private readonly IValidator<ChangePasswordInputDto> changePasswordValidator;
         private readonly IValidator<ForgotPasswordInputDto> forgotPasswordValidator;
         private readonly IValidator<VerifyEmailInputDto> verifyEmailValidator;
+        private readonly IValidator<CheckNotExistedEmailInputDto> checkNotExistedEmailValidator;
         private readonly IMemoryCache _memoryCache;
         private readonly JwtOption jwtOption;
         private readonly SystemConfig systemConfig;
@@ -33,7 +34,8 @@ namespace BE.Application.Services.Authentication
                              IValidator<RegisterInputDto> registerValidator,
                              IValidator<ChangePasswordInputDto> changePasswordValidator,
                              IValidator<ForgotPasswordInputDto> forgotPasswordValidator,
-                              IValidator<VerifyEmailInputDto> verifyEmailValidator,
+                             IValidator<VerifyEmailInputDto> verifyEmailValidator,
+                             IValidator<CheckNotExistedEmailInputDto> checkNotExistedEmailValidator,
         IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork, user)
         {
             this.loginByUserNamePasswordValidator = loginByUserNamePasswordValidator;
@@ -41,6 +43,7 @@ namespace BE.Application.Services.Authentication
             this.changePasswordValidator = changePasswordValidator;
             this.forgotPasswordValidator = forgotPasswordValidator;
             this.verifyEmailValidator = verifyEmailValidator;
+            this.checkNotExistedEmailValidator = checkNotExistedEmailValidator;
             this._memoryCache = memoryCache;
             this.mailService = mailService;
             this.jwtOption = jwtOption.Value;
@@ -308,6 +311,16 @@ namespace BE.Application.Services.Authentication
             {
                 StatusCode = (int)HttpStatusCode.OK,
                 Message = "Verification successful!"
+            };
+        }
+
+        public async Task<ResultService> CheckNotExistedEmailAsync(CheckNotExistedEmailInputDto inputDto)
+        {
+            await checkNotExistedEmailValidator.ValidateAndThrowAsync(inputDto);
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
             };
         }
     }

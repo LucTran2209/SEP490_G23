@@ -11,5 +11,6 @@ namespace BE.Domain.Interfaces
         Task<User?> GetsUserByUserIDAsync(Guid ID);
         Task<User?> GetsUserByUserEmailAsync(string email);
         Task AddRole(UserRole userRole);
+        Task<User?> FindByRentalShopIdAsync(Guid rentalShopId);
     }
 }

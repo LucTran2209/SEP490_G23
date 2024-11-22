@@ -83,5 +83,11 @@ namespace BE.Infrastructure.Repositories
         {
             await context.UserRoles.AddAsync(userRole);
         }
+
+        public async Task<User?> FindByRentalShopIdAsync(Guid rentalShopId)
+        {
+            return await context.Users.Include(x => x.RentalShops)
+                                      .FirstOrDefaultAsync(x => x.RentalShops!.Any(r => r.Id == rentalShopId));
+        }
     }
 }

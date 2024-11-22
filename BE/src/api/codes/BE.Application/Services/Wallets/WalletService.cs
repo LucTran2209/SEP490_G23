@@ -107,8 +107,43 @@ namespace BE.Application.Services.Wallets
         {
             await _depoitMoneyValidator.ValidateAndThrowAsync(inputDto);
 
+            // Update Balance Renter
+            var userDepoit = await unitOfWork.UserRepository.FindByIdAsync((Guid)user.Id!);
+            if (userDepoit == null) return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.Unauthorized,
+            };
+            userDepoit.Balance -= inputDto.DepoitAmount;
+            await unitOfWork.UserRepository.UpdateAsync(userDepoit);
 
-            return new ResultService();
+            // Update Balance Losser
+            var ownerRentalShop = await unitOfWork.UserRepository.FindByRentalShopIdAsync(inputDto.RentalShopId);
+            ownerRentalShop!.Balance += inputDto.DepoitAmount;
+            await unitOfWork.UserRepository.UpdateAsync(ownerRentalShop!);
+
+            // Update Status Order
+            var orderStatus = new OrderStatus
+            {
+                OrderId = inputDto.OrderId,
+                Status = RequestStatus.WaitingForTransit,
+            };
+
+            // Update History
+            //TODO:
+
+            await unitOfWork.OrderStatusRepository.AddAsync(orderStatus);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+            };
+        }
+
+        public Task<ResultService> TransmitHistoryAsync(TransmitHistoryInputDto inputDto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -34,5 +34,16 @@ namespace BE.Api.Controllers
             //return ReturnFollowStatusCode(result);
             return Redirect("http://localhost:4200/common/user/payment/my-wallet");
         }
+
+        [HttpPost("deposit")]
+        [Authorize]
+        public async Task<IActionResult> DepositAsync([FromBody] DepoitMoneyInputDto inputDto)
+        {
+            var result = await _walletService.DepoitMoneyAsync(inputDto);
+
+            return ReturnFollowStatusCode(result);
+        }
+        
+
     }
 }
