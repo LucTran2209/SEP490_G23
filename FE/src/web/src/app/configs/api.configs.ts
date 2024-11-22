@@ -279,3 +279,11 @@ export const VoucherSlug = {
   },
 
 }
+export const PaymentSlug = {
+  RechargeMoney: {
+    label: 'Recharge Money',
+    title: 'Recharge Money | ERMS',
+    api: 'Wallet/recharge',
+  },
+
+}
