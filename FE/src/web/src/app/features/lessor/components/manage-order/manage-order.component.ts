@@ -11,7 +11,7 @@ import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 import { ORDER_STATUS } from '../../../../utils/constant';
 
-interface CustomColumns extends NzCustomColumn {
+export interface CustomColumns extends NzCustomColumn {
   name: string;
   position?: 'left' | 'right';
 }

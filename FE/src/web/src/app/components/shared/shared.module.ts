@@ -126,9 +126,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmDeleteRequestOrderComponent } from '../modal/confirm-delete-request-order/confirm-delete-request-order.component';
 import { FormVoucherComponent } from '../core/form/form-voucher/form-voucher.component';
 import { FormRechargeComponent } from '../core/form/form-recharge/form-recharge.component';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
+  NzPopconfirmModule,
   NzStatisticModule,
   NzNotificationModule,
   NzDividerModule,

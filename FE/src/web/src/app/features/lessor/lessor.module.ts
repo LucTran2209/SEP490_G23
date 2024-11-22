@@ -19,6 +19,7 @@ import { ManageVoucherComponent } from './components/manage-voucher/manage-vouch
 import { LessorRoutingModule } from './lessor-routing.module';
 import { OrderDetailEffects } from './state/order-detail.effects';
 import { orderDetailFeature } from './state/order-detail.reducer';
+import { ManageNotificationComponent } from './components/manage-notification/manage-notification.component';
 @NgModule({
   declarations: [
     ManagePostComponent,
@@ -33,6 +34,7 @@ import { orderDetailFeature } from './state/order-detail.reducer';
     OrderLatestComponent,
     NotifcationLatestComponent,
     ManageVoucherComponent,
+    ManageNotificationComponent,
   ],
   imports: [
     LessorRoutingModule,
