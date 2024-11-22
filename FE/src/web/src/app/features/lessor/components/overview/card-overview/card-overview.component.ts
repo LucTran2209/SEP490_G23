@@ -12,7 +12,10 @@ import { StorageService } from '../../../../../services/storage.service';
 import { FeatureAppState } from '../../../../../store/app.state';
 import { LocalStorageKey } from '../../../../../utils/constant';
 import dayjs from 'dayjs';
-import { getAllCardOverview, getAllCardOverview_resetState } from '../../../state/_card-overview/card-overview.actions';
+import {
+  getAllCardOverview,
+  getAllCardOverview_resetState,
+} from '../../../state/_card-overview/card-overview.actions';
 import { selectData } from '../../../state/_card-overview/card-overview.reducer';
 import { NavigationEnd, Router } from '@angular/router';
 @Component({
@@ -31,7 +34,7 @@ export class CardOverviewComponent implements OnInit, OnDestroy {
         RentaiShopId: this.userCurrent.RentalShopId,
         ...rangeDate,
       };
-      this.store.dispatch(getAllCardOverview({bodyReq: reqBody}));
+      this.store.dispatch(getAllCardOverview({ bodyReq: reqBody }));
     }
   }
 
@@ -59,13 +62,13 @@ export class CardOverviewComponent implements OnInit, OnDestroy {
     this.reWriteUrl(typeChoose);
   }
 
-  reWriteUrl(typeChoose: 'day' | 'month' | 'week'){
+  reWriteUrl(typeChoose: 'day' | 'month' | 'week') {
     const tmp = convertSlug[typeChoose];
     this.router.navigate([], {
       queryParams: {
-        "card-overview-follow": tmp
+        'card-overview-follow': tmp,
       },
-      queryParamsHandling: 'merge', 
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -94,5 +97,5 @@ export class CardOverviewComponent implements OnInit, OnDestroy {
 const convertSlug = {
   day: 'last-30-days',
   week: 'last-10-weeks',
-  month:'last-12-months'
-}
+  month: 'last-12-months',
+};

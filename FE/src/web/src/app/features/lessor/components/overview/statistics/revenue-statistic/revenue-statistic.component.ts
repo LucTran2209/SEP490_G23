@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartData } from 'chart.js';
-import { chooseFollowDate } from '../../../../../../utils/constant';
+import { chooseFollowDate, LocalStorageKey } from '../../../../../../utils/constant';
+import { IPayLoad } from '../../../../../../interfaces/account.interface';
+import { Observable } from 'rxjs';
+import { StorageService } from '../../../../../../services/storage.service';
+import { Store } from '@ngrx/store';
+import { getDATACHARTREVENUE } from '../../../../state/_chart/chartRevenue-overview.actions';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-revenue-statistic',
@@ -108,9 +114,56 @@ export class RevenueStatisticComponent implements OnInit {
       },
     ],
   };
-  loadData(itemSelect: string | number) {}
+userCurrent?: IPayLoad;
+labelData$?: Observable<string[]>;
+transactionData$?: Observable<number[]>;
+RevenueData$?: Observable<number[]>;
 
-  constructor() {}
+getRangeDate(typeChoose: string | number) {
+  let fromDate, toDate;
+  toDate = dayjs().format('YYYY-MM-DD');
 
-  ngOnInit(): void {}
+  if (typeChoose === 'month') {
+    fromDate = dayjs()
+      .subtract(12, 'month')
+      .startOf('month')
+      .format('YYYY-MM-DD');
+  } else if (typeChoose === 'week') {
+    fromDate = dayjs()
+      .subtract(10, 'week')
+      .startOf('week')
+      .format('YYYY-MM-DD');
+  } else {
+    fromDate = dayjs()
+      .subtract(12, 'month')
+      .startOf('month')
+      .format('YYYY-MM-DD');
+  }
+  this.loadData({ StartDate: fromDate, EndDate: toDate, typeChoose });
+}
+
+loadData(valDate: object) {
+  if (this.userCurrent) {
+    const bodyReq = {
+      RentaiShopId: this.userCurrent.RentalShopId,
+      ...valDate,
+    };
+    this.store.dispatch(getDATACHARTREVENUE({ bodyReq }));
+  }
+}
+
+
+
+
+  constructor(private store: Store, private storageService: StorageService) {
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+      ? (JSON.parse(
+          this.storageService.get(LocalStorageKey.currentUser)!
+        ) as IPayLoad)
+      : undefined;
+  }
+  
+  ngOnInit() {
+    this.getRangeDate('month');
+  }
 }

@@ -1,14 +1,9 @@
 <nz-range-picker
   [nzSize]="nzSize"
   [nzMode]="nzMode"
-  [nzRenderExtraFooter]="footerRender"
   [nzPopupStyle]="{ borderRadius: '8px' }"
   class="rounded-md"
   [nzDisabledDate]="disabledDate"
-  [nzOpen]="isPickerOpen"
-  (nzOnOpenChange)="onOpenChange($event)" 
+  ngModel
+  (nzOnChange)="submitDate($event)"
 ></nz-range-picker>
-<ng-template #footerRender>
-  <button (click)="submitDate()" nzType="dashed" nz-button>Lọc</button>
-  
-</ng-template>

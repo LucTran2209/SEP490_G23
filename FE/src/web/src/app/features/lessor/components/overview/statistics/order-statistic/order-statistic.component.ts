@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { ChartConfiguration, ChartData } from 'chart.js';
+import dayjs from 'dayjs';
+import { IPayLoad } from '../../../../../../interfaces/account.interface';
+import { StorageService } from '../../../../../../services/storage.service';
+import { LocalStorageKey } from '../../../../../../utils/constant';
+import { getDATACHARTORDER } from '../../../../state/_chart/chartOrder-overview.actions';
 
 @Component({
   selector: 'app-order-statistic',
   templateUrl: './order-statistic.component.html',
   styleUrl: './order-statistic.component.scss',
 })
-export class OrderStatisticComponent implements OnInit{
-
+export class OrderStatisticComponent implements OnInit {
   /**Config chart order statistic */
   barCharOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
@@ -17,31 +22,30 @@ export class OrderStatisticComponent implements OnInit{
           display: false,
         },
         grid: {
-          display: false
-        }
+          display: false,
+        },
       },
       y: {
         title: {
           display: true,
           text: 'Số lượng đơn hàng',
         },
-       
+
         border: { dash: [4, 4] },
 
         grid: {
-            color: '#aaa',
-            tickColor: '#000',
-            tickWidth: 2,
-            offset: true,
-            drawTicks: false,
-            drawOnChartArea: true
-
+          color: '#aaa',
+          tickColor: '#000',
+          tickWidth: 2,
+          offset: true,
+          drawTicks: false,
+          drawOnChartArea: true,
         },
         ticks: {
-            maxTicksLimit: 9,
-            font: {
-                size: 15
-            }
+          maxTicksLimit: 9,
+          font: {
+            size: 15,
+          },
         },
       },
     },
@@ -65,7 +69,7 @@ export class OrderStatisticComponent implements OnInit{
         },
       },
     },
-  }
+  };
   barChartType = 'bar' as const;
   barChartData: ChartData<'bar'> = {
     labels: [...monthMockData],
@@ -77,8 +81,8 @@ export class OrderStatisticComponent implements OnInit{
         borderWidth: 1,
         borderRadius: {
           topLeft: 40,
-          topRight: 40
-        }
+          topRight: 40,
+        },
       },
       {
         data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80, 81, 56],
@@ -87,19 +91,18 @@ export class OrderStatisticComponent implements OnInit{
         borderWidth: 1,
         borderRadius: {
           topLeft: 40,
-          topRight: 40
-        }
+          topRight: 40,
+        },
       },
       {
-        data: [ 90, 65, 59, 80, 81, 56, 28, 48, 40, 19, 86, 27],
+        data: [90, 65, 59, 80, 81, 56, 28, 48, 40, 19, 86, 27],
         label: 'Hoàn thành',
         backgroundColor: 'rgba(184,237,190,1)',
         borderWidth: 1,
         borderRadius: {
           topLeft: 40,
-          topRight: 40
-        }
-
+          topRight: 40,
+        },
       },
       {
         data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4],
@@ -108,25 +111,47 @@ export class OrderStatisticComponent implements OnInit{
         borderWidth: 1,
         borderRadius: {
           topLeft: 40,
-          topRight: 40
-        }
+          topRight: 40,
+        },
       },
     ],
   };
   /**Config chart order statistic */
+  userCurrent?: IPayLoad;
 
-  chooseView: 'M' | 'Q' = 'M'
+  selectValue: any;
 
 
-  onChooseView(val: 'M' | 'Q'){
-    this.chooseView = val;
+  getRangeDate(val: any) {
+   
+    this.loadData({ StartDate: val, EndDate: val });
   }
 
-  constructor() {
+  handleDateChange(date: Date): void {
+    console.log('Date received in parent:', date);
+    this.getRangeDate(date);
   }
 
-  ngOnInit(): void {
-    
+  loadData(valDate: object) {
+    if (this.userCurrent) {
+      const bodyReq = {
+        RentaiShopId: this.userCurrent.RentalShopId,
+        ...valDate,
+      };
+      this.store.dispatch(getDATACHARTORDER({ bodyReq }));
+    }
+  }
+
+  constructor(private store: Store, private storageService: StorageService) {
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+      ? (JSON.parse(
+          this.storageService.get(LocalStorageKey.currentUser)!
+        ) as IPayLoad)
+      : undefined;
+  }
+
+  ngOnInit() {
+    this.getRangeDate('month');
   }
 }
 

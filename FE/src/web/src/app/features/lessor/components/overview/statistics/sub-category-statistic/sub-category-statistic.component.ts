@@ -4,7 +4,16 @@ import Chart, {
   ChartData,
   ChartEvent,
 } from 'chart.js/auto';
-import { chooseFollowDate } from '../../../../../../utils/constant';
+import {
+  chooseFollowDate,
+  LocalStorageKey,
+} from '../../../../../../utils/constant';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { getDATACHARTSUBCATEGORY } from '../../../../state/_chart/chartTopSubCategory-overview.actions';
+import { IPayLoad } from '../../../../../../interfaces/account.interface';
+import { StorageService } from '../../../../../../services/storage.service';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-sub-category-statistic',
   templateUrl: './sub-category-statistic.component.html',
@@ -12,6 +21,9 @@ import { chooseFollowDate } from '../../../../../../utils/constant';
 })
 export class SubCategoryStatisticComponent implements OnInit {
   chooseFollowDate = chooseFollowDate;
+  labelData$?: Observable<string[]>;
+  quantityData$?: Observable<number[]>;
+  userCurrent?: IPayLoad;
   barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     indexAxis: 'y',
@@ -89,14 +101,48 @@ export class SubCategoryStatisticComponent implements OnInit {
   }): void {
     console.log(event, active);
   }
+  getRangeDate(typeChoose: string | number) {
+    let fromDate, toDate;
+    toDate = dayjs().format('YYYY-MM-DD');
 
-  loadData(itemSelect: string | number){
-
+    if (typeChoose === 'month') {
+      fromDate = dayjs()
+        .subtract(12, 'month')
+        .startOf('month')
+        .format('YYYY-MM-DD');
+    } else if (typeChoose === 'week') {
+      fromDate = dayjs()
+        .subtract(10, 'week')
+        .startOf('week')
+        .format('YYYY-MM-DD');
+    } else {
+      fromDate = dayjs()
+        .subtract(12, 'month')
+        .startOf('month')
+        .format('YYYY-MM-DD');
+    }
+    this.loadData({ StartDate: fromDate, EndDate: toDate, typeChoose });
   }
 
-  constructor() {}
+  loadData(valDate: object) {
+    if (this.userCurrent) {
+      const bodyReq = {
+        RentaiShopId: this.userCurrent.RentalShopId,
+        ...valDate,
+      };
+      this.store.dispatch(getDATACHARTSUBCATEGORY({ bodyReq }));
+    }
+  }
+
+  constructor(private store: Store, private storageService: StorageService) {
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+      ? (JSON.parse(
+          this.storageService.get(LocalStorageKey.currentUser)!
+        ) as IPayLoad)
+      : undefined;
+  }
 
   ngOnInit() {
-
+    this.getRangeDate('month');
   }
 }

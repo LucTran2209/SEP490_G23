@@ -95,10 +95,10 @@ export enum DISCOUNT_TYPE {
 export const chooseFollowDate: OptionSelect[] = [
   {
     label: 'Theo tuần',
-    value:'0'
+    value:'week'
   },
   {
     label: 'Theo tháng',
-    value:'1'
+    value:'month'
   }
 ]
