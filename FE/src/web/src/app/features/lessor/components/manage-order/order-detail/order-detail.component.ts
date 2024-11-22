@@ -16,17 +16,13 @@ import { RentalTimerService } from '../../../../../services/rental-timer.service
 import { FeatureAppState } from '../../../../../store/app.state';
 import { convertStatusOrder } from '../../../../../utils/anonymous.helper';
 import { ORDER_STATUS, ORDER_STATUS_MAX } from '../../../../../utils/constant';
-import {
-  getOrderDetail,
-  resetStateOrderDetail,
-} from '../../../state/order-detail.actions';
-import {
-  selectOrderDetail,
-  selectTotalQuantity,
-} from '../../../state/order-detail.reducer';
+
+
 import { ConfirmDeleteRequestOrderComponent } from '../../../../../components/modal/confirm-delete-request-order/confirm-delete-request-order.component';
 import { OrderService } from '../../../../../services/order.service';
 import { MessageResponseService } from '../../../../../services/message-response.service';
+import { selectOrderDetail, selectTotalQuantity } from '../../../state/_order/order-detail.reducer';
+import { getOrderDetail, resetStateOrderDetail } from '../../../state/_order/order-detail.actions';
 
 @Component({
   selector: 'app-order-detail',

@@ -12,6 +12,10 @@ export const feature_key = {
   resizeChatFeature: 'feature_resize',
   orderRequestFeature: 'feature_orderrequest',
   orderDetailFeature: 'feature_orderdetail',
+  cardOverviewFeature: 'feature_CardOverView',
+    dataChartSubCategory: 'feature_getDATACHARTSUBCATEGORY',
+    dataChartRevenue: 'feature_getDATACHARTREVENUE',
+    dataChartOrder: 'feature_getDATACHARTORDER'
 } as const;
 
 export type FeatureKeyValues = (typeof feature_key)[keyof typeof feature_key];

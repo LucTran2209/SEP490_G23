@@ -1,49 +1,62 @@
 <div class="grid grid-cols-3 gap-x-2">
-    <nz-card class="shadow rounded-lg border-l-0 border-r-0 border-b-0 border-t-4 border-solid border-[#0F6CF8]">
-      <nz-statistic
-        [nzValue]="(1128 | number)!"
-        nzTitle="Tổng số sản phẩm"
-        [nzPrefix]="prefixTpl"
-      ></nz-statistic>
-      <ng-template #prefixTpl
-        ><span nz-icon nzType="product"></span
-      ></ng-template>
-    </nz-card>
-    <nz-card class="shadow rounded-lg border-l-0 border-r-0 border-b-0 border-t-4 border-solid border-[#0F6CF8]">
-      <nz-statistic
-        [nzValue]="(1128 | number)!"
-        nzTitle="Đơn hàng đang xử lý"
-        [nzPrefix]="prefixTpl"
-      ></nz-statistic>
-      <ng-template #prefixTpl
-        ><span nz-icon nzType="swap"></span
-      ></ng-template>
-    </nz-card>
-    <nz-card class="shadow rounded-lg border-l-0 border-r-0 border-b-0 border-t-4 border-solid border-[#0F6CF8]">
-      <nz-statistic
-        [nzValue]="(1000000 | currency:'VND':'VND':'1.0-0':'vi')!"
-        [nzTitle]="title_revenueTpl"
-        [nzPrefix]="prefixTpl"
-      ></nz-statistic>
-      <ng-template #prefixTpl
-        ><span nz-icon nzType="transaction"></span
-      ></ng-template>
-      <ng-template #title_revenueTpl>
-          <div class="flex justify-between items-center">
-              <p>Doanh thu |<span>Hôm nay</span></p>
-              <div class="">
-                  <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-                      <span nz-icon nzType="dash" nzTheme="outline" class="text-[22px] text-black"></span>
-                    </a>
-                    <nz-dropdown-menu #menu="nzDropdownMenu">
-                      <ul nz-menu>
-                        <li nz-menu-item>Hôm nay</li>
-                        <li nz-menu-item>Tuần này</li>
-                        <li nz-menu-item>Thánh này</li>
-                      </ul>
-                    </nz-dropdown-menu>
-              </div>
-          </div>
-      </ng-template>
-    </nz-card>
+  <nz-card
+    class="shadow rounded-lg border-l-0 border-r-0 border-b-0 border-t-4 border-solid border-[#0F6CF8]"
+  >
+    <nz-statistic
+      [nzValue]="(data$ | async)?.totalProducts || 0"
+      nzTitle="Tổng số sản phẩm"
+      [nzPrefix]="prefixTpl"
+    ></nz-statistic>
+    <ng-template #prefixTpl><span nz-icon nzType="product"></span></ng-template>
+  </nz-card>
+  <nz-card
+    class="shadow rounded-lg border-l-0 border-r-0 border-b-0 border-t-4 border-solid border-[#0F6CF8]"
+  >
+    <nz-statistic
+      [nzValue]="(data$ | async)?.totalOrders || 0"
+      nzTitle="Đơn hàng đang xử lý"
+      [nzPrefix]="prefixTpl"
+    ></nz-statistic>
+    <ng-template #prefixTpl><span nz-icon nzType="swap"></span></ng-template>
+  </nz-card>
+  <nz-card
+    class="shadow rounded-lg border-l-0 border-r-0 border-b-0 border-t-4 border-solid border-[#0F6CF8]"
+  >
+    <nz-statistic
+      [nzValue]="((data$ | async)?.totalRevenue || 0 | currency : 'VND' : 'VND' : '1.0-0' : 'vi')!"
+      [nzTitle]="title_revenueTpl"
+      [nzPrefix]="prefixTpl"
+    ></nz-statistic>
+    <ng-template #prefixTpl
+      ><span nz-icon nzType="transaction"></span
+    ></ng-template>
+    <ng-template #title_revenueTpl>
+      <div class="flex justify-between items-center">
+        <p>Doanh thu </p>
+        <div class="">
+          <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+            <span
+              nz-icon
+              nzType="dash"
+              nzTheme="outline"
+              class="text-[22px] text-black"
+            ></span>
+          </a>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="getRangeDate('day')">
+                30 Ngày gần nhất
+              </li>
+              <li nz-menu-item (click)="getRangeDate('week')">
+                10 Tuần gần nhất
+              </li>
+              <li nz-menu-item (click)="getRangeDate('month')">
+                12 Tháng gần nhất
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+      </div>
+    </ng-template>
+  </nz-card>
 </div>

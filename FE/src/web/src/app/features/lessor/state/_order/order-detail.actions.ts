@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { OrderListResponse } from '../../../interfaces/order.interface';
+import { OrderListResponse } from '../../../../interfaces/order.interface';
 export const GETORDERDETAILLESSROR = '[Order detail lessor] init';
 export const GETORDERDETAILLESSROR_SUCCESS = '[Order detail lessor] success';
 export const GETORDERDETAILLESSROR_FAILURE = '[Order detail lessor] failure';

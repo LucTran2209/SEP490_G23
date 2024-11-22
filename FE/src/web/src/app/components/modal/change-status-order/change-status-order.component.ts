@@ -12,7 +12,7 @@ import {
   tap
 } from 'rxjs';
 import { OptionSelect } from '../../../configs/anonymous.config';
-import { getOrderDetail } from '../../../features/lessor/state/order-detail.actions';
+import { getOrderDetail } from '../../../features/lessor/state/_order/order-detail.actions';
 import { OrderListResponse } from '../../../interfaces/order.interface';
 import { MessageResponseService } from '../../../services/message-response.service';
 import { OrderService } from '../../../services/order.service';
