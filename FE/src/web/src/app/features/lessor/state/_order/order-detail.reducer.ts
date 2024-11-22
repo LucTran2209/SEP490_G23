@@ -1,7 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { feature_key } from '../../../configs/feature_key.config';
-import { StatusProcess } from '../../../interfaces/anonymous.interface';
 import * as OrderDetailActions from './order-detail.actions';
+import { StatusProcess } from '../../../../interfaces/anonymous.interface';
+import { feature_key } from '../../../../configs/feature_key.config';
 export interface OrderDetailState {
   status: StatusProcess;
   message: string | null;
