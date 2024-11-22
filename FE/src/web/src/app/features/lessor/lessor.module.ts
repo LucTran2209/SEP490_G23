@@ -4,7 +4,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { BaseChartDirective } from 'ng2-charts';
 import { SharedModule } from '../../components/shared/shared.module';
-import { ManageNotificationComponent } from './components/manage-notification/manage-notification.component';
 import { ManageOrderComponent } from './components/manage-order/manage-order.component';
 import { OrderDetailComponent } from './components/manage-order/order-detail/order-detail.component';
 import { ManagePostComponent } from './components/manage-post/manage-post.component';
@@ -20,6 +19,7 @@ import { SubCategoryStatisticComponent } from './components/overview/statistics/
 import { LessorRoutingModule } from './lessor-routing.module';
 import { CardOverviewEffects } from './state/_card-overview/card-overview.effects';
 import { feature_CardOverView } from './state/_card-overview/card-overview.reducer';
+import { ManageNotificationComponent } from './components/manage-notification/manage-notification.component';
 @NgModule({
   declarations: [
     ManagePostComponent,
