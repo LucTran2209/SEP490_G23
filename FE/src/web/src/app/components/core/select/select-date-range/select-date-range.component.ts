@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { differenceInCalendarDays } from 'date-fns';
 
 @Component({
@@ -10,15 +10,12 @@ export class SelectDateRangeComponent {
   today = new Date();
   @Input() nzMode: 'date' | 'week' | 'month' | 'quarter' | 'year' = 'date';
   @Input() nzSize: 'large' | 'small' | 'default' = 'large';
-  isPickerOpen = false;
-  submitDate() {
-    this.isPickerOpen = true;
-
+  @Output() onFilterDate = new EventEmitter<any>();
+  submitDate(val: any) {
+    this.onFilterDate.emit(val);
   }
 
-  onOpenChange(open: boolean): void {
-    this.isPickerOpen = open;
-  }
+ 
 
   disabledDate = (current: Date): boolean =>
     differenceInCalendarDays(current, this.today) > 0;

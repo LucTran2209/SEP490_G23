@@ -4,7 +4,7 @@
     <div class="flex item-center justify-between my-3">
       <div class="flex items-center gap-x-3">
       </div>
-      <app-select-date-range [nzMode]="'month'" nzSize="default" />
+      <app-select-date-range [nzMode]="'month'" nzSize="default" (onFilterDate)="handleDateChange($event)"/>
     </div>
   </div>
  <div class="overflow-x-scroll sm:overflow-x-hidden">
