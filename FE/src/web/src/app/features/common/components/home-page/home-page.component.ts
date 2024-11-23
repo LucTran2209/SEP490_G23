@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CategoryOutputDto } from '../../../../interfaces/category.interface';
 import { FeedbackOutputDto } from '../../../../interfaces/feedback.interface';
 import { PostOutputDto, PostResultService } from '../../../../interfaces/post.interface';
 import { PostService } from '../../../../services/post.service';
+import { map } from 'rxjs';
+import { TypewriterService } from '../../../../services/typewriter.service';
 
 @Component({
   selector: 'app-home-page',
@@ -14,16 +16,26 @@ export class HomePageComponent implements OnInit {
   categoryListTop = mockCategories;
   feedbackDataList = feedbackData;
   items = [1, 2, 3, 4, 5];
+  titles = ['Thuê các thiết bị chỉ bằng vài cú nhấp chuột'];
+  private typewriterService = inject(TypewriterService);
+  typedText$ = this.typewriterService
+    .getTypewriterEffect(this.titles)
+    .pipe(map((text) => text));
   postList: PostOutputDto[] = [];
-  constructor(private postService: PostService) {}
-  ngOnInit(): void{
-    this.loadPosts();
-  }
+
   loadPosts(){
     this.postService.listPost().subscribe((res: PostResultService) =>{
       this.postList = res.datas.list;
     });
   }
+
+
+  ngOnInit(): void{
+    this.loadPosts();
+  }
+
+  constructor(private postService: PostService) {}
+  
 }
 
 

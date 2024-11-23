@@ -27,6 +27,12 @@ import { OrderProductsEffects } from './state/order/order.effects';
 import { ShopRentalListComponent } from './components/shop-rental-list/shop-rental-list.component';
 import { NotificationListComponent } from './components/notification-list/notification-list.component';
 import { MyWalletComponent } from './components/my-wallet/my-wallet.component';
+import { WeBringComponent } from './components/home-page/components/we-bring/we-bring.component';
+import { TopBringCategoryComponent } from './components/home-page/components/top-bring-category/top-bring-category.component';
+import { BriefProcedureRentalComponent } from './components/home-page/components/brief-procedure-rental/brief-procedure-rental.component';
+import { BannerYouAreLessorComponent } from './components/home-page/components/banner-you-are-lessor/banner-you-are-lessor.component';
+import { FeedbackAboutWeComponent } from './components/home-page/components/feedback-about-we/feedback-about-we.component';
+import { FeaturePostsComponent } from './components/home-page/components/feature-posts/feature-posts.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +50,12 @@ import { MyWalletComponent } from './components/my-wallet/my-wallet.component';
     ShopRentalListComponent,
     NotificationListComponent,
     MyWalletComponent,
+    WeBringComponent,
+    TopBringCategoryComponent,
+    BriefProcedureRentalComponent,
+    BannerYouAreLessorComponent,
+    FeedbackAboutWeComponent,
+    FeaturePostsComponent,
   ],
   imports: [
     CommonModule, SharedModule,
