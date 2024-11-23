@@ -1,0 +1,92 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  [nzMaskClosable]="true"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzWidth]="'700px'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="formDeactive" (ngSubmit)="onSubmit()">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="amount" nzRequired>
+          Lý Do Xóa Cửa Hàng (Chọn 1 lý do)
+        </nz-form-label>
+        <nz-form-control>
+          <nz-radio-group
+            formControlName="adminNote"
+            (ngModelChange)="onRadioChange($event)"
+            name="reason"
+            nzSize="large"
+            class="w-full"
+          >
+            <label
+              class="my-2 w-full"
+              nz-radio-button
+              nzValue="Bị Đánh Giá Thấp Nhiều"
+            >
+              Bị Đánh Giá Thấp Nhiều
+            </label>
+            <label
+              class="my-2 w-full"
+              nz-radio-button
+              nzValue="Bị Khiếu Nại Nhiều"
+            >
+              Bị Khiếu Nại Nhiều
+            </label>
+            <label
+              class="my-2 w-full"
+              nz-radio-button
+              nzValue="Vi Phạm Quy Tắc Cộng Đồng"
+            >
+              Bị Khiếu Nại Nhiều
+            </label>
+            <label
+              class="my-2 w-full"
+              nz-radio-button
+              nzValue="Không Hoạt Động Trong Thời Gian Dài"
+            >
+              Không Hoạt Động Trong Thời Gian Dài
+            </label>
+            <!-- Lý do khác -->
+            <label
+              class="my-2 w-full flex items-center gap-2"
+              nz-radio-button
+              nzValue="other"
+            >
+              Lý do khác
+            </label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item
+        *ngIf="formDeactive.controls['adminNote'].value === 'other'"
+      >
+        <nz-form-control>
+          <input
+            nz-input
+            formControlName="otherReason"
+            placeholder="Nhập Lý Do Khác"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <button class="w-full" nz-button type="submit" nzType="primary">
+            Xóa Cửa Hàng
+          </button>
+          <button
+            class="w-full mt-2"
+            nz-button
+            type="button"
+            nzType="default"
+            nzDanger
+            (click)="CancelForm()"
+          >
+            Hủy
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

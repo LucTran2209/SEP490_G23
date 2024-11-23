@@ -210,6 +210,11 @@ export const RentalShopSlug = {
     title: 'Update Rental Shop | ERMS',
     api: 'MyShop/',
   },
+  DeactiveRentalShop: {
+    label: 'Deactive Rental Shop',
+    title: 'Deactive Rental Shop | ERMS',
+    api: 'RentalShop/ActivityShopById',
+  },
   ListRentalShop: {
     label: 'List Rental Shop',
     title: 'List Rental Shop | ERMS',
@@ -287,6 +292,11 @@ export const PaymentSlug = {
     label: 'Recharge Money',
     title: 'Recharge Money | ERMS',
     api: 'Wallet/recharge',
+  },
+  DepositMoney: {
+    label: 'Deposit Money',
+    title: 'Deposit Money | ERMS',
+    api: 'Wallet/deposit',
   },
 
 }

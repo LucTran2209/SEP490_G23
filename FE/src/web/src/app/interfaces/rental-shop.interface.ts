@@ -71,3 +71,8 @@ export interface UpdateRentalShop {
     shopName: string;
     avatarShop: File | null;
 }
+export interface DeactiveShop {
+    id: string;
+    isActive: boolean,
+    adminNote: string
+}
