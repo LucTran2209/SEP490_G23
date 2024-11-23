@@ -35,6 +35,9 @@ export const AuthSlug = {
     title: 'verify email | ERMS',
     api: 'api/Authentication/VerifyEmail',
   },
+  IsExistEmail: {
+    api: 'api/Authentication/check-not-existed-email',
+  },
   ConfirmEmail: {
     title: 'confirm email | ERMS',
     api: 'api/Authentication/ComfirmVerifyEmailAsync',
