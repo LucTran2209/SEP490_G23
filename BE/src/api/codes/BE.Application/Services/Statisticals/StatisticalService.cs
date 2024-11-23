@@ -180,6 +180,7 @@ namespace BE.Application.Services.Statisticals
 
         public async Task<ResultService> GetStatisticTable2MAsync(StatisticalTop10ProductInputDto inputDto)
         {
+            await validator.ValidateAndThrowAsync(inputDto);
             // Xác định khoảng thời gian dựa trên input StartDate và EndDate
             var startDate = inputDto.StartDate.Value;
             var endDate = inputDto.EndDate.Value;
@@ -247,63 +248,78 @@ namespace BE.Application.Services.Statisticals
 
         public async Task<ResultService> GetStatisticTable2WAsync(StatisticalTop10ProductInputDto inputDto)
         {
+            await validator.ValidateAndThrowAsync(inputDto);
             var startDate = inputDto.StartDate.Value;
             var endDate = inputDto.EndDate.Value;
 
-            // Tạo danh sách các tuần trong khoảng thời gian
-            var allWeeks = Enumerable.Range(0, (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month + 1)
-                .Select(i => new
-                {
-                    Week = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(startDate.AddDays(i * 7), System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday),
-                    Year = startDate.AddDays(i * 7).Year
-                })
-                .Distinct()
-                .ToList();
+            // Tạo danh sách tất cả các tuần trong khoảng thời gian đã cho
+            var allWeeks = GetWeeksInRange(startDate, endDate);
 
-            // Lọc và thống kê dữ liệu theo tuần
             var query = unitOfWork.StatisticalRepository.GetByRentalIdAsync()
                 .Where(rs => rs.Order.EndDate >= startDate && rs.Order.EndDate <= endDate)
                 .Where(rs => rs.Product.RentalShopId == inputDto.RentaiShopId);
 
-            var revenueStatistics = await query
+            // Lấy data từ db
+            var orderDetails = await query.ToListAsync();
+
+            // Tính toán doanh thu và số giao dịch theo tuần
+            var revenueStatistics = orderDetails
                 .GroupBy(od => new
                 {
-                    Week = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(od.Order.EndDate, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday),
+                    Week = GetWeekOfYear(od.Order.EndDate), // Tính tuần từ ngày kết thúc của đơn hàng
                     Year = od.Order.EndDate.Year
                 })
                 .Select(g => new
                 {
                     Week = g.Key.Week,
                     Year = g.Key.Year,
-                    TotalRevenue = g.Sum(od => od.Quantity * od.Product.RentalPrice),
-                    TransactionCount = g.Select(od => od.OrderId).Distinct().Count()
+                    TotalRevenue = g.Sum(od => od.Quantity * od.Product.RentalPrice), // Tính tổng doanh thu
+                    TransactionCount = g.Select(od => od.OrderId).Distinct().Count()  // Đếm số giao dịch
                 })
-                .ToListAsync();
-
-            // Kết hợp dữ liệu thống kê với danh sách các tuần
-            var mergedStatistics = allWeeks
-                .GroupJoin(
-                    revenueStatistics,
-                    aw => new { aw.Week, aw.Year },
-                    rs => new { rs.Week, rs.Year },
-                    (aw, rsGroup) => new
-                    {
-                        aw.Week,
-                        aw.Year,
-                        TotalRevenue = rsGroup.FirstOrDefault()?.TotalRevenue ?? 0M,
-                        TransactionCount = rsGroup.FirstOrDefault()?.TransactionCount ?? 0
-                    }
-                )
-                .OrderBy(w => w.Year).ThenBy(w => w.Week)
                 .ToList();
 
-            // Trả về kết quả
+            // Kết hợp tất cả các tuần với thống kê doanh thu
+            var mergedStatistics = allWeeks
+                .Select(aw => new
+                {
+                    aw.Week,
+                    aw.Year,
+                    TotalRevenue = revenueStatistics.FirstOrDefault(rs => rs.Week == aw.Week && rs.Year == aw.Year)?.TotalRevenue ?? 0M, // Nếu không có doanh thu cho tuần đó, gán 0
+                    TransactionCount = revenueStatistics.FirstOrDefault(rs => rs.Week == aw.Week && rs.Year == aw.Year)?.TransactionCount ?? 0  // Nếu không có giao dịch, gán 0
+                })
+                .OrderBy(m => m.Year).ThenBy(m => m.Week)
+                .ToList();
+
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
                 Message = "Success",
                 Datas = mergedStatistics
             };
+        }
+        private int GetWeekOfYear(DateTime date)
+        {
+            var firstDayOfYear = new DateTime(date.Year, 1, 1);
+            var days = (date - firstDayOfYear).Days;
+            return (days / 7) + 1;
+        }
+        private List<dynamic> GetWeeksInRange(DateTime startDate, DateTime endDate)
+        {
+            var weeks = new List<dynamic>();
+
+            var currentDate = startDate;
+            while (currentDate <= endDate)
+            {
+                var week = new
+                {
+                    Week = GetWeekOfYear(currentDate),
+                    Year = currentDate.Year
+                };
+                weeks.Add(week);
+                currentDate = currentDate.AddDays(7); // Tăng thêm 7 ngày để di chuyển sang tuần kế tiếp
+            }
+
+            return weeks;
         }
     }
 }
