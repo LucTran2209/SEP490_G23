@@ -214,7 +214,7 @@ namespace BE.Application.Services.RentalShops
         public async Task<ResultService> ActivityRentalShopAsync(ActivityRentalShopInputDto input)
         {
             await activityValidator.ValidateAndThrowAsync(input);
-            var rentalShop = await unitOfWork.RentalShopRepository.GetRentalShopByNotActiveAsync(input.Id);
+            var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(input.Id);
             if (rentalShop == null)
             {
                 return new ResultService
