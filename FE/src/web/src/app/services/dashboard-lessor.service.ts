@@ -28,8 +28,11 @@ export class DashboardLessorService {
     return this.httpClient.get('Statistical/table1', bodyReq);
   }
 
-  getDataChartRevenue(bodyReq: any): Observable<BaseResponseApi<any>> {
-    return this.httpClient.get('Statistical/table2', bodyReq);
+  getDataChartRevenue1(bodyReq: any): Observable<BaseResponseApi<any>> {
+    return this.httpClient.get('Statistical/table2ByMonth', bodyReq);
+  }
+  getDataChartRevenue2(bodyReq: any): Observable<BaseResponseApi<any>> {
+    return this.httpClient.get('Statistical/table2ByWeek', bodyReq);
   }
 
   getDataChartOrder(bodyReq: any): Observable<BaseResponseApi<any>> {

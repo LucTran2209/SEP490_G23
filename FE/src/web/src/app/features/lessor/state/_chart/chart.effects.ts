@@ -49,24 +49,47 @@ export class ChartOverviewEffects {
       this.actions$.pipe(
         ofType(ChartRevenueActions.getDATACHARTREVENUE),
         tap(() => this.loadingService.setLoading()),
-        mergeMap(({ bodyReq }) =>
-          this.dashboardLessorService.getDataChartRevenue(bodyReq).pipe(
-            map(({ data }) =>
-              ChartRevenueActions.getDATACHARTREVENUE_success({
-                dataRes: data,
-                message: 'Thành công lấy dữ liệu',
-              })
-            ),
-            catchError((err) => {
-              console.log(err, 'err');
-              return of(
-                ChartRevenueActions.getDATACHARTREVENUE_failure({
-                  message: 'Có lỗi trong quá trình lấy dữ liệu',
+        mergeMap(({ bodyReq, typeOption }) => {
+          if (typeOption === 'm') {
+            return this.dashboardLessorService
+              .getDataChartRevenue1(bodyReq)
+              .pipe(
+                map(({ data }) =>
+                  ChartRevenueActions.getDATACHARTREVENUE_success({
+                    dataRes: data,
+                    message: 'Thành công lấy dữ liệu',
+                  })
+                ),
+                catchError((err) => {
+                  console.log(err, 'err');
+                  return of(
+                    ChartRevenueActions.getDATACHARTREVENUE_failure({
+                      message: 'Có lỗi trong quá trình lấy dữ liệu',
+                    })
+                  );
                 })
               );
-            })
-          )
-        )
+          } else {
+            return this.dashboardLessorService
+              .getDataChartRevenue2(bodyReq)
+              .pipe(
+                map(({ data }) =>
+                  ChartRevenueActions.getDATACHARTREVENUE_success({
+                    dataRes: data,
+                    message: 'Thành công lấy dữ liệu',
+                  })
+                ),
+                catchError((err) => {
+                  console.log(err, 'err');
+                  return of(
+                    ChartRevenueActions.getDATACHARTREVENUE_failure({
+                      message: 'Có lỗi trong quá trình lấy dữ liệu',
+                    })
+                  );
+                })
+              );
+          }
+        })
       ),
     {
       dispatch: true,

@@ -10,7 +10,7 @@ export class SelectViewStatisticComponent {
   @Input() optionSelect: OptionSelect[] = [];
   @Input() defaultValue!: string;
   @Output() chooseItemOption = new EventEmitter<string | number>();
-  selectedValue = this.defaultValue ?? '0';
+  selectedValue = this.defaultValue ?? 'month';
   chooseItem(val: string) {
     console.log('va',val);
     this.chooseItemOption.emit(val);

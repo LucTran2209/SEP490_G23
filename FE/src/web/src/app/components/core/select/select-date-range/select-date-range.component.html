@@ -4,6 +4,6 @@
   [nzPopupStyle]="{ borderRadius: '8px' }"
   class="rounded-md"
   [nzDisabledDate]="disabledDate"
-  ngModel
-  (nzOnChange)="submitDate($event)"
+  [(ngModel)]="selectedDateRange"
+  (ngModelChange)="onDateChange($event)"
 ></nz-range-picker>
