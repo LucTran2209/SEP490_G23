@@ -20,6 +20,10 @@ import { LessorRoutingModule } from './lessor-routing.module';
 import { CardOverviewEffects } from './state/_card-overview/card-overview.effects';
 import { feature_CardOverView } from './state/_card-overview/card-overview.reducer';
 import { ManageNotificationComponent } from './components/manage-notification/manage-notification.component';
+import { ChartOverviewEffects } from './state/_chart/chart.effects';
+import { feature_getDATACHARTORDER } from './state/_chart/chartOrder-overview.reducer';
+import { feature_getDATACHARTREVENUE } from './state/_chart/chartRevenue-overview.reducer';
+import { feature_getDATACHARTSUBCATEGORY } from './state/_chart/chartTopSubCategory-overview.reducer';
 @NgModule({
   declarations: [
     ManagePostComponent,
@@ -40,7 +44,11 @@ import { ManageNotificationComponent } from './components/manage-notification/ma
     LessorRoutingModule,
     CommonModule,
     StoreModule.forFeature(feature_CardOverView),
+    StoreModule.forFeature(feature_getDATACHARTORDER),
+    StoreModule.forFeature(feature_getDATACHARTREVENUE),
+    StoreModule.forFeature(feature_getDATACHARTSUBCATEGORY),
     EffectsModule.forFeature([CardOverviewEffects]),
+    EffectsModule.forFeature([ChartOverviewEffects]),
     SharedModule,
     BaseChartDirective
   ],

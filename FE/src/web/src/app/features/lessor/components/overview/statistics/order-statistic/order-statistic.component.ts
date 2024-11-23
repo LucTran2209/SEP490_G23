@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartConfiguration, ChartData } from 'chart.js';
+import { isArray } from 'chart.js/dist/helpers/helpers.core';
 import dayjs from 'dayjs';
 import { IPayLoad } from '../../../../../../interfaces/account.interface';
 import { StorageService } from '../../../../../../services/storage.service';
@@ -121,13 +122,24 @@ export class OrderStatisticComponent implements OnInit {
 
   selectValue: any;
 
-
-  getRangeDate(val: any) {
-   
-    this.loadData({ StartDate: val, EndDate: val });
+  getRangeDate(val?: string[]) {
+    if (isArray(val) && val.length !== 0) {
+      this.loadData({ StartDate: val[0], EndDate: val[1] });
+    }
+    this.loadData(this.getRangeDateCurrentAndBefore12M());
   }
 
-  handleDateChange(date: Date): void {
+  getRangeDateCurrentAndBefore12M() {
+    let fromDate, toDate;
+    toDate = dayjs().format('YYYY-MM-DD');
+    fromDate = dayjs()
+      .subtract(12, 'month')
+      .startOf('month')
+      .format('YYYY-MM-DD');
+    return { StartDate: fromDate, EndDate: toDate };
+  }
+
+  handleDateChange(date: string[]): void {
     console.log('Date received in parent:', date);
     this.getRangeDate(date);
   }
@@ -151,7 +163,7 @@ export class OrderStatisticComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getRangeDate('month');
+    this.getRangeDate();
   }
 }
 
