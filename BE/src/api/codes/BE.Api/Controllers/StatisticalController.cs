@@ -19,7 +19,7 @@ namespace BE.Api.Controllers
         }
 
         [HttpGet("table1")]
-
+        [Authorize]
         public async Task<IActionResult> GetUserByUserIdAsync([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
             var output = await statisticalService.StatisticalTop10SubProductAsync(inputDto);
@@ -27,7 +27,7 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
         [HttpGet("table3")]
-
+        [Authorize]
         public async Task<IActionResult> GetRequestStatusStatisticsByMonth([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
             var output = await statisticalService.GetStatisticTable3Async(inputDto);
@@ -35,7 +35,7 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
         [HttpGet("table2ByMonth")]
-
+        [Authorize]
         public async Task<IActionResult> GetStatistic12Month([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
             var output = await statisticalService.GetStatisticTable2MAsync(inputDto);
@@ -43,7 +43,7 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
         [HttpGet("table2ByWeek")]
-
+        [Authorize]
         public async Task<IActionResult> GetStatistic12Week([FromQuery] StatisticalTop10ProductInputDto inputDto)
         {
             var output = await statisticalService.GetStatisticTable2WAsync(inputDto);
