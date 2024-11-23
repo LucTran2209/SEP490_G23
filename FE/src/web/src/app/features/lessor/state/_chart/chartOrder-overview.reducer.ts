@@ -1,8 +1,9 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
 import { feature_key } from '../../../../configs/feature_key.config';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import * as ChartOrderActions from './chartOrder-overview.actions';
 import { IDataChartSubCategoryState } from './chartTopSubCategory-overview.reducer';
+
 export interface IDataChartOrderState extends IDataChartSubCategoryState {}
 
 const initialState: IDataChartOrderState = {
@@ -42,3 +43,51 @@ export const {
   selectStatus,
   selectMessage,
 } = feature_getDATACHARTORDER;
+
+export const selectLabels = createSelector(
+  selectData,
+  (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item: any) => `Tháng ${item.month} / ${item.year}`);
+  }
+);
+
+export const selectWaitingForConfirm = createSelector(
+  selectData,
+  (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item: any) => item.waitingForConfirm);
+  }
+);
+
+export const selectInProcess = createSelector(
+  selectData,
+  (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item: any) => item.inProgress);
+  }
+);
+export const selectCompleted = createSelector(
+  selectData,
+  (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item: any) => item.completed);
+  }
+);
+export const selectCancel = createSelector(
+  selectData,
+  (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item: any) => item.cancelled);
+  }
+);
