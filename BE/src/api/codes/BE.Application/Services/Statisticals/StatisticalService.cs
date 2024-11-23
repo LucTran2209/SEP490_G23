@@ -13,16 +13,21 @@ namespace BE.Application.Services.Statisticals
         public async Task<ResultService> GetStatisticTable3Async(StatisticalTop10ProductInputDto inputDto)
         {
             await validator.ValidateAndThrowAsync(inputDto);
-            // Thống kê trạng thái theo tháng
-            var now = DateTime.UtcNow;
-            var startDate = new DateTime(now.Year, now.Month, 1).AddMonths(-11); // Ngày đầu tiên của 12 tháng trước
-            var endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1).AddDays(-1); // Ngày cuối cùng của tháng hiện tại
+            var startDate = inputDto.StartDate.Value;
+            var endDate = inputDto.EndDate.Value;
 
-            var allMonths = Enumerable.Range(0, ((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month + 1)
+            // Chuyển đổi sang tháng và năm
+            var startMonth = startDate.Month;
+            var startYear = startDate.Year;
+            var endMonth = endDate.Month;
+            var endYear = endDate.Year;
+
+            // Danh sách các tháng trong khoảng từ start đến end
+            var allMonths = Enumerable.Range(0, ((endYear - startYear) * 12) + endMonth - startMonth + 1)
                 .Select(i => new
                 {
-                    Month = startDate.AddMonths(i).Month,
-                    Year = startDate.AddMonths(i).Year,
+                    Month = new DateTime(startYear, startMonth, 1).AddMonths(i).Month,
+                    Year = new DateTime(startYear, startMonth, 1).AddMonths(i).Year,
                     WaitingForConfirm = 0,
                     InProgress = 0,
                     Completed = 0,
@@ -32,11 +37,10 @@ namespace BE.Application.Services.Statisticals
 
             var query = unitOfWork.StatisticalRepository.GetByRentalIdAsync();
 
-            // Áp dụng bộ lọc theo khoảng thời gian và RentalShopId
+            // Lọc dữ liệu theo khoảng thời gian và RentalShopId
             query = query
-                .Where(rs => rs.Order.EndDate >= startDate) // Lọc theo ngày bắt đầu
-                .Where(rs => rs.Order.EndDate <= endDate)   // Lọc theo ngày kết thúc
-                .Where(rs => rs.Product.RentalShopId == inputDto.RentaiShopId); // Lọc theo RentalShopId
+                        .Where(rs => rs.Order.StartDate <= endDate && rs.Order.EndDate >= startDate) // Bao gồm đơn hàng có giao thoa
+                        .Where(rs => rs.Product.RentalShopId == inputDto.RentaiShopId);
 
             // Thống kê trạng thái theo tháng
             var statusStatistics = await query
