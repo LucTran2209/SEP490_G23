@@ -1,19 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ChartConfiguration, ChartData } from 'chart.js';
-import { isArray } from 'chart.js/dist/helpers/helpers.core';
-import dayjs from 'dayjs';
 import { IPayLoad } from '../../../../../../interfaces/account.interface';
 import { StorageService } from '../../../../../../services/storage.service';
 import { LocalStorageKey } from '../../../../../../utils/constant';
-import { getDATACHARTORDER } from '../../../../state/_chart/chartOrder-overview.actions';
+import {
+  getDATACHARTORDER,
+  getDATACHARTORDER_resetState,
+} from '../../../../state/_chart/chartOrder-overview.actions';
+import dayjs from 'dayjs';
+import { Observable, Subscription } from 'rxjs';
+import { BaseChartDirective } from 'ng2-charts';
+import {
+  selectCancel,
+  selectCompleted,
+  selectInProcess,
+  selectLabels,
+  selectWaitingForConfirm,
+} from '../../../../state/_chart/chartOrder-overview.reducer';
 
 @Component({
   selector: 'app-order-statistic',
   templateUrl: './order-statistic.component.html',
   styleUrl: './order-statistic.component.scss',
 })
-export class OrderStatisticComponent implements OnInit {
+export class OrderStatisticComponent implements OnInit, OnDestroy {
   /**Config chart order statistic */
   barCharOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
@@ -73,10 +84,11 @@ export class OrderStatisticComponent implements OnInit {
   };
   barChartType = 'bar' as const;
   barChartData: ChartData<'bar'> = {
-    labels: [...monthMockData],
+    labels: [],
     datasets: [
       {
-        data: [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86],
+        // data: [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86],
+        data: [],
         label: 'Chờ xử lý',
         backgroundColor: 'rgba(253,233,165,1)',
         borderWidth: 1,
@@ -86,7 +98,8 @@ export class OrderStatisticComponent implements OnInit {
         },
       },
       {
-        data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80, 81, 56],
+        // data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80, 81, 56],
+        data: [],
         label: 'Đang xử lý',
         backgroundColor: 'rgba(170, 215, 232, 1)',
         borderWidth: 1,
@@ -96,7 +109,8 @@ export class OrderStatisticComponent implements OnInit {
         },
       },
       {
-        data: [90, 65, 59, 80, 81, 56, 28, 48, 40, 19, 86, 27],
+        // data: [90, 65, 59, 80, 81, 56, 28, 48, 40, 19, 86, 27],
+        data: [],
         label: 'Hoàn thành',
         backgroundColor: 'rgba(184,237,190,1)',
         borderWidth: 1,
@@ -106,7 +120,8 @@ export class OrderStatisticComponent implements OnInit {
         },
       },
       {
-        data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4],
+        // data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4],
+        data: [],
         label: 'Đã hủy',
         backgroundColor: 'rgba(247, 169, 185, 1)',
         borderWidth: 1,
@@ -118,29 +133,23 @@ export class OrderStatisticComponent implements OnInit {
     ],
   };
   /**Config chart order statistic */
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+  private subscriptions: Subscription = new Subscription();
   userCurrent?: IPayLoad;
-
-  selectValue: any;
-
-  getRangeDate(val?: string[]) {
-    if (isArray(val) && val.length !== 0) {
-      this.loadData({ StartDate: val[0], EndDate: val[1] });
-    }
-    this.loadData(this.getRangeDateCurrentAndBefore12M());
-  }
-
-  getRangeDateCurrentAndBefore12M() {
+  labelData$?: Observable<string[]>;
+  waittingData$?: Observable<number[]>;
+  inProcessData$?: Observable<number[]>;
+  completedData$?: Observable<number[]>;
+  cancelData$?: Observable<number[]>;
+  getRangeDate(val: Date[]) {
     let fromDate, toDate;
-    toDate = dayjs().format('YYYY-MM-DD');
-    fromDate = dayjs()
-      .subtract(12, 'month')
-      .startOf('month')
-      .format('YYYY-MM-DD');
-    return { StartDate: fromDate, EndDate: toDate };
+    toDate = dayjs(val[0]).format('YYYY-MM');
+    fromDate = dayjs(val[1]).format('YYYY-MM');
+
+    this.loadData({ StartDate: fromDate, EndDate: toDate });
   }
 
-  handleDateChange(date: string[]): void {
-    console.log('Date received in parent:', date);
+  handleDateChange(date: Date[]): void {
     this.getRangeDate(date);
   }
 
@@ -154,6 +163,22 @@ export class OrderStatisticComponent implements OnInit {
     }
   }
 
+  refreshChart(): void {
+    if (this.chart) {
+      this.chart.update();
+    }
+  }
+
+  getCurrentAndLast12MonthsDate() {
+    const currentDate = new Date();
+    const last12MonthsDate = new Date();
+    last12MonthsDate.setMonth(last12MonthsDate.getMonth() - 12);
+    return {
+      StartDate: dayjs(last12MonthsDate).format('YYYY-MM'),
+      Enđate: dayjs(currentDate).format('YYYY-MM'),
+    };
+  }
+
   constructor(private store: Store, private storageService: StorageService) {
     this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
       ? (JSON.parse(
@@ -163,7 +188,48 @@ export class OrderStatisticComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getRangeDate();
+    this.loadData(this.getCurrentAndLast12MonthsDate());
+    this.labelData$ = this.store.select(selectLabels);
+    this.waittingData$ = this.store.select(selectWaitingForConfirm);
+    this.inProcessData$ = this.store.select(selectInProcess);
+    this.completedData$ = this.store.select(selectCompleted);
+    this.cancelData$ = this.store.select(selectCancel);
+
+    this.subscriptions.add(
+      this.labelData$.subscribe((labels) => {
+        this.barChartData.labels = labels;
+        this.refreshChart();
+      })
+    );
+    this.subscriptions.add(
+      this.waittingData$.subscribe((data) => {
+        this.barChartData.datasets[0].data = data;
+        this.refreshChart();
+      })
+    );
+    this.subscriptions.add(
+      this.inProcessData$.subscribe((data) => {
+        this.barChartData.datasets[1].data = data;
+        this.refreshChart();
+      })
+    );
+    this.subscriptions.add(
+      this.completedData$.subscribe((data) => {
+        this.barChartData.datasets[2].data = data;
+        this.refreshChart();
+      })
+    );
+    this.subscriptions.add(
+      this.cancelData$.subscribe((data) => {
+        this.barChartData.datasets[3].data = data;
+        this.refreshChart();
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    this.store.dispatch(getDATACHARTORDER_resetState());
   }
 }
 

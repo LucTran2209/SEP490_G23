@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { differenceInCalendarDays } from 'date-fns';
-import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-select-date-range',
@@ -13,11 +12,10 @@ export class SelectDateRangeComponent {
   isPickerOpen = false;
   @Input() nzMode: 'date' | 'week' | 'month' | 'quarter' | 'year' = 'date';
   @Input() nzSize: 'large' | 'small' | 'default' = 'large';
-  @Output() onFilterDate = new EventEmitter<string[]>();
+  @Output() onFilterDate = new EventEmitter<Date[]>();
 
   onDateChange(dates: Date[]) {
-    const convertDate = dates.map((d) => dayjs(d).format('YYYY-MM'));
-    this.onFilterDate.emit(convertDate);
+    this.onFilterDate.emit(dates);
   }
 
   getCurrentAndLast12MonthsDate() {

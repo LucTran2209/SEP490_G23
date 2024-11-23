@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { feature_key } from '../../../../configs/feature_key.config';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import * as ChartTopSubCategoryActions from './chartTopSubCategory-overview.actions';
@@ -45,3 +45,23 @@ export const {
   selectStatus,
   selectMessage,
 } = feature_getDATACHARTSUBCATEGORY;
+
+
+export const selectLabelsCategory = createSelector(
+  selectData,
+  (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item: any) => item.subCategoryName);
+  }
+);
+export const selectTotalsQuantity = createSelector(
+  selectData,
+  (data) => {
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item: any) => item.totalQuantity);
+  }
+);
