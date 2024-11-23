@@ -63,6 +63,7 @@ namespace BE.Application.Services.RentalShops
 
             rentalShop.ShopName = inputDto.ShopName;
             rentalShop.AvatarShop = await _azureService.UpLoadFileAsync(inputDto.AvatarShop!);
+            rentalShop.Banner = await _azureService.UpLoadFileAsync(inputDto.Banner!);
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
 

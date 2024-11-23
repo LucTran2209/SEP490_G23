@@ -6,5 +6,6 @@ namespace BE.Application.Services.RentalShops.RentalShopServiceInputDto
     {
         public string ShopName { get; set; } = string.Empty;
         public IFormFile? AvatarShop { get; set; }
+        public IFormFile? Banner { get; set; }
     }
 }
