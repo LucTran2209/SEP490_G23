@@ -12,7 +12,7 @@ namespace BE.Application.Services.RentalShops.Validators
                // Kiểm tra Id trong database
                .MustAsync(async (Id, cancellation) =>
                {
-                   var user = await unitOfWork.RentalShopRepository.GetRentalShopByIdAsync(Id);
+                   var user = await unitOfWork.RentalShopRepository.FindByIdAsync(Id);
                    return user != null;
                }).WithMessage("RentalShopId does not exist in the database."); ;
 
