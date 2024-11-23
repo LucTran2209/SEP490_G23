@@ -116,7 +116,7 @@ export class MyValidators {
     return (control: AbstractControl): Observable<MyValidationErrors | null> => {
       return control.valueChanges.pipe(
         switchMap((value) =>
-          authService.verifyEmail({ email: value }).pipe(
+          authService.isExistEmail({ email: value }).pipe(
             map((res) =>
               res.statusCode === HttpStatusCode.OK
                 ? 

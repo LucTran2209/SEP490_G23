@@ -134,13 +134,20 @@
         [nzXs]="24"
         nzErrorTip="Nhập mật khẩu có vấn đề!"
       >
-        <nz-input-group>
+        <nz-input-group [nzSuffix]="suffixTemplate">
           <input
-            type="password"
+          [type]="!isPasswordVisible ? 'text' : 'password'"
             formControlName="password"
             placeholder="**********"
             nz-input
           />
+          <ng-template #suffixTemplate>
+            <i
+              nz-icon
+              [nzType]="isPasswordVisible ? 'eye-invisible' : 'eye'"
+              (click)="isPasswordVisible = !isPasswordVisible"
+            ></i>
+          </ng-template>
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>
@@ -154,5 +161,9 @@
 </ng-container>
 
 <ng-template #verifyEmailTpl>
-  <app-verify-email (onResendCode)="sendOtpCode()" (onChangeEmailStepFirst)="changeEmail()" (onVerifyOtpCode)="verifyOtpCode($event)"/>
+  <app-verify-email
+    (onResendCode)="sendOtpCode()"
+    (onChangeEmailStepFirst)="changeEmail()"
+    (onVerifyOtpCode)="verifyOtpCode($event)"
+  />
 </ng-template>

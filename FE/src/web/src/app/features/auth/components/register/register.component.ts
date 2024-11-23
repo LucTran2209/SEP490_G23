@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   selectAddress = [];
   dateFormat = FormatDate.DDMMYYYY;
   isEmailVerifySuccess$?: Observable<boolean>;
+  isPasswordVisible = false;
   forminfocommongroup: FormGroup = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
