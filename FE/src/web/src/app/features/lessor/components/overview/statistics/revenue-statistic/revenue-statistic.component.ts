@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { ChartConfiguration, ChartData } from 'chart.js';
-import { chooseFollowDate } from '../../../../../../utils/constant';
+import dayjs from 'dayjs';
+import { BaseChartDirective } from 'ng2-charts';
+import { Observable, Subscription } from 'rxjs';
+import { IPayLoad } from '../../../../../../interfaces/account.interface';
+import { StorageService } from '../../../../../../services/storage.service';
+import {
+  chooseFollowDate,
+  LocalStorageKey,
+} from '../../../../../../utils/constant';
+import { getDATACHARTREVENUE, getDATACHARTREVENUE_resetState } from '../../../../state/_chart/chartRevenue-overview.actions';
+import { selectArrLabelData, selectArrRevenueData, selectArrTransactionData, selectTypeOption } from '../../../../state/_chart/chartRevenue-overview.reducer';
 
 @Component({
   selector: 'app-revenue-statistic',
   templateUrl: './revenue-statistic.component.html',
   styleUrl: './revenue-statistic.component.scss',
 })
-export class RevenueStatisticComponent implements OnInit {
+export class RevenueStatisticComponent implements OnInit, OnDestroy {
   chooseFollowDate = chooseFollowDate;
-
+  optionChooseDate$?: Observable<string>;  
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   barChartOptions: ChartConfiguration<'bar' | 'line'>['options'] = {
     plugins: {
       legend: {
@@ -80,7 +92,8 @@ export class RevenueStatisticComponent implements OnInit {
 
   barChartType = 'bar' as const;
   barChartData: ChartData<'line' | 'bar'> = {
-    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8' , 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+    labels: [
+    ],
     datasets: [
       {
         type: 'line' as const,
@@ -90,27 +103,111 @@ export class RevenueStatisticComponent implements OnInit {
         fill: false,
         tension: 0.4,
         pointBackgroundColor: 'rgb(20, 24, 31)',
-        data: [120, 140, 180, 200, 170, 190, 120, 140, 180, 200, 170, 190],
+        data: [],
         yAxisID: 'y1',
       },
       {
         type: 'bar' as const,
         label: 'Doanh thu',
         backgroundColor: '#1890FF',
-        data: [3000000, 4500000, 5500000, 7000000, 6500000, 8000000, 3000000, 4500000, 5500000, 7000000, 6500000, 8000000],
+        data: [],
         borderColor: 'white',
         borderRadius: {
           topLeft: 40,
-          topRight: 40
+          topRight: 40,
         },
         borderSkipped: false,
         barThickness: 40,
       },
     ],
   };
-  loadData(itemSelect: string | number) {}
+  userCurrent?: IPayLoad;
+  labelData$?: Observable<string[]>;
+  transactionData$?: Observable<number[]>;
+  revenueData$?: Observable<number[]>;
+  private subscriptions: Subscription = new Subscription();
 
-  constructor() {}
 
-  ngOnInit(): void {}
+  getRangeDate(typeChoose: string | number) {
+    let fromDate, toDate;
+    toDate = dayjs().format('YYYY-MM-DD');
+
+    if (typeChoose === 'month') {
+      fromDate = dayjs()
+        .subtract(12, 'month')
+        .startOf('month')
+        .format('YYYY-MM-DD');
+    } else if (typeChoose === 'week') {
+      fromDate = dayjs()
+        .subtract(10, 'week')
+        .startOf('week')
+        .format('YYYY-MM-DD');
+    } else {
+      fromDate = dayjs()
+        .subtract(12, 'month')
+        .startOf('month')
+        .format('YYYY-MM-DD');
+    }
+    this.loadData(
+      { StartDate: fromDate, EndDate: toDate },
+      typeChoose === 'week' ? 'w' : 'm'
+    );
+  }
+
+  loadData(valDate: object, typeOption: 'm' | 'w' = 'm') {
+    if (this.userCurrent) {
+      const bodyReq = {
+        RentaiShopId: this.userCurrent.RentalShopId,
+        ...valDate,
+      };
+      this.store.dispatch(getDATACHARTREVENUE({ bodyReq, typeOption }));
+    }
+  }
+
+  refreshChart(): void {
+    if (this.chart) {
+      this.chart.update(); 
+    }
+  }
+
+  constructor(private store: Store, private storageService: StorageService, private cdRef: ChangeDetectorRef) {
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+      ? (JSON.parse(
+          this.storageService.get(LocalStorageKey.currentUser)!
+        ) as IPayLoad)
+      : undefined;
+  }
+
+  ngOnInit() {
+    this.getRangeDate('month');
+    this.optionChooseDate$ = this.store.select(selectTypeOption);
+    this.labelData$ = this.store.select(selectArrLabelData);
+    this.transactionData$ = this.store.select(selectArrTransactionData);
+    this.revenueData$ = this.store.select(selectArrRevenueData);
+
+    this.subscriptions.add(
+      this.labelData$.subscribe((labels) => {
+        this.barChartData.labels = labels;
+       this.refreshChart();
+      })
+    );
+    this.subscriptions.add(
+      this.transactionData$.subscribe((transactions) => {
+        this.barChartData.datasets[0].data = transactions;
+       this.refreshChart();
+
+      })
+    );
+    this.subscriptions.add(
+      this.revenueData$.subscribe((revenues) => {
+        this.barChartData.datasets[1].data = revenues;
+       this.refreshChart();
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    this.store.dispatch(getDATACHARTREVENUE_resetState());
+  }
 }

@@ -11,6 +11,7 @@ const ignoredUrls: string[] = [
   AuthSlug.Register.api,
   AuthSlug.ResetPassWord.api,
   AuthSlug.VerifyEmail.api,
+  AuthSlug.IsExistEmail.api,
   AuthSlug.ConfirmEmail.api,
   CategorySlug.ListCategory.api,
   CategorySlug.ListSubCategory.api,

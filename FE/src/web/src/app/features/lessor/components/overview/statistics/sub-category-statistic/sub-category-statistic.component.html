@@ -1,11 +1,11 @@
 <div class="bg-white my-3 p-6 rounded-md h-[620px]">
   <div class="flex items-center justify-between mb-3">
-    <h3 class="font-semibold text-[22px]">Top sản phẩm được thuê nhiều nhất</h3>
+    <h3 class="font-semibold text-[22px]">Top loại sản phẩm được thuê nhiều nhất</h3>
     <div>
       <app-select-view-statistic
         [defaultValue]="'0'"
         [optionSelect]="chooseFollowDate"
-        (chooseItemOption)="loadData($event)"
+        (chooseItemOption)="getRangeDate($event)"
       />
     </div>
   </div>

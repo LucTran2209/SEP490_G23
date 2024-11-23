@@ -1,0 +1,93 @@
+<div class="my-3">
+    <div class="bg-white p-5 flex items-center justify-between rounded-md">
+      <div class="flex items-center gap-x-3">
+        <h3 class="text-xl text-[#111]">Danh sách thông báo</h3>
+        <button nz-button nzType="primary">Xoá tất cả</button>
+      </div>
+      <nz-select class="w-[150px]" [formControl]="selectValue">
+        @for (item of listOptionViewNotification; track $index) {
+        <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+        }
+      </nz-select>
+    </div>
+    <section class="my-3 bg-white p-5 rounded-md">
+      <nz-table
+        [nzCustomColumn]="customColumn"
+        [nzScroll]="{ x: '1920' }"
+        #basicTable
+        [nzData]="listData"
+        [nzData]="listData"
+        [nzBordered]="true"
+        [nzPaginationPosition]="'bottom'"
+        nzFrontPagination="false"
+        nzShowSizeChanger="true"
+        [nzShowPagination]="true"
+        [nzShowTotal]="showTotal"
+        [nzPageIndex]="1"
+        [nzTotal]="listData.length"
+        [nzPageSize]="10"
+        (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)"
+      >
+        <thead>
+          <tr>
+            <th
+              nzWidth="60px"
+              [(nzChecked)]="allChecked"
+              [nzLeft]="fixedColumn"
+              [nzIndeterminate]="indeterminate"
+              (nzCheckedChange)="checkAll($event)"
+            ></th>
+            <th nzCellControl="titleThongBao">Tên thông báo</th>
+            <th nzCellControl="contentThongBao">Nội dung thông báo</th>
+            <th nzCellControl="dateThongBao">Thời gian</th>
+            <th nzCellControl="statusThongBao">Trạng thái thông báo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of basicTable.data; let i = index"
+            class="tr_row"
+            (click)="$event.stopPropagation()"
+          >
+            <td
+              [nzLeft]="fixedColumn"
+              nzWidth="60px"
+              [(nzChecked)]="allChecked"
+              [nzIndeterminate]="indeterminate"
+              (nzCheckedChange)="refreshStatus()"
+            ></td>
+            <td nzCellControl="titleThongBao">{{ data.title }}</td>
+            <td nzCellControl="contentThongBao">{{ data.content }}</td>
+            <td nzCellControl="dateThongBao">{{ data.time }}</td>
+            <td nzCellControl="statusThongBao" class="flex items-center gap-x-3">
+              {{ data.status }}
+              <div class="action flex items-center gap-x-2">
+                <button nz-button nzType="link">
+                  <span nz-icon nzType="check" nzTheme="outline"></span>
+                  Đánh dấu đã đọc
+                </button>
+                <button
+                  nz-button
+                  class="text-red-500"
+                  nzType="link"
+                  nz-popconfirm
+                  nzPopconfirmTitle="Xóa thông báo này?"
+                  nzPopconfirmPlacement="right"
+                >
+                  <span nz-icon nzType="close" nzTheme="outline"></span>
+                  Xóa
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </section>
+  </div>
+  <ng-template #showTotal>
+    <div class="text-[14px] font-medium text-[#333]">
+      Hiển thị thứ tự 1- 10 trong 20 kết quả
+    </div>
+  </ng-template>
+  

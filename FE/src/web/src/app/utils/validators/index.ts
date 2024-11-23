@@ -26,7 +26,7 @@ export function confirmValidator(
 
 export type MyValidationErrors = Record<
   string,
-  { 'zh-cn': string; en: string }
+  {  vn: string }
 >;
 
 export class MyValidators {
@@ -38,8 +38,7 @@ export class MyValidators {
       }
       return {
         minlength: {
-          'zh-cn': `最小长度为 ${min}`,
-          en: `Độ dài tối thiểu là ${min}`,
+          vn: `Độ dài tối thiểu là ${min}`,
         },
       };
     };
@@ -52,8 +51,7 @@ export class MyValidators {
       }
       return {
         maxlength: {
-          'zh-cn': `最大长度为 ${max}`,
-          en: `Độ dài tối đa là ${max}`,
+          vn: `Độ dài tối đa là ${max}`,
         },
       };
     };
@@ -66,8 +64,7 @@ export class MyValidators {
     }
     return {
       email: {
-        'zh-cn': '邮箱格式不正确',
-        en: 'Không nhập đúng định dạng email',
+        vn: 'Không nhập đúng định dạng email',
       },
     };
   }
@@ -81,8 +78,7 @@ export class MyValidators {
     }
     return {
       mobile: {
-        'zh-cn': '手机号格式不正确',
-        en: 'Không nhập đúng định dạng số điện thoại',
+        vn: 'Không nhập đúng định dạng số điện thoại',
       },
     };
   }
@@ -106,8 +102,7 @@ export class MyValidators {
     }
     return {
       required: {
-        'zh-cn': '此项为必填项',
-        en: 'Trường này là bắt buộc',
+        vn: 'Trường này là bắt buộc',
       },
     };
   }
@@ -116,7 +111,7 @@ export class MyValidators {
     return (control: AbstractControl): Observable<MyValidationErrors | null> => {
       return control.valueChanges.pipe(
         switchMap((value) =>
-          authService.verifyEmail({ email: value }).pipe(
+          authService.isExistEmail({ email: value }).pipe(
             map((res) =>
               res.statusCode === HttpStatusCode.OK
                 ? 
@@ -124,16 +119,14 @@ export class MyValidators {
                 :
                 {
                  emailExists: {
-                'zh-cn': '无法验证邮箱，请稍后再试',
-                en: 'Không thể xác thực email, vui lòng thử lại sau',
+                vn: 'Không thể xác thực email, vui lòng thử lại sau',
               },
                 }
             ),
             catchError((error) =>
               of({
                 emailExists: {
-                  'zh-cn': '邮箱已存在',
-                  en: 'Email đã tồn tại',
+                  vn: 'Email đã tồn tại',
                 },
               })
             )

@@ -3,9 +3,9 @@
     <h3 class="font-semibold text-[22px]">Thống kê doanh thu</h3>
     <div>
       <app-select-view-statistic
-        [defaultValue]="'0'"
+        [defaultValue]="'month'"
         [optionSelect]="chooseFollowDate"
-        (chooseItemOption)="loadData($event)"
+        (chooseItemOption)="getRangeDate($event)"
       />
     </div>
   </div>

@@ -64,7 +64,7 @@ export class HowitorderComponent implements OnInit {
   }
 }
 
-const contentCardProcessRental_lessor: IItemProcessRental[] = [
+export const contentCardProcessRental_lessor: IItemProcessRental[] = [
   {
     key: 1,
     iconContent: 'vertical-left',
@@ -109,7 +109,7 @@ const contentCardProcessRental_lessor: IItemProcessRental[] = [
   },
 ];
 
-const contentCardProcessRental_renter: IItemProcessRental[] = [
+export const contentCardProcessRental_renter: IItemProcessRental[] = [
   {
     key: 1,
     content:
@@ -154,7 +154,7 @@ const contentCardProcessRental_renter: IItemProcessRental[] = [
   },
 ];
 
-const menuHowItOrder: OptionSelectWithSlug[] = [
+export const menuHowItOrder: OptionSelectWithSlug[] = [
   {
     label: 'Hưỡng dẫn chung',
     value: 'Hưỡng dẫn chung',

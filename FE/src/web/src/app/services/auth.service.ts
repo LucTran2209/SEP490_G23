@@ -196,6 +196,9 @@ export class AuthService {
   verifyEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<any>> {
     return this.httpClient.post<BaseResponseApi<any>>(AuthSlug.VerifyEmail.api, data);
   }
+  isExistEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<any>> {
+    return this.httpClient.post<BaseResponseApi<any>>(AuthSlug.IsExistEmail.api, data);
+  }
 
   confirmVerifyEmail(data: IConfirmEmailRequest): Observable<BaseResponseApi<any>> {
     return this.httpClient.post(AuthSlug.ConfirmEmail.api,data)

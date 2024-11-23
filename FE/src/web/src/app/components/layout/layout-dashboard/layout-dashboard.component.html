@@ -71,7 +71,16 @@
           [routerLinkActiveOptions]="{ exact: false }"
         >
           <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
-          <span>Danh Sách Người Thuê</span>
+          <span>Danh Sách Đơn Thuê</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./notification']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          <span nz-icon nzType="bell" nzTheme="outline"></span>
+          <span>Danh Sách Thông Báo</span>
         </li>
         <li
           nz-menu-item
