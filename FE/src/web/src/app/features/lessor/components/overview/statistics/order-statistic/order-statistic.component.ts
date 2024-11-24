@@ -143,13 +143,15 @@ export class OrderStatisticComponent implements OnInit, OnDestroy {
   cancelData$?: Observable<number[]>;
   getRangeDate(val: Date[]) {
     let fromDate, toDate;
-    fromDate = dayjs(val[0]).format('YYYY-MM');
-    toDate = dayjs(val[1]).format('YYYY-MM');
-    this.loadData({ StartDate: fromDate, EndDate: toDate });
+    if (val && val.length !== 0) {
+      fromDate = dayjs(val[0]).startOf('month').format('YYYY-MM-DD');
+      toDate = dayjs(val[1]).endOf('month').format('YYYY-MM-DD');
+      this.loadData({ StartDate: fromDate, EndDate: toDate });
+    }
   }
 
   handleDateChange(date: Date[]): void {
-    console.log('Line152',date);
+    console.log('Line152', date);
     this.getRangeDate(date);
   }
 
@@ -174,8 +176,8 @@ export class OrderStatisticComponent implements OnInit, OnDestroy {
     const last12MonthsDate = new Date();
     last12MonthsDate.setMonth(last12MonthsDate.getMonth() - 12);
     return {
-      StartDate: dayjs(last12MonthsDate).format('YYYY-MM'),
-      EndDate: dayjs(currentDate).format('YYYY-MM'),
+      StartDate: dayjs(last12MonthsDate).startOf('month').format('YYYY-MM-DD'),
+      EndDate: dayjs(currentDate).endOf('month').format('YYYY-MM-DD'),
     };
   }
 
