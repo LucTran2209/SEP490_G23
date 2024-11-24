@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import {
   RouteData
 } from '../configs/anonymous.config';
@@ -34,6 +34,7 @@ import { MessageResponseService } from './message-response.service';
 import { StorageService } from './storage.service';
 import { UserFireStoreService } from './user-fire-store.service';
 import { UserProfileService } from './user-profile.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -152,7 +153,12 @@ export class AuthService {
     return this.httpClient.post<BaseResponseApi<ILoginResponse>>(
       AuthSlug.Login.api,
       data
-    );
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error in login service:', error);
+        return throwError(() => error);
+      })
+    );;
   }
 
   loginwithGoogle(
