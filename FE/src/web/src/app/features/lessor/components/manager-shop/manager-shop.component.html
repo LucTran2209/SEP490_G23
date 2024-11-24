@@ -175,10 +175,29 @@
   </div>
   <!-- Background Image Section -->
   <div class="bg mt-4">
+    <p class="text-[#2F74FF] text-sm my-1" *ngIf="isUpdateShop">
+      <span class="text-red-600">*</span> Nhấp vào ảnh banner và avatar để chỉnh
+      sửa ảnh
+    </p>
     <img
-      class="w-full h-48 md:h-60 rounded object-cover"
-      src="https://noithathot.com/cong-trinh/anphat/thiet-ke-cua-hang-may-tinh-2.webp"
+      *ngIf="!isUpdateShop"
+      class="w-full h-48 md:h-60 rounded object-fill"
+      [src]="shop.banner ? shop.banner : '/assets/images/shop-banner.jpg'"
       alt=""
+    />
+    <img
+      *ngIf="isUpdateShop"
+      class="w-full h-48 md:h-60 rounded object-fill"
+      [src]="bannerUrl ? bannerUrl : '/assets/images/shop-banner.jpg'"
+      alt="Shop Banner"
+      (click)="triggerBannerInput()"
+    />
+    <input
+      #bannerInput
+      type="file"
+      accept="image/*"
+      (change)="handleBannerChange($event)"
+      class="hidden"
     />
   </div>
 

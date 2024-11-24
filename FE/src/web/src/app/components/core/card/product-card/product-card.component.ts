@@ -78,12 +78,14 @@ export class ProductCardComponent implements OnInit, AfterContentInit {
   }
 
   onNavigate() {
-    this.router.navigate([
-      '/common/product-detail',
-      this.product.productName,
-      '.i',
-      `${this.product.id}`,
-    ]);
+    if(!this.isLessor){
+      this.router.navigate([
+        '/common/product-detail',
+        this.product.productName,
+        '.i',
+        `${this.product.id}`,
+      ]);
+    }
   }
 
   getParam(){

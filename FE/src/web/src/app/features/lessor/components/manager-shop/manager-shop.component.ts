@@ -24,6 +24,7 @@ import { selectSortByOrderProduct } from '../../../../configs/product.config';
 })
 export class ManagerShopComponent  implements OnInit{
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('bannerInput') bannerInput!: ElementRef<HTMLInputElement>;
   isVisible : boolean = false;
   productList: ProductOutputDto[] = [];
   productInformation!: UpdateProductInputDto;
@@ -48,6 +49,7 @@ export class ManagerShopComponent  implements OnInit{
   isUpdateShop = false;
   shopData!: UpdateRentalShop;
   avatarUrl: string | null = null; // Thêm biến này để lưu URL của ảnh preview
+  bannerUrl: string | null = null; // Thêm biến này để lưu URL của ảnh preview
   constructor(private modal: NzModalService, 
     private productService: ProductService,
     private storageService: StorageService,
@@ -215,6 +217,9 @@ export class ManagerShopComponent  implements OnInit{
   triggerFileInput(): void {
     this.fileInput.nativeElement.click(); // Mở hộp thoại chọn file
   }
+  triggerBannerInput() {
+    this.bannerInput.nativeElement.click();
+  }
 
   handleAvatarChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -228,65 +233,93 @@ export class ManagerShopComponent  implements OnInit{
       this.avatarUrl = URL.createObjectURL(file);
     }
   }
+  handleBannerChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+  
+      // Cập nhật avatar với file chọn
+      this.shopData.banner = file;
+  
+      // Tạo URL preview từ file đã chọn
+      this.bannerUrl = URL.createObjectURL(file);
+    }
+  }
   async editShopInfo() {
     this.isUpdateShop = true;
-    const response = await fetch(this.shop.avatarShop);
-    const blob = await response.blob();
-    const fileName = 'avatar.png'; // Đặt tên cho file tải về
-    const avatar = new File([blob], fileName, { type: blob.type });
-    if (typeof this.shop.avatarShop === 'string' && this.shop.avatarShop) {
-      this.shopData = {
-        shopName: this.shop.shopName,
-        avatarShop: avatar, // Gán File thay vì URL
-      };
   
-      // Tạo URL preview nếu có file
-      if (avatar) {
-        this.avatarUrl = URL.createObjectURL(avatar);
-      } else {
-        this.avatarUrl = null;
-      }
-    } else {
-      // Nếu avatarShop không phải là chuỗi hoặc là null
-      this.shopData = {
-        shopName: this.shop.shopName,
-        avatarShop: null, // Đặt avatarShop là null nếu không có URL hoặc không phải URL
-      };
-      this.avatarUrl = null; // Đặt lại avatarUrl nếu không có ảnh
+    // Kiểm tra và tải avatar
+    let avatarFile: File | null = null;
+    if (typeof this.shop.avatarShop === 'string' && this.shop.avatarShop) {
+      const avatarResponse = await fetch(this.shop.avatarShop);
+      const avatarBlob = await avatarResponse.blob();
+      avatarFile = new File([avatarBlob], 'avatar.png', { type: avatarBlob.type });
     }
+  
+    // Kiểm tra và tải banner
+    let bannerFile: File | null = null;
+    if (typeof this.shop.banner === 'string' && this.shop.banner) {
+      const bannerResponse = await fetch(this.shop.banner);
+      const bannerBlob = await bannerResponse.blob();
+      bannerFile = new File([bannerBlob], 'banner.png', { type: bannerBlob.type });
+    }
+  
+    // Cập nhật shopData
+    this.shopData = {
+      shopName: this.shop.shopName,
+      avatarShop: avatarFile || null,
+      banner: bannerFile || null,
+    };
+  
+    // Xử lý avatar preview
+    this.avatarUrl = avatarFile ? URL.createObjectURL(avatarFile) : null;
+  
+    // Xử lý banner preview
+    this.bannerUrl = bannerFile ? URL.createObjectURL(bannerFile) : null;
+  
+    // Gọi ChangeDetectorRef để cập nhật view
     this.cdRef.detectChanges();
   }
   saveChanges() {
-    if (this.shopData.avatarShop instanceof File || this.shopData.avatarShop === null) {
+    if (
+      (this.shopData.avatarShop instanceof File || this.shopData.avatarShop === null) &&
+      (this.shopData.banner instanceof File || this.shopData.banner === null)
+  ) {
       const formData = new FormData();
-  
+
       // Thêm các trường dữ liệu khác vào FormData
       formData.append('shopName', this.shopData.shopName);
-  
-      // Nếu avatarShop có giá trị là File, thêm nó vào FormData
+
+      // Thêm avatarShop vào FormData nếu có
       if (this.shopData.avatarShop instanceof File) {
-        formData.append('avatarShop', this.shopData.avatarShop);
+          formData.append('avatarShop', this.shopData.avatarShop);
       }
-  
+
+      // Thêm banner vào FormData nếu có
+      if (this.shopData.banner instanceof File) {
+          formData.append('banner', this.shopData.banner);
+      }
+
       // Gửi request cập nhật
       this.rentalShopService.updateRentalShop(formData, this.shopid).subscribe({
-        next: () => {
-          this.loadShop();
-          this.messageService.showSuccess('Cập nhật thành công!');
-        },
-        error: () => {
-          this.messageService.handleError('Cập nhật thất bại!');
-        },
+          next: () => {
+              this.loadShop();
+              this.messageService.showSuccess('Cập nhật thành công!');
+          },
+          error: () => {
+              this.messageService.handleError('Cập nhật thất bại!');
+          },
       });
-    } else {
-      this.messageService.handleError('Ảnh đại diện không hợp lệ!');
-    }
-    this.isUpdateShop = false;
+  } else {
+      this.messageService.handleError('Ảnh đại diện hoặc banner không hợp lệ!');
+  }
+  this.isUpdateShop = false;
   }
   
   cancelChanges() {
     this.isUpdateShop = false;
-    this.shopData = { avatarShop: null, shopName: this.shop.shopName };
+    this.shopData = { avatarShop: null, shopName: this.shop.shopName, banner: null };
     this.avatarUrl = this.shop.avatarShop;
+    this.bannerUrl = this.shop.banner;
   }
 }
