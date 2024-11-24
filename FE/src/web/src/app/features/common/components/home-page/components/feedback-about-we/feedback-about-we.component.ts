@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class FeedbackAboutWeComponent {
 
+
+  mockFeedBack = Array(5).fill(null)
 }
