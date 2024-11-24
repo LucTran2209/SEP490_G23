@@ -6,7 +6,7 @@ namespace BE.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : BaseController
     {
         private readonly IAuthenticationService authenticationService;
 
@@ -20,7 +20,7 @@ namespace BE.Api.Controllers
         {
             var result = await authenticationService.LoginByUserNamePasswordAsync(inputDto);
 
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("Register")]
@@ -28,7 +28,7 @@ namespace BE.Api.Controllers
         {
             var result = await authenticationService.RegisterAsync(inputDto);
 
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("ChangePassword")]
@@ -36,7 +36,7 @@ namespace BE.Api.Controllers
         {
             var result = await authenticationService.ChangePasswordAsync(inputDto);
 
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("ForgotPassword")]
@@ -44,7 +44,7 @@ namespace BE.Api.Controllers
         {
             var result = await authenticationService.ForgotPasswordAsync(inputDto);
 
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("ResetPassword")]
@@ -52,28 +52,28 @@ namespace BE.Api.Controllers
         {
             var result = await authenticationService.ResetPassword(inputDto);
 
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("VerifyEmail")]
         public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailInputDto inputDto)
         {
             var result = await authenticationService.VerifyEmailAsync(inputDto);
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("ComfirmVerifyEmailAsync")]
         public async Task<IActionResult> ComfirmVerifyEmailAsync([FromBody] ComfirmVerifyEmailInputDto inputDto)
         {
             var result = await authenticationService.ComfirmVerifyEmailAsync(inputDto);
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("check-not-existed-email")]
         public async Task<IActionResult> CheckNotExistedEmail([FromBody] CheckNotExistedEmailInputDto inputDto)
         {
             var result = await authenticationService.CheckNotExistedEmailAsync(inputDto);
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
         }
     }
 }
