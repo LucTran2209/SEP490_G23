@@ -101,7 +101,7 @@ export class SubCategoryStatisticComponent implements OnInit, OnDestroy {
     event?: ChartEvent;
     active?: object[];
   }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
 
   chartHovered({
@@ -111,7 +111,7 @@ export class SubCategoryStatisticComponent implements OnInit, OnDestroy {
     event?: ChartEvent;
     active?: object[];
   }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
   getRangeDate(typeChoose: string | number) {
     let fromDate, toDate;

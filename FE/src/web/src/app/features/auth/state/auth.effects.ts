@@ -13,6 +13,7 @@ import { STRING } from '../../../utils/constant';
 import * as AuthActions from './auth.actions';
 import { removeCookie, replaceCookie } from '../../../utils/cookie.helper';
 import { IErrorApi } from '../../../interceptors/http-error.interceptor';
+import { getErrorMessage } from '../../../utils/anonymous.helper';
 
 @Injectable()
 export class AuthEffect {
@@ -34,15 +35,15 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.login(data).pipe(
             map((res) => {
-              console.log('res', res);
               return AuthActions.login_success({
                 accessToken: res.data.accessToken,
                 refreshToken: res.data.refreshToken,
               });
             }),
             catchError((error) => {
-              const errorMessage = error.error?.message || 'Đã xảy ra lỗi!';
-              const statusCode = error.status;
+              console.log('error',error);
+              const errorMessage = getErrorMessage(error);
+              const statusCode = error.status || error.statusCode;
               return of(
                 AuthActions.login_failure({ error: errorMessage, statusCode })
               );
@@ -359,6 +360,7 @@ export class AuthEffect {
           AuthActions.confirmVerifyEmail_failure
         ),
         tap((action) => {
+          console.log('action',action);
           this.loadingSerivce.setOtherLoading('error');
           this.toastMT.handleError(action.error);
         })

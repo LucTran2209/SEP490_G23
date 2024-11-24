@@ -49,7 +49,7 @@ export class BreadcrumbComponent {
           }
           // console.log('Breadcrumbs created:', this.breadcrumbs);
         } else {
-          console.log('Breadcrumbs not created because it is the home page');
+          console.error('Breadcrumbs not created because it is the home page');
         }
         this.cdRef.detectChanges();
       });
