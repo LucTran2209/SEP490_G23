@@ -47,6 +47,7 @@ namespace BE.Application.Services.Users
             findUser.Address = user.Address;
             findUser.DateOfBirth = user.DateOfBirth;
             findUser.AvatarPersonal = user.AvatarPersonal;
+            findUser.Balance = user.Balance;
             findUser.ListRole = user.UserRoles?.Select(ur => ur.Role?.Name!).ToList() ?? new List<string>();
             return findUser;
         }
