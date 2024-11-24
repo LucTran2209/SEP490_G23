@@ -13,6 +13,7 @@ import { STRING } from '../../../utils/constant';
 import * as AuthActions from './auth.actions';
 import { removeCookie, replaceCookie } from '../../../utils/cookie.helper';
 import { IErrorApi } from '../../../interceptors/http-error.interceptor';
+import { getErrorMessage } from '../../../utils/anonymous.helper';
 
 @Injectable()
 export class AuthEffect {
@@ -41,8 +42,8 @@ export class AuthEffect {
             }),
             catchError((error) => {
               console.log('error',error);
-              const errorMessage = error?.message || 'Đã xảy ra lỗi!';
-              const statusCode = error.status;
+              const errorMessage = getErrorMessage(error);
+              const statusCode = error.status || error.statusCode;
               return of(
                 AuthActions.login_failure({ error: errorMessage, statusCode })
               );

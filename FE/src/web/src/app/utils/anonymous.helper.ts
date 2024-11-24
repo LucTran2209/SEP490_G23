@@ -146,3 +146,14 @@ export const convertDiscountType = (discountType: DISCOUNT_TYPE): string => {
   }
   return ''; // Trả về chuỗi rỗng nếu không tìm thấy
 };
+
+export function getErrorMessage(response: any) {
+  if (response.error && response.status) {
+      return response.error.message;
+  } else if (response.status && response.errorList) {
+      const firstError = response.errorList[0];
+      return firstError ? `${firstError.errorMessage}` : "Đã xảy ra lỗi không xác định!";
+  } else {
+      return "Định dạng lỗi không hợp lệ!";
+  }
+}
