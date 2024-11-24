@@ -1,28 +1,8 @@
 import {
   IITemListNav,
-  OptionSelect,
-  OptionSelectCheckBox,
+  OptionSelectCheckBox
 } from '../configs/anonymous.config';
 
-export const allCategoryPostRental = [
-  {
-    label: 'Điện Thoại & Phụ Kiện',
-    value: '1',
-  },
-  {
-    label: 'Máy gia công ABC',
-    value: '2',
-  },
-
-  {
-    label: 'Súng & Áo Giáp',
-    value: '3',
-  },
-  {
-    label: 'Quần áo, giày dép',
-    value: '4',
-  },
-];
 
 export const selectLocationOptions: OptionSelectCheckBox[] = [
   { label: 'Hà Nội', value: 'Hà Nội', checked: false },
