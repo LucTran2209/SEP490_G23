@@ -3,17 +3,15 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { catchError, delay, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { HttpStatusCode } from '../../../configs/status-code.config';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
 import { MessageResponseService } from '../../../services/message-response.service';
 import { StorageService } from '../../../services/storage.service';
+import { getErrorMessage } from '../../../utils/anonymous.helper';
 import { STRING } from '../../../utils/constant';
 import * as AuthActions from './auth.actions';
-import { removeCookie, replaceCookie } from '../../../utils/cookie.helper';
-import { IErrorApi } from '../../../interceptors/http-error.interceptor';
-import { getErrorMessage } from '../../../utils/anonymous.helper';
 
 @Injectable()
 export class AuthEffect {
