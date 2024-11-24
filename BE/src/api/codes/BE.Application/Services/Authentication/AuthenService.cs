@@ -154,6 +154,7 @@ namespace BE.Application.Services.Authentication
 
             return new ResultService
             {
+                StatusCode = 200,
                 Message = "Success",
             };
         }
