@@ -12,6 +12,16 @@ namespace BE.Infrastructure.Repositories
         public StatisticalRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public IQueryable<OrderDetail?> GetallAsync()
+        {
+            return context.OrderDetails
+                         .Include(od => od.Order)
+                         .ThenInclude(o => o.OrderStatuses)
+                         .Include(od => od.Product)
+                         .AsQueryable();
+        }
+
         public IQueryable<OrderDetail> GetByRentalIdAsync()
         {
             return context.OrderDetails

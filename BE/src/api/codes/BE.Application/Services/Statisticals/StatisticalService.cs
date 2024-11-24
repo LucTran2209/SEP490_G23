@@ -35,13 +35,12 @@ namespace BE.Application.Services.Statisticals
                 })
                 .ToList();
 
-            var query = unitOfWork.StatisticalRepository.GetByRentalIdAsync();
+            var query = unitOfWork.StatisticalRepository.GetallAsync();
 
             // Lọc dữ liệu theo khoảng thời gian và RentalShopId
             query = query
                         .Where(rs =>
-                                    rs.Order.StartDate <= endDate &&
-                                    rs.Order.EndDate >= startDate)
+                                    rs.Order.StartDate <= endDate && rs.Order.EndDate >= startDate)
                         .Where(rs => rs.Product.RentalShopId == inputDto.RentaiShopId);
 
             // Thống kê trạng thái theo tháng
