@@ -24,6 +24,8 @@ import { ChartOverviewEffects } from './state/_chart/chart.effects';
 import { feature_getDATACHARTORDER } from './state/_chart/chartOrder-overview.reducer';
 import { feature_getDATACHARTREVENUE } from './state/_chart/chartRevenue-overview.reducer';
 import { feature_getDATACHARTSUBCATEGORY } from './state/_chart/chartTopSubCategory-overview.reducer';
+import { OrderDetailEffects } from './state/_order/order-detail.effects';
+import { orderDetailFeature } from './state/_order/order-detail.reducer';
 @NgModule({
   declarations: [
     ManagePostComponent,
@@ -47,8 +49,10 @@ import { feature_getDATACHARTSUBCATEGORY } from './state/_chart/chartTopSubCateg
     StoreModule.forFeature(feature_getDATACHARTORDER),
     StoreModule.forFeature(feature_getDATACHARTREVENUE),
     StoreModule.forFeature(feature_getDATACHARTSUBCATEGORY),
+    StoreModule.forFeature(orderDetailFeature),
     EffectsModule.forFeature([CardOverviewEffects]),
     EffectsModule.forFeature([ChartOverviewEffects]),
+    EffectsModule.forFeature([OrderDetailEffects]),
     SharedModule,
     BaseChartDirective
   ],

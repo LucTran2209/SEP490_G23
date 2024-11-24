@@ -10,6 +10,7 @@ import { OrderService } from '../../../../services/order.service';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 import { ORDER_STATUS } from '../../../../utils/constant';
+import dayjs from 'dayjs';
 
 export interface CustomColumns extends NzCustomColumn {
   name: string;
@@ -145,9 +146,9 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
     const { orderCode, orderStatus, humanRental, phoneNumber, timeRange } =
       valGroup;
     const startDate =
-      timeRange && timeRange.length !== 0 ? timeRange[0].toISOString() : null;
+      timeRange && timeRange.length !== 0 ? dayjs(timeRange[0]).format('YYYY-MM-DD'): null;
     const endDate =
-      timeRange && timeRange.length !== 0 ? timeRange[1].toISOString() : null;
+      timeRange && timeRange.length !== 0 ? dayjs(timeRange[1]).format('YYYY-MM-DD') : null;
     this.onloadOrder({
       pageIndex: 1,
       pageSize: 10,
