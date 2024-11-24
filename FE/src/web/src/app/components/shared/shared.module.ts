@@ -127,6 +127,7 @@ import { ConfirmDeleteRequestOrderComponent } from '../modal/confirm-delete-requ
 import { FormVoucherComponent } from '../core/form/form-voucher/form-voucher.component';
 import { FormRechargeComponent } from '../core/form/form-recharge/form-recharge.component';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { FormDeactiveShopComponent } from '../core/form-deactive-shop/form-deactive-shop.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
@@ -245,6 +246,7 @@ ConfirmDeleteRequestOrderComponent,
   FormSearchVoucherComponent,
   FormVoucherComponent,
   FormRechargeComponent,
+  FormDeactiveShopComponent,
 ];
 
 @NgModule({

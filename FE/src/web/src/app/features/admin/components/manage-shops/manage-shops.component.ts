@@ -6,6 +6,7 @@ import { RentalShopService } from '../../../../services/rental-shop.service';
 import { StorageService } from '../../../../services/storage.service';
 import { LoadingService } from '../../../../services/loading.service';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { DeactiveShop } from '../../../../interfaces/rental-shop.interface';
 
 @Component({
   selector: 'app-manage-shops',
@@ -20,6 +21,8 @@ export class ManageShopsComponent implements OnInit {
   loading$?: Observable<StatusProcess>;
   isloading = false;
   searchText: string = '';
+  isVisible : boolean = false;
+  id: string = '';
 
   constructor(
     private rentalShopService: RentalShopService,
@@ -49,5 +52,27 @@ export class ManageShopsComponent implements OnInit {
   }
   onSearch(){
 
+  }
+  showDeactiveShop(id: string){
+    this.id = id;
+    this.isVisible = true;
+  }
+  handleCloseModal(){
+    this.isVisible = false;
+  }
+  DeactiveShop(shop: DeactiveShop){
+    shop.id = this.id;
+    this.rentalShopService.deactiveRentalShop(shop).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Xóa Cửa Hàng Thành Công!');
+        this.handleCloseModal();
+        this.loadRentals(this.currentPage, this.pageSize);
+        
+      },
+      error: (error) => {
+        this.messageService.handleError('Xóa Cửa Hàng Thất Bại!');
+        this.loadRentals(this.currentPage, this.pageSize);
+      }
+    });
   }
 }

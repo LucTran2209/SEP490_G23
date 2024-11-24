@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MyOrderDetailDto, OrderDetailResultService, OrderResultService } from '../../../../interfaces/order.interface';
+import { Deposit, MyOrderDetailDto, OrderDetailResultService, OrderResultService } from '../../../../interfaces/order.interface';
 import { OrderService } from '../../../../services/order.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,9 @@ import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { Observable } from 'rxjs';
 import { ORDER_STATUS } from '../../../../utils/constant';
 import { convertStatusOrder } from '../../../../utils/anonymous.helper';
+import { RentalTimerService } from '../../../../services/rental-timer.service';
+import { PaymentService } from '../../../../services/payment.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
 
 @Component({
   selector: 'app-my-order-detail',
@@ -16,6 +19,7 @@ import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 })
 export class MyOrderDetailComponent implements OnInit {
   currentStep = 1; // Bước hiện tại
+  isVisible: boolean = false
   orderId: string = '';
   order!: MyOrderDetailDto;
   totalPrice = 0;
@@ -35,6 +39,9 @@ export class MyOrderDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private loadingService: LoadingService,
     private router: Router,
+    private timerCalculatorService: RentalTimerService,
+    private paymentService: PaymentService,
+    private messageService: MessageResponseService,
   ){
     this.loading$ = this.loadingService.status$;
   }
@@ -42,14 +49,13 @@ export class MyOrderDetailComponent implements OnInit {
     this.location.back();
   }
   ngOnInit(){
+    this.isVisible = false;
     this.loadingService.setLoading();
     this.route.paramMap.subscribe(params => {
       this.orderId = params.get('id') || '';
       this.loadOrder(this.orderId);
     });
     console.log(this.orderId);
-    console.log(this.numberofRentalTimes);
-    
   }
   loadOrder(orderId: string){
     this.loadingService.setLoading();
@@ -57,7 +63,7 @@ export class MyOrderDetailComponent implements OnInit {
       next: (res: OrderDetailResultService) => {
         this.order = res.data;
         this.loadingService.setOtherLoading('loaded');
-        this.calculateTimeDifferenceInHours();
+        // this.calculateTimeDifferenceInHours();
         this.calculateTotalRentAndDeposit();
         console.log(this.order);
       },
@@ -65,54 +71,45 @@ export class MyOrderDetailComponent implements OnInit {
       }
     })
   }
-
-  calculateNumberOfRentalDays(): number {
-    // Ensure the startDate and endDate are valid Date objects
-    const startDate = new Date(this.order.startDate);
-    const endDate = new Date(this.order.endDate);
-  
-    // Set both startDate and endDate to the start of the day
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(0, 0, 0, 0);
-  
-    // Calculate the time difference in milliseconds
-    const timeDiff = endDate.getTime() - startDate.getTime();
-  
-    // If the time difference is negative or zero, handle it as an invalid or same-day rental
-    if (timeDiff <= 0) {
-      this.numberofRentalTimes = 0;
-      return 0;
-    }
-  
-    // Tính số ngày cho thuê
-    return Math.floor(timeDiff / (1000 * 3600 * 24)); // Chuyển chênh lệch thời gian thành số ngày
-  }
-  
-  calculateTimeDifferenceInHours(): void {
-    const startDate = new Date(this.order.startDate);
-    const endDate = new Date(this.order.endDate);
-  
-    // Calculate the time difference in milliseconds
-    const timeDiff = endDate.getTime() - startDate.getTime();
-    
-    // Calculate the number of rental days and hours
-    const days = Math.floor(timeDiff / (1000 * 3600 * 24)); // Số ngày
-    const hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600)); // Số giờ
-  
-    if (days > 0 && this.order.startDate != this.order.endDate) {
-      // Nếu số ngày thuê lớn hơn 0, hiển thị theo số ngày
-      this.numberofRentalTimes = days;
-      this.timeString = `${this.numberofRentalTimes} ngày`;
-    } else {
-      // Nếu số ngày thuê bằng 0, hiển thị theo số giờ
-      this.numberofRentalTimes = hours;
-      this.timeString = `${this.numberofRentalTimes} giờ`;
-    }
+  convertRentalDay(startDate: string, endDate: string) {
+    let diffDate_start = new Date(startDate);
+    let diffDate_end = new Date(endDate);
+    return this.timerCalculatorService.convertRentalDays([
+      diffDate_start,
+      diffDate_end,
+    ]);
   }
   calculateTotalRentAndDeposit(): void {
-    this.totalPrice = this.order.totalRentPrice * this.numberofRentalTimes + this.order.totalDepositPrice;
+    this.totalPrice = this.order.totalRentPrice * this.convertRentalDay(this.order.startDate, this.order.endDate) + this.order.totalDepositPrice;
   }
   convertStatus(orderStatus: ORDER_STATUS) {
     return convertStatusOrder(orderStatus);
+  }
+  showModalDeposit(){
+    this.isVisible = true;
+  }
+  onDeposit(){
+    const shopId = this.route.snapshot.paramMap.get('shopId');
+    const data: Deposit = {
+      orderId: this.orderId,
+      rentalShopId: shopId,
+      depoitAmount: this.totalPrice,
+    };
+    this.paymentService.depositMoney(data).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Bạn Đã Thanh Toán Đơn Hàng Thành Công!', 3000);
+        this.loadOrder(this.orderId);
+        this.isVisible = false;
+        
+      },
+      error: (error) => {
+        this.messageService.showSuccess('Bạn Đã Thanh Toán Đơn Hàng Thất Bại!', 3000);
+        this.isVisible = false;
+      }
+    });
+  }
+  cancelForm(){
+    this.messageService.showInfo('Bạn Chưa Thanh Toán Đơn Hàng Này!', 3000);
+    this.isVisible = false;
   }
 }

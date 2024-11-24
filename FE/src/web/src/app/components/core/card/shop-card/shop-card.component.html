@@ -30,7 +30,7 @@
   </div>
   <div
     class="order-item py-3 cursor-pointer"
-    [routerLink]="['./order-detail', order.id]"
+    [routerLink]="['./order-detail', order.id, { shopId: order.rentalShopId }]"
   >
     <div nz-row nzGutter="16" class="p-4">
       <div nz-col [nzSpan]="6">
@@ -77,8 +77,14 @@
             {{ totalQuantity }}
           </p>
           <app-status-label
-            [label]="convertStatus(order.orderStatuses[order.orderStatuses.length - 1].status)"
-            [statusType]="order.orderStatuses[order.orderStatuses.length - 1].status"
+            [label]="
+              convertStatus(
+                order.orderStatuses[order.orderStatuses.length - 1].status
+              )
+            "
+            [statusType]="
+              order.orderStatuses[order.orderStatuses.length - 1].status
+            "
           />
         </div>
       </div>
@@ -95,7 +101,7 @@
       Đánh Giá
     </button>
     <button *ngIf="isShowBtn2" class="px-5" nz-button nzType="primary" nzGhost>
-      Chi TIết
+      Thanh Toán
     </button>
     <button *ngIf="isShowBtn3" class="px-5" nz-button nzType="primary" nzGhost>
       Mua Lại

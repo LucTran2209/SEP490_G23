@@ -187,3 +187,9 @@ export interface OrderListResponse {
   mortgagePaperImageFont: null;
   mortgagePaperImageBack: null;
 }
+
+export interface Deposit{
+    orderId: string,
+    rentalShopId: string | null,
+    depoitAmount: number;
+}

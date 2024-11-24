@@ -93,23 +93,48 @@
                   {{ rental.email || "[CHƯA CÓ]" }}
                 </span>
               </td>
+              @if(!rental.isActive){
               <td>
                 <div class="flex flex-wrap justify-center p-3">
                   <a
                     class="text-sky-600"
                     [routerLink]="['/common/shop', rental.id]"
                   >
-                    <span nz-icon nzType="shop" nzTheme="outline"></span>
+                    <span
+                      nz-tooltip
+                      nzTooltipTitle="Đi Đến Cửa Hàng"
+                      nz-icon
+                      nzType="shop"
+                      nzTheme="outline"
+                    ></span>
                   </a>
                 </div>
               </td>
               <td>
                 <div class="flex flex-wrap justify-center p-3">
-                  <a class="text-rose-600">
-                    <span nz-icon nzType="stop" nzTheme="outline"></span>
+                  <a
+                    class="text-rose-600"
+                    (click)="showDeactiveShop(rental.id)"
+                  >
+                    <span
+                      nz-tooltip
+                      nzTooltipTitle="Dừng Hoạt Động Shop Này"
+                      nz-icon
+                      nzType="stop"
+                      nzTheme="outline"
+                    ></span>
                   </a>
                 </div>
               </td>
+              } @else{
+              <td colspan="2">
+                <div class="flex flex-wrap justify-center p-3">
+                  <p class="text-rose-600 name">
+                    Shop Đã Bị Xóa Vì: {{ rental.adminNote }}
+                  </p>
+                </div>
+              </td>
+              }
             </tr>
           </tbody>
         </nz-table>
@@ -117,3 +142,8 @@
     </div>
   </div>
 </div>
+<app-form-deactive-shop
+  [isVisible]="isVisible"
+  (closeModal)="handleCloseModal()"
+  (saveShop)="DeactiveShop($event)"
+></app-form-deactive-shop>

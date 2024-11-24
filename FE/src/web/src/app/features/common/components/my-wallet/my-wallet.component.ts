@@ -28,7 +28,7 @@ export class MyWalletComponent implements OnInit {
     this.isRecharge = !this.isRecharge;
   }
   rechargeMoney(data: rechargeMoney) {
-    this.paymentService.createVoucher(data).subscribe((res) =>{
+    this.paymentService.rechargeMoney(data).subscribe((res) =>{
       window.location.href = res.data;
     });
   }
