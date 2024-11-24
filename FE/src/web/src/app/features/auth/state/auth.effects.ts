@@ -40,8 +40,13 @@ export class AuthEffect {
             }),
             catchError((error) => {
               console.log('error',error);
+<<<<<<< HEAD
               const errorMessage = getErrorMessage(error);
               const statusCode = error.status || error.statusCode;
+=======
+              const errorMessage = error?.message || 'Đã xảy ra lỗi!';
+              const statusCode = error.status;
+>>>>>>> d96d2db (process fix login bug)
               return of(
                 AuthActions.login_failure({ error: errorMessage, statusCode })
               );
