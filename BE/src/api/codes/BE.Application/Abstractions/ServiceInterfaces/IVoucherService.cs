@@ -12,5 +12,6 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> DeactivateVoucherAsync(Guid voucherId);
         Task<ResultService> DeleteVoucherAsync(Guid voucherId);
         Task<ResultService> GetVoucherByIdAsync(Guid voucherId);
+        Task<ResultService> GetUserVoucherAsync();
     }
 }

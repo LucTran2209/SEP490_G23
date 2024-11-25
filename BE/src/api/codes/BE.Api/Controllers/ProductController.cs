@@ -19,8 +19,8 @@ namespace BE.Api.Controllers
             this.productService = productService;
         }
 
-        [HttpGet("list")]
-        public async Task<IActionResult> GetListAsync([FromQuery] GetListProductInputDto inputDto)
+        [HttpPost("list")]
+        public async Task<IActionResult> GetListAsync([FromBody] GetListProductInputDto inputDto)
         {
             var output = await productService.GetListProductAsync(inputDto);
 
