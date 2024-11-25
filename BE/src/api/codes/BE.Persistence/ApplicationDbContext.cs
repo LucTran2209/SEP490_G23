@@ -35,5 +35,6 @@ namespace BE.Persistence
         public DbSet<ProductImage> ProductImages => this.Set<ProductImage>();
         public DbSet<RechargeHistory> RechargeHistories => this.Set<RechargeHistory>();
         public DbSet<Voucher> Vouchers => this.Set<Voucher>();
+        public DbSet<UserVoucher> UserVouchers => this.Set<UserVoucher>();
     }
 }

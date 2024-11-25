@@ -6,5 +6,7 @@ namespace BE.Domain.Interfaces
     public interface IVoucherRepository : IBaseRepository<Voucher>
     {
         IQueryable<Voucher> GetAll();
+        IQueryable<Voucher>? GetListVoucherByRentalShopId(Guid rentalShopId);
+        Task AddUserVoucherAsync(UserVoucher userVoucher);
     }
 }

@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using BE.Application.Abstractions.ServiceInterfaces;
-using BE.Application.Common.Results;
-using BE.Application.Services.Vouchers.VoucherServiceInputDto;
+﻿using BE.Application.Services.Vouchers.VoucherServiceInputDto;
 using BE.Application.Services.Vouchers.VoucherServiceOutputDto;
-using BE.Domain.Abstractions.UnitOfWork;
-using System.Net;
 
 namespace BE.Application.Services.Vouchers
 {
@@ -27,12 +22,11 @@ namespace BE.Application.Services.Vouchers
             _updateValidator = updateValidator;
         }
 
-
-        public async Task<ResultService> GetListVoucherAsync()
+        public async Task<ResultService> GetListVoucherAsync(Guid rentalShopId)
         {
-            var vouchers = unitOfWork.VoucherRepository.GetAll();
+            var vouchers = unitOfWork.VoucherRepository.GetListVoucherByRentalShopId(rentalShopId);
 
-            var voucherDtos = _mapper.ProjectTo<GetListVoucherOutputDto>(vouchers).ToList();
+            var voucherDtos = await _mapper.ProjectTo<GetListVoucherOutputDto>(vouchers).ToListAsync();
 
             return new ResultService
             {
@@ -41,6 +35,7 @@ namespace BE.Application.Services.Vouchers
                 Datas = voucherDtos
             };
         }
+
         public async Task<ResultService> CreateVoucherAsync(CreateVoucherInputDto inputDto)
         {
             if (inputDto == null)
@@ -155,6 +150,24 @@ namespace BE.Application.Services.Vouchers
                 StatusCode = (int)HttpStatusCode.OK,
                 Message = "Voucher retrieved successfully.",
                 Datas = new List<GetVoucherByIdOutputDto> { voucherDto }
+            };
+        }
+
+        public async Task<ResultService> SaveVoucherAsync(Guid voucherId)
+        {
+            var userVoucher = new UserVoucher()
+            {
+                UserId = (Guid)user.Id!,
+                VoucherId = voucherId
+            };
+
+            await unitOfWork.VoucherRepository.AddUserVoucherAsync(userVoucher);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
             };
         }
     }

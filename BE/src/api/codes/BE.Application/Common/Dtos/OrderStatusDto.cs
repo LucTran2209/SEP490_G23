@@ -9,5 +9,6 @@ namespace BE.Application.Common.Dtos
         public string? Message { get; set; }
         public RequestStatus Status { get; set; }
         public string? FileAttach { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }
