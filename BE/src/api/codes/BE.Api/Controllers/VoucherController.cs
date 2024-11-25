@@ -16,16 +16,15 @@ namespace BE.Api.Controllers
             _voucherService = voucherService;
         }
 
-        [HttpGet("list")]
-        [Authorize]
-        public async Task<IActionResult> GetListVoucherAsync()
+        [HttpGet("list/{rentalShopId}")]
+        public async Task<IActionResult> GetListVoucherAsync([FromQuery] Guid rentalShopId)
         {
-            var result = await _voucherService.GetListVoucherAsync();
+            var result = await _voucherService.GetListVoucherAsync(rentalShopId);
             return ReturnFollowStatusCode(result);
         }
 
         [HttpPost("create")]
-        [Authorize]
+        [Authorize] 
         public async Task<IActionResult> CreateVoucherAsync([FromBody] CreateVoucherInputDto inputDto)
         {
             var result = await _voucherService.CreateVoucherAsync(inputDto);
@@ -62,7 +61,15 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> GetVoucherByIdAsync(Guid voucherId)
         {
             var result = await _voucherService.GetVoucherByIdAsync(voucherId);
-            return StatusCode(result.StatusCode, result);
+            return ReturnFollowStatusCode(result);
+        }
+
+        [HttpPost("save")]
+        [Authorize]
+        public async Task<IActionResult> SaveVoucherAsync([FromBody]Guid voucherId)
+        {
+            var result = await _voucherService.SaveVoucherAsync(voucherId);
+            return ReturnFollowStatusCode(result);
         }
     }
 }

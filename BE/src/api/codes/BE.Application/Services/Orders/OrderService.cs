@@ -144,8 +144,7 @@ namespace BE.Application.Services.Orders
             var myOrders = unitOfWork.OrderRepository.GetMyOrder(user.Id);
 
             myOrders = myOrders.Filter(inputDto.Search, o => o.Code!.Contains(inputDto.Search)
-                                                            || o.OrderDetails!.Any(od => od.Product.ProductName!.Contains(inputDto.Search)))
-                ;
+                                                            || o.OrderDetails!.Any(od => od.Product.ProductName!.Contains(inputDto.Search)));
                                 //.Filter(inputDto.NearDays.ToString(), o => o.)
 
             var result = await myOrders.ToPageList(inputDto)

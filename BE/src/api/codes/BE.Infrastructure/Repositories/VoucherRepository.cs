@@ -22,6 +22,11 @@ namespace BE.Infrastructure.Repositories
             await context.Vouchers.AddAsync(entity);
         }
 
+        public async Task AddUserVoucherAsync(UserVoucher userVoucher)
+        {
+            await context.UserVouchers.AddAsync(userVoucher);
+        }
+
         public Task DeleteAsync(Voucher entity)
         {
             context.Vouchers.Remove(entity);
@@ -39,6 +44,13 @@ namespace BE.Infrastructure.Repositories
         {
             return context.Vouchers.Include(v => v.RentalShop).AsQueryable();
 
+        }
+
+        public IQueryable<Voucher>? GetListVoucherByRentalShopId(Guid rentalShopId)
+        {
+            var vouchers = context.Vouchers.Where(v => v.ShopId == rentalShopId).AsQueryable();
+
+            return vouchers;
         }
 
         public Task UpdateAsync(Voucher entity)
