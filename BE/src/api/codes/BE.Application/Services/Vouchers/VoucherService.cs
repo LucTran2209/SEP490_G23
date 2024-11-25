@@ -170,5 +170,18 @@ namespace BE.Application.Services.Vouchers
                 StatusCode = (int)HttpStatusCode.OK,
             };
         }
+
+        public async Task<ResultService> GetUserVoucherAsync()
+        {
+            var vouchers = await unitOfWork.VoucherRepository.GetUserVoucherAsync((Guid)user.Id!);
+
+            var userVouchers = _mapper.Map<List<GetUserVoucherOutputDto>>(vouchers);
+
+            return new ResultService()
+            {
+                Datas = userVouchers,
+                StatusCode = (int)HttpStatusCode.OK,
+            };
+        }
     }
 }
