@@ -122,7 +122,7 @@ import { NotificationItemComponent } from '../notification-item/notification-ite
 import { NotificationPopupComponent } from '../../features/notification/components/notification-popup/notification-popup.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormSearchVoucherComponent } from '../core/form/form-search-voucher/form-search-voucher.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDeleteRequestOrderComponent } from '../modal/confirm-delete-request-order/confirm-delete-request-order.component';
 import { FormVoucherComponent } from '../core/form/form-voucher/form-voucher.component';
 import { FormRechargeComponent } from '../core/form/form-recharge/form-recharge.component';
@@ -131,9 +131,13 @@ import { FormDeactiveShopComponent } from '../core/form-deactive-shop/form-deact
 import { InputAddressComponent } from '../core/input-address/input-address.component';
 import { VoucherCardComponent } from '../core/card/voucher-card/voucher-card.component';
 import { FormCancelOrderComponent } from '../core/form/form-cancel-order/form-cancel-order.component';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { ListVoucherAvailableComponent } from '../modal/list-voucher-available/list-voucher-available.component';
+import { DetailVoucherAvailableComponent } from '../modal/detail-voucher-available/detail-voucher-available.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
+  NzImageModule,
   NzPopconfirmModule,
   NzStatisticModule,
   NzNotificationModule,
@@ -181,9 +185,17 @@ const ANTD_MODULES = [
   NzTypographyModule,
   NzCollapseModule,
 ];
-const MATERIAL_MODULES = [MatDialogModule, MatButtonModule, MatSnackBarModule, MatInputModule, MatMenuModule];
+const MATERIAL_MODULES = [
+  MatDialogModule,
+  MatButtonModule,
+  MatSnackBarModule,
+  MatInputModule,
+  MatMenuModule,
+];
 const SHARED_MODULES = [
-ConfirmDeleteRequestOrderComponent,
+  DetailVoucherAvailableComponent,
+  ListVoucherAvailableComponent,
+  ConfirmDeleteRequestOrderComponent,
   NotificationPopupComponent,
   NotificationItemComponent,
   SelectDateRangeComponent,
