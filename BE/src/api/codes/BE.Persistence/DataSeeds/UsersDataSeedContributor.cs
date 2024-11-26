@@ -16,6 +16,7 @@ public class UsersDataSeedContributor : IDataSeedContributor
     {
         var email = "abc@gamil.com";
         var user = await context.Users.SingleOrDefaultAsync(u => u.Email == email);
+
         if (user == null)
         {
             user = new User()
@@ -36,7 +37,16 @@ public class UsersDataSeedContributor : IDataSeedContributor
 
             };
 
+            var userRoleAdmin = new UserRole()
+            {
+                UserId = user.Id,
+                RoleId = Guid.Parse("9fca96df-9e41-4975-8d7d-98605f01a0bd")
+            };
+
+
             await context.Users.AddAsync(user);
+            await context.UserRoles.AddAsync(userRoleAdmin);
+
         }
 
         await context.SaveChangesAsync();

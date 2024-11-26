@@ -64,7 +64,7 @@ namespace BE.Infrastructure.Repositories
 
             var vouchers = await context.Vouchers
                 .Where(v => v.UserVouchers == null ? false : v.UserVouchers.Any(uv => uv.UserId == userId))
-                .Where(v => v.ExpiryDate >= DateTime.Now && v.IsActive && v.IsDeleted)
+                .Where(v => v.ExpiryDate >= DateTime.Now && v.IsActive && !v.IsDeleted)
                 .ToListAsync();
 
             return vouchers;
