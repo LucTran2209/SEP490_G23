@@ -8,6 +8,6 @@ namespace BE.Domain.Interfaces
         IQueryable<Voucher> GetAll();
         IQueryable<Voucher>? GetListVoucherByRentalShopId(Guid rentalShopId);
         Task AddUserVoucherAsync(UserVoucher userVoucher);
-        Task<List<UserVoucher>> GetUserVoucherAsync(Guid guid);
+        Task<List<Voucher>> GetUserVoucherAsync(Guid guid);
     }
 }

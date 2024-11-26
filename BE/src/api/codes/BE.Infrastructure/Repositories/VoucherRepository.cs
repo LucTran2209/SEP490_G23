@@ -53,16 +53,21 @@ namespace BE.Infrastructure.Repositories
             return vouchers;
         }
 
-        public async Task<List<UserVoucher>> GetUserVoucherAsync(Guid userId)
+        public async Task<List<Voucher>> GetUserVoucherAsync(Guid userId)
         {
-            var userVouchers = await context.UserVouchers
-                .Include(v => v.Voucher)
-                .Where(v => v.UserId == userId 
-                && v.Voucher!.ExpiryDate >=  DateTime.Now
-                && v.Voucher.IsActive)
+            //var userVouchers = await context.UserVouchers
+            //    .Include(v => v.Voucher)
+            //    .Where(v => v.UserId == userId 
+            //    && v.Voucher!.ExpiryDate >=  DateTime.Now
+            //    && v.Voucher.IsActive)
+            //    .ToListAsync();
+
+            var vouchers = await context.Vouchers
+                .Where(v => v.UserVouchers == null ? false : v.UserVouchers.Any(uv => uv.UserId == userId))
+                .Where(v => v.ExpiryDate >= DateTime.Now && v.IsActive && v.IsDeleted)
                 .ToListAsync();
 
-            return userVouchers;
+            return vouchers;
         }
 
         public Task UpdateAsync(Voucher entity)

@@ -2,20 +2,6 @@
 {
     public class GetUserVoucherOutputDto
     {
-        public VoucherDto? Voucher { get; set; }
-
-        public class Mapping : Profile
-        {
-            public Mapping()
-            {
-                CreateMap<UserVoucher, GetUserVoucherOutputDto>();
-                CreateMap<Voucher, VoucherDto>();
-            }
-        }
-    }
-
-    public class VoucherDto
-    {
         public Guid ShopId { get; set; }
         public string? Code { get; set; }
         public string? Description { get; set; }
@@ -28,5 +14,13 @@
         public int? UsageLimit { get; set; }
         public int UsedCount { get; set; } = 0;
         public bool IsActive { get; set; } = true;
+
+        public class Mapping : Profile
+        {
+            public Mapping()
+            {
+                CreateMap<Voucher, GetUserVoucherOutputDto>();
+            }
+        }
     }
 }

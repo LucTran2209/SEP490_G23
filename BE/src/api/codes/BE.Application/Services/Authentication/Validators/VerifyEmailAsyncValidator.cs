@@ -13,14 +13,7 @@ namespace BE.Application.Services.Authentication.Validators
                 .MustAsync(async (email, cancellationToken) =>
                 {
                     return !await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
-                }).WithMessage("Email has existed");
-
-            RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage("UserName required")
-                .MustAsync(async (userName, cancellationToken) =>
-                {
-                    return !await context.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
-                }).WithMessage("UserName has existed");
+                }).WithMessage("Email has existed");          
         }
     }
 }
