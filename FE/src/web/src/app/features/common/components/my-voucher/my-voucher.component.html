@@ -1,0 +1,27 @@
+<div class="p-5 my-3 bg-white rounded-md">
+  <h1 class="text-2xl">KHO VOUCHER</h1>
+  <div class="flex justify-center mt-5">
+    <div class="search-bar w-25 ms-0">
+      <form class="search-form d-flex align-items-center">
+        <input
+          class="form-control w-96"
+          type="text"
+          name="query"
+          placeholder="Nhập mã voucher tại đây"
+          title="Enter search keyword"
+          [(ngModel)]="searchText"
+          (keyup.enter)="onSearch()"
+        />
+
+        <button type="submit" title="Search">
+          <span
+            class="text-xl"
+            nz-icon
+            nzType="search"
+            nzTheme="outline"
+          ></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
