@@ -60,15 +60,17 @@ export class ListMyOrderComponent implements OnInit {
     placeholder: string;
     isShowBtn1: boolean;
     isShowBtn2: boolean;
+    isShowBtn3: boolean;
+    isShowBtn4: boolean;
   }[] = [
-    { title: 'CHỜ XÁC NHẬN', status: 0, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...', isShowBtn1: false, isShowBtn2: true, },
-    { title: 'CHỜ THANH TOÁN', status: 1, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, },
-    { title: 'ĐÃ THANH TOÁN', status: 2, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, },
-    { title: 'CHỜ GIAO HÀNG', status: 3, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, },
-    { title: 'ĐÃ NHẬN HÀNG', status: 4, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, },
-    { title: 'TRẢ HÀNG', status: 5, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, },
-    { title: 'HOÀN THÀNH', status: 6, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: true, isShowBtn2: false, },
-    { title: 'HỦY ĐƠN', status: 7, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, }
+    { title: 'CHỜ XÁC NHẬN', status: 0, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...', isShowBtn1: false, isShowBtn2: true, isShowBtn3: false, isShowBtn4: false, },
+    { title: 'CHỜ THANH TOÁN', status: 1, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, isShowBtn3: false, isShowBtn4: false, },
+    { title: 'ĐÃ THANH TOÁN', status: 2, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, isShowBtn3: false, isShowBtn4: false, },
+    { title: 'CHỜ GIAO HÀNG', status: 3, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: true, isShowBtn4: false, },
+    { title: 'ĐÃ NHẬN HÀNG', status: 4, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, },
+    { title: 'ĐANG TRẢ HÀNG', status: 5, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, },
+    { title: 'HOÀN THÀNH', status: 6, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: true, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, },
+    { title: 'HỦY ĐƠN', status: 7, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, }
   ];
   ngOnInit() {
     this.loadingService.setLoading();

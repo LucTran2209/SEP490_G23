@@ -14,6 +14,7 @@ export class ShopCardComponent {
   @Input() isShowBtn1: boolean = false;
   @Input() isShowBtn2: boolean = false;
   @Input() isShowBtn3: boolean = false;
+  @Input() isShowBtn4: boolean = false;
   orderStatusMessage: string = '';
   orderStatusClass: string = '';
   @Output() showFeedBack = new EventEmitter<string>();  

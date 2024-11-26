@@ -35,7 +35,10 @@
     >
     }
   </div>
-  <div class="voucher-discount text-center ml-5" *ngIf="isShop">
+  <div
+    class="voucher-discount text-center ml-5"
+    *ngIf="isShop && shopId !== voucher.shopId"
+  >
     <button class="ml-3" nz-button nzType="primary" (click)="onSaveVoucher()">
       Lưu
     </button>

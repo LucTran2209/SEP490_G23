@@ -26,7 +26,7 @@ export interface VoucherOutputDto {
     id: string;
     code: string;
     description: string;
-    discountValue: string;
+    discountValue: number;
     minimumSpend: number;
     maximumDiscount: number;
     shopId: string;
