@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
 import {
+  VoucherDetailOutputDto,
   VoucherDetailResultService,
   VoucherEditInputDto,
   VoucherInputDto,
@@ -49,8 +50,8 @@ export class VoucherService {
       VoucherSlug.GetVoucher.api + id
     );
   }
-  getListVoucherAvaiable(): Observable<any> {
-    return this.httpClient.get<any>(VoucherSlug.MyVoucher.api);
+  getListVoucherAvaiable(): Observable<BaseResponseApi<VoucherDetailOutputDto[]>> {
+    return this.httpClient.get<BaseResponseApi<VoucherDetailOutputDto[]>>(VoucherSlug.MyVoucher.api);
   }
   myVoucher(): Observable<VoucherDetailResultService>{
     return this.httpClient.get<VoucherDetailResultService>(VoucherSlug.MyVoucher.api)

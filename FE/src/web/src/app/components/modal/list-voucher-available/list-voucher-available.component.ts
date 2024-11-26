@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { DetailVoucherAvailableComponent } from '../detail-voucher-available/detail-voucher-available.component';
 import { FormControl } from '@angular/forms';
-import { debounceTime, of, switchMap } from 'rxjs';
+import { debounceTime, map, Observable, of, switchMap } from 'rxjs';
+import { VoucherService } from '../../../services/voucher.service';
+import { VoucherOutputDto } from '../../../interfaces/voucher.interface';
 
 @Component({
   selector: 'app-list-voucher-available',
@@ -10,7 +12,8 @@ import { debounceTime, of, switchMap } from 'rxjs';
   styleUrl: './list-voucher-available.component.scss',
 })
 export class ListVoucherAvailableComponent implements OnInit {
-  data: any = mockVouchers;
+  data$?: Observable<VoucherOutputDto[]>;
+  loading = false;
   searchVoucher: FormControl<string | null> = new FormControl<string | null>(
     null
   );
@@ -28,26 +31,40 @@ export class ListVoucherAvailableComponent implements OnInit {
       });
   }
 
-  searchVoucherNoApi() {
-    this.searchVoucher.valueChanges
+  // searchVoucherNoApi() {
+  //   this.searchVoucher.valueChanges
+  //     .pipe(
+  //       debounceTime(300),
+  //       switchMap((res) => {
+  //         let tmp = mockVouchers.filter((vo: any) =>
+  //           vo.code.toLowerCase().includes(res?.toLowerCase())
+  //         );
+  //         return of(tmp);
+  //       })
+  //     )
+  //     .subscribe((res) => {
+  //       this.data = res;
+  //     });
+  // }
+
+  loadListVoucherAvaiable() {
+    this.voucherService
+      .getListVoucherAvaiable()
       .pipe(
-        debounceTime(300),
-        switchMap((res) => {
-          let tmp = mockVouchers.filter((vo: any) =>
-            vo.code.toLowerCase().includes(res?.toLowerCase())
-          );
-          return of(tmp);
+        map((res) => {
+          console.log('>>> line 51', res);
         })
       )
-      .subscribe((res) => {
-        this.data = res;
-      });
+      .subscribe();
   }
 
-  
-  constructor(private modal: NzModalService) {}
+  constructor(
+    private modal: NzModalService,
+    private voucherService: VoucherService
+  ) {}
   ngOnInit(): void {
-    this.searchVoucherNoApi();
+    this.loadListVoucherAvaiable();
+    // this.searchVoucherNoApi();
   }
 }
 
