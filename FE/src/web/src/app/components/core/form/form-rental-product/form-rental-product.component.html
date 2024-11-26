@@ -15,17 +15,17 @@
     <app-rental-period (handleOpenPeriod)="onChooseDateCustom()"></app-rental-period>
   </div>
    <!-- chọn ngày thuê có sẵn -->
-   <div class="pb-3">
+   <!-- <div class="pb-3">
     <div class="leading-5 capitalize font-thin text-[#000] pb-3">
       <span class="text-red-500 font-bold">* &nbsp;</span> Chọn thời gian thuê tiêu chuẩn
     </div>
     <app-select-radio-rental-day/>
-  </div>
+  </div> -->
   <!-- voucher -->
   <div class="pb-3">
-    <div class="leading-5 capitalize flex items-center justify-between font-thin text-[#000] pb-3">
+    <div class="leading-5 capitalize flex items-center justify-between font-thin text-[#000] pb-3 cursor-pointer">
       <p><span class="text-red-500 font-bold">* &nbsp;</span> Chọn mã giảm giá</p>
-      <span nz-icon nzType="gift" nzTheme="outline" class="text-lg cursor-pointer"></span>
+      <span nz-icon nzType="gift" nzTheme="outline" class="text-lg cursor-pointer" (click)="openAvaiableVoucher()"></span>
     </div>
   </div>
   <div class="flex justify-between items-center">
@@ -41,7 +41,7 @@
       <span class="text-red-500 font-bold">* &nbsp;</span>Đơn giá thuê
     </div>
     <p class="text-[20px]">
-      {{ rentalPriceActual$ | async | currency:'VND':'VND':'1.0-0':'vi' }} / ngày
+      {{ rentalPriceActual$ | async | currency:'VND':'VND':'1.0-0':'vi' }} x {{numberDay$ | async }} ngày
     </p>
   </div>
   <button

@@ -14,7 +14,7 @@ import { ChangeStatusOrderComponent } from '../../../../../components/modal/chan
 import { OrderListResponse } from '../../../../../interfaces/order.interface';
 import { RentalTimerService } from '../../../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../../../store/app.state';
-import { convertStatusOrder } from '../../../../../utils/anonymous.helper';
+import { convertButtonChangeStatusOrder, convertStatusOrder } from '../../../../../utils/anonymous.helper';
 import { ORDER_STATUS, ORDER_STATUS_MAX } from '../../../../../utils/constant';
 
 
@@ -34,9 +34,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   preventContinueChangeStatus: number = ORDER_STATUS_MAX;
   availableCancelRequestOrder: number[] = [
     ORDER_STATUS.PENDING_APPROVAL,
-    ORDER_STATUS.PENDING_DELIVERY,
-    ORDER_STATUS.PENDING_PAYMENT,
+    ORDER_STATUS.PAYMENTED,
   ];
+  avaiableAprroveRequestOrder: number[] = [
+    ORDER_STATUS.PENDING_APPROVAL,
+    ORDER_STATUS.PAYMENTED,
+    ORDER_STATUS.DEPOSIT_REFUND,
+  ]
   orderDetail$?: Observable<OrderListResponse | null>;
   totalQuantity$?: Observable<number | null>;
   private rentalModalRef: NzModalRef | null = null;
@@ -56,6 +60,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   convertStatus(orderStatus: ORDER_STATUS) {
     return convertStatusOrder(orderStatus);
+  }
+
+  convertTextButton(orderStatus: ORDER_STATUS){
+    return convertButtonChangeStatusOrder(orderStatus);
   }
 
   selectStateFromNgRx() {

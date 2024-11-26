@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { LoadingService } from '../../../../services/loading.service';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { ProductService } from '../../../../services/product.service';
-import * as ProductDetailActions from './product-detail.actions';
-import { MessageResponseService } from '../../../../services/message-response.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import * as RentalProduct from '../rental/rental.actions';
-import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { IErrorApi } from '../../../../interceptors/http-error.interceptor';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { LoadingService } from '../../../../services/loading.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
+import { ProductService } from '../../../../services/product.service';
+import * as RentalProduct from '../rental/rental.actions';
+import * as ProductDetailActions from './product-detail.actions';
 @Injectable()
 export class ProductDetailEffects {
   constructor(
@@ -78,7 +76,6 @@ export class ProductDetailEffects {
         ofType(ProductDetailActions.getDetailProductRental_failure),
         tap(({  statusCode }) => {
           this.loadingService.setOtherLoading('error');
-          console.log('statusCode',statusCode);
           this.toastMT.setErrorCode(statusCode);
           this.router.navigate(['error']);
         })

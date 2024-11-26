@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import dayjs from 'dayjs';
 import { NzCustomColumn } from 'ng-zorro-antd/table';
 import { map, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { OptionSelectCheckBox } from '../../../../configs/anonymous.config';
@@ -10,7 +11,6 @@ import { OrderService } from '../../../../services/order.service';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 import { ORDER_STATUS } from '../../../../utils/constant';
-import dayjs from 'dayjs';
 
 export interface CustomColumns extends NzCustomColumn {
   name: string;
@@ -21,7 +21,6 @@ export interface CustomColumns extends NzCustomColumn {
   selector: 'app-manage-order',
   templateUrl: './manage-order.component.html',
   styleUrl: './manage-order.component.scss',
-  
 })
 export class ManageOrderComponent implements OnInit, OnDestroy {
   listData: OrderListResponse[] = [];
@@ -111,7 +110,7 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
     },
   ];
 
-  subscription?: Subscription
+  subscription?: Subscription;
 
   handleChooseViewCell(arr: OptionSelectCheckBox[]) {
     this.customColumn = this.customColumn.map((item, index) => ({
@@ -120,10 +119,13 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
     }));
   }
 
-  getOrderStatusLatest(orderDetail: OrderListResponse): number{
-    return orderDetail.orderStatuses.reduce((max, item) => Math.max(max, item.status), -Infinity);
+  getOrderStatusLatest(orderDetail: OrderListResponse): number {
+    return orderDetail.orderStatuses.reduce(
+      (max, item) => Math.max(max, item.status),
+      -Infinity
+    );
   }
-  
+
   convertRentalDay(startDate: string, endDate: string) {
     let diffDate_start = new Date(startDate);
     let diffDate_end = new Date(endDate);
@@ -146,9 +148,13 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
     const { orderCode, orderStatus, humanRental, phoneNumber, timeRange } =
       valGroup;
     const startDate =
-      timeRange && timeRange.length !== 0 ? dayjs(timeRange[0]).format('YYYY-MM-DD'): null;
+      timeRange && timeRange.length !== 0
+        ? dayjs(timeRange[0]).format('YYYY-MM-DD')
+        : null;
     const endDate =
-      timeRange && timeRange.length !== 0 ? dayjs(timeRange[1]).format('YYYY-MM-DD') : null;
+      timeRange && timeRange.length !== 0
+        ? dayjs(timeRange[1]).format('YYYY-MM-DD')
+        : null;
     this.onloadOrder({
       pageIndex: 1,
       pageSize: 10,
@@ -188,8 +194,8 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
   }
 
   async onloadOrder(paramFilter?: any) {
-  this.loadingSerivce.setLoading();
-  this.subscription = this.orderService
+    this.loadingSerivce.setLoading();
+    this.subscription = this.orderService
       .listOrderLessor(paramFilter ?? {})
       .subscribe({
         next: (res) => {

@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { ErrorMessages } from '../utils/constant';
 import { ErrorStatusCode, HttpStatusCode } from '../configs/status-code.config';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { NzResultStatusType } from 'ng-zorro-antd/result';
-import { NzNotificationDataOptions, NzNotificationService } from 'ng-zorro-antd/notification';
+import {
+  NzNotificationDataOptions,
+  NzNotificationService,
+} from 'ng-zorro-antd/notification';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +19,13 @@ export class MessageResponseService {
 
   errorCode$ = this.errorCodeSubject.asObservable();
 
-  constructor(private snackBar: MatSnackBar, private nzNotificationService: NzNotificationService) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private nzNotificationService: NzNotificationService
+  ) {}
 
   private openSnackBar(
-    message: string,
+    message: string | string[],
     panelClass: string | string[],
     duration: number
   ): void {
@@ -29,7 +35,15 @@ export class MessageResponseService {
       horizontalPosition: 'right',
       verticalPosition: 'top',
     };
-    this.snackBar.open(message, '', config);
+    if (message instanceof Array) {
+      message.forEach((message, index) => {
+        setTimeout(() => {
+          this.snackBar.open(message, '', config);
+        }, index * 2000);
+      });
+    } else {
+      this.snackBar.open(message, '', config);
+    }
   }
   showSuccess(message: string, duration: number = 3000): void {
     this.openSnackBar(
@@ -39,7 +53,7 @@ export class MessageResponseService {
     );
   }
 
-  handleError(content: string, status?: number): void {
+  handleError(content: string | string[], status?: number): void {
     const message =
       ErrorMessages[status as HttpStatusCode] ||
       'Đã xảy ra lỗi. Vui lòng thử lại.';
@@ -57,14 +71,14 @@ export class MessageResponseService {
   showPreventAccess(title: string, content: string, options?: object): void {
     let globalOptions: NzNotificationDataOptions<any> = {
       nzDuration: 3000,
-      nzStyle:{
-        "background": "#FFF3E9",
-          "border-radius": "8px",
-          "color":"#FF831E",
-          "border":"1px solid #FF831E",
-         "box-shadow": "rgba(149, 157, 165, 0.2) 0px 8px 24px"
-      }
-    }
+      nzStyle: {
+        background: '#FFF3E9',
+        'border-radius': '8px',
+        color: '#FF831E',
+        border: '1px solid #FF831E',
+        'box-shadow': 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+      },
+    };
     this.nzNotificationService.warning(title, content, globalOptions);
   }
 

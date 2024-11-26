@@ -34,8 +34,8 @@
       *ngFor="let file of uploadedFiles; let i = index"
       class=""
     >
-      <div class="border border-solid border-[#ededed] rounded-md p-3 shadow-md">
-        <img *ngIf="filePreviews[i]" [src]="filePreviews[i]" alt="Preview" class="preview-image w-[100px] h-[100px] object-contain" />
+      <div class="border border-solid border-[#ededed] rounded-md p-3 shadow-md cursor-pointer">
+        <img *ngIf="filePreviews[i]" [nzSrc]="filePreviews[i]" alt="Preview" class="preview-image w-[100px] h-[100px] object-contain" nz-image/>
       </div>
     </li>
   </ul>

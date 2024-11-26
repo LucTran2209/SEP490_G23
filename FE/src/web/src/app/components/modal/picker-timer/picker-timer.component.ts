@@ -34,7 +34,9 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
     private modalRef: NzModalRef
-  ) {}
+  ) {
+    console.log(this.timeChooseStart,'timeChooseStart');
+  }
 
   ngOnInit(): void {
     this.selectAllProductRental$ = this.store.select(selectAllProductRental);
@@ -63,11 +65,11 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
     ) {
       this.rangeDatePicker[0] = this.rentalTimerService.setTimeForDate(
         this.rangeDatePicker[0],
-        this.timePickerTo.value
+        this.timePickerTo.label
       );
       this.rangeDatePicker[1] = this.rentalTimerService.setTimeForDate(
         this.rangeDatePicker[1],
-        this.timePickerEnd.value
+        this.timePickerEnd.label
       );
       console.log('this.rangeDatePicker', this.rangeDatePicker); 
       console.log('this.rangeDatePicker 1', this.rangeDatePicker[0].toISOString()); 

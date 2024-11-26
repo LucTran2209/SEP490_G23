@@ -132,7 +132,7 @@ export const authReducer = createReducer(
   })),
   on(AuthActions.verifyEmail_failure, (state, { error }) => ({
     ...initialState,
-    message: error,
+    message:  (error instanceof Array) ? 'arr error message': error,
     status: 'loading' as StatusProcess,
   })),
   //----------------------------------verify email

@@ -124,7 +124,7 @@ export const tokenExpire = createAction(
 
 export const verifyEmail = createAction(
   VERIFY_EMAIL,
-  props<{ email: string }>()
+  props<{ email: string, username: string }>()
 );
 
 export const verifyEmail_success = createAction(
@@ -134,7 +134,7 @@ export const verifyEmail_success = createAction(
 
 export const verifyEmail_failure = createAction(
   VERIFY_EMAIL_FAILURE,
-  props<{ error: string }>()
+  props<{ error: string | string[] }>()
 );
 export const confirmVerifyEmail = createAction(
   CONFIRM_VERIFY_EMAIL,

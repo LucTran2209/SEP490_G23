@@ -6,6 +6,7 @@ import { filter, Observable, Subscription } from 'rxjs';
 import { selectData } from '../../../../features/common/state/product/product-detail.reducer';
 import {
   selectDepositActualPriceById,
+  selectNumberOfDaysById,
   selectRentalActualPriceById,
 } from '../../../../features/common/state/rental/rental.selectors';
 import { ProductItemResponse } from '../../../../interfaces/product.interface';
@@ -17,6 +18,7 @@ import { IPayLoad } from '../../../../interfaces/account.interface';
 import { MessageResponseService } from '../../../../services/message-response.service';
 import { LocalStorageKey } from '../../../../utils/constant';
 import { StorageService } from '../../../../services/storage.service';
+import { ListVoucherAvailableComponent } from '../../../modal/list-voucher-available/list-voucher-available.component';
 
 @Component({
   selector: 'app-form-rental-product',
@@ -30,6 +32,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   productRentalDetail$?: Observable<ProductItemResponse>;
   userCurrent?: IPayLoad;
   rentalPriceActual$?: Observable<string | number>;
+  numberDay$?: Observable<string | number | undefined>;
   depositPriceActual$?: Observable<string | number>;
   //ngRx
 
@@ -48,6 +51,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   // modal Ref
   private rentalModalRef: NzModalRef | null = null;
   private dateModalRef: NzModalRef | null = null;
+  private voucherModalRef: NzModalRef | null = null;
   // modal Ref
   handleOkOrderProcess(): void {
     console.log('Đã xác nhận đơn hàng!');
@@ -98,6 +102,19 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
       });
   }
 
+
+  openAvaiableVoucher(){
+    this.voucherModalRef = this.modal.create({
+      nzTitle: 'Mã khuyến mãi',
+      nzContent: ListVoucherAvailableComponent,
+      nzFooter: null,
+      nzWidth: 500,
+    })
+    if (this.voucherModalRef)
+      this.voucherModalRef.afterClose.subscribe(() => {
+        this.voucherModalRef = null;
+      });
+  }
   // modal
 
   selectStateFromNgRx() {
@@ -110,6 +127,10 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
       this.depositPriceActual$ = this.store
         .select(selectDepositActualPriceById(this.productIdParam))
         .pipe(filter((value): value is string | number => value !== undefined));
+
+      this.numberDay$ = this.store.select(
+        selectNumberOfDaysById(String(this.productIdParam))
+      );
     }
   }
 
@@ -122,7 +143,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
     private store: Store<FeatureAppState>,
     private modal: NzModalService,
     private toastMS: MessageResponseService,
-    private storageService: StorageService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit(): void {

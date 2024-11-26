@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { finalize, switchMap, throwError, timer } from 'rxjs';
 import { MessageResponseService } from '../services/message-response.service';
-import { AuthSlug, CategorySlug, ProductSlug, RentalShopSlug } from '../configs/api.configs';
+import { AuthSlug, CategorySlug, FeedBackSlug, ProductSlug, RentalShopSlug, VoucherSlug } from '../configs/api.configs';
 
 const ignoredUrls: string[] = [
   AuthSlug.Login.api,
@@ -19,8 +19,15 @@ const ignoredUrls: string[] = [
   ProductSlug.RentalShopProduct.api,
   ProductSlug.GetDetailProduct.api,
   ProductSlug.ListProduct.api,
-  RentalShopSlug.GetRentalShop.api
+  RentalShopSlug.GetRentalShop.api,
+  FeedBackSlug.ListFeedBack.api,
 ];
+
+//exist when authentication, but don't want to redirect to login page
+const exceptionUrls: string[] = [
+  VoucherSlug.MyVoucher.api
+
+]
 
 export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -38,7 +45,7 @@ export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
     );
   }
 
-  const clonedRequest = !shouldIgnore && token
+  const clonedRequest = !shouldIgnore && token || exceptionUrls
     ? req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
