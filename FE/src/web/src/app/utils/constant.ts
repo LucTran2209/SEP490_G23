@@ -76,29 +76,29 @@ export const FormatDate = {
   DDMMYYYY: 'dd/MM/YYYY',
 };
 
-export const ORDER_STATUS_MAX = 6;
+export const ORDER_STATUS_MAX = 7;
 export enum ORDER_STATUS {
   PENDING_APPROVAL = 0,
   PENDING_PAYMENT = 1,
-  PENDING_DELIVERY = 2,
-  RECEIVED = 3,
+  PAYMENTED = 2,
+  PENDING_DELIVERY = 3,
   REFUND = 4,
   DEPOSIT_REFUND = 5,
-  CANCEL = 6,
+  COMPLETE = 6,
+  CANCEL = 7,
 }
 export enum DISCOUNT_TYPE {
   PERCENTAGE = 0,
   FIXED_AMOUNT = 1,
 }
 
-
 export const chooseFollowDate: OptionSelect[] = [
   {
     label: 'Theo tuần',
-    value:'week'
+    value: 'week',
   },
   {
     label: 'Theo tháng',
-    value:'month'
-  }
-]
+    value: 'month',
+  },
+];

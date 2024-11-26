@@ -160,15 +160,16 @@ export class AuthEffect {
         tap(() => {
           this.loadingSerivce.setLoading();
         }),
-        switchMap(({ email }) =>
-          this.authService.verifyEmail({ email }).pipe(
+        switchMap(({ email, username }) =>
+          this.authService.verifyEmail({ email, userName: username }).pipe(
             map(({ statusCode }) =>
               AuthActions.verifyEmail_success({ statusCode })
             ),
-            catchError((err) => {
+            catchError((error) => {
+              let diffErrArr = error.errorList.map((item: any) => item.errorMessage)
               return of(
                 AuthActions.verifyEmail_failure({
-                  error: 'Có lỗi xảy ra vui lòng thử lại',
+                  error: diffErrArr,
                 })
               );
             })

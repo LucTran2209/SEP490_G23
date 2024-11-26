@@ -87,9 +87,9 @@
         </tbody>
       </table>
       <section class="flex flex-col gap-2 pt-3">
-        @if(getOrderStatusLatest(orderDetails) < (preventContinueChangeStatus - 1) ){
+        @if(avaiableAprroveRequestOrder.includes(getOrderStatusLatest(orderDetails))){
           <button nz-button class="w-full" nzType="primary" (click)="popUpChangeStatus(modalTitle)">
-            Xác nhận {{convertStatus(getOrderStatusLatest(orderDetails))}}
+            {{convertTextButton(getOrderStatusLatest(orderDetails))}}
           </button>
         }
         @if(availableCancelRequestOrder.includes(getOrderStatusLatest(orderDetails))){

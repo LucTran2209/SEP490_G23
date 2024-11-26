@@ -35,6 +35,7 @@ export interface IResetPassword {
 
 export interface IVerifyEmailRequest {
   email: string;
+  userName: string;
 }
 
 

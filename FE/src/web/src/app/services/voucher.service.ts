@@ -1,34 +1,56 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppHttpClientService } from './app-http-client.service';
-import { VoucherDetailResultService, VoucherEditInputDto, VoucherInputDto, VoucherResultService } from '../interfaces/voucher.interface';
+import {
+  VoucherDetailResultService,
+  VoucherEditInputDto,
+  VoucherInputDto,
+  VoucherResultService,
+} from '../interfaces/voucher.interface';
 import { Observable } from 'rxjs';
 import { BaseResponseApi } from '../interfaces/api.interface';
 import { VoucherSlug } from '../configs/api.configs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VoucherService {
-
-  constructor(private http: HttpClient, private httpClient: AppHttpClientService) { }
-  createVoucher(data: VoucherInputDto): Observable<BaseResponseApi<null>>{
-    return this.httpClient.post<BaseResponseApi<null>>(VoucherSlug.CreateVoucher.api, data)
+  constructor(private httpClient: AppHttpClientService) {}
+  createVoucher(data: VoucherInputDto): Observable<BaseResponseApi<null>> {
+    return this.httpClient.post<BaseResponseApi<null>>(
+      VoucherSlug.CreateVoucher.api,
+      data
+    );
   }
-  updateVoucher(id: string, data: VoucherEditInputDto): Observable<BaseResponseApi<null>>{
-    return this.httpClient.put<BaseResponseApi<null>>(VoucherSlug.UpdateVoucher.api + id, data)
+  updateVoucher(
+    id: string,
+    data: VoucherEditInputDto
+  ): Observable<BaseResponseApi<null>> {
+    return this.httpClient.put<BaseResponseApi<null>>(
+      VoucherSlug.UpdateVoucher.api + id,
+      data
+    );
   }
-  deactivateVoucher(id: string): Observable<BaseResponseApi<null>>{
-    return this.httpClient.patch<BaseResponseApi<null>>(VoucherSlug.DeactivateVoucher.api + id + "/deactivate")
+  deactivateVoucher(id: string): Observable<BaseResponseApi<null>> {
+    return this.httpClient.patch<BaseResponseApi<null>>(
+      VoucherSlug.DeactivateVoucher.api + id + '/deactivate'
+    );
   }
-  deleteVoucher(id: string): Observable<BaseResponseApi<null>>{
-    return this.httpClient.delete<BaseResponseApi<null>>(VoucherSlug.DeleteVoucher.api + id)
+  deleteVoucher(id: string): Observable<BaseResponseApi<null>> {
+    return this.httpClient.delete<BaseResponseApi<null>>(
+      VoucherSlug.DeleteVoucher.api + id
+    );
   }
   listVoucher(id: string): Observable<VoucherResultService>{
     return this.httpClient.get<VoucherResultService>(VoucherSlug.ListVoucher.api + id)
   }
-  getVoucher(id: string): Observable<VoucherDetailResultService>{
-    return this.httpClient.get<VoucherDetailResultService>(VoucherSlug.GetVoucher.api + id)
+  getVoucher(id: string): Observable<VoucherDetailResultService> {
+    return this.httpClient.get<VoucherDetailResultService>(
+      VoucherSlug.GetVoucher.api + id
+    );
+  }
+  getListVoucherAvaiable(): Observable<any> {
+    return this.httpClient.get<any>(VoucherSlug.MyVoucher.api);
   }
   myVoucher(): Observable<VoucherDetailResultService>{
     return this.httpClient.get<VoucherDetailResultService>(VoucherSlug.MyVoucher.api)

@@ -105,35 +105,4 @@ export class MyValidators {
       },
     };
   }
-
-  static emailAsync(authService: AuthService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<MyValidationErrors | null> => {
-      return control.valueChanges.pipe(
-        switchMap((value) =>
-          authService.isExistEmail({ email: value }).pipe(
-            map((res) =>
-              res.statusCode === HttpStatusCode.OK
-                ? 
-                null
-                :
-                {
-                 emailExists: {
-                vn: 'Không thể xác thực email, vui lòng thử lại sau',
-              },
-                }
-            ),
-            catchError((error) =>
-              of({
-                emailExists: {
-                  vn: 'Email đã tồn tại',
-                },
-              })
-            )
-          )
-        ),
-        first()
-      );
-    };
-  }
-  
 }
