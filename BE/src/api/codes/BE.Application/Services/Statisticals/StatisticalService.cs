@@ -54,14 +54,14 @@ namespace BE.Application.Services.Statisticals
                 {
                     Month = g.Key.Month,
                     Year = g.Key.Year,
-                    WaitingForConfirm = g.Count(od => od.Order.OrderStatuses.Any(os => os.Status == RequestStatus.WaitingForConfirm)),
+                    WaitingForConfirm = g.Count(od => od.Order.OrderStatuses!.Any(os => os.Status == RequestStatus.PENDING_APPROVAL)),
                     InProgress = g.Count(od => od.Order.OrderStatuses.Any(os =>
-                        os.Status == RequestStatus.WaitingForDeposit ||
-                        os.Status == RequestStatus.WaitingForTransit ||
-                        os.Status == RequestStatus.Recieved ||
-                        os.Status == RequestStatus.WaitingForReturn)),
-                    Completed = g.Count(od => od.Order.OrderStatuses.Any(os => os.Status == RequestStatus.ReturnComplete)),
-                    Cancelled = g.Count(od => od.Order.OrderStatuses.Any(os => os.Status == RequestStatus.Cancel))
+                        os.Status == RequestStatus.PENDING_PAYMENT ||
+                        os.Status == RequestStatus.PAYMENTED ||
+                        os.Status == RequestStatus.PENDING_DELIVERY ||
+                        os.Status == RequestStatus.REFUND)),
+                    Completed = g.Count(od => od.Order.OrderStatuses!.Any(os => os.Status == RequestStatus.COMPLETE)),
+                    Cancelled = g.Count(od => od.Order.OrderStatuses!.Any(os => os.Status == RequestStatus.CANCEL))
                 })
                 .ToListAsync();
 

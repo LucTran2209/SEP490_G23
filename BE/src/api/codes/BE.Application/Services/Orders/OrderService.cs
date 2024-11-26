@@ -43,7 +43,7 @@ namespace BE.Application.Services.Orders
             {
                 OrderId = order.Id,
                 Message = string.Empty,
-                Status = RequestStatus.WaitingForConfirm,
+                Status = RequestStatus.PENDING_APPROVAL,
                 FileAttach = null
             };
 

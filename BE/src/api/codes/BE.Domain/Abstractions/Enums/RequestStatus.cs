@@ -2,12 +2,13 @@
 {
     public enum RequestStatus
     {
-        WaitingForConfirm = 0,
-        WaitingForDeposit = 1,
-        WaitingForTransit = 2,
-        Recieved = 3,
-        WaitingForReturn = 4,
-        ReturnComplete = 5,
-        Cancel = 6,
+        PENDING_APPROVAL = 0,
+        PENDING_PAYMENT = 1,
+        PAYMENTED = 2,
+        PENDING_DELIVERY = 3,
+        REFUND = 4,
+        DEPOSIT_REFUND = 5,
+        COMPLETE = 6,
+        CANCEL = 7
     }
 }

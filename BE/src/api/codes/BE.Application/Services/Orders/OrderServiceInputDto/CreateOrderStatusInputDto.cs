@@ -9,5 +9,13 @@ namespace BE.Application.Services.Orders.OrderServiceInputDto
         public string? Message { get; set; }
         public RequestStatus Status { get; set; }
         public IFormFile? FileAttach { get; set; }
+
+        public class Mapping : Profile
+        {
+            public Mapping()
+            {
+                CreateMap<CreateOrderStatusInputDto, OrderStatus>();
+            }
+        }
     }
 }
