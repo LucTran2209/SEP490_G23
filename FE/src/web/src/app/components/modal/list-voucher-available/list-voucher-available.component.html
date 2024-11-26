@@ -1,12 +1,14 @@
 <div>
-  <div>search working!</div>
+  <div class="px-6">
+    <input type="text" nz-input placeholder="Nhập mã khuyến mãi" class="border border-solid border-[#0f6cf8] rounded-md" [formControl]="searchVoucher">
+  </div>
   <div>
     <ul nz-list [nzDataSource]="data" nzSize="large">
       @for (item of data; track item) {
       <li nz-list-item nzNoFlex>
         <ul nz-list-item-actions>
           <nz-list-item-action>
-            <a [routerLink]="['#']" class="text-[#0f6cf8] hover:">Áp dụng</a>
+            <a [routerLink]="['#']" class="text-[##0f6cf8] hover:">Áp dụng</a>
           </nz-list-item-action>
         </ul>
       <div class="inline-flex items-start gap-4">

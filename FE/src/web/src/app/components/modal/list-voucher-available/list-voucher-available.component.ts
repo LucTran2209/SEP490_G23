@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { DetailVoucherAvailableComponent } from '../detail-voucher-available/detail-voucher-available.component';
+import { FormControl } from '@angular/forms';
+import { debounceTime, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-list-voucher-available',
@@ -9,6 +11,9 @@ import { DetailVoucherAvailableComponent } from '../detail-voucher-available/det
 })
 export class ListVoucherAvailableComponent implements OnInit {
   data: any = mockVouchers;
+  searchVoucher: FormControl<string | null> = new FormControl<string | null>(
+    null
+  );
   private detailVoucherRef: NzModalRef | null = null;
 
   onChooseViewDetailVoucher() {
@@ -23,8 +28,27 @@ export class ListVoucherAvailableComponent implements OnInit {
       });
   }
 
+  searchVoucherNoApi() {
+    this.searchVoucher.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((res) => {
+          let tmp = mockVouchers.filter((vo: any) =>
+            vo.code.toLowerCase().includes(res?.toLowerCase())
+          );
+          return of(tmp);
+        })
+      )
+      .subscribe((res) => {
+        this.data = res;
+      });
+  }
+
+  
   constructor(private modal: NzModalService) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.searchVoucherNoApi();
+  }
 }
 
 const mockVouchers: any = [

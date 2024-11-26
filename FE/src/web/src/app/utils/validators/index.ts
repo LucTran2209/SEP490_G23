@@ -5,11 +5,10 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { REGEX } from '../constant';
-import { Store } from '@ngrx/store';
-import { AuthService } from '../../services/auth.service';
-import { catchError, debounceTime, distinctUntilChanged, first, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, first, map, Observable, of, switchMap } from 'rxjs';
 import { HttpStatusCode } from '../../configs/status-code.config';
+import { AuthService } from '../../services/auth.service';
+import { REGEX } from '../constant';
 
 export function confirmValidator(
   passwordControl: AbstractControl

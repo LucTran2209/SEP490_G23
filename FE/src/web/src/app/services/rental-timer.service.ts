@@ -14,11 +14,11 @@ export class RentalTimerService {
 
   private timeStartSubject = new BehaviorSubject<any>({
     label: '00:00',
-    value: '00:00',
+    value: 0,
   });
   private timeEndSubject = new BehaviorSubject<any>({
     label: '23:30',
-    value: '23:30',
+    value: 47,
   });
   private rentalDaysSubject = new BehaviorSubject<number>(0);
 

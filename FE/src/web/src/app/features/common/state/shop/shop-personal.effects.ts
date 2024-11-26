@@ -12,6 +12,8 @@ import {
 } from '../../../../store/filters/filter.reducers';
 import * as RentalShopProductActions from './shop-personal.actions';
 import { selectShopId } from './shop-personal.reducer';
+import { Router } from '@angular/router';
+import { getErrorMessage } from '../../../../utils/anonymous.helper';
 @Injectable()
 export class ShopRentalShopEffects {
   constructor(
@@ -19,6 +21,7 @@ export class ShopRentalShopEffects {
     private loadingService: LoadingService,
     private productSerivce: ProductService,
     private toastMT: MessageResponseService,
+    private router: Router,
     private store: Store<{ filter: FilterParameters }>
   ) {}
 
@@ -43,11 +46,11 @@ export class ShopRentalShopEffects {
                 );
               }),
               catchError((error) => {
-                const err = error.error.message || 'Đã xảy ra lỗi hiển thị';
-                const statusCode = err.status;
+                const errorMessage = getErrorMessage(error);
+                const statusCode = error.status || error.statusCode;
                 return of(
                   RentalShopProductActions.getListProductRentalShop_failure({
-                    message: err,
+                    message: errorMessage,
                     statusCode,
                   })
                 );
@@ -63,8 +66,8 @@ export class ShopRentalShopEffects {
       ofType(updateFilter),
       tap(() => this.loadingService.setLoading()),
       withLatestFrom(
-        this.store.pipe(select(selectFeature_filterState)),  // Get current filters
-        this.store.pipe(select(selectShopId))               // Get shopId from state
+        this.store.pipe(select(selectFeature_filterState)), // Get current filters
+        this.store.pipe(select(selectShopId)) // Get shopId from state
       ),
       switchMap(([action, filters, shopId]) =>
         this.productSerivce.listProductShopCommon(filters, shopId).pipe(
@@ -106,7 +109,8 @@ export class ShopRentalShopEffects {
         ofType(RentalShopProductActions.getListProductRentalShop_failure),
         tap(({ message, statusCode }) => {
           this.loadingService.setOtherLoading('error');
-          this.toastMT.handleError(message, statusCode);
+          this.toastMT.setErrorCode(statusCode);
+          this.router.navigate(['error']);
         })
       ),
     { dispatch: false }

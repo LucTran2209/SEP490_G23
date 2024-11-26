@@ -34,7 +34,9 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
     private modalRef: NzModalRef
-  ) {}
+  ) {
+    console.log(this.timeChooseStart,'timeChooseStart');
+  }
 
   ngOnInit(): void {
     this.selectAllProductRental$ = this.store.select(selectAllProductRental);
