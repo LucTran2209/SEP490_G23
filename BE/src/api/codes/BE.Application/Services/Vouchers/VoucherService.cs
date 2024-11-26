@@ -153,12 +153,12 @@ namespace BE.Application.Services.Vouchers
             };
         }
 
-        public async Task<ResultService> SaveVoucherAsync(Guid voucherId)
+        public async Task<ResultService> SaveVoucherAsync(SaveVoucherInputDto inputDto)
         {
             var userVoucher = new UserVoucher()
             {
                 UserId = (Guid)user.Id!,
-                VoucherId = voucherId
+                VoucherId = inputDto.VoucherId,
             };
 
             await unitOfWork.VoucherRepository.AddUserVoucherAsync(userVoucher);

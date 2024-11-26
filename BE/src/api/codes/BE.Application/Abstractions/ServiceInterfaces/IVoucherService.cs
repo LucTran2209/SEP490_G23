@@ -7,7 +7,7 @@ namespace BE.Application.Abstractions.ServiceInterfaces
     {
         Task<ResultService> GetListVoucherAsync(Guid rentalShopId);
         Task<ResultService> CreateVoucherAsync(CreateVoucherInputDto inputDto);
-        Task<ResultService> SaveVoucherAsync(Guid voucherId);
+        Task<ResultService> SaveVoucherAsync(SaveVoucherInputDto inputDto);
         Task<ResultService> UpdateVoucherAsync(Guid voucherId, UpdateVoucherInputDto inputDto); 
         Task<ResultService> DeactivateVoucherAsync(Guid voucherId);
         Task<ResultService> DeleteVoucherAsync(Guid voucherId);
