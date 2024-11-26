@@ -30,6 +30,11 @@ export class FormVoucherComponent {
   parserVND = (value: string): string => {
     return value.replace(/[^0-9.]/g, '');
   };
+  currentFormatter: (value: number) => string = this.formatterPercent;
+  currentParser: (value: string) => string = this.parserPercent;
+  currentMin: number = 0;
+  currentMax: number = 100;
+  currentStep: number = 100;
   constructor(private voucherService: VoucherService, private messageService: MessageResponseService,) {}
   
   ngOnInit() {
@@ -40,7 +45,7 @@ export class FormVoucherComponent {
         shopId: '',
         code: '',
         description: '',
-        discountType: 0,
+        discountType: DISCOUNT_TYPE.PERCENTAGE,
         discountValue: 0,
         minimumSpend: 0,
         maximumDiscount: 0,
@@ -50,6 +55,7 @@ export class FormVoucherComponent {
       });
     }
     this.labelButton = this.voucher ? 'Cập Nhật' : 'Tạo Mới';
+    this.handleDiscountTypeChange(this.formVoucher.get('discountType')?.value);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,6 +64,9 @@ export class FormVoucherComponent {
       this.labelButton = 'Cập Nhật';
     } else if (!changes['voucher'].currentValue) {
       this.labelButton = 'Tạo Mới';
+    }
+    if (changes['voucher']?.currentValue?.discountType !== undefined) {
+      this.handleDiscountTypeChange(this.voucher?.discountType || DISCOUNT_TYPE.PERCENTAGE);  // Kiểm tra lại khi voucher thay đổi
     }
   }
 
@@ -69,7 +78,7 @@ export class FormVoucherComponent {
       discountType: new FormControl(voucher.discountType || 0, [Validators.required]),
       discountValue: new FormControl(voucher.discountValue || 0, [Validators.required]),
       minimumSpend: new FormControl(voucher.minimumSpend || 0, [Validators.required]),
-      maximumDiscount: new FormControl(voucher.maximumDiscount || 0, [Validators.required]),
+      maximumDiscount: new FormControl(voucher.maximumDiscount || 0),
       startDate: new FormControl(voucher.startDate || '', [Validators.required]),
       expiryDate: new FormControl(voucher.expiryDate || '', [Validators.required, expiryDateValidator()]),
       usageLimit: new FormControl(voucher.usageLimit || 0, [Validators.required]),
@@ -101,7 +110,7 @@ export class FormVoucherComponent {
     this.formVoucher.reset({
       code: '',
       description: '',
-      discountType: 0,
+      discountType: DISCOUNT_TYPE.PERCENTAGE,
       discountValue: 0,
       minimumSpend: 0,
       maximumDiscount: 0,
@@ -110,5 +119,30 @@ export class FormVoucherComponent {
       usageLimit: 0,
     });
     this.labelButton = 'Tạo Mới';
+  }
+
+  // Phương thức xử lý disable/enable maximumDiscount
+  handleDiscountTypeChange(discountType: number) {
+    const maximumDiscountControl = this.formVoucher.get('maximumDiscount');
+    const discountValueControl = this.formVoucher.get('discountValue');
+
+    if (discountType === DISCOUNT_TYPE.FIXED_AMOUNT) {
+      maximumDiscountControl?.disable();
+      this.currentFormatter = this.formatterVND;
+      this.currentParser = this.parserVND;
+      this.currentMin = 0;
+      this.currentMax = undefined as any;
+      this.currentStep = 2000;
+    } else {
+      maximumDiscountControl?.enable();
+      this.currentFormatter = this.formatterPercent;
+      this.currentParser = this.parserPercent;
+      // Set min và max cho discountValue nếu là PERCENTAGE
+      this.currentMin = 0;
+      this.currentMax = 100;
+      this.currentStep = 1;
+    }
+    // Cập nhật lại giá trị của discountValue
+    discountValueControl?.updateValueAndValidity();
   }
 }

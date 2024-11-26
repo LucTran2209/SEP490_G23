@@ -11,7 +11,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { ListMyOrderComponent } from './components/list-my-order/list-my-order.component';
 import { ProductRentalDetailComponent } from './components/product-rental-detail/product-rental-detail.component';
 import { ProductRentalListComponent } from './components/product-rental-list/product-rental-list.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileComponent } from './state/profile/profile.component';
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
 import { LayoutProfileComponent } from '../../components/layout/layout-profile/layout-profile.component';
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
@@ -33,6 +33,7 @@ import { BriefProcedureRentalComponent } from './components/home-page/components
 import { BannerYouAreLessorComponent } from './components/home-page/components/banner-you-are-lessor/banner-you-are-lessor.component';
 import { FeedbackAboutWeComponent } from './components/home-page/components/feedback-about-we/feedback-about-we.component';
 import { FeaturePostsComponent } from './components/home-page/components/feature-posts/feature-posts.component';
+import { MyVoucherComponent } from './components/my-voucher/my-voucher.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { FeaturePostsComponent } from './components/home-page/components/feature
     BannerYouAreLessorComponent,
     FeedbackAboutWeComponent,
     FeaturePostsComponent,
+    MyVoucherComponent,
   ],
   imports: [
     CommonModule, SharedModule,

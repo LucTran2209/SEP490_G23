@@ -14,7 +14,9 @@
       </a>
     </div>
     <p *ngIf="!isShow" class="mt-3 text-lg">*** VND</p>
-    <p *ngIf="isShow" class="mt-3 text-lg">{{ formattedBalance }} VND</p>
+    <p *ngIf="isShow" class="mt-3 text-lg">
+      {{ balance | currency : "VND" : "" : "1.0-0" }} VND
+    </p>
   </div>
 </div>
 <div class="mx-30 p-8 grid grid-cols-1 md:grid-cols-5 gap-6 option-payment">

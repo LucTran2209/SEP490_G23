@@ -101,3 +101,17 @@ export interface ProductDtoResponse {
     };
   };
 }
+export interface SearchProduct {
+  pageSize: number;
+  pageIndex: number;
+  search?: string;
+  orderBy?: string;
+  orderByDesc?: boolean;
+  thenBy?: string;
+  thenByDesc?: boolean;
+  addresses?: string[];
+  subCategory?: string[];
+  evaluates?: number[];
+  minPrice?: number;
+  maxPrice?: number;
+}

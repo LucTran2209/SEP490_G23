@@ -79,9 +79,9 @@ export class ProfileComponent implements OnInit {
         this.messageService.showSuccess('Cập Nhật Hồ Sơ Thành Công!');
         this.handleCloseModal();
         this.loadUser();
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
       },
       error: (error) => {
         this.messageService.handleError('Cập Nhật Hồ Sơ Thất Bại!');

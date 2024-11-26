@@ -1,4 +1,7 @@
-<div class="flex overflow-hidden" [ngClass]="{ container: !visible, 'h-screen': visible }">
+<div
+  class="flex overflow-hidden"
+  [ngClass]="{ container: !visible, 'h-screen': visible }"
+>
   <!-- left hand -->
   <div
     class="left_content overflow-y-scroll p-4 h-full"
@@ -10,6 +13,18 @@
         [isOpen]="visible"
         [shopInfo]="shopInfo$ | async"
       />
+    </div>
+    <div *ngIf="vouchers.length > 0" class="my-3">
+      <h3 class="text-2xl my-2 uppercase">Voucher</h3>
+      <div class="grid grid-cols-12 gap-3 pb-3">
+        <div *ngFor="let voucher of vouchers" class="col-span-4">
+          <app-voucher-card
+            [voucher]="voucher"
+            (saveVoucher)="saveVoucher($event)"
+            [isShop]="true"
+          ></app-voucher-card>
+        </div>
+      </div>
     </div>
     <div
       class="grid grid-cols-10 gap-4 pb-3 bg-white rounded-lg border border-solid border-[#e5e7eb] p-5"
@@ -66,8 +81,8 @@
         </div>
         <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
           <!-- *ngFor="let product of productListShopFilter$ | async" -->
-           @if ((productListShopFilter$ | async)?.length !== 0) {
-            <nz-col
+          @if ((productListShopFilter$ | async)?.length !== 0) {
+          <nz-col
             *ngFor="let product of productListShopFilter$ | async"
             [nzXs]="24"
             [nzSm]="12"
@@ -76,12 +91,11 @@
           >
             <app-product-card [product]="product"> </app-product-card>
           </nz-col>
-           }@else {
-            <nz-col>
-              <p>Shop hiện chưa có sản phẩm cho thuê nào</p>
-            </nz-col>
-           }
-         
+          }@else {
+          <nz-col>
+            <p>Shop hiện chưa có sản phẩm cho thuê nào</p>
+          </nz-col>
+          }
         </nz-row>
       </div>
     </div>

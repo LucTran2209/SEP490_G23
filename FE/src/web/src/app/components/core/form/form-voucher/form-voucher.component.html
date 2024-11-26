@@ -40,6 +40,7 @@
             formControlName="discountType"
             [nzOptions]="discountTypeOptions"
             nzPlaceHolder="Chọn Loại Khuyến Mãi"
+            (ngModelChange)="handleDiscountTypeChange($event)"
           >
           </nz-select>
         </nz-input-group>
@@ -51,18 +52,18 @@
         nzFor="discountValue"
         [nzSpan]="24"
         nzRequired
-        >Giá Trị Khuyến Mãi (%)</nz-form-label
+        >Giá Trị Khuyến Mãi</nz-form-label
       >
       <nz-form-control>
         <nz-input-group>
           <nz-input-number
             class="w-full"
             formControlName="discountValue"
-            [nzMin]="1"
-            [nzMax]="100"
-            [nzStep]="1"
-            [nzFormatter]="formatterPercent"
-            [nzParser]="parserPercent"
+            [nzMin]="currentMin"
+            [nzMax]="currentMax"
+            [nzStep]="currentStep"
+            [nzFormatter]="currentFormatter"
+            [nzParser]="currentParser"
           ></nz-input-number>
         </nz-input-group>
       </nz-form-control>
@@ -87,19 +88,15 @@
   </div>
   <div class="grid grid-cols-3 gap-x-3">
     <nz-form-item class="">
-      <nz-form-label
-        class="font-medium"
-        nzFor="maximumDiscount"
-        [nzSpan]="24"
-        nzRequired
+      <nz-form-label class="font-medium" nzFor="maximumDiscount" [nzSpan]="24"
         >Giảm Giá Tối Đa (dành cho giảm theo %)</nz-form-label
       >
       <nz-form-control>
         <nz-input-number
           class="w-full"
           formControlName="maximumDiscount"
-          [nzFormatter]="formatterPercent"
-          [nzParser]="parserPercent"
+          [nzFormatter]="formatterVND"
+          [nzParser]="parserVND"
         ></nz-input-number>
       </nz-form-control>
     </nz-form-item>
@@ -138,7 +135,7 @@
   </div>
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzFor="usageLimit" nzRequired>
-      Giới Hạn Số Lần Sử Dụng
+      Số Lượng Voucher
     </nz-form-label>
     <nz-form-control nzErrorTip="Vui lòng nhập số lần sử dụng mã này!">
       <nz-input-number class="w-full" formControlName="usageLimit" />

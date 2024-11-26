@@ -10,6 +10,7 @@ export interface UserOutputDto {
   dateOfBirth: string;
   avatarPersonal: string;
   isActive: boolean;
+  balance: number;
   listRole: [];
   }
   export interface UserInputDto {

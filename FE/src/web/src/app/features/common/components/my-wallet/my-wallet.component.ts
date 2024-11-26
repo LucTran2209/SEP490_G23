@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { rechargeMoney } from '../../../../interfaces/payment.interface';
 import { PaymentService } from '../../../../services/payment.service';
+import { UserService } from '../../../../services/user.service';
+import { ProfileResultService } from '../../../../interfaces/user.interface';
 
 @Component({
   selector: 'app-my-wallet',
@@ -15,10 +17,19 @@ export class MyWalletComponent implements OnInit {
   constructor(
     private userProfileService: UserProfileService, 
     private paymentService: PaymentService,
+    private userService: UserService,
   ) {
   }
   ngOnInit(): void {
-    this.balance = Math.floor(this.userProfileService.currentUser.Balance);
+    const id = this.userProfileService.UserId;
+    this.userService.viewProfile(id).subscribe({
+      next: (res: ProfileResultService) => {
+        this.balance = res.data.balance;
+      },
+      error: () => {
+      }
+    });
+    
     this.isShow = false;
   }
   toggleShow(): void {
@@ -31,8 +42,5 @@ export class MyWalletComponent implements OnInit {
     this.paymentService.rechargeMoney(data).subscribe((res) =>{
       window.location.href = res.data;
     });
-  }
-  get formattedBalance(): string {
-    return new Intl.NumberFormat('vi-VN', {  currency: 'VND' }).format(this.balance);
   }
 }

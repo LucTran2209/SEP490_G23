@@ -11,7 +11,11 @@
 <ng-template #ordersContent>
   <div class="mx-16 mt-3">
     <h1 class="text-2xl">DANH SÁCH THUÊ CỦA TÔI</h1>
-    <nz-tabset class="mt-2">
+    <nz-tabset
+      class="mt-2"
+      [(nzSelectedIndex)]="selectedTab"
+      (nzSelectedIndexChange)="onTabChange($event)"
+    >
       <ng-container *ngFor="let tab of orderTabs">
         <nz-tab [nzTitle]="tab.title">
           <div class="mt-6 flex justify-between">
@@ -54,7 +58,9 @@
               <app-shop-card
                 [order]="order"
                 [isShowBtn1]="tab.isShowBtn1"
+                [isShowBtn2]="tab.isShowBtn2"
                 (showFeedBack)="showFeedBack($event)"
+                (cancelOrder)="showCancelForm($event)"
               ></app-shop-card>
             </div>
           </div>
@@ -79,4 +85,10 @@
     (closeModal)="handleCloseModal()"
     (saveFeedBack)="createFeedBack($event)"
   ></app-form-feedback>
+  <app-form-cancel-order
+    [isVisible]="isVisibleCancel"
+    [title]="'HỦY ĐƠN HÀNG NÀY'"
+    (closeModal)="handleCloseCancelForm()"
+    (saveForm)="changeStatus($event)"
+  ></app-form-cancel-order>
 </ng-template>

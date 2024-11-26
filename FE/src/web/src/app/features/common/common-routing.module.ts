@@ -4,7 +4,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { ListMyOrderComponent } from './components/list-my-order/list-my-order.component';
 import { ProductRentalListComponent } from './components/product-rental-list/product-rental-list.component';
 import { LayoutProfileComponent } from '../../components/layout/layout-profile/layout-profile.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileComponent } from './state/profile/profile.component';
 import { ProductRentalDetailComponent } from './components/product-rental-detail/product-rental-detail.component';
 import { ShopPersonalComponent } from './components/shop-personal/shop-personal.component';
 import { MyOrderDetailComponent } from './components/my-order-detail/my-order-detail.component';
@@ -12,6 +12,7 @@ import { HowitorderComponent } from './static/howitorder/howitorder.component';
 import { ShopRentalListComponent } from './components/shop-rental-list/shop-rental-list.component';
 import { NotificationListComponent } from './components/notification-list/notification-list.component';
 import { MyWalletComponent } from './components/my-wallet/my-wallet.component';
+import { MyVoucherComponent } from './components/my-voucher/my-voucher.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
           { path: 'my-wallet', component: MyWalletComponent  },
         ],
       },
+      { path: 'my-voucher', component: MyVoucherComponent  },
       {
         path: 'order',
         children: [

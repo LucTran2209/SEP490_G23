@@ -278,13 +278,18 @@ export const VoucherSlug = {
   ListVoucher: {
     label: 'List Voucher',
     title: 'List Voucher | ERMS',
-    api: 'Voucher/list',
+    api: 'Voucher/list/',
   },
   GetVoucher: {
     label: 'Get Voucher',
     title: 'Get Voucher | ERMS',
     api: 'Voucher/',
   },
+  SaveVoucher: {
+    label: 'Save Voucher',
+    title: 'Save Voucher | ERMS',
+    api: 'Voucher/save',
+  }
 
 }
 export const PaymentSlug = {

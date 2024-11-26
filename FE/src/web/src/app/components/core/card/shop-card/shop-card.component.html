@@ -35,9 +35,10 @@
     <div nz-row nzGutter="16" class="p-4">
       <div nz-col [nzSpan]="6">
         <img
+          *ngIf="order?.orderDetails?.[0]?.product?.productImages?.[0]?.link"
           [src]="order.orderDetails[0].product.productImages[0].link"
           alt="ảnh sản phẩm cố định"
-          class="w-full rounded-md"
+          class="w-full h-52 rounded-md"
           [height]="200"
         />
       </div>
@@ -77,14 +78,8 @@
             {{ totalQuantity }}
           </p>
           <app-status-label
-            [label]="
-              convertStatus(
-                order.orderStatuses[order.orderStatuses.length - 1].status
-              )
-            "
-            [statusType]="
-              order.orderStatuses[order.orderStatuses.length - 1].status
-            "
+            [label]="convertStatus(getOrderStatusLatest(order))"
+            [statusType]="getOrderStatusLatest(order)"
           />
         </div>
       </div>
@@ -100,8 +95,15 @@
     >
       Đánh Giá
     </button>
-    <button *ngIf="isShowBtn2" class="px-5" nz-button nzType="primary" nzGhost>
-      Thanh Toán
+    <button
+      *ngIf="isShowBtn2"
+      class="px-5"
+      nz-button
+      nzType="default"
+      nzDanger
+      (click)="onClickBtn2()"
+    >
+      Hủy Đơn Hàng
     </button>
     <button *ngIf="isShowBtn3" class="px-5" nz-button nzType="primary" nzGhost>
       Mua Lại
