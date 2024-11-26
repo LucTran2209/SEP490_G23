@@ -23,7 +23,7 @@ public class UsersDataSeedContributor : IDataSeedContributor
                 Id = Guid.NewGuid(),
                 FullName = "Admin",
                 UserName = "admin",
-                Password = "Pass123@",
+                Password = "$2a$11$5TyZkYOwEOLe1y0YFFCUtussjnf4RVYqw3TbSTVMF92Q83TuW2OJC",
                 Email = email,
                 PhoneNumber = "1234567890",
                 Address = "Ha Noi",
