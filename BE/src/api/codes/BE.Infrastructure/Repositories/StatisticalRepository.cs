@@ -28,7 +28,7 @@ namespace BE.Infrastructure.Repositories
                         .Include(od => od.Order)
                         .ThenInclude(o => o.OrderStatuses)
                         .Include(od => od.Product)
-                        .Where(od => od.Order.OrderStatuses.Any(os => os.Status == RequestStatus.ReturnComplete)).AsQueryable();
+                        .Where(od => od.Order.OrderStatuses.Any(os => os.Status == RequestStatus.COMPLETE)).AsQueryable();
         }
     }
 }

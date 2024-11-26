@@ -132,7 +132,7 @@ namespace BE.Application.Services.RentalShops
                 FirstOrDefault(r => r.RoleId == Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff"))!.CreatedDate.DateTime;
 
             result.NumberOfRenter = unitOfWork.OrderRepository.GetRentalShopOrder(id)
-                                                        .Where(o => o.OrderStatuses!.Any(s => s.Status != RequestStatus.Cancel))
+                                                        .Where(o => o.OrderStatuses!.Any(s => s.Status != RequestStatus.CANCEL))
                                                         .ToList().Count;
             return new ResultService
             {

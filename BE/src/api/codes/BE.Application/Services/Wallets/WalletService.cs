@@ -125,7 +125,7 @@ namespace BE.Application.Services.Wallets
             var orderStatus = new OrderStatus
             {
                 OrderId = inputDto.OrderId,
-                Status = RequestStatus.WaitingForTransit,
+                Status = RequestStatus.PAYMENTED,
             };
 
             // Update History
