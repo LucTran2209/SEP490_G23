@@ -66,9 +66,9 @@ namespace BE.Api.Controllers
 
         [HttpPost("save")]
         [Authorize]
-        public async Task<IActionResult> SaveVoucherAsync([FromBody]Guid voucherId)
+        public async Task<IActionResult> SaveVoucherAsync([FromBody] SaveVoucherInputDto inputDto)
         {
-            var result = await _voucherService.SaveVoucherAsync(voucherId);
+            var result = await _voucherService.SaveVoucherAsync(inputDto);
             return ReturnFollowStatusCode(result);
         }
 
