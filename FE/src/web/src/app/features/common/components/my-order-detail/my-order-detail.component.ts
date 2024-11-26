@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Deposit, MyOrderDetailDto, OrderDetailResultService, OrderResultService } from '../../../../interfaces/order.interface';
+import { Deposit, MyOrderDetailDto, OrderDetailResultService, OrderListResponse, OrderResultService } from '../../../../interfaces/order.interface';
 import { OrderService } from '../../../../services/order.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -46,7 +46,7 @@ export class MyOrderDetailComponent implements OnInit {
     this.loading$ = this.loadingService.status$;
   }
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/common/user/order'], { queryParams: { status: this.getOrderStatusLatest(this.order) } });
   }
   ngOnInit(){
     this.isVisible = false;
@@ -85,6 +85,12 @@ export class MyOrderDetailComponent implements OnInit {
   convertStatus(orderStatus: ORDER_STATUS) {
     return convertStatusOrder(orderStatus);
   }
+  getOrderStatusLatest(orderDetail: MyOrderDetailDto): number {
+    return orderDetail.orderStatuses.reduce(
+      (max, item) => Math.max(max, item.status),
+      -Infinity
+    );
+  }
   showModalDeposit(){
     this.isVisible = true;
   }
@@ -103,7 +109,7 @@ export class MyOrderDetailComponent implements OnInit {
         
       },
       error: (error) => {
-        this.messageService.showSuccess('Bạn Đã Thanh Toán Đơn Hàng Thất Bại!', 3000);
+        this.messageService.handleError('Bạn Đã Thanh Toán Đơn Hàng Thất Bại!', 3000);
         this.isVisible = false;
       }
     });

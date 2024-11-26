@@ -10,9 +10,11 @@ import {
   ProductItemResponse,
   ProductOutputDto,
   ProductResultService,
+  SearchProduct,
 } from '../interfaces/product.interface';
 import { cleanParams } from '../utils/anonymous.helper';
 import { AppHttpClientService } from './app-http-client.service';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -28,31 +30,30 @@ export class ProductService {
  * @param ProductName 
  * @returns 
  */
-  listProduct(
-    pageIndex: number,
-    pageSize: number,
-    Search: string,
-    Addresses?: string[],
-    SubCategory?: string,
-    MinPrice?: number,
-    MaxPrice?: number,
-    Evaluates?: string[],
-  ): Observable<ProductDtoResponse> {
-    let params: any = {
-      PageSize: pageSize.toString(),
-      PageIndex: pageIndex.toString(),
-      Search: Search
-    };
-    if (SubCategory) params.SubCategory = SubCategory;
-    if (Evaluates) params.Evaluates = Evaluates;
-    if (MinPrice) params.MinPrice = MinPrice;
-    if (MaxPrice) params.MaxPrice = MaxPrice;
-    if (Addresses) {
-      Addresses.forEach(address => {
-        params.Addresses = Addresses.join('&Addresses=');
-      });
+  listProduct(search: SearchProduct): Observable<ProductDtoResponse> {
+    return this.httpClient.post<ProductDtoResponse>(ProductSlug.ListProduct.api, search);
+  }
+  private transformParams(params: any): any {
+    const transformedParams: any = {};
+
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        const value = params[key];
+
+        if (Array.isArray(value)) {
+          // Với mảng, thêm từng giá trị dưới dạng tham số riêng lẻ
+          value.forEach((item: string | number) => {
+            transformedParams[key] = transformedParams[key] || [];
+            transformedParams[key].push(item);
+          });
+        } else if (value !== undefined && value !== null) {
+          // Với giá trị không phải mảng, thêm trực tiếp
+          transformedParams[key] = value;
+        }
+      }
     }
-    return this.httpClient.get<ProductDtoResponse>(ProductSlug.ListProduct.api, params);
+
+    return transformedParams;
   }
   listProductByShop(rentalShopId: string, pageIndex: number, pageSize: number, Search?: string, ): Observable<ProductResultService>{
     let params: any = {

@@ -77,6 +77,7 @@ export class FormUserComponent{
       dateOfBirth: isoString, // Format for date
       avatarPersonal: this.userUpdate.avatarPersonal ?? null, // Ensure it's null if undefined
     });
+    console.log('FormControl Address:', this.userForm.get('address')?.value);
 
     // Check if avatarPersonal is a string or a File and convert it accordingly
     if (this.userUpdate.avatarPersonal) {
@@ -151,6 +152,8 @@ export class FormUserComponent{
     }
   }
   submitForm() {
+    const addressValue = this.userForm.get('address')?.value;
+    console.log('Address Value:', addressValue);
     // Update dateOfBirth to ISO string format
     const dateOfBirthControl = this.userForm.get('dateOfBirth');
     if (dateOfBirthControl?.value) {

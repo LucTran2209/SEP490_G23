@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { OrderService } from '../../../../services/order.service';
-import { MyOrderDetailDto, MyOrderOutputDto, OrderDetailResultService, OrderResultService } from '../../../../interfaces/order.interface';
+import { MyOrderDetailDto, MyOrderOutputDto, OrderDetailResultService, OrderResultService, OrderStatus } from '../../../../interfaces/order.interface';
 import { UserService } from '../../../../services/user.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { ProfileResultService } from '../../../../interfaces/user.interface';
@@ -11,19 +11,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FeedBackInputDto } from '../../../../interfaces/feedback.interface';
 import { MessageResponseService } from '../../../../services/message-response.service';
 import { or } from '@angular/fire/firestore';
+import { ORDER_STATUS } from '../../../../utils/constant';
 
 @Component({
   selector: 'app-list-my-order',
   templateUrl: './list-my-order.component.html',
-  styleUrl: './list-my-order.component.scss'
+  styleUrl: './list-my-order.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListMyOrderComponent implements OnInit {
   selectedFilter = 7;
   isVisible : boolean = false;
+  isVisibleCancel: boolean = false;
   username: string = '';
   totalOrders = 0;     
   currentPage = 1;    
-  pageSize = 10;  
+  pageSize = 100;  
   orderList: MyOrderOutputDto[] = [];
   orderListNull = true;
   orderError = false;
@@ -32,6 +35,8 @@ export class ListMyOrderComponent implements OnInit {
   loading$?: Observable<StatusProcess>;
   searchText: string = '';
   statusOrder: number = 0;
+  selectedTab = 0;
+  orderId: string = '';
   constructor(
     private orderService: OrderService,
     private userService: UserService,
@@ -54,61 +59,128 @@ export class ListMyOrderComponent implements OnInit {
     ordersNull: boolean;
     placeholder: string;
     isShowBtn1: boolean;
+    isShowBtn2: boolean;
   }[] = [
-    { title: 'CHỜ XÁC NHẬN', status: 0, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...', isShowBtn1: false, },
-    { title: 'CHỜ THANH TOÁN', status: 1, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, },
-    { title: 'CHỜ GIAO HÀNG', status: 2, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false },
-    { title: 'ĐÃ NHẬN HÀNG', status: 3, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false },
-    { title: 'CHỜ HOÀN TRẢ', status: 4, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false },
-    { title: 'HOÀN THÀNH', status: 5, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: true },
-    { title: 'HỦY ĐƠN', status: 6, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false }
+    { title: 'CHỜ XÁC NHẬN', status: 0, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...', isShowBtn1: false, isShowBtn2: true, },
+    { title: 'CHỜ THANH TOÁN', status: 1, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, },
+    { title: 'ĐÃ THANH TOÁN', status: 2, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, },
+    { title: 'CHỜ GIAO HÀNG', status: 3, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, },
+    { title: 'ĐÃ NHẬN HÀNG', status: 4, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, },
+    { title: 'TRẢ HÀNG', status: 5, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, },
+    { title: 'HOÀN THÀNH', status: 6, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: true, isShowBtn2: false, },
+    { title: 'HỦY ĐƠN', status: 7, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, }
   ];
   ngOnInit() {
     this.loadingService.setLoading();
-    this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
+    // this.loadOrders(this.currentPage, this.pageSize);
+    this.route.queryParamMap.subscribe(queryParams => {
+      let status = queryParams.get('status'); // Lấy tham số "status" từ URL
+      console.log('Current status from URL:', status); // Debug log
+  
+      if (status === null) {
+        // Nếu không có tham số status trong URL, gán giá trị mặc định là 0
+        status = '0';
+        // Cập nhật URL với query params mặc định
+        this.router.navigate([], {
+          queryParams: { status: status },
+          queryParamsHandling: 'merge',
+          relativeTo: this.route
+        });
+      }
+  
+      // Cập nhật giá trị statusOrder từ URL
+      this.statusOrder = parseInt(status, 10);
+  
+      // Xác định tab tương ứng với status
+      const tabIndex = this.orderTabs.findIndex(tab => tab.status === this.statusOrder);
+      if (tabIndex !== -1) {
+        this.selectedTab = tabIndex; // Cập nhật tab được chọn
+        this.loadOrders(this.orderTabs[tabIndex].currentPage, this.pageSize, this.orderTabs[tabIndex].searchText);
+      }
+    });
   }
-
-  loadOrders(pageIndex: number, pageSize: number, nearDays: number, search: string = '') {
+  onTabChange(index: number): void {
+    console.log('Tab changed to index:', index); // Log để kiểm tra index
+    const tab = this.orderTabs[index];          // Lấy tab dựa trên index
+  
+    if (tab) {
+      console.log('Tab details:', tab);         // Log thông tin tab để kiểm tra
+      this.selectedTab = index;                // Cập nhật tab hiện tại
+      this.router.navigate([], {
+        queryParams: { status: tab.status },    // Cập nhật status vào query params
+        queryParamsHandling: 'merge',          // Giữ các query params khác
+        relativeTo: this.route                 // Route hiện tại
+      });
+      this.loadOrders(tab.currentPage, this.pageSize, tab.searchText);
+    }
+  }
+  
+  loadOrders(pageIndex: number, pageSize: number, search: string = '') {
     // Gọi service với các tham số đã cung cấp
-    this.orderService.listMyOrder(pageIndex, pageSize, nearDays, search).subscribe({
+    this.orderService.listMyOrder(pageIndex, pageSize, search).subscribe({
       next: (res: OrderResultService) => {
         this.loadingService.setOtherLoading('loaded');
         this.orderList = res.data.items;  // Gán kết quả trả về
         this.orderListNull = !this.orderList || this.orderList.length === 0;
         this.ListOrdersByStatus();  // Lọc theo trạng thái
+        console.log(res.data.items);
+        this.cdRef.markForCheck();
       },
       error: () => {
         this.orderError = true;
+        this.cdRef.markForCheck();
       }
     });
   }
 
   // Phương thức lọc đơn hàng theo trạng thái
   ListOrdersByStatus() {
-    this.orderTabs.forEach(tab => {
-      tab.orders = this.orderList.filter(order => {
-        const lastStatus = order.orderStatuses[order.orderStatuses.length - 1]; // Trạng thái cuối cùng
-        return lastStatus && lastStatus.status === tab.status;
-      });
+    const orderMap = new Map<number, MyOrderOutputDto[]>();
+  
+    // Nhóm đơn hàng theo trạng thái lớn nhất
+    this.orderList.forEach((order) => {
+      if (order.orderStatuses && order.orderStatuses.length > 0) {
+        // Lấy trạng thái lớn nhất
+        const lastStatus = Math.max(...order.orderStatuses.map(status => status.status));
+  
+        if (!orderMap.has(lastStatus)) {
+          orderMap.set(lastStatus, []);
+        }
+        orderMap.get(lastStatus)!.push(order);
+      }
+    });
+  
+    // Gán dữ liệu cho các tab
+    this.orderTabs.forEach((tab) => {
+      tab.orders = orderMap.get(tab.status) || [];
       tab.ordersNull = tab.orders.length === 0;
     });
-
-    this.cdRef.detectChanges();
   }
-
   // Phương thức tìm kiếm trong tab cụ thể
   onSearch(status: number) {
-    const tab = this.orderTabs.find(tab => tab.status === status);
+    const tab = this.orderTabs.find((t) => t.status === status);
     if (tab) {
-      // Cập nhật lại search text của tab và gọi phương thức lọc
-      // this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter, tab.searchText);
-      this.filterOrders(tab);
+      tab.orders = this.orderList.filter((order) => {
+        if (!order.orderStatuses || order.orderStatuses.length === 0) {
+          return false;
+        }
+        const lastStatus = Math.max(...order.orderStatuses.map(s => s.status));
+        return (
+          lastStatus === status &&
+          (order.orderDetails.some((detail) =>
+            detail.product.productName.toLowerCase().includes(tab.searchText.toLowerCase())
+          ) ||
+            order.id.includes(tab.searchText))
+        );
+      });
+      tab.ordersNull = tab.orders.length === 0;
+      this.cdRef.markForCheck();
     }
   }
   reset(status: number){
     const tab = this.orderTabs.find(tab => tab.status === status);
     if (!tab?.searchText) {
-      this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
+      this.loadOrders(this.currentPage, this.pageSize, '');
 
     }
   }
@@ -116,19 +188,26 @@ export class ListMyOrderComponent implements OnInit {
   // Phương thức lọc đơn hàng theo chuỗi tìm kiếm
   filterOrders(tab: any) {
     tab.orders = this.orderList.filter(order => {
-      const lastStatus = order.orderStatuses?.[order.orderStatuses.length - 1];
+      if (!order.orderStatuses || order.orderStatuses.length === 0) {
+        return false; // Không có trạng thái thì bỏ qua
+      }
+  
+      // Lấy trạng thái lớn nhất trong danh sách orderStatuses
+      const lastStatus = Math.max(...order.orderStatuses.map(status => status.status));
+  
+      // Lọc theo trạng thái và chuỗi tìm kiếm
       return (
-        lastStatus &&
-        lastStatus.status === tab.status &&
+        lastStatus === tab.status &&
         (
           order.orderDetails.some(detail => 
             detail.product.productName?.toLowerCase().includes(tab.searchText.toLowerCase())
           ) ||
-          order.id.includes(tab.searchText)  // Lọc theo mã đơn hàng
+          order.id.toLowerCase().includes(tab.searchText.toLowerCase()) // Lọc theo mã đơn hàng (không phân biệt hoa thường)
         )
       );
     });
   
+    // Cập nhật trạng thái rỗng của tab
     tab.ordersNull = tab.orders.length === 0;
   }
 
@@ -153,16 +232,57 @@ export class ListMyOrderComponent implements OnInit {
         this.messageService.showSuccess('Đánh Giá Thành Công!', 3000);
         this.handleCloseModal();
         this.orderTabs.forEach(tab => {
-          if (tab.status === 5) {
+          if (tab.status === 6) {
             tab.isShowBtn1 = false;
           }
         });
-        this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
+        this.loadOrders(this.currentPage, this.pageSize);
       },
       error: (error) => {
         this.messageService.handleError('Đánh Giá Thất Bại!', 3000);
-        this.loadOrders(this.currentPage, this.pageSize, this.selectedFilter);
+        this.loadOrders(this.currentPage, this.pageSize);
       }
+    });
+  }
+  showCancelForm(orderId: string){
+    this.isVisibleCancel = true;
+    this.orderId = orderId;
+    console.log(this.orderId);
+  }
+  handleCloseCancelForm(){
+    this.isVisibleCancel = false;
+  }
+  changeStatus(status: OrderStatus) {
+    if (!this.orderId) {
+      this.messageService.handleError('Không tìm thấy đơn hàng cần hủy!');
+      return;
+    }
+  
+    // Tạo FormData
+    const formData = new FormData();
+    formData.append('Id', '');
+    formData.append('OrderId', this.orderId);
+    formData.append('Message', status.message);
+    formData.append('Status', `${ORDER_STATUS.CANCEL}`);
+    formData.append('FileAttach', '');
+  
+    // Hiển thị trạng thái tải
+    this.loadingService.setLoading();
+  
+    // Gửi yêu cầu hủy đơn hàng
+    this.orderService.requestOrderStatus(formData).subscribe({
+      next: () => {
+        this.messageService.showSuccess('Hủy đơn hàng thành công!');
+        this.handleCloseCancelForm();
+        this.loadOrders(this.currentPage, this.pageSize); // Tải lại danh sách đơn hàng
+      },
+      error: (err) => {
+        console.error('Hủy đơn hàng thất bại:', err); // Ghi log lỗi
+        this.messageService.handleError('Hủy đơn hàng thất bại!');
+      },
+      complete: () => {
+        this.loadingService.setOtherLoading('loaded'); // Tắt trạng thái tải
+      },
     });
   }
 }

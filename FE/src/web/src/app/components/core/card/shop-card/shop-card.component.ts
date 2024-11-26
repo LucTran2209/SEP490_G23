@@ -17,6 +17,7 @@ export class ShopCardComponent {
   orderStatusMessage: string = '';
   orderStatusClass: string = '';
   @Output() showFeedBack = new EventEmitter<string>();  
+  @Output() cancelOrder = new EventEmitter<string>();  
   totalQuantity: number = 0;
 
   constructor(
@@ -34,6 +35,9 @@ export class ShopCardComponent {
   onClickBtn1(){
     this.showFeedBack.emit(this.order.id);
   }
+  onClickBtn2(){
+    this.cancelOrder.emit(this.order.id);
+  }
   // New method to calculate the total quantity
   calculateTotalQuantity(): void {
     this.totalQuantity = this.order.orderDetails.reduce((sum, orderDetail) => {
@@ -45,5 +49,11 @@ export class ShopCardComponent {
   }
   goToShop(){
     this.router.navigate(['/common/shop',this.order.rentalShopId]);
+  }
+  getOrderStatusLatest(orderDetail: MyOrderOutputDto): number {
+    return orderDetail.orderStatuses.reduce(
+      (max, item) => Math.max(max, item.status),
+      -Infinity
+    );
   }
 }

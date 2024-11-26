@@ -1,14 +1,8 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavigationService } from '../../../../services/navigation.service';
-import { OrderService } from '../../../../services/order.service';
 import { LoadingService } from '../../../../services/loading.service';
-import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { OptionSelectCheckBox } from '../../../../configs/anonymous.config';
-import { ORDER_STATUS } from '../../../../utils/constant';
-import { convertStatusOrder } from '../../../../utils/anonymous.helper';
-import { OrderListResponse } from '../../../../interfaces/order.interface';
-import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { NzCustomColumn } from 'ng-zorro-antd/table';
 import { VoucherDetailResultService, VoucherEditInputDto, VoucherInputDto, VoucherOutputDto, VoucherResultService } from '../../../../interfaces/voucher.interface';
 import { VoucherService } from '../../../../services/voucher.service';
@@ -110,6 +104,7 @@ export class ManageVoucherComponent {
     private userProfileService: UserProfileService, 
     private messageService: MessageResponseService,
     private modal: NzModalService, 
+
   ) {}
 
   handleChooseViewCell(arr: OptionSelectCheckBox[]) {
@@ -147,7 +142,8 @@ export class ManageVoucherComponent {
 
   async onloadVoucher() {
     this.loadingSerivce.setLoading();
-    this.voucherService.listVoucher().subscribe((res: VoucherResultService) => {
+    const id = this.userProfileService.rentalshopId;
+    this.voucherService.listVoucher(id).subscribe((res: VoucherResultService) => {
       this.listData = res.data
       this.loadingSerivce.setOtherLoading('loaded');
     });

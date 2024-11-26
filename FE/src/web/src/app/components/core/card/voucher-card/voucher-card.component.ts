@@ -8,6 +8,7 @@ import { VoucherOutputDto } from '../../../../interfaces/voucher.interface';
 })
 export class VoucherCardComponent {
    @Input() voucher!: VoucherOutputDto;
+   @Input() isShop: boolean = false;
    @Output() saveVoucher = new EventEmitter<string>();  
    
    onSaveVoucher(voucherId: string){

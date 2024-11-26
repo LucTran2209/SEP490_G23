@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { VoucherOutputDto } from '../../../../interfaces/voucher.interface';
 
 @Component({
   selector: 'app-my-voucher',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyVoucherComponent implements OnInit {
   searchText: string = '';
-
+  vouchers!: VoucherOutputDto[];
   ngOnInit(): void{
 
   }

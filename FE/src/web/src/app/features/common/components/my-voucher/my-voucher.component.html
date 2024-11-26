@@ -24,4 +24,13 @@
       </form>
     </div>
   </div>
+  <div class="mt-3 flex justify-start">
+    <div class="columns-3 gap-3">
+      <div *ngFor="let voucher of vouchers">
+        <app-voucher-card
+          [voucher]="voucher"
+        ></app-voucher-card>
+      </div>
+    </div>
+  </div>
 </div>

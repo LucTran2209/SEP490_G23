@@ -44,6 +44,7 @@ export interface VoucherDetailOutputDto {
     expiryDate: string;       // Ngày hết hạn (ISO string)
     usageLimit: number;       // Giới hạn số lần sử dụng
     isActive?: boolean;
+    usedCount?: number;
 }
 
 export interface VoucherResultService {

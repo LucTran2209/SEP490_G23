@@ -14,12 +14,16 @@ import * as ShopRentalProductActions from '../../state/shop/shop-personal.action
 import * as selectShopRentalProduct from '../../state/shop/shop-personal.reducer';
 import { RentalShopOutputDto } from '../../../../interfaces/rental-shop.interface';
 import { RentalShopService } from '../../../../services/rental-shop.service';
+import { VoucherOutputDto, VoucherResultService } from '../../../../interfaces/voucher.interface';
+import { VoucherService } from '../../../../services/voucher.service';
+import { MessageResponseService } from '../../../../services/message-response.service';
 @Component({
   selector: 'app-shop-personal',
   templateUrl: './shop-personal.component.html',
   styleUrl: './shop-personal.component.scss',
 })
 export class ShopPersonalComponent implements OnInit, OnDestroy {
+  vouchers!: VoucherOutputDto[];
   //infoShop
   shopInfo$: Observable<RentalShopOutputDto | null> = of(null);
   // param shop url
@@ -110,6 +114,7 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     this.selectStateFromNgRx();
     this.onQueryParams();
     this.loadShopInfo();
+    this.onloadVoucher();
   }
 
   ngOnDestroy(): void {}
@@ -119,8 +124,27 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<FeatureAppState>,
     private navigateService: NavigationService,
-    private rentalShopService: RentalShopService
+    private rentalShopService: RentalShopService,
+    private voucherService: VoucherService,
+    private messageService: MessageResponseService,
   ) {
     this.paramHave = this.route.snapshot.paramMap.get('id');
+  }
+  async onloadVoucher() {
+    if(this.paramHave){
+      this.voucherService.listVoucher(this.paramHave).subscribe((res: VoucherResultService) => {
+        this.vouchers = res.data
+      });
+    }
+  }
+  saveVoucher(voucherId: string){
+    this.voucherService.saveVoucher(voucherId).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Lưu Voucher Thành Công!', 3000);
+      },
+      error: (error) => {
+        this.messageService.handleError('Lưu Voucher Thất Bại!', 3000);
+      }
+    });
   }
 }

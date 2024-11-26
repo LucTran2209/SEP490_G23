@@ -126,15 +126,8 @@
                 <p class="font-medium my-2">Trạng thái đơn hàng</p>
                 <div class="flex justify-end m-2">
                   <app-status-label
-                    [label]="
-                      convertStatus(
-                        order.orderStatuses[order.orderStatuses.length - 1]
-                          .status
-                      )
-                    "
-                    [statusType]="
-                      order.orderStatuses[order.orderStatuses.length - 1].status
-                    "
+                    [label]="convertStatus(getOrderStatusLatest(order))"
+                    [statusType]="getOrderStatusLatest(order)"
                   />
                 </div>
               </div>
@@ -163,8 +156,7 @@
                   {{ order.recipientAddress || order.user.address }}
                 </p>
               </div>
-              @if(order.orderStatuses[order.orderStatuses.length - 1].status ==
-              1){
+              @if(getOrderStatusLatest(order) == 1){
               <button
                 class="w-full mt-2"
                 nz-button
