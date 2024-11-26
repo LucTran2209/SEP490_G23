@@ -1,5 +1,5 @@
 <div
-  class="voucher-card relative flex justify-between items-center bg-blue-100 rounded-lg p-4 w-full"
+  class="voucher-card relative flex justify-between items-center bg-blue-100 rounded-lg p-4 w-10/12"
 >
   <!-- Header -->
   <div class="voucher-header flex items-center">
@@ -24,18 +24,19 @@
   </div>
   <!-- Discount -->
   <div class="voucher-discount text-center text-nowrap ml-2">
+    @if(voucher.discountType == 0){
     <span class="block text-xl font-bold text-blue-500"
       >{{ voucher.discountValue }} %</span
     >
     <p class="text-gray-700 text-sm">OFF</p>
+    }@else{
+    <span class="block text-xl font-bold text-blue-500"
+      >{{ voucher.discountValue }} VND</span
+    >
+    }
   </div>
   <div class="voucher-discount text-center ml-5" *ngIf="isShop">
-    <button
-      class="ml-3"
-      nz-button
-      nzType="primary"
-      (click)="onSaveVoucher(voucher.id)"
-    >
+    <button class="ml-3" nz-button nzType="primary" (click)="onSaveVoucher()">
       Lưu
     </button>
   </div>

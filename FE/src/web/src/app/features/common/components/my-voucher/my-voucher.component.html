@@ -1,4 +1,4 @@
-<div class="p-5 my-3 bg-white rounded-md">
+<div class="p-5 my-3 container">
   <h1 class="text-2xl">KHO VOUCHER</h1>
   <div class="flex justify-center mt-5">
     <div class="search-bar w-25 ms-0">
@@ -24,12 +24,10 @@
       </form>
     </div>
   </div>
-  <div class="mt-3 flex justify-start">
+  <div class="mt-5">
     <div class="columns-3 gap-3">
       <div *ngFor="let voucher of vouchers">
-        <app-voucher-card
-          [voucher]="voucher"
-        ></app-voucher-card>
+        <app-voucher-card [voucher]="voucher"></app-voucher-card>
       </div>
     </div>
   </div>

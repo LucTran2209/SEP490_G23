@@ -31,7 +31,11 @@
       <tbody>
         <tr *ngFor="let data of basicTable.data; let i = index">
           <td nzCellControl="maVoucher">{{ data.code }}</td>
-          <td nzCellControl="giaTri">{{ data.discountValue }} %</td>
+          <td nzCellControl="giaTri">
+            @if(data.discountType == 0){
+            {{ data.discountValue }} % }@else{
+            {{ data.discountValue | currency : "VND" : "" : "1.0-0" }} VND }
+          </td>
           <td nzCellControl="ngayBatDau">
             {{ data.startDate | date : "dd/MM/yyyy hh:mm a" }}
           </td>
