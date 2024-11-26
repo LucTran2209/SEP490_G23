@@ -30,6 +30,9 @@ export class VoucherService {
   getVoucher(id: string): Observable<VoucherDetailResultService>{
     return this.httpClient.get<VoucherDetailResultService>(VoucherSlug.GetVoucher.api + id)
   }
+  myVoucher(): Observable<VoucherDetailResultService>{
+    return this.httpClient.get<VoucherDetailResultService>(VoucherSlug.MyVoucher.api)
+  }
   saveVoucher(voucherId: string): Observable<BaseResponseApi<null>>{
     return this.httpClient.post<BaseResponseApi<null>>(VoucherSlug.SaveVoucher.api, {voucherId})
   }

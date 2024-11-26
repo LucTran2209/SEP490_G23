@@ -289,6 +289,11 @@ export const VoucherSlug = {
     label: 'Save Voucher',
     title: 'Save Voucher | ERMS',
     api: 'Voucher/save',
+  },
+  MyVoucher: {
+    label: 'My Voucher',
+    title: 'My Voucher | ERMS',
+    api: 'Voucher/my-voucher',
   }
 
 }

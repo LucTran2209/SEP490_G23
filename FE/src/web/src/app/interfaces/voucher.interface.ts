@@ -27,12 +27,17 @@ export interface VoucherOutputDto {
     code: string;
     description: string;
     discountValue: string;
+    minimumSpend: number;
+    maximumDiscount: number;
     shopId: string;
     startDate: string;
     expiryDate: string;
-    isActive: string;
+    isActive: boolean;
+    discountType: number;
+    usageLimit: number;
 }
 export interface VoucherDetailOutputDto {
+    id?: string;
     shopId: string;           // UUID của cửa hàng
     code: string;             // Mã giảm giá
     description: string;      // Mô tả chi tiết
