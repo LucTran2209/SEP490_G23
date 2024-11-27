@@ -16,8 +16,10 @@ import { createOrder } from '../../../features/common/state/order/order.actions'
 import { OrderState } from '../../../features/common/state/rental/rental.reducers';
 import {
   selectAllProductRental,
+  selectCalcActualRentalPriceAfterSubtractVouncer,
   selectTotalAllProductDepositPrice,
   selectTotalAllProductRentalPrice,
+  selectVoucherAvaiable,
 } from '../../../features/common/state/rental/rental.selectors';
 import { IPayLoad } from '../../../interfaces/account.interface';
 import { OrderCreateRequest } from '../../../interfaces/order.interface';
@@ -30,6 +32,7 @@ import { FeatureAppState } from '../../../store/app.state';
 import { LocalStorageKey } from '../../../utils/constant';
 import { MyValidators } from '../../../utils/validators';
 import { convertToLocalISOString } from '../../../utils/timer.helper';
+import { VoucherDetailOutputDto } from '../../../interfaces/voucher.interface';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -116,14 +119,16 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   mergeAllDataReq(): void {
+    debugger;
     this.createOrderSubscription = combineLatest([
       this.store.select(selectAllProductRental),
       this.store.select(selectTotalAllProductDepositPrice()),
-      this.store.select(selectTotalAllProductRentalPrice()),
+      this.store.select(selectCalcActualRentalPriceAfterSubtractVouncer),
       this.rentalTimerService.rangePickerTime$,
       of(this.userCurrent),
       of(this.infoOrderCommonForm),
       of(this.listFiles),
+      this.store.select(selectVoucherAvaiable)
     ])
       .pipe(
         map(
@@ -135,6 +140,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             userCurrent,
             infoOrderCommonForm,
             listFiles,
+            voucherAvaiable
           ]) => {
             if (
               rentalProductAll &&
@@ -153,6 +159,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
                 userCurrent,
                 infoOrderCommonForm,
                 listFiles,
+                voucherAvaiable
               ];
             } else {
               return null;
@@ -169,7 +176,8 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             Date[],
             IPayLoad,
             FormGroup,
-            File[]
+            File[],
+            VoucherDetailOutputDto
           ] => result !== null
         ),
         catchError((error) => {
@@ -197,7 +205,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             recipientPhoneNumber: formValues.recipientPhoneNumber,
             orderDetails: "",
             orderDetailsJson: orderDetailsJson,
-            voucherId: '',
+            voucherId: String(res[7].id),
             totalDepositPrice: Number(res[1]),
             totalRentPrice: Number(res[2]),
             startDate: convertToLocalISOString(res[3][0]) ,

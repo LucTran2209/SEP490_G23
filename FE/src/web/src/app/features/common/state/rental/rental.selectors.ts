@@ -62,3 +62,33 @@ export const selectQuantityAvailableById = (id: string) =>
 
 export const selectRentalPriceById = (id: string) =>
   createSelector(selectProductRentalById(id), (order) => order?.rentalPrice);
+
+export const selectVoucherAvaiable = createSelector(
+  selectRentalState,
+  (state: RentalOrderState) => state.voucherApply
+);
+
+export const selectIsFineApplyVoucherAvaiable = (minimumSpend: number) =>
+  createSelector(selectAllProductRental, (al) => {
+    let totalRentalActualPrice = al.reduce(
+      (acc, init) => acc + +init.rentalActualPrice,
+      0
+    );
+    if (totalRentalActualPrice >= minimumSpend) {
+      return true;
+    }
+    return false;
+  });
+
+export const selectCalcActualDiscountVoucher = createSelector(
+  selectRentalState,
+  (state: RentalOrderState) => state.discountPriceAfterVoucher
+);
+
+export const selectCalcActualRentalPriceAfterSubtractVouncer = createSelector(
+  selectTotalAllProductRentalPrice,
+  selectCalcActualDiscountVoucher,
+  (toAll, toVol) => {
+    return Number(toAll) - toVol;
+  }
+);
