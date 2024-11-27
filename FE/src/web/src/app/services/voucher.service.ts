@@ -6,6 +6,7 @@ import {
   VoucherDetailResultService,
   VoucherEditInputDto,
   VoucherInputDto,
+  VoucherOutputDto,
   VoucherResultService,
 } from '../interfaces/voucher.interface';
 import { Observable } from 'rxjs';
