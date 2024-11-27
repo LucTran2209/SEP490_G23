@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center gap-4">
+<div class="flex flex-col items-center gap-4" *ngIf="voucherDetail">
   <svg
     width="62"
     height="62"
@@ -24,21 +24,25 @@
       fill="#0f6cf8"
     ></path>
   </svg>
-  <p class="font-semibold text-lg">Name voucher</p>
+  <p class="font-semibold text-lg">{{ voucherDetail.code }}</p>
   <div class="w-full">
-    <p class="text-center">Áp dụng từ fromDate and toDate</p>
+    <p class="text-center">
+      Áp dụng từ {{ voucherDetail.startDate | date : 'dd/MM/YYYY' }} and
+      {{ voucherDetail.expiryDate | date : 'dd/MM/YYYY' }}
+    </p>
     <p class="text-lg text-[#0f6cf8] text-center">
-      Ưu đãi n%
-      <span
-        >(tối đa {{ 80000 | currency : "VND" : "VND" : "1.0-0" : "vi" }})</span
+      Ưu đãi {{ voucherDetail.discountValue  }} %
+      <span *ngIf="voucherDetail.discountType === 0"
+        >(tối đa {{ voucherDetail.maximumDiscount | currency : "VND" : "VND" : "1.0-0" : "vi" }})</span
       >
     </p>
     <div class="p-3">
       <ul class="list-disc text-[#767676]">
-        <li>thông tin chi tiết nếu có</li>
-        <li>thông tin chi tiết nếu có</li>
-        <li>thông tin chi tiết nếu có</li>
-        <li>thông tin chi tiết nếu có</li>
+        <li>
+          Số tiền tối thiểu để áp dụng mã là {{ voucherDetail.minimumSpend | currency:'VND':'VND':'1.0-0':'vi' }}
+        </li>
+        <li>Loại voucher giảm giá: {{ convertTypeDiscount(voucherDetail.discountType) }}</li>
+        <li>Mô tả: {{voucherDetail.description}}</li>
       </ul>
     </div>
   </div>

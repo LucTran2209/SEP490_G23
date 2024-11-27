@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { DetailVoucherAvailableComponent } from '../detail-voucher-available/detail-voucher-available.component';
 import { FormControl } from '@angular/forms';
-import { debounceTime, map, Observable, of, switchMap } from 'rxjs';
+import dayjs from 'dayjs';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { debounceTime, filter, Observable, of, switchMap } from 'rxjs';
+import { VoucherDetailOutputDto } from '../../../interfaces/voucher.interface';
 import { VoucherService } from '../../../services/voucher.service';
-import { VoucherOutputDto } from '../../../interfaces/voucher.interface';
+import { DetailVoucherAvailableComponent } from '../detail-voucher-available/detail-voucher-available.component';
 
 @Component({
   selector: 'app-list-voucher-available',
@@ -12,18 +13,22 @@ import { VoucherOutputDto } from '../../../interfaces/voucher.interface';
   styleUrl: './list-voucher-available.component.scss',
 })
 export class ListVoucherAvailableComponent implements OnInit {
-  data$?: Observable<VoucherOutputDto[]>;
+  data$?: Observable<VoucherDetailOutputDto[]>;
+  filterData$?: Observable<VoucherDetailOutputDto[]>;
   loading = false;
   searchVoucher: FormControl<string | null> = new FormControl<string | null>(
     null
   );
   private detailVoucherRef: NzModalRef | null = null;
 
-  onChooseViewDetailVoucher() {
+  onChooseViewDetailVoucher(voucherDetail: VoucherDetailOutputDto) {
     this.detailVoucherRef = this.modal.create({
-      nzTitle: 'Chi tiết voucher MI75',
+      nzTitle: `Chi tiết voucher ${voucherDetail.code}`,
       nzFooter: null,
       nzContent: DetailVoucherAvailableComponent,
+      nzData: {
+        voucherDetail: voucherDetail,
+      },
     });
     if (this.detailVoucherRef)
       this.detailVoucherRef.afterClose.subscribe(() => {
@@ -31,31 +36,53 @@ export class ListVoucherAvailableComponent implements OnInit {
       });
   }
 
-  // searchVoucherNoApi() {
-  //   this.searchVoucher.valueChanges
-  //     .pipe(
-  //       debounceTime(300),
-  //       switchMap((res) => {
-  //         let tmp = mockVouchers.filter((vo: any) =>
-  //           vo.code.toLowerCase().includes(res?.toLowerCase())
-  //         );
-  //         return of(tmp);
-  //       })
-  //     )
-  //     .subscribe((res) => {
-  //       this.data = res;
-  //     });
-  // }
+  convertDateToDay(date: string) {
+    const now = dayjs();
+    let tmp = dayjs(date).diff(now, 'day');
+    return tmp;
+  }
 
-  loadListVoucherAvaiable() {
+  searchVoucherNoApi() {
+    this.searchVoucher.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((res) =>
+          (this.data$ || of([])).pipe(
+            filter(
+              (vouchers) => Array.isArray(vouchers) && vouchers.length > 0
+            ),
+            switchMap((vouchers) =>
+              of(
+                vouchers.filter((voucher) =>
+                  voucher.code.toLowerCase().includes(res?.toLowerCase() || '')
+                )
+              )
+            )
+          )
+        )
+      )
+      .subscribe((res) => {
+        this.filterData$ = of(res);
+      });
+  }
+
+  async loadListVoucherAvaiable() {
+    this.loading = true;
     this.voucherService
       .getListVoucherAvaiable()
-      .pipe(
-        map((res) => {
-          console.log('>>> line 51', res);
-        })
-      )
-      .subscribe();
+      .pipe(switchMap((res) => of(res.data)))
+      .subscribe({
+        next: (res) => {
+          this.data$ = of(res);
+          this.filterData$ = of(res);
+        },
+        error: () => {
+          this.loading = false;
+        },
+        complete: () => {
+          this.loading = false;
+        },
+      });
   }
 
   constructor(
@@ -64,7 +91,7 @@ export class ListVoucherAvailableComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.loadListVoucherAvaiable();
-    // this.searchVoucherNoApi();
+    this.searchVoucherNoApi();
   }
 }
 
