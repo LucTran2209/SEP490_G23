@@ -59,8 +59,12 @@
                 [order]="order"
                 [isShowBtn1]="tab.isShowBtn1"
                 [isShowBtn2]="tab.isShowBtn2"
+                [isShowBtn3]="tab.isShowBtn3"
+                [isShowBtn4]="tab.isShowBtn4"
                 (showFeedBack)="showFeedBack($event)"
                 (cancelOrder)="showCancelForm($event)"
+                (receiveOrder)="showConfirmReceiveForm($event)"
+                (returnOrder)="showConfirmReturnForm($event)"
               ></app-shop-card>
             </div>
           </div>
@@ -87,8 +91,24 @@
   ></app-form-feedback>
   <app-form-cancel-order
     [isVisible]="isVisibleCancel"
-    [title]="'HỦY ĐƠN HÀNG NÀY'"
+    [title]="'XÁC NHẬN HỦY ĐƠN HÀNG'"
     (closeModal)="handleCloseCancelForm()"
     (saveForm)="changeStatus($event)"
   ></app-form-cancel-order>
+  <app-form-confirm
+    [isVisible]="isVisibleReceive"
+    [title]="'XÁC NHẬN NHẬN HÀNG'"
+    [placeholder]="'Đánh Giá Vận Chuyển'"
+    (closeModal)="handleCloseReceiveForm()"
+    (saveForm)="changeStatusReceive($event)"
+  >
+  </app-form-confirm>
+  <app-form-confirm
+    [isVisible]="isVisibleReturn"
+    [title]="'XÁC NHẬN TRẢ HÀNG'"
+    [placeholder]="'Gửi lời nhắn cho chủ cho thuê'"
+    (closeModal)="handleCloseReturnForm()"
+    (saveForm)="changeStatusReturn($event)"
+  >
+  </app-form-confirm>
 </ng-template>

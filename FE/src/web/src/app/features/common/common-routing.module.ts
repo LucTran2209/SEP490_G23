@@ -66,7 +66,7 @@ const routes: Routes = [
     component: ProductRentalListComponent,
   },
   {
-    path: 'product-detail/:slug/.i/:id',
+    path: 'product-detail/:slug/.i/:id/.suid/:suid/:subslug',
     component: ProductRentalDetailComponent,
     data: { breadcrumb: 'Chi Tiết Sản Phẩm' }
   },

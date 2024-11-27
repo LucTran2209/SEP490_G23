@@ -59,12 +59,7 @@
                   <div>
                     <p
                       class="font-semibold cursor-pointer"
-                      [routerLink]="[
-                        '/common/product-detail',
-                        orderDetail.product.productName,
-                        '.i',
-                        orderDetail.product.id
-                      ]"
+                      (click)="onNavigate(orderDetail.product.id)"
                     >
                       {{ orderDetail.product.productName }}
                     </p>

@@ -19,6 +19,8 @@ export class ShopCardComponent {
   orderStatusClass: string = '';
   @Output() showFeedBack = new EventEmitter<string>();  
   @Output() cancelOrder = new EventEmitter<string>();  
+  @Output() receiveOrder = new EventEmitter<string>();  
+  @Output() returnOrder = new EventEmitter<string>();  
   totalQuantity: number = 0;
 
   constructor(
@@ -38,6 +40,12 @@ export class ShopCardComponent {
   }
   onClickBtn2(){
     this.cancelOrder.emit(this.order.id);
+  }
+  onClickBtn3(){
+    this.receiveOrder.emit(this.order.id);
+  }
+  onClickBtn4(){
+    this.returnOrder.emit(this.order.id);
   }
   // New method to calculate the total quantity
   calculateTotalQuantity(): void {
