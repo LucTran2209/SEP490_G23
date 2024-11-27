@@ -5,9 +5,11 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { filter, Observable, Subscription } from 'rxjs';
 import { selectData } from '../../../../features/common/state/product/product-detail.reducer';
 import {
+  selectCalcActualDiscountVoucher,
   selectDepositActualPriceById,
   selectNumberOfDaysById,
   selectRentalActualPriceById,
+  selectVoucherAvaiable,
 } from '../../../../features/common/state/rental/rental.selectors';
 import { ProductItemResponse } from '../../../../interfaces/product.interface';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
@@ -19,6 +21,8 @@ import { MessageResponseService } from '../../../../services/message-response.se
 import { LocalStorageKey } from '../../../../utils/constant';
 import { StorageService } from '../../../../services/storage.service';
 import { ListVoucherAvailableComponent } from '../../../modal/list-voucher-available/list-voucher-available.component';
+import { removeVoucher } from '../../../../features/common/state/rental/rental.actions';
+import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
 
 @Component({
   selector: 'app-form-rental-product',
@@ -34,6 +38,8 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   rentalPriceActual$?: Observable<string | number>;
   numberDay$?: Observable<string | number | undefined>;
   depositPriceActual$?: Observable<string | number>;
+  voucherAvaiable$?: Observable<VoucherDetailOutputDto | null>
+  calcActualDiscountVoucher$?: Observable<number>;
   //ngRx
 
   //ngRx
@@ -117,8 +123,16 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   }
   // modal
 
+
+  onClose(): void {
+    this.store.dispatch(removeVoucher());
+  }
+
+
   selectStateFromNgRx() {
     this.productRentalDetail$ = this.store.select(selectData);
+    this.voucherAvaiable$ = this.store.select(selectVoucherAvaiable);
+    this.calcActualDiscountVoucher$ = this.store.select(selectCalcActualDiscountVoucher);
     if (this.productIdParam) {
       this.rentalPriceActual$ = this.store
         .select(selectRentalActualPriceById(this.productIdParam))

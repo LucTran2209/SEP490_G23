@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as RentalActions from './rental.actions';
+import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
 
 export interface OrderState {
   productId: string | number;
@@ -16,10 +17,14 @@ export interface OrderState {
 }
 export interface RentalOrderState {
   orders: OrderState[];
+  voucherApply: VoucherDetailOutputDto | null;
+  discountPriceAfterVoucher: number
 }
 
 const initialState: RentalOrderState = {
   orders: [],
+  voucherApply: null,
+  discountPriceAfterVoucher: 0
 };
 const checkProductRentalExist = (
   orders: OrderState[],
@@ -123,7 +128,19 @@ export const rentalOrderReducer = createReducer(
   }),
 
   on(RentalActions.removeOneOrder, (state, action) => {
-    const updatedOrders = state.orders.filter(order => order.productId !== action.pid);
+    const updatedOrders = state.orders.filter(
+      (order) => order.productId !== action.pid
+    );
     return { ...state, orders: [...updatedOrders] };
-  })
+  }),
+  on(RentalActions.applyVoucher, (state, action) => {
+    const { voucher } = action;
+    let totalRentalActualPrice = state.orders.reduce((acc,init) => acc + Number(init.rentalActualPrice),0);
+      const tmpDiscount = (voucher.discountValue / 100) * totalRentalActualPrice;
+      const actualDiscountPrice = tmpDiscount <= voucher.maximumDiscount ? tmpDiscount : voucher.maximumDiscount;
+    return { ...state, voucherApply: voucher, discountPriceAfterVoucher: actualDiscountPrice };
+  }),
+  on(RentalActions.removeVoucher, (state, action) => {
+    return { ...state, voucherApply: null, discountPriceAfterVoucher: 0 };
+  }),
 );

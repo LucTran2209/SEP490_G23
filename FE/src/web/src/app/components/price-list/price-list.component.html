@@ -46,7 +46,7 @@
   </div>
 
   <!-- Discount Code Section -->
-  <!-- <div class="mb-2">
+  <div class="mb-2"  *ngIf="voucherAvaiable$ | async as voucher">
     <h6 class="text-base font-medium leading-6 my-3">
       <span class="text-red-500">* &nbsp;</span>Mã giảm giá
     </h6>
@@ -54,34 +54,20 @@
       <tbody>
         <tr>
           <td>
-            <p>Máy giặt XQB30MJ102W</p>
-          </td>
-          <td>
-            <p>Mã MI75W</p>
+            <p>Mã {{voucher.code}}</p>
           </td>
           <td class="text-end text-red-500">
-            <p class="font-semibold">-đ80000</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>Máy giặt XQB30MJ102W</p>
-          </td>
-          <td>
-            <p>Mã MI75W</p>
-          </td>
-          <td class="text-end text-red-500">
-            <p class="font-semibold">-đ80000</p>
+            <p class="font-semibold">-{{calcActualDiscountVoucher$ | async | currency:'VND':'VND':'1.0-0':'vi'}}</p>
           </td>
         </tr>
       </tbody>
     </table>
-  </div> -->
+  </div>
 
   <!-- Total Price Section -->
   <div class="flex justify-between items-center">
     <h6 class="font-semibold text-base my-3">Thành tiền</h6>
-    <p class="font-semibold">{{ calculateTotalAmount(allProductRental) | currency:'VND':'VND':'1.0-0':'vi'}}</p>
+    <p class="font-semibold">{{ calculateTotalAmount(allProductRental, calcActualDiscountVoucher$ | async) | currency:'VND':'VND':'1.0-0':'vi'}}</p>
   </div>
 
 </ng-container>
