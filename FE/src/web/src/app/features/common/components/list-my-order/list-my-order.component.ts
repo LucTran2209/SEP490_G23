@@ -3,14 +3,12 @@ import { OrderService } from '../../../../services/order.service';
 import { MyOrderDetailDto, MyOrderOutputDto, OrderDetailResultService, OrderResultService, OrderStatus } from '../../../../interfaces/order.interface';
 import { UserService } from '../../../../services/user.service';
 import { UserProfileService } from '../../../../services/user-profile.service';
-import { ProfileResultService } from '../../../../interfaces/user.interface';
 import { LoadingService } from '../../../../services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FeedBackInputDto } from '../../../../interfaces/feedback.interface';
 import { MessageResponseService } from '../../../../services/message-response.service';
-import { or } from '@angular/fire/firestore';
 import { ORDER_STATUS } from '../../../../utils/constant';
 
 @Component({
@@ -23,6 +21,8 @@ export class ListMyOrderComponent implements OnInit {
   selectedFilter = 7;
   isVisible : boolean = false;
   isVisibleCancel: boolean = false;
+  isVisibleReceive: boolean = false;
+  isVisibleReturn: boolean = false;
   username: string = '';
   totalOrders = 0;     
   currentPage = 1;    
@@ -67,7 +67,7 @@ export class ListMyOrderComponent implements OnInit {
     { title: 'CHỜ THANH TOÁN', status: 1, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, isShowBtn3: false, isShowBtn4: false, },
     { title: 'ĐÃ THANH TOÁN', status: 2, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: true, isShowBtn3: false, isShowBtn4: false, },
     { title: 'CHỜ GIAO HÀNG', status: 3, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: true, isShowBtn4: false, },
-    { title: 'ĐÃ NHẬN HÀNG', status: 4, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, },
+    { title: 'ĐÃ NHẬN HÀNG', status: 4, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: false, isShowBtn4: true, },
     { title: 'ĐANG TRẢ HÀNG', status: 5, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, },
     { title: 'HOÀN THÀNH', status: 6, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: true, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, },
     { title: 'HỦY ĐƠN', status: 7, currentPage: 1, totalOrders: 0, searchText: '', orders: [], ordersNull: true, placeholder: 'Tìm kiếm...',isShowBtn1: false, isShowBtn2: false, isShowBtn3: false, isShowBtn4: false, }
@@ -124,6 +124,7 @@ export class ListMyOrderComponent implements OnInit {
         this.loadingService.setOtherLoading('loaded');
         this.orderList = res.data.items;  // Gán kết quả trả về
         this.orderListNull = !this.orderList || this.orderList.length === 0;
+        this.pageSize = res.data.totalCount;
         this.ListOrdersByStatus();  // Lọc theo trạng thái
         console.log(res.data.items);
         this.cdRef.markForCheck();
@@ -281,6 +282,74 @@ export class ListMyOrderComponent implements OnInit {
       error: (err) => {
         console.error('Hủy đơn hàng thất bại:', err); // Ghi log lỗi
         this.messageService.handleError('Hủy đơn hàng thất bại!');
+      },
+      complete: () => {
+        this.loadingService.setOtherLoading('loaded'); // Tắt trạng thái tải
+      },
+    });
+  }
+  showConfirmReceiveForm(orderId: string){
+    this.isVisibleReceive = true;
+    this.orderId = orderId;
+  }
+  showConfirmReturnForm(orderId: string){
+    this.isVisibleReturn = true;
+    this.orderId = orderId;
+  }
+  handleCloseReceiveForm(){
+    this.isVisibleReceive = false;
+  }
+  handleCloseReturnForm(){
+    this.isVisibleReturn = false;
+  }
+  changeStatusReceive(status: OrderStatus) {
+    // Tạo FormData
+    const formData = new FormData();
+    formData.append('Id', '');
+    formData.append('OrderId', this.orderId);
+    formData.append('Message', status.message);
+    formData.append('Status', `${ORDER_STATUS.REFUND}`);
+    formData.append('FileAttach', '');
+  
+    // Hiển thị trạng thái tải
+    this.loadingService.setLoading();
+  
+    // Gửi yêu cầu hủy đơn hàng
+    this.orderService.requestOrderStatus(formData).subscribe({
+      next: () => {
+        this.messageService.showSuccess('Xác nhận thành công!');
+        this.handleCloseReceiveForm();
+        this.loadOrders(this.currentPage, this.pageSize); // Tải lại danh sách đơn hàng
+      },
+      error: (err) => {
+        this.messageService.handleError('Xác nhận thất bại!');
+      },
+      complete: () => {
+        this.loadingService.setOtherLoading('loaded'); // Tắt trạng thái tải
+      },
+    });
+  }
+  changeStatusReturn(status: OrderStatus) {
+    // Tạo FormData
+    const formData = new FormData();
+    formData.append('Id', '');
+    formData.append('OrderId', this.orderId);
+    formData.append('Message', status.message);
+    formData.append('Status', `${ORDER_STATUS.DEPOSIT_REFUND}`);
+    formData.append('FileAttach', '');
+  
+    // Hiển thị trạng thái tải
+    this.loadingService.setLoading();
+  
+    // Gửi yêu cầu hủy đơn hàng
+    this.orderService.requestOrderStatus(formData).subscribe({
+      next: () => {
+        this.messageService.showSuccess('Xác nhận thành công!');
+        this.handleCloseReturnForm();
+        this.loadOrders(this.currentPage, this.pageSize); // Tải lại danh sách đơn hàng
+      },
+      error: (err) => {
+        this.messageService.handleError('Xác nhận thất bại!');
       },
       complete: () => {
         this.loadingService.setOtherLoading('loaded'); // Tắt trạng thái tải

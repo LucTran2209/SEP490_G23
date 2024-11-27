@@ -134,6 +134,7 @@ import { FormCancelOrderComponent } from '../core/form/form-cancel-order/form-ca
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { ListVoucherAvailableComponent } from '../modal/list-voucher-available/list-voucher-available.component';
 import { DetailVoucherAvailableComponent } from '../modal/detail-voucher-available/detail-voucher-available.component';
+import { FormConfirmComponent } from '../core/form/form-confirm/form-confirm.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
@@ -265,6 +266,7 @@ const SHARED_MODULES = [
   InputAddressComponent,
   VoucherCardComponent,
   FormCancelOrderComponent,
+  FormConfirmComponent,
 ];
 
 @NgModule({

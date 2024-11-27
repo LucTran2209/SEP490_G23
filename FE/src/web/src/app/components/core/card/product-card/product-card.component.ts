@@ -84,6 +84,9 @@ export class ProductCardComponent implements OnInit, AfterContentInit {
         this.product.productName,
         '.i',
         `${this.product.id}`,
+        '.suid',
+        `${this.product.subCategory.id}`,
+        `${this.product.subCategory.subCategoryName}`
       ]);
     }
   }

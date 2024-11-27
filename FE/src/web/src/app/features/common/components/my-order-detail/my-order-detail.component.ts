@@ -11,6 +11,9 @@ import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { PaymentService } from '../../../../services/payment.service';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { ProductItemResponse, ProductOutputDto, ProductResultService } from '../../../../interfaces/product.interface';
+import { ProductService } from '../../../../services/product.service';
+import { BaseResponseApi } from '../../../../interfaces/api.interface';
 
 @Component({
   selector: 'app-my-order-detail',
@@ -42,6 +45,7 @@ export class MyOrderDetailComponent implements OnInit {
     private timerCalculatorService: RentalTimerService,
     private paymentService: PaymentService,
     private messageService: MessageResponseService,
+    private productService: ProductService,
   ){
     this.loading$ = this.loadingService.status$;
   }
@@ -70,6 +74,19 @@ export class MyOrderDetailComponent implements OnInit {
       error: () => {
       }
     })
+  }
+  onNavigate(productId: string) {
+    this.productService.getProductDetail(productId).subscribe((res: BaseResponseApi<ProductItemResponse>) => {
+      this.router.navigate([
+        '/common/product-detail',
+        res.data.productName,
+        '.i',
+        `${res.data.id}`,
+        '.suid',
+        `${res.data.subCategory?.id}`,
+        `${res.data.subCategory?.subCategoryName}`
+      ]);
+    });
   }
   convertRentalDay(startDate: string, endDate: string) {
     let diffDate_start = new Date(startDate);

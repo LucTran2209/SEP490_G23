@@ -10,10 +10,16 @@
     <form nz-form [formGroup]="formCancelOrder" (ngSubmit)="onSubmit()">
       <nz-form-item>
         <nz-form-label [nzSpan]="24" nzFor="message" nzRequired>
-          Nhập Lý Do
+          Lý Do Hủy Đơn
         </nz-form-label>
         <nz-form-control>
-          <input nz-input class="w-full" formControlName="message" />
+          <textarea
+            nz-input
+            class="w-full"
+            formControlName="message"
+            placeholder="Lý do hủy đơn"
+            [nzAutosize]="{ minRows: 6, maxRows: 12 }"
+          ></textarea>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="text-center">
