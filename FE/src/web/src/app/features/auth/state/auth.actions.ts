@@ -78,7 +78,7 @@ export const forgotPassword_success = createAction(
 );
 export const forgotPassword_failure = createAction(
   FORGOT_PASSWORD_FAILURE,
-  props<{ error: string }>()
+  props<{ error: string, statusCode: number }>()
 );
 
 export const resetPassword = createAction(

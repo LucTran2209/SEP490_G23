@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import dayjs from 'dayjs';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
@@ -92,6 +92,7 @@ export class ListVoucherAvailableComponent implements OnInit, OnDestroy {
       )
       .subscribe((res) => {
         this.filterData$ = of(res);
+        this.cdRef.detectChanges();
       });
   }
 
@@ -104,6 +105,7 @@ export class ListVoucherAvailableComponent implements OnInit, OnDestroy {
         next: (res) => {
           this.data$ = of(res);
           this.filterData$ = of(res);
+          this.cdRef.detectChanges();
         },
         error: () => {
           this.loading = false;
@@ -119,7 +121,8 @@ export class ListVoucherAvailableComponent implements OnInit, OnDestroy {
     private modalRef: NzModalRef,
     private voucherService: VoucherService,
     private store: Store,
-    private toastMS: MessageResponseService
+    private toastMS: MessageResponseService,
+    private cdRef: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.loadListVoucherAvaiable();

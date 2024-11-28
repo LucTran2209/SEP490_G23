@@ -89,8 +89,12 @@ export class AuthEffect {
                 email: data.email,
               });
             }),
-            catchError((err) => {
-              return of(AuthActions.forgotPassword_failure({ error: 'Bạn đã nhập sai email. Email này không tồn tại trong hệ thống của chúng tôi' }));
+            catchError((error) => {
+              console.log('error',error);
+              const errorMessage = getErrorMessage(error);
+              const statusCode = error.status || error.statusCode;
+             
+              return of(AuthActions.forgotPassword_failure({ error: errorMessage, statusCode }));
             })
           )
         )
@@ -136,11 +140,11 @@ export class AuthEffect {
               }
             }),
             catchError((err) => {
-              const errorMessage = err.error?.message || 'Đã xảy ra lỗi!';
               const statusCode = err.status;
+              let diffErrArr = err.errorList.map((item: any) => item.errorMessage)
               return of(
                 AuthActions.resetPassword_failure({
-                  error: 'Đường dẫn hết thời gian thay đổi mật khẩu!',
+                  error: diffErrArr,
                   statusCode: statusCode,
                 })
               );

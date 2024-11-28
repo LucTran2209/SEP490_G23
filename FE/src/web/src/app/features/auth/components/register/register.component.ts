@@ -1,19 +1,18 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { map, Observable } from 'rxjs';
+import { HttpStatusCode } from '../../../../configs/status-code.config';
 import {
   IConfirmEmailRequest,
   IRegisterRequest,
 } from '../../../../interfaces/account.interface';
+import { AuthService } from '../../../../services/auth.service';
 import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import { FormatDate } from '../../../../utils/constant';
 import * as AuthActions from '../../state/auth.actions';
-import { map, Observable } from 'rxjs';
-import { HttpStatusCode } from '../../../../configs/status-code.config';
 import { selectStatusCode } from '../../state/auth.feature';
-import { MyValidators } from '../../../../utils/validators';
-import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -66,6 +65,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.store.dispatch(AuthActions.reset_state());
   }
 
+  canDeactivate(): boolean {
+    return false; 
+  }
   handleselectAddress(address: string) {
     this.forminfocommongroup.patchValue({ address });
   }
