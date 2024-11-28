@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -14,6 +15,8 @@ import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import * as AuthActions from '../../state/auth.actions';
 import { selectIsRecoveringPassword } from '../../state/auth.feature';
+import dayjs from 'dayjs';
+import { countDownTimer } from '../../../../utils/anonymous.helper';
 
 @Component({
   selector: 'app-forgot-password',
@@ -21,11 +24,11 @@ import { selectIsRecoveringPassword } from '../../state/auth.feature';
   styleUrl: './forgot-password.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
   timeClock$?: Observable<ItimeClock>;
   otpErrorMessage: string | null = null;
   isTimeClockInitialized = false;
-  isRecoveringForgotPassword: Observable<boolean>;
+  isRecoveringForgotPassword: Observable<boolean> = of(false);
 
   forgotPasswordForm = this.formbuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -39,6 +42,8 @@ export class ForgotPasswordComponent implements OnInit {
       this.store.dispatch(
         AuthActions.forgotPassword({ data: requestForgotPassowrd })
       );
+      this.isRecoveringForgotPassword = of(true);
+      this.getCountDownTime();
     } else {
       Object.values(this.forgotPasswordForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -49,6 +54,18 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
+
+  getCountDownTime(){
+    let currentDate = new Date();
+    let addMore15Min = dayjs(currentDate).add(15,'minute').toDate();
+    this.timeClock$ = countDownTimer(currentDate, addMore15Min);
+
+  }
+
+  canDeactivate(): boolean {
+    return false;
+  }
+
   constructor(
     private formbuilder: FormBuilder,
     private cdRef: ChangeDetectorRef,
@@ -56,11 +73,12 @@ export class ForgotPasswordComponent implements OnInit {
     private _authSerivce: AuthService,
     private storageSerive: StorageService
   ) {
-    // this.isRecoveringForgotPassword = of(true);
-    this.isRecoveringForgotPassword = this.store.select(
-      selectIsRecoveringPassword
-    );
+    
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.store.dispatch(AuthActions.reset_state());
+  }
 }
