@@ -2,6 +2,7 @@
 {
     public class GetUserVoucherOutputDto
     {
+        public Guid Id { get; set; }
         public Guid ShopId { get; set; }
         public string? Code { get; set; }
         public string? Description { get; set; }

@@ -75,5 +75,12 @@ namespace BE.Api.Controllers
             var result = await authenticationService.CheckNotExistedEmailAsync(inputDto);
             return ReturnFollowStatusCode(result);
         }
+
+        [HttpPost("check-not-existed-username")]
+        public async Task<IActionResult> CheckNotExistedUserName([FromBody] CheckNotExistedUserNameInputDto inputDto)
+        {
+            var result = await authenticationService.CheckNotExistedUserNameAsync(inputDto);
+            return ReturnFollowStatusCode(result);
+        }
     }
 }
