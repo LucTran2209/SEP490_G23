@@ -139,7 +139,7 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Bắt đầu thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeStart$ | async).value }} -
+            {{ (selectedTimeStart$ | async).label }} -
             {{ time[0] | date : "dd/MM/yyyy" }}
           </p>
         </div>
@@ -230,7 +230,7 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Kết thúc thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeEnd$ | async).value }} -
+            {{ (selectedTimeEnd$ | async).label }} -
             {{ time[1] | date : "dd/MM/yyyy" }}
           </p>
         </div>

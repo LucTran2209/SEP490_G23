@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import dayjs from 'dayjs';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
@@ -23,6 +23,7 @@ import { applyVoucher } from '../../../features/common/state/rental/rental.actio
   selector: 'app-list-voucher-available',
   templateUrl: './list-voucher-available.component.html',
   styleUrl: './list-voucher-available.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListVoucherAvailableComponent implements OnInit, OnDestroy {
   data$?: Observable<VoucherDetailOutputDto[]>;
