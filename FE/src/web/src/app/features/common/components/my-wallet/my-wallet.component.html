@@ -45,14 +45,15 @@
   </div>
   <div
     class="bg-white p-3 rounded-xl shadow-lg text-center cursor-pointer hover:bg-blue-50 hover:shadow-xl hover:scale-105 transition duration-300"
+    (click)="toggleHistory()"
   >
     <span
       nz-icon
-      nzType="qrcode"
+      nzType="history"
       nzTheme="outline"
       class="text-xl text-blue-900"
     ></span>
-    <h3 class="font-highlight text-slate-400 mt-2">QR Thanh Toán</h3>
+    <h3 class="font-highlight text-slate-400 mt-2">Lịch Sử Giao Dịch</h3>
   </div>
   <div
     class="bg-white p-3 rounded-xl shadow-lg text-center cursor-pointer hover:bg-blue-50 hover:shadow-xl hover:scale-105 transition duration-300"
@@ -79,4 +80,68 @@
 </div>
 <div class="my-5 mb-10 flex justify-center" *ngIf="isRecharge">
   <app-form-recharge (saveForm)="rechargeMoney($event)"></app-form-recharge>
+</div>
+<div class="m-5" *ngIf="isShowHistory">
+  <h4 class="text-2xl my-2">Lịch Sử Giao Dịch</h4>
+  <div class="my-2 flex justify-center">
+    <nz-form-item>
+      <nz-form-control [nzSpan]="18">
+        <nz-range-picker
+          [(ngModel)]="dateRange"
+          (ngModelChange)="onDateRangeChange($event)"
+          nzShowTime
+          nzFormat="yyyy-MM-dd HH:mm:ss"
+        ></nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" class="search-button">
+        <button nz-button nzType="primary" (click)="search()">Tìm kiếm</button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <nz-table #middleTable nzSize="middle" [nzData]="data">
+    <thead>
+      <tr>
+        <th>Thời Gian Giao Dịch</th>
+        <th>Số tiền Giao Dịch</th>
+        <th>Trạng thái giao dịch</th>
+        <th>Loại giao dịch</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (data of middleTable.data; track data) {
+      <tr>
+        <td>{{ data.createdDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+        <td>
+          @if(data.rechargeType == 1){
+          <p class="text-red-500">
+            - {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
+          </p>
+          }@else {
+          <p class="text-[#00b141]">
+            + {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
+          </p>
+          }
+        </td>
+        <td>
+          <ng-container [ngSwitch]="data.rechargeStatus">
+            <p *ngSwitchCase="0" class="status-warning">Chờ xử lý</p>
+            <p *ngSwitchCase="1" class="status-success">Thành công</p>
+            <p *ngSwitchCase="2" class="status-error">Thất bại</p>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container [ngSwitch]="data.rechargeType">
+            <p *ngSwitchCase="0" class="uppercase">Nạp tiền</p>
+            <p *ngSwitchCase="1" class="uppercase">Thanh Toán</p>
+            <p *ngSwitchCase="2" class="uppercase">Nhận Cọc</p>
+            <p *ngSwitchCase="3" class="uppercase">Hoàn Cọc</p>
+          </ng-container>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </nz-table>
 </div>
