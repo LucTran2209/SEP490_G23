@@ -14,7 +14,7 @@ public class UsersDataSeedContributor : IDataSeedContributor
 
     public async Task SeedAsync()
     {
-        var email = "abc@gamil.com";
+        var email = "admin.erms@gmail.com";
         var user = await context.Users.SingleOrDefaultAsync(u => u.Email == email);
 
         if (user == null)
