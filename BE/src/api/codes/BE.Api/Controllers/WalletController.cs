@@ -43,7 +43,14 @@ namespace BE.Api.Controllers
 
             return ReturnFollowStatusCode(result);
         }
-        
 
+        [HttpGet("list")]
+        [Authorize]
+        public async Task<IActionResult> GetListRechargeHistoryAsync([FromQuery] TransmitHistoryInputDto inputDto)
+        {
+            var result = await _walletService.GetListHistoryAsync(inputDto);
+
+            return ReturnFollowStatusCode(result);
+        }
     }
 }

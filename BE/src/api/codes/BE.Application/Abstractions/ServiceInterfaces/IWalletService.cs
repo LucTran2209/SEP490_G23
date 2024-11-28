@@ -8,6 +8,10 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> RechargeMoneyAsync(RechargeMoneyInputDto inputDto, HttpContext context);
         Task<ResultService> PaymentExecuteAsync(IQueryCollection query);
         Task<ResultService> DepoitMoneyAsync(DepoitMoneyInputDto inputDto);
-        Task<ResultService> TransmitHistoryAsync(TransmitHistoryInputDto inputDto);
+        Task<ResultService> GetListHistoryAsync(TransmitHistoryInputDto inputDto);
+
+        Task AddHistory(Guid userId, decimal? BeforeBalance, decimal? AmountRecharge, RechargeStatus RechargeStatus, RechargeType RechargeType);
+        Task ChangeBalance(Guid userId, decimal amount, bool isAdding);
+
     }
 }

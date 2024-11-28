@@ -1,9 +1,9 @@
 ﻿
+using BE.Application.Common.Dtos;
 using BE.Application.Services.Wallets.WalletServiceInputDto;
 using BE.Infrastructure.VnPaySandbox;
 using BE.Infrastructure.VnPaySandbox.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BE.Application.Services.Wallets
 {
@@ -36,6 +36,7 @@ namespace BE.Application.Services.Wallets
                 BeforeBalance = user.Balance,
                 AmountRecharge = (decimal)inputDto.Amount,
                 RechargeStatus = RechargeStatus.WaitingPayment,
+                RechargeType = RechargeType.Recharge,
             };
 
             paymentModel.Name = user.Id.ToString();
@@ -76,7 +77,7 @@ namespace BE.Application.Services.Wallets
 
             if (query.TryGetValue("vnp_Amount", out var value) && status.Success)
             {
-                currentUser.Balance += Decimal.Parse(value!);
+                currentUser.Balance += Decimal.Parse(value!)/100    ;
             }
 
             var rechargeHistory = await unitOfWork.RechargeHistoryRepository.FindByIdAsync(Guid.Parse(words[1]));
@@ -113,13 +114,12 @@ namespace BE.Application.Services.Wallets
             {
                 StatusCode = (int)HttpStatusCode.Unauthorized,
             };
-            userDepoit.Balance -= inputDto.DepoitAmount;
-            await unitOfWork.UserRepository.UpdateAsync(userDepoit);
+            await ChangeBalance(userDepoit.Id, inputDto.DepoitAmount, false);
 
             // Update Balance Losser
             var ownerRentalShop = await unitOfWork.UserRepository.FindByRentalShopIdAsync(inputDto.RentalShopId);
-            ownerRentalShop!.Balance += inputDto.DepoitAmount;
-            await unitOfWork.UserRepository.UpdateAsync(ownerRentalShop!);
+            await ChangeBalance(ownerRentalShop!.Id, inputDto.DepoitAmount, true);
+
 
             // Update Status Order
             var orderStatus = new OrderStatus
@@ -127,9 +127,6 @@ namespace BE.Application.Services.Wallets
                 OrderId = inputDto.OrderId,
                 Status = RequestStatus.PAYMENTED,
             };
-
-            // Update History
-            //TODO:
 
             await unitOfWork.OrderStatusRepository.AddAsync(orderStatus);
 
@@ -141,9 +138,50 @@ namespace BE.Application.Services.Wallets
             };
         }
 
-        public Task<ResultService> TransmitHistoryAsync(TransmitHistoryInputDto inputDto)
+
+        public async Task ChangeBalance(Guid userId, decimal amount, bool isAdding)
         {
-            throw new NotImplementedException();
+            var user = await unitOfWork.UserRepository.FindByIdAsync(userId);
+
+            if (user == null) return;
+
+            if (isAdding)
+            {
+                user.Balance += amount;
+            }
+            else
+            {
+                user.Balance -= amount;
+            }
+
+            await AddHistory(userId, user.Balance, amount, RechargeStatus.Success, isAdding ? RechargeType.Recieve : RechargeType.Depoited);
+
+            await unitOfWork.UserRepository.UpdateAsync(user);
+        }
+
+        public async Task<ResultService> GetListHistoryAsync(TransmitHistoryInputDto inputDto)
+        {
+            var histories = await unitOfWork.RechargeHistoryRepository.GetListHistory(user.Id, inputDto.From, inputDto.To);
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Datas = _mapper.Map<List<RechargeHistoryDto>>(histories)
+            };
+        }
+
+        public async Task AddHistory(Guid userId, decimal? beforeBalance, decimal? amountRecharge, RechargeStatus rechargeStatus, RechargeType rechargeType)
+        {
+            var history = new RechargeHistory()
+            {
+                UserId = userId,
+                BeforeBalance = beforeBalance,
+                AmountRecharge = amountRecharge,
+                RechargeStatus = rechargeStatus,
+                RechargeType = rechargeType
+            };
+
+            await unitOfWork.RechargeHistoryRepository.AddAsync(history);
         }
     }
 }
