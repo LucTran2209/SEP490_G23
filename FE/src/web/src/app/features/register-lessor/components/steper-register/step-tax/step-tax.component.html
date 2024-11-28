@@ -13,9 +13,11 @@
       >́Giấy phép đăng ký kinh doanh</nz-form-label
     >
     <nz-form-control [nzSpan]="24" class="relative">
-      <app-upload-list title="Tải Giáy phép đăng ký kinh doanh" boundTypeFile=".pdf"
-      (listFiles)="onSelectedFile($event)"
-      (removeAFile)="onRemoveAFile($event)"
+      <app-upload-list
+        title="Tải Giáy phép đăng ký kinh doanh"
+        boundTypeFile=".pdf"
+        (listFiles)="onSelectedFile($event)"
+        (removeAFile)="onRemoveAFile($event)"
       />
     </nz-form-control>
   </nz-form-item>
@@ -23,78 +25,8 @@
     <nz-form-label [nzSpan]="24" nzRequired
       >Địa chỉ đăng ký kinh doanh</nz-form-label
     >
-    <div class="flex items-center gap-x-3 w-full">
-      <nz-form-control>
-        <nz-select
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Chọn tỉnh thành"
-          formControlName="address_province"
-          [compareWith]="compareFn"
-          name="province"
-        >
-          @if((statusProvince$ | async) !== 'loading'){ @for (item of
-          (getListProvince$ | async); track $index) {
-          <nz-option
-            [nzLabel]="item.name"
-            [nzValue]="{ id: item.id, name: item.name }"
-          ></nz-option>
-          } } @else {
-          <nz-option nzDisabled nzCustomContent>
-            <span nz-icon nzType="loading" class="loading-icon"></span>
-            Đăng tải...
-          </nz-option>
-          }
-        </nz-select>
-      </nz-form-control>
-      <nz-form-control>
-        <nz-select
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Chọn quận, huyện"
-          formControlName="address_district"
-          name="disctrict"
-          [compareWith]="compareFn"
-          [nzDisabled]="!formTax.get('address_province')?.value"
-        >
-          @if((statusDistrict$ | async) !== 'loading'){ @for (item of
-          (getListDistrict$ | async); track $index) {
-          <nz-option
-            [nzLabel]="item.name"
-            [nzValue]="{ id: item.id, name: item.name }"
-          ></nz-option>
-          } } @else {
-          <nz-option nzDisabled nzCustomContent>
-            <span nz-icon nzType="loading" class="loading-icon"></span>
-            Đăng tải...
-          </nz-option>
-          }
-        </nz-select>
-      </nz-form-control>
-      <nz-form-control>
-        <nz-select
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Chọn phường, xã"
-          name="ward"
-          formControlName="address_ward"
-          [compareWith]="compareFn"
-          [nzDisabled]="!formTax.get('address_district')?.value"
-        >
-          @if((statusWard$ | async) !== 'loading'){ @for (item of (getListWard$
-          | async); track $index) {
-          <nz-option
-            [nzLabel]="item.name"
-            [nzValue]="{ id: item.id, name: item.name }"
-          ></nz-option>
-          } } @else {
-          <nz-option nzDisabled nzCustomContent>
-            <span nz-icon nzType="loading" class="loading-icon"></span>
-            Đăng tải...
-          </nz-option>
-          }
-        </nz-select>
-      </nz-form-control>
+    <div class="gap-x-3 w-full">
+      <app-input-address formControlName="address"></app-input-address>
     </div>
   </nz-form-item>
   <nz-form-item>
