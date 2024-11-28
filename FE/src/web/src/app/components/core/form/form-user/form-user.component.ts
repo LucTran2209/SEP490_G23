@@ -66,7 +66,8 @@ export class FormUserComponent{
 
   populateForm(): void {
     const dateOfBirth = new Date(this.userUpdate.dateOfBirth);
-    const isoString = dateOfBirth.toISOString().split('T')[0];
+    // Trích xuất phần ngày mà không ảnh hưởng múi giờ
+    const localDateString = dateOfBirth.toLocaleDateString('en-CA');
     
     this.userForm.patchValue({
       fullName: this.userUpdate.fullName,
@@ -74,7 +75,7 @@ export class FormUserComponent{
       phoneNumber: this.userUpdate.phoneNumber,
       address: this.userUpdate.address,
       gender: this.userUpdate.gender,
-      dateOfBirth: isoString, // Format for date
+      dateOfBirth: localDateString, // Format for date
       avatarPersonal: this.userUpdate.avatarPersonal ?? null, // Ensure it's null if undefined
     });
     console.log('FormControl Address:', this.userForm.get('address')?.value);

@@ -26,9 +26,11 @@ export class MyOrderDetailComponent implements OnInit {
   orderId: string = '';
   order!: MyOrderDetailDto;
   totalPrice = 0;
-  totalDailyRent: number = 0;
+  totalRentPrice: number = 0;
   numberofRentalTimes: number = 0;
+  realTotal: number = 0;
   timeString: string = '';
+  voucherPrice: number = 0;
   loading$?: Observable<StatusProcess>;
   orderStatusMessage: string = '';
   orderStatusClass: string = '';
@@ -96,9 +98,9 @@ export class MyOrderDetailComponent implements OnInit {
       diffDate_end,
     ]);
   }
-  calculateTotalRentAndDeposit(): void {
-    this.totalPrice = this.order.totalRentPrice * this.convertRentalDay(this.order.startDate, this.order.endDate) + this.order.totalDepositPrice;
-  }
+  // calculateTotalRentAndDeposit(): void {
+  //   this.totalPrice = this.order.totalRentPrice * this.convertRentalDay(this.order.startDate, this.order.endDate) + this.order.totalDepositPrice;
+  // }
   convertStatus(orderStatus: ORDER_STATUS) {
     return convertStatusOrder(orderStatus);
   }
@@ -135,4 +137,20 @@ export class MyOrderDetailComponent implements OnInit {
     this.messageService.showInfo('Bạn Chưa Thanh Toán Đơn Hàng Này!', 3000);
     this.isVisible = false;
   }
+
+  calculateTotalRentAndDeposit(): void {
+    // Tính tổng tiền thuê dựa trên từng sản phẩm
+    const totalRentPrice = this.order.orderDetails.reduce((total, detail) => {
+      const rentalPrice = detail.product.rentalPrice; // Giá thuê sản phẩm
+      const quantity = detail.quantity; // Số lượng sản phẩm
+      return total + rentalPrice * quantity;
+    }, 0);
+    this.totalRentPrice = totalRentPrice;
+     this.realTotal = totalRentPrice * this.convertRentalDay(this.order.startDate, this.order.endDate) + this.order.totalDepositPrice;
+     // Tính tổng tiền thuê và tiền đặt cọc
+     this.totalPrice = this.order.totalRentPrice + this.order.totalDepositPrice;
+     
+     this.voucherPrice = this.realTotal - this.totalPrice;
+  }
+  
 }

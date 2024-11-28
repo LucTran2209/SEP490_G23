@@ -67,7 +67,7 @@
                       <p>Số lượng:</p>
                       <p>Giá thuê:</p>
                       <p class="text-[#525E6F]">
-                        {{ orderDetail.product.quantity }}
+                        {{ orderDetail.quantity }}
                       </p>
                       <p class="text-[#525E6F]">
                         {{
@@ -81,14 +81,17 @@
                 </div>
               </div>
               <div class="columns-2 gap-6 mt-8 pb-4 border-b border-gray-300">
-                <p class="mb-2">Giá thuê sản phẩm (1 ngày):</p>
+                <p class="mb-2">Giá thuê 1 ngày của đơn hàng:</p>
                 <p class="mb-2">Phí đặt cọc:</p>
                 <p class="mb-2">Thời gian thuê:</p>
                 <p class="mb-2">Ngày nhận:</p>
                 <p class="mb-2">Ngày trả:</p>
-                <p class="mb-2">Thành tiền:</p>
+                <p class="mb-2">Tổng tiền thuê:</p>
+                @if(voucherPrice !== 0){
+                <p class="mb-2">Voucher của shop:</p>
+                }
                 <p class="text-right mb-2 text-[#525E6F]">
-                  {{ order.totalRentPrice | currency : "VND" : "" : "1.0-0" }}
+                  {{ totalRentPrice | currency : "VND" : "" : "1.0-0" }}
                   VND
                 </p>
                 <p class="text-right mb-2 text-[#525E6F]">
@@ -108,11 +111,16 @@
                   {{ order.endDate | date : "HH:mm dd/MM/yyyy" }}
                 </p>
                 <p class="text-right mb-2 text-[#525E6F]">
-                  {{ totalPrice | currency : "VND" : "" : "1.0-0" }} VND
+                  {{ realTotal | currency : "VND" : "" : "1.0-0" }} VND
                 </p>
+                @if(voucherPrice !== 0){
+                <p class="text-right mb-2 text-[#525E6F]">
+                  - {{ voucherPrice | currency : "VND" : "" : "1.0-0" }} VND
+                </p>
+                }
               </div>
               <div class="columns-2 gap-6 pb-4 border-b border-gray-300 mt-2">
-                <p class="font-medium mb-2">Tổng tiền thuê:</p>
+                <p class="font-medium mb-2">Thành tiền:</p>
                 <p class="font-bold text-xl text-red-500 text-right mb-2">
                   {{ totalPrice | currency : "VND" : "" : "1.0-0" }} VND
                 </p>
