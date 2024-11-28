@@ -1,8 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import dayjs from 'dayjs';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { debounceTime, filter, map, Observable, of, switchMap } from 'rxjs';
+import {
+  debounceTime,
+  filter,
+  map,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import { VoucherDetailOutputDto } from '../../../interfaces/voucher.interface';
 import { VoucherService } from '../../../services/voucher.service';
 import { DetailVoucherAvailableComponent } from '../detail-voucher-available/detail-voucher-available.component';
@@ -16,7 +24,7 @@ import { applyVoucher } from '../../../features/common/state/rental/rental.actio
   templateUrl: './list-voucher-available.component.html',
   styleUrl: './list-voucher-available.component.scss',
 })
-export class ListVoucherAvailableComponent implements OnInit {
+export class ListVoucherAvailableComponent implements OnInit, OnDestroy {
   data$?: Observable<VoucherDetailOutputDto[]>;
   filterData$?: Observable<VoucherDetailOutputDto[]>;
   loading = false;
@@ -24,9 +32,9 @@ export class ListVoucherAvailableComponent implements OnInit {
     null
   );
   private detailVoucherRef: NzModalRef | null = null;
-
+  private subscription?: Subscription;
   applyVoucher(voucher: VoucherDetailOutputDto) {
-    this.store
+    this.subscription = this.store
       .select(selectIsFineApplyVoucherAvaiable(voucher.minimumSpend))
       .subscribe((res) => {
         if (res) {
@@ -115,5 +123,9 @@ export class ListVoucherAvailableComponent implements OnInit {
   ngOnInit(): void {
     this.loadListVoucherAvaiable();
     this.searchVoucherNoApi();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
