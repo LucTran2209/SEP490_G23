@@ -280,6 +280,8 @@ namespace BE.Application.Services.Authentication
         }
         public async Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto)
         {
+            await verifyEmailValidator.ValidateAndThrowAsync(inputDto);
+
             var code = new string(Enumerable.Repeat("0123456789", 4)
                             .Select(s => s[new Random().Next(s.Length)]).ToArray());
             await VerifyMailAsync(inputDto, code);
@@ -294,7 +296,7 @@ namespace BE.Application.Services.Authentication
         }
         public async Task<ResultService> ComfirmVerifyEmailAsync(ComfirmVerifyEmailInputDto inputDto)
         {
-            if (!_memoryCache.TryGetValue(inputDto.Email, out string? storedCode))
+            if (!_memoryCache.TryGetValue(inputDto.Email!, out string? storedCode))
             {
                 return new ResultService
                 {
