@@ -1,14 +1,16 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { filter, Observable, Subscription } from 'rxjs';
-import { removeOneOrder, resetRentalProduct } from '../../../../features/common/state/rental/rental.actions';
+import { removeOneOrder, removeVoucher, resetRentalProduct } from '../../../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../../../features/common/state/rental/rental.reducers';
 import {
   selectAllProductRental,
+  selectCalcActualDiscountVoucher,
   selectTotalAllProductDepositPrice,
   selectTotalAllProductRentalPrice,
+  selectVoucherAvaiable,
 } from '../../../../features/common/state/rental/rental.selectors';
 import { MessageResponseService } from '../../../../services/message-response.service';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
@@ -16,6 +18,8 @@ import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
 import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
+import { ListVoucherAvailableComponent } from '../../../modal/list-voucher-available/list-voucher-available.component';
+import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
 
 interface IProductShortSearch {
   id: string | number;
@@ -36,7 +40,9 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   isVisible = false;
   inputValue?: string;
   productRentalDetailArray$?: Observable<OrderState[]>;
-
+  depositPriceActual$?: Observable<string | number>;
+  voucherAvaiable$?: Observable<VoucherDetailOutputDto | null>
+  calcActualDiscountVoucher$?: Observable<number>;
   rentalPriceActualAll$?: Observable<string | number>;
   depositPriceActualAll$?: Observable<string | number>;
   //date time
@@ -44,11 +50,12 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   //subscription
   private routeSubscription?: Subscription;
   //date time
-
-  
+  private rentalModalRef: NzModalRef | null = null;
+  private dateModalRef: NzModalRef | null = null;
+  private voucherModalRef: NzModalRef | null = null;
 
   onChooseRental(titleTemplate: TemplateRef<any>) {
-    this.modal.create({
+    this.rentalModalRef = this.modal.create({
       nzTitle: titleTemplate,
       nzContent: ConfimOrderProcessComponent,
       nzFooter: null,
@@ -60,7 +67,7 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   }
 
   onChooseDateCustom() {
-    this.modal.create({
+    this.dateModalRef =  this.modal.create({
       nzTitle: 'Thời gian',
       nzContent: PickerTimerComponent,
       nzFooter: null,
@@ -68,8 +75,20 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
     });
   }
 
+  openAvaiableVoucher(){
+    this.voucherModalRef = this.modal.create({
+      nzTitle: 'Mã khuyến mãi',
+      nzContent: ListVoucherAvailableComponent,
+      nzFooter: null,
+      nzWidth: 500,
+    })
+    if (this.voucherModalRef)
+      this.voucherModalRef.afterClose.subscribe(() => {
+        this.voucherModalRef = null;
+      });
+  }
+
 onRemoveRow(pid: string | number){
-  console.log('pid',pid);
 this.store.dispatch(removeOneOrder({pid}))
 }
 
@@ -86,15 +105,21 @@ this.store.dispatch(removeOneOrder({pid}))
     this.isVisible = false;
   }
 
+  onClose(): void {
+    this.store.dispatch(removeVoucher());
+  }
+
   // on choose more
   onChooseRentalMore() {}
 
   selectStateFromNgRx() {
+    this.voucherAvaiable$ = this.store.select(selectVoucherAvaiable);
+    this.calcActualDiscountVoucher$ = this.store.select(selectCalcActualDiscountVoucher);
     this.rentalPriceActualAll$ = this.store.select(
-      selectTotalAllProductRentalPrice()
+      selectTotalAllProductRentalPrice
     );
     this.depositPriceActualAll$ = this.store.select(
-      selectTotalAllProductDepositPrice()
+      selectTotalAllProductDepositPrice
     );
     this.productRentalDetailArray$ = this.store.select(selectAllProductRental);
   }

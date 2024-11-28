@@ -10,11 +10,11 @@
   </div>
   <div>
     <ul nz-list nzSize="large" [nzLoading]="loading">
-      @for (item of data$ | async; track item) {
+      @for (item of filterData$ | async; track item) {
       <li nz-list-item nzNoFlex>
         <ul nz-list-item-actions>
           <nz-list-item-action>
-            <a [routerLink]="['#']" class="text-[##0f6cf8] hover:">Áp dụng</a>
+            <a (click)="applyVoucher(item)" class="text-[##0f6cf8] hover:">Áp dụng</a>
           </nz-list-item-action>
         </ul>
         <div class="inline-flex items-start gap-4">
@@ -43,22 +43,25 @@
               fill="#0f6cf8"
             ></path>
           </svg>
-          <div>
+          <div class="flex-1">
             <p class="font-semibold">{{ item.code }}</p>
             <p>
               {{ item.description }} {{ " " }}
               <span class="underline underline-offset-2 text-[#767676]"
-                ><a (click)="onChooseViewDetailVoucher()">Chi tiết</a></span
+                ><a (click)="onChooseViewDetailVoucher(item)">Chi tiết</a></span
               >
             </p>
             <p class="text-[#f79009]">
-              <span nz-icon nzType="warning" nzTheme="outline"></span> {{ " "
-              }}{{ item.expiryDate | date : "dd/MM/yyyy" }}
+              <span nz-icon nzType="warning" nzTheme="outline"></span>
+              {{ " " }}Hết hạn sau {{ convertDateToDay(item.expiryDate) }} ngày
             </p>
           </div>
         </div>
       </li>
       }
     </ul>
+    @if((filterData$ | async)?.length === 0){
+    <nz-list-empty> </nz-list-empty>
+    }
   </div>
 </div>
