@@ -1,9 +1,11 @@
 <div class="pt-5">
-  <h2 class="font-bold text-4xl">Tạo tài khoản</h2>
-  <p class="text-sm text-gray-300">
-    Thực sự đã có tài khoảng
-    <a class="text-blue-400 hover:text-blue-600" [routerLink]="['/auth/login']"
-      >đăng nhập</a
+  <h2 class="font-bold text-4xl uppercase">Đăng ký tài khoản</h2>
+  <p class="text-base text-gray-700 mt-2">
+    Bạn đã có tài khoản?
+    <a
+      class="text-blue-400 hover:text-blue-600 mx-2"
+      [routerLink]="['/auth/login']"
+      >Đăng nhập</a
     >
   </p>
 </div>
@@ -25,7 +27,7 @@
       <nz-form-control
         [nzSm]="24"
         [nzXs]="24"
-        nzErrorTip="Nhập tên dầu tiên không hợp lệ!"
+        nzErrorTip="Nhập tên của bạn là bắt buộc!"
       >
         <nz-input-group>
           <input
@@ -44,12 +46,12 @@
         nzRequired
         nzFor="lastName"
         class="text-start"
-        >Họ</nz-form-label
+        >Họ Và Tên Đệm</nz-form-label
       >
       <nz-form-control
         [nzSm]="24"
         [nzXs]="24"
-        nzErrorTip="Nhập tên cuối không hợp lệ!"
+        nzErrorTip="Nhập họ và tên đệm của bạn là bắt buộc!"
       >
         <nz-input-group>
           <input
@@ -75,7 +77,7 @@
         [nzXs]="24"
         [nzErrorTip]="
           forminfocommongroup.get('email')?.hasError('required')
-            ? 'Email là bắt buộc!'
+            ? 'Nhập email là bắt buộc!'
             : forminfocommongroup.get('email')?.hasError('email')
             ? 'Nhập email không hợp lệ!'
             : forminfocommongroup.get('email')?.hasError('emailExists')
@@ -108,7 +110,7 @@
       <nz-form-control
         [nzSm]="24"
         [nzXs]="24"
-        nzErrorTip="Nhập tên người dùng không hợp lệ!"
+        nzErrorTip="Nhập tên người dùng là bắt buộc!"
       >
         <nz-input-group>
           <input
@@ -132,11 +134,11 @@
       <nz-form-control
         [nzSm]="24"
         [nzXs]="24"
-        nzErrorTip="Nhập mật khẩu có vấn đề!"
+        nzErrorTip="Nhập mật khẩu không hợp lệ! Vui lòng nhập lại!"
       >
         <nz-input-group [nzSuffix]="suffixTemplate">
           <input
-          [type]="!isPasswordVisible ? 'text' : 'password'"
+            [type]="!isPasswordVisible ? 'text' : 'password'"
             formControlName="password"
             placeholder="**********"
             nz-input
@@ -152,7 +154,7 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <button nz-button type="submit" class="w-full" [nzType]="'primary'">
+      <button nz-button type="submit" class="w-full mt-2" [nzType]="'primary'">
         Tiếp Tục
       </button>
     </nz-form-item>

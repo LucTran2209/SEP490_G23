@@ -50,10 +50,14 @@ export class ProfileComponent implements OnInit {
     
   }
   async showEditProfile() {
+    let avatar: File | null = null;
+    if (typeof this.user.avatarPersonal === 'string' && this.user.avatarPersonal) {
       const response = await fetch(this.user.avatarPersonal);
       const blob = await response.blob();
-      const fileName = 'avatar.png'; // Đặt tên cho file tải về
-      const avatar = new File([blob], fileName, { type: blob.type });
+      
+      // Tạo đối tượng File từ blob
+      avatar = new File([blob], 'avatar.png', { type: blob.type });
+    }
     
     this.userInformation = {
       id: this.user.id,
@@ -63,7 +67,7 @@ export class ProfileComponent implements OnInit {
       address: this.user.address,
       gender: this.user.gender,
       dateOfBirth: this.user.dateOfBirth,
-      avatarPersonal: avatar,
+      avatarPersonal: avatar || null,
     }
     console.log(this.userInformation);
     this.isVisible = true;
@@ -79,9 +83,9 @@ export class ProfileComponent implements OnInit {
         this.messageService.showSuccess('Cập Nhật Hồ Sơ Thành Công!');
         this.handleCloseModal();
         this.loadUser();
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       error: (error) => {
         this.messageService.handleError('Cập Nhật Hồ Sơ Thất Bại!');

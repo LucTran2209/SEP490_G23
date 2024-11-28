@@ -270,6 +270,7 @@ export class ManagerShopComponent  implements OnInit{
       avatarShop: avatarFile || null,
       banner: bannerFile || null,
     };
+    console.log(this.shopData);
   
     // Xử lý avatar preview
     this.avatarUrl = avatarFile ? URL.createObjectURL(avatarFile) : null;

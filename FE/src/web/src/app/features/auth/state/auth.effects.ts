@@ -89,8 +89,8 @@ export class AuthEffect {
                 email: data.email,
               });
             }),
-            catchError((error) => {
-              return of(AuthActions.forgotPassword_failure({ error }));
+            catchError((err) => {
+              return of(AuthActions.forgotPassword_failure({ error: 'Bạn đã nhập sai email. Email này không tồn tại trong hệ thống của chúng tôi' }));
             })
           )
         )
@@ -279,7 +279,7 @@ export class AuthEffect {
           this.loadingSerivce.setOtherLoading('loaded');
           this.messageNZ.create(
             'success',
-            'Vui lòng đăng nhập lại vào hệ thống'
+            'Bạn đã cập nhật mật khẩu mới thành công. Vui lòng đăng nhập lại vào hệ thống!'
           );
           this.router.navigate(['auth/login']);
         })

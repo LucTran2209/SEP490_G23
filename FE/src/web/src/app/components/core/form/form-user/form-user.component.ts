@@ -12,7 +12,7 @@ import { ageValidator } from '../../../../utils/form-validators';
 export class FormUserComponent{
   dateFormat = 'dd/MM/yyyy';
   userForm: FormGroup;
-  avatarPreview: string | ArrayBuffer | null = 'assets/images/default-avatar.jpg'; // Changed to match base64 string or null
+  avatarPreview: string | ArrayBuffer | null = null; // Changed to match base64 string or null
   @Input() user: UserInputDto = {
     userName: '',
     password: '123456789',
@@ -136,6 +136,8 @@ export class FormUserComponent{
     if (input?.files && input.files.length > 0) {
       const file = input.files[0];
       const reader = new FileReader();
+      this.userUpdate.avatarPersonal = file;
+      this.avatarPreview = URL.createObjectURL(file);
 
       // Convert file to Blob for form
       const blob = new Blob([file], { type: file.type });
