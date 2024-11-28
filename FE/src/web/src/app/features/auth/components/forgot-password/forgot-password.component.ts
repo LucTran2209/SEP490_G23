@@ -28,7 +28,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   timeClock$?: Observable<ItimeClock>;
   otpErrorMessage: string | null = null;
   isTimeClockInitialized = false;
-  isRecoveringForgotPassword: Observable<boolean> = of(false);
+  isRecoveringForgotPassword$?: Observable<boolean>;
 
   forgotPasswordForm = this.formbuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -42,7 +42,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       this.store.dispatch(
         AuthActions.forgotPassword({ data: requestForgotPassowrd })
       );
-      this.isRecoveringForgotPassword = of(true);
       this.getCountDownTime();
     } else {
       Object.values(this.forgotPasswordForm.controls).forEach((control) => {
@@ -76,7 +75,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isRecoveringForgotPassword$ = this.store.select(selectIsRecoveringPassword);
+  }
 
   ngOnDestroy(): void {
     this.store.dispatch(AuthActions.reset_state());

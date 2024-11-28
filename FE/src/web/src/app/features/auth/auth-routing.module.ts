@@ -28,7 +28,6 @@ const routes: Routes = [
         path: AuthSlug.ForgotPassWord.label,
         component: ForgotPasswordComponent,
         title: AuthSlug.ForgotPassWord.title,
-        canDeactivate: [WarningOutRegisterGuard],
       },
       {
         path: AuthSlug.ResetPassWord.label,
