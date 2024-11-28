@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { OptionSelect } from '../../../../configs/anonymous.config';
@@ -43,7 +43,8 @@ export class ProductRentalListComponent {
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private cdRef: ChangeDetectorRef,
   ) {
     this.loading$ = this.loadingService.status$;
   }
@@ -95,16 +96,6 @@ export class ProductRentalListComponent {
   }
 
   loadProducts(): void {
-    // // Set up the searchProduct object
-    // if(this.search){
-    //   this.searchProduct.search = this.search;
-    // }
-    // this.searchProduct.pageIndex = this.currentPage;
-    // if(this.subCategory){
-    //   this.searchProduct.subCategory = this.subCategory
-    //     ? this.subCategory.split(',')
-    //     : [];
-    // }
 
     const productRequest: SearchProduct = {
       pageSize: this.pageSize,
@@ -126,6 +117,7 @@ export class ProductRentalListComponent {
         this.shop = res.data.rentalShops[0];
         this.totalProducts = res.data.products.totalCount;
         this.loadingService.setOtherLoading('loaded');
+        this.cdRef.markForCheck();
       },
       error: (err) => {
         console.error('Error loading products:', err);
