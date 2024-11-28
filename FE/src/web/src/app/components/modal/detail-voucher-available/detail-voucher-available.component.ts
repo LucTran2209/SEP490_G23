@@ -11,6 +11,7 @@ import { DISCOUNT_TYPE } from '../../../utils/constant';
 })
 export class DetailVoucherAvailableComponent implements OnInit {
   nzModalData: any = inject(NZ_MODAL_DATA);
+  DISCOUNT_TYPE = DISCOUNT_TYPE;
   voucherDetail?: VoucherDetailOutputDto;
 
   convertTypeDiscount(discountType: DISCOUNT_TYPE){

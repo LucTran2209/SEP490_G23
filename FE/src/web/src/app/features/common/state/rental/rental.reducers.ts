@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as RentalActions from './rental.actions';
 import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
+import { DISCOUNT_TYPE } from '../../../../utils/constant';
 
 export interface OrderState {
   productId: string | number;
@@ -136,8 +137,14 @@ export const rentalOrderReducer = createReducer(
   on(RentalActions.applyVoucher, (state, action) => {
     const { voucher } = action;
     let totalRentalActualPrice = state.orders.reduce((acc,init) => acc + Number(init.rentalActualPrice),0);
+   let actualDiscountPrice;
+    if(voucher.discountType === DISCOUNT_TYPE.PERCENTAGE){
       const tmpDiscount = (voucher.discountValue / 100) * totalRentalActualPrice;
-      const actualDiscountPrice = tmpDiscount <= voucher.maximumDiscount ? tmpDiscount : voucher.maximumDiscount;
+      actualDiscountPrice = tmpDiscount <= voucher.maximumDiscount ? tmpDiscount : voucher.maximumDiscount;
+    }else{
+      actualDiscountPrice =  voucher.discountValue;
+    }
+     
     return { ...state, voucherApply: voucher, discountPriceAfterVoucher: actualDiscountPrice };
   }),
   on(RentalActions.removeVoucher, (state, action) => {

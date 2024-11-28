@@ -31,7 +31,13 @@
       {{ voucherDetail.expiryDate | date : 'dd/MM/YYYY' }}
     </p>
     <p class="text-lg text-[#0f6cf8] text-center">
-      Ưu đãi {{ voucherDetail.discountValue  }} %
+      @if (voucherDetail.discountType === DISCOUNT_TYPE.FIXED_AMOUNT) {
+        Ưu đãi giảm -{{ voucherDetail.discountValue | currency : "VND" : "VND" : "1.0-0" : "vi"   }}
+
+      }@else {
+        Ưu đãi {{ voucherDetail.discountValue  }} %
+        
+      }
       <span *ngIf="voucherDetail.discountType === 0"
         >(tối đa {{ voucherDetail.maximumDiscount | currency : "VND" : "VND" : "1.0-0" : "vi" }})</span
       >
