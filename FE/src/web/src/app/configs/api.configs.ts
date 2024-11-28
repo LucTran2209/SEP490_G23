@@ -308,5 +308,10 @@ export const PaymentSlug = {
     title: 'Deposit Money | ERMS',
     api: 'Wallet/deposit',
   },
+  RechargeHistory: {
+    label: 'Recharge History',
+    title: 'Recharge History | ERMS',
+    api: 'Wallet/list',
+  },
 
 }
