@@ -6,11 +6,13 @@ import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import {
   catchError,
   combineLatest,
+  distinctUntilChanged,
   filter,
   map,
   Observable,
   of,
   Subscription,
+  take,
 } from 'rxjs';
 import { createOrder } from '../../../features/common/state/order/order.actions';
 import { OrderState } from '../../../features/common/state/rental/rental.reducers';
@@ -18,8 +20,7 @@ import {
   selectAllProductRental,
   selectCalcActualRentalPriceAfterSubtractVouncer,
   selectTotalAllProductDepositPrice,
-  selectTotalAllProductRentalPrice,
-  selectVoucherAvaiable,
+  selectVoucherAvaiable
 } from '../../../features/common/state/rental/rental.selectors';
 import { IPayLoad } from '../../../interfaces/account.interface';
 import { OrderCreateRequest } from '../../../interfaces/order.interface';
@@ -30,9 +31,8 @@ import { RentalTimerService } from '../../../services/rental-timer.service';
 import { StorageService } from '../../../services/storage.service';
 import { FeatureAppState } from '../../../store/app.state';
 import { LocalStorageKey } from '../../../utils/constant';
-import { MyValidators } from '../../../utils/validators';
 import { convertToLocalISOString } from '../../../utils/timer.helper';
-import { VoucherDetailOutputDto } from '../../../interfaces/voucher.interface';
+import { MyValidators } from '../../../utils/validators';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -119,18 +119,18 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   mergeAllDataReq(): void {
-    debugger;
     this.createOrderSubscription = combineLatest([
-      this.store.select(selectAllProductRental),
-      this.store.select(selectTotalAllProductDepositPrice()),
-      this.store.select(selectCalcActualRentalPriceAfterSubtractVouncer),
-      this.rentalTimerService.rangePickerTime$,
+      this.store.select(selectAllProductRental).pipe(distinctUntilChanged()),
+      this.store.select(selectTotalAllProductDepositPrice).pipe(distinctUntilChanged()),
+      this.store.select(selectCalcActualRentalPriceAfterSubtractVouncer).pipe(distinctUntilChanged()),
+      this.rentalTimerService.rangePickerTime$.pipe(distinctUntilChanged()),
       of(this.userCurrent),
       of(this.infoOrderCommonForm),
       of(this.listFiles),
-      this.store.select(selectVoucherAvaiable)
+      this.store.select(selectVoucherAvaiable).pipe(distinctUntilChanged()),
     ])
       .pipe(
+        take(1),
         map(
           ([
             rentalProductAll,
@@ -140,7 +140,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             userCurrent,
             infoOrderCommonForm,
             listFiles,
-            voucherAvaiable
+            voucher
           ]) => {
             if (
               rentalProductAll &&
@@ -159,7 +159,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
                 userCurrent,
                 infoOrderCommonForm,
                 listFiles,
-                voucherAvaiable
+                voucher?.code
               ];
             } else {
               return null;
@@ -177,7 +177,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             IPayLoad,
             FormGroup,
             File[],
-            VoucherDetailOutputDto
+            string
           ] => result !== null
         ),
         catchError((error) => {
@@ -195,7 +195,6 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             orderId: null as string | null,
             quantity: Number(item.quantityRequest),
           })));
-          console.log('orderDetailsJson', orderDetailsJson);
           const orderCreateRequest: OrderCreateRequest = {
             userId: res[4].UserId || '',
             note: formValues.note,
@@ -205,7 +204,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             recipientPhoneNumber: formValues.recipientPhoneNumber,
             orderDetails: "",
             orderDetailsJson: orderDetailsJson,
-            voucherId: String(res[7].id),
+            voucherId: "",
             totalDepositPrice: Number(res[1]),
             totalRentPrice: Number(res[2]),
             startDate: convertToLocalISOString(res[3][0]) ,
