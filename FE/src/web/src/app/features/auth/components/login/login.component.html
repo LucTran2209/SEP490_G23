@@ -1,10 +1,11 @@
 <div class="login_wrapper container-fluid min-h-screen">
   <section
-    class="container_login_form absolute bg-white p-3 rounded-md w-72 sm:w-[500px]"
+    class="container_login_form absolute bg-white p-5 rounded-md w-72 sm:w-[500px]"
   >
     <div class="image_logo" style="text-align: -webkit-center">
       <img
         src="assets/images/logo.png"
+        [routerLink]="['/common/home']"
         alt="logo_image.png"
         srcset=""
         class="w-[6rem]"
@@ -35,7 +36,7 @@
               nz-input
               formControlName="username"
               id="username"
-              placeholder="Enter username"
+              placeholder="Nhập tên người dùng của bạn"
             />
           </nz-input-group>
         </nz-form-control>
@@ -55,7 +56,7 @@
               type="password"
               nz-input
               formControlName="password"
-              placeholder="Password"
+              placeholder="Nhập mật khẩu của bạn"
               name="password"
               autocomplete="on"
             />
@@ -88,7 +89,7 @@
         Đăng nhập
       </button>
     </form>
-    <p class="text-center text-gray-600 font-thin text-sm">
+    <p class="text-center text-gray-600 font-thin text-sm mb-1.5">
       Đăng nhập bằng cách khác
     </p>
     <app-google-signin

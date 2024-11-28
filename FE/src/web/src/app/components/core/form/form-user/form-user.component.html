@@ -7,9 +7,11 @@
   [nzWidth]="'800px'"
 >
   <ng-container *nzModalContent>
-    <div *ngIf="avatarPreview">
+    <div>
       <img
-        [src]="avatarPreview"
+        [src]="
+          avatarPreview ? avatarPreview : 'assets/images/default-avatar.jpg'
+        "
         alt="Avatar Preview"
         style="
           width: 100px;
@@ -35,7 +37,12 @@
           [nzXs]="24"
           nzErrorTip="Vui lòng chọn một tệp hình ảnh!"
         >
-          <input nz-input type="file" (change)="onFileChange($event)" />
+          <input
+            nz-input
+            type="file"
+            (change)="onFileChange($event)"
+            accept="image/*"
+          />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="!isEditMode">

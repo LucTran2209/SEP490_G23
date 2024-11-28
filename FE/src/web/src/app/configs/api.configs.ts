@@ -21,9 +21,9 @@ export const AuthSlug = {
     api: 'api/Authentication/Register',
   },
   ChangePassword: {
-    label: 'change-passowrd',
+    label: 'change-password',
     title: 'change password | ERMS',
-    api: 'api/user/changepassword',
+    api: 'api/Authentication/ChangePassword',
   },
   ResetPassWord: {
     label: 'reset-password/:token/:email',

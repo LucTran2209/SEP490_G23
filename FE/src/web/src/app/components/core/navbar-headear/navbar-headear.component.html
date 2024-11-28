@@ -1,7 +1,12 @@
 <nz-layout>
   <nz-header class="flex justify-between bg-white items-center">
     <div class="flex justify-between items-center">
-      <img class="logo m-1 ms-0" src="assets/images/logo.png" alt="main-logo" />
+      <img
+        class="logo m-1 ms-0"
+        src="assets/images/logo.png"
+        alt="main-logo"
+        [routerLink]="['/common/home']"
+      />
       <span
         class="trigger mt-5"
         nz-icon
@@ -15,10 +20,10 @@
           [nzCount]="0"
           (click)="openNotifcationAvailable()"
         > -->
-          <!-- <span class="text-lg text-[#0f6cf8]" nz-icon nzType="bell" nzTheme="outline"></span> -->
-          <!-- <span nz-icon nzType="bell" class="text-lg text-[#0f6cf8]" nzTheme="fill"></span> -->
+        <!-- <span class="text-lg text-[#0f6cf8]" nz-icon nzType="bell" nzTheme="outline"></span> -->
+        <!-- <span nz-icon nzType="bell" class="text-lg text-[#0f6cf8]" nzTheme="fill"></span> -->
         <!-- </nz-badge> -->
-         <app-notification-popup/>
+        <app-notification-popup />
       </div>
       <div nz-dropdown [nzDropdownMenu]="menu">
         <div class="flex justify-between">
