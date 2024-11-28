@@ -72,6 +72,7 @@ public class AuthenServiceTests
             Mock.Of<IValidator<ForgotPasswordInputDto>>(),
             Mock.Of<IValidator<VerifyEmailInputDto>>(),
             Mock.Of<IValidator<CheckNotExistedEmailInputDto>>(),
+            Mock.Of<IValidator<CheckNotExistedUserNameInputDto>>(),
             realValidator // Inject validator thực tế
         );
     }

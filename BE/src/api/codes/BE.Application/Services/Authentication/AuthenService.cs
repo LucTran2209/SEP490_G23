@@ -18,6 +18,7 @@ namespace BE.Application.Services.Authentication
         private readonly IValidator<ForgotPasswordInputDto> forgotPasswordValidator;
         private readonly IValidator<VerifyEmailInputDto> verifyEmailValidator;
         private readonly IValidator<CheckNotExistedEmailInputDto> checkNotExistedEmailValidator;
+        private readonly IValidator<CheckNotExistedUserNameInputDto> checkNotExistedUserNameValidator;
         private readonly IMemoryCache _memoryCache;
         private readonly JwtOption jwtOption;
         private readonly SystemConfig systemConfig;
@@ -36,6 +37,7 @@ namespace BE.Application.Services.Authentication
                              IValidator<ForgotPasswordInputDto> forgotPasswordValidator,
                              IValidator<VerifyEmailInputDto> verifyEmailValidator,
                              IValidator<CheckNotExistedEmailInputDto> checkNotExistedEmailValidator,
+                             IValidator<CheckNotExistedUserNameInputDto> checkNotExistedUserNameValidator,
         IValidator<LoginByUserNamePasswordInputDto> loginByUserNamePasswordValidator) : base(unitOfWork, user)
         {
             this.loginByUserNamePasswordValidator = loginByUserNamePasswordValidator;
@@ -44,6 +46,7 @@ namespace BE.Application.Services.Authentication
             this.forgotPasswordValidator = forgotPasswordValidator;
             this.verifyEmailValidator = verifyEmailValidator;
             this.checkNotExistedEmailValidator = checkNotExistedEmailValidator;
+            this.checkNotExistedUserNameValidator = checkNotExistedUserNameValidator;
             this._memoryCache = memoryCache;
             this.mailService = mailService;
             this.jwtOption = jwtOption.Value;
@@ -90,7 +93,10 @@ namespace BE.Application.Services.Authentication
 
             await SendMailAsync(user!);
 
-            return new ResultService();
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK
+            };
         }
 
         public async Task<ResultService> LoginByUserNamePasswordAsync(LoginByUserNamePasswordInputDto inputDto)
@@ -318,6 +324,16 @@ namespace BE.Application.Services.Authentication
         public async Task<ResultService> CheckNotExistedEmailAsync(CheckNotExistedEmailInputDto inputDto)
         {
             await checkNotExistedEmailValidator.ValidateAndThrowAsync(inputDto);
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+            };
+        }
+
+        public async Task<ResultService> CheckNotExistedUserNameAsync(CheckNotExistedUserNameInputDto inputDto)
+        {
+            await checkNotExistedUserNameValidator.ValidateAndThrowAsync(inputDto);
 
             return new ResultService()
             {
