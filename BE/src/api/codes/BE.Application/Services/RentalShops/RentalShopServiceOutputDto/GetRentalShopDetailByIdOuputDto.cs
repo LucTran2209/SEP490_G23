@@ -7,6 +7,8 @@ namespace BE.Application.Services.RentalShops.RentalShopServiceOutputDto
         public DateTime CreateDate { get; set; }
 
         public int NumberOfRenter {  get; set; }
+        public int NumberOfVote { get; set; }
+        public decimal AvegateVote {  get; set; }
 
         public class Mapping : Profile
         {

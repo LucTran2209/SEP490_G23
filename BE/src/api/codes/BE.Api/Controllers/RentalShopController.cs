@@ -29,7 +29,7 @@ namespace BE.Api.Controllers
         public async Task<IActionResult> GetRentalShopDetailAsync(Guid id)
         {
             var output = await rentalShopService.GetRentalShopDetailByIdAsync(id);
-            return Ok(output);
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpPost]
