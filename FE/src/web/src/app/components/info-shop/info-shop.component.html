@@ -25,7 +25,7 @@
     </div>
     <div class="w-3/4 pl-4">
       <div class="grid grid-cols-2 gap-4">
-        <!-- <div>
+        <div>
           <p class="flex items-center m-5">
             <span
               class="text-xl"
@@ -34,10 +34,10 @@
               nzTheme="outline"
             ></span>
             <span class="text-lg mx-2"> Thiết Bị: </span>
-            <span class="text-blue-500 ml-1 text-lg">118</span>
+            <span class="text-blue-500 ml-1 text-lg">{{ totalProduct }}</span>
           </p>
-        </div> -->
-        <!-- <div>
+        </div>
+        <div>
           <p class="flex items-center mx-5 mt-5">
             <span
               class="text-xl"
@@ -46,9 +46,12 @@
               nzTheme="outline"
             ></span>
             <span class="text-lg mx-2"> Đánh Giá: </span>
-            <span class="text-blue-500 ml-1 text-lg">4.9 (118 đánh giá)</span>
+            <span class="text-blue-500 ml-1 text-lg"
+              >{{ shopInfo?.avegateVote }} ({{ shopInfo?.numberOfVote }} đánh
+              giá)</span
+            >
           </p>
-        </div> -->
+        </div>
       </div>
       <div class="grid grid-cols-2 gap-4 mt-4">
         <div>
@@ -60,7 +63,9 @@
               nzTheme="outline"
             ></span>
             <span class="text-lg mx-2"> Người Đang Thuê: </span>
-            <span class="text-blue-500 ml-1 text-lg">{{shopInfo?.numberOfRenter ?? 0 }}</span>
+            <span class="text-blue-500 ml-1 text-lg">{{
+              shopInfo?.numberOfRenter ?? 0
+            }}</span>
           </p>
         </div>
         <div>
@@ -74,7 +79,7 @@
             ></span>
             <span class="text-lg mx-2"> Tham Gia: </span>
             <span class="text-blue-500 ml-1 text-lg">{{
-              shopInfo?.createDate | date :'dd/MM/yyyy' 
+              shopInfo?.createDate | date : "dd/MM/yyyy"
             }}</span>
           </p>
         </div>

@@ -67,4 +67,7 @@ export class FormFeedbackComponent implements OnInit{
       this.saveFeedBack.emit(fb);
     });
   }
+  setMessage(message: string, index: number): void {
+      this.feedBackList[index].comment = message;
+  }
 }

@@ -42,7 +42,9 @@ export interface RentalShopOutputDto {
     isActive: boolean;
     description: string;
     avatarShop: string;
-    banner: string,
+    banner: string;
+    numberOfVote: number;
+    avegateVote: number;
 }
 export interface RentalShopResultService {
     statusCode: string;

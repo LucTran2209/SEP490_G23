@@ -59,7 +59,10 @@ export class ProductCardComponent implements OnInit, AfterContentInit {
 
     return null; // Default to empty string if no image is available
   }
-
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/images/6306486.jpg'; // Đặt lại ảnh mặc định khi có lỗi
+  }
   nextImage(): void {
     if ('images' in this.product && this.product.images.length > 0) {
       this.currentIndex = (this.currentIndex + 1) % this.product.images.length;
