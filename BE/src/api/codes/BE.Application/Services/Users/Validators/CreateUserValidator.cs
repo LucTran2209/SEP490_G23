@@ -50,11 +50,7 @@ namespace BE.Application.Services.Users.Validators
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email required")
-                .EmailAddress().WithMessage("Email không hợp lệ")
-                .MustAsync(async (email, cancellationToken) =>
-                {
-                    return !await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
-                }).WithMessage("Email đã tồn tại");
+                .EmailAddress().WithMessage("Email không hợp lệ");
 
             RuleFor(u => u.Address)
                 .NotEmpty().WithMessage("Address is required");
