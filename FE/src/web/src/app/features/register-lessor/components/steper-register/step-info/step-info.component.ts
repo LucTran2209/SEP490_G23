@@ -16,6 +16,7 @@ import {
   selectShopName,
 } from '../../../state/register_lessor.reducer';
 import { UserProfileService } from '../../../../../services/user-profile.service';
+import { REGEX } from '../../../../../utils/constant';
 
 @Component({
   selector: 'app-step-info',
@@ -41,7 +42,7 @@ export class StepInfoComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: [
         '',
-        [Validators.required, Validators.pattern('^[0-9]{10,11}$')],
+        [Validators.required, Validators.pattern(REGEX.phoneNumber)],
       ],
     }) as FormGroup<{
       shopName: FormControl<string>;

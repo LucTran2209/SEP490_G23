@@ -31,7 +31,15 @@
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzRequired>́Mã số thuế</nz-form-label>
-    <nz-form-control [nzSpan]="24">
+    <nz-form-control
+      [nzSpan]="24"
+      [nzErrorTip]="
+        formTax.get('taxCode')?.touched &&
+        formTax.get('taxCode')?.hasError('required')
+          ? 'Vui lòng nhập mã số thuế'
+          : ''
+      "
+    >
       <input
         nz-input
         placeholder="Nhập mã số thuế vào đây"
@@ -59,9 +67,9 @@
       type="submit"
       class="w-full"
       nzType="default"
-      [disabled]="formTax.invalid"
       (click)="onSubmit()"
-    >
+      [disabled]="isDisableBtnFinal"
+      >
       <span>Xác nhận</span>
     </button>
   </div>

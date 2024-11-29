@@ -13,7 +13,8 @@ export interface IRequestRegisterLessor_Step3 {
   taxNumber: string;
   businessLicense: File | null;
   rentalScale: string | number;
-  address: IAddressDeep;
+  // address: IAddressDeep;
+  address: string;
   description: string;
 }
 interface IAddress {
