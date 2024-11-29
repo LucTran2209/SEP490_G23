@@ -13,7 +13,8 @@ export interface IRegisterLessorState {
   taxNumber: string;
   businessLicense: File | null;
   rentalScale: string | number;
-  address: IAddressDeep;
+  // address: IAddressDeep;
+  address: string;
   phoneNumber: string;
   email: string;
   isActive: boolean;
@@ -31,20 +32,21 @@ const initialValue: IRegisterLessorState = {
   taxNumber: '',
   businessLicense: null,
   rentalScale: '0',
-  address: {
-    address_district: {
-      id: '',
-      name: '',
-    },
-    address_province: {
-      id: '',
-      name: '',
-    },
-    address_ward: {
-      id: '',
-      name: '',
-    },
-  },
+  address: '',
+  // address: {
+  //   address_district: {
+  //     id: '',
+  //     name: '',
+  //   },
+  //   address_province: {
+  //     id: '',
+  //     name: '',
+  //   },
+  //   address_ward: {
+  //     id: '',
+  //     name: '',
+  //   },
+  // },
   phoneNumber: '',
   email: '',
   isActive: false,

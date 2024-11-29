@@ -31,9 +31,7 @@
 
 <ng-template #stepProcess>
   <ng-container *ngIf="current === 0">
-    <app-step-tax (nextStep)="done()" (prevStep)="pre()" />
-
-    <!-- <app-step-info (nextStep)="next()" /> -->
+    <app-step-info (nextStep)="next()" />
   </ng-container>
 
   <ng-container *ngIf="current === 1">

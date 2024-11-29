@@ -34,7 +34,7 @@ export class SteperRegisterComponent {
   taxNumber$: Observable<string>;
   businessLicense$: Observable<File | null>;
   rentalScale$: Observable<string | number>;
-  address$: Observable<IAddressDeep>;
+  address$: Observable<string>;
   phoneNumber$: Observable<string>;
   email$: Observable<string>;
   isActive$: Observable<boolean>;
@@ -82,7 +82,7 @@ export class SteperRegisterComponent {
         return;
       }
 
-      const addressTest = `${address.address_province.name}-${address.address_district.name}-${address.address_ward.name}`
+      const addressTest = `${address}`
       const formData = new FormData();
       formData.append('userId', this.userCurrent.UserId); 
       formData.append('shopName', shopName);

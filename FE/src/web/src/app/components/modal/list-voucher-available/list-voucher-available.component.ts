@@ -103,7 +103,6 @@ export class ListVoucherAvailableComponent implements OnInit, OnDestroy {
       .pipe(switchMap((res) => of(res.data)))
       .subscribe({
         next: (res) => {
-          console.log('>>> line 107',res);
           this.data$ = of(res);
           this.filterData$ = of(res);
           this.loading = false;
