@@ -161,10 +161,13 @@ namespace BE.Application.Services.Wallets
 
         public async Task<ResultService> GetListHistoryAsync(TransmitHistoryInputDto inputDto)
         {
-            var histories = await unitOfWork.RechargeHistoryRepository.GetListHistory(user.Id, inputDto.From, inputDto.To);
+            var histories = await unitOfWork.RechargeHistoryRepository.GetListHistory(user.Id)
+                .Filter(inputDto.From.ToString(), x => x.CreatedDate >= inputDto.From.Value.AddHours(-12))
+                .Filter(inputDto.To.ToString(), x => x.CreatedDate <= inputDto.To.Value.AddHours(12))
+                .ToListAsync();
 
             return new ResultService()
-            {
+            { 
                 StatusCode = (int)HttpStatusCode.OK,
                 Datas = _mapper.Map<List<RechargeHistoryDto>>(histories)
             };

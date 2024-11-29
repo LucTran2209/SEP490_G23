@@ -28,22 +28,12 @@ namespace BE.Infrastructure.Repositories
             return await context.RechargeHistories.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<RechargeHistory>> GetListHistory(Guid? id, DateTime? from, DateTime? to)
+        public IQueryable<RechargeHistory> GetListHistory(Guid? id)
         {
             var histories = context.RechargeHistories.Include(x => x.User)
-                .Where(r => r.UserId == id).AsQueryable();
+                .Where(r => r.UserId == id).AsQueryable();          
 
-            if (from != null)
-            {
-                histories = histories.Where(r => r.CreatedDate.DateTime >= from);
-            }
-
-            if (to != null)
-            {
-                histories = histories.Where(r => r.CreatedDate.DateTime <= to);
-            }
-
-            return await histories.ToListAsync();
+            return  histories.OrderByDescending(r => r.CreatedDate);
         }
 
         public Task UpdateAsync(RechargeHistory entity)
