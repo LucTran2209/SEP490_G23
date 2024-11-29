@@ -16,6 +16,7 @@ export class MyWalletComponent implements OnInit {
   isRecharge: boolean = false;
   balance: number = 0;
   data: RechargeHistoryData[] = [];
+  dataNull= true;
   dateRange: Date[] = [];
   constructor(
     private userProfileService: UserProfileService, 
@@ -64,21 +65,31 @@ export class MyWalletComponent implements OnInit {
       this.data = res.data;
       this.cdRef.markForCheck();
       console.log(this.data);
+      this.dataNull = !this.data || this.data.length === 0;
     });
   }
     onDateRangeChange(result: Date[]): void {
     this.dateRange = result;
 
     // Kiểm tra nếu cả hai ngày được chọn thì tự động gọi API
-    if (this.dateRange.length === 2) {
       this.search();
+
+  }
+  search(): void {
+    if (this.dateRange.length === 2) {
+      const from = this.formatDate(this.dateRange[0]);
+      const to = this.formatDate(this.dateRange[1]);
+      this.loadListHistory(from, to);
+    }else{
+      this.loadListHistory();
     }
   }
 
-  search(): void {
-    const from = this.dateRange[0] ? this.dateRange[0].toISOString().split('T')[0] : undefined;
-    const to = this.dateRange[1] ? this.dateRange[1].toISOString().split('T')[0] : undefined;
+  private formatDate(date: Date): string {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
 
-    this.loadListHistory(from, to); // Gọi API với tham số `from` và `to`
+    return `${yyyy}-${mm}-${dd}`;
   }
 }

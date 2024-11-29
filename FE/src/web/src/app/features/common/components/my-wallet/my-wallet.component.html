@@ -85,12 +85,11 @@
   <h4 class="text-2xl my-2">Lịch Sử Giao Dịch</h4>
   <div class="my-2 flex justify-center">
     <nz-form-item>
-      <nz-form-control [nzSpan]="18">
+      <nz-form-control [nzSpan]="20">
         <nz-range-picker
           [(ngModel)]="dateRange"
           (ngModelChange)="onDateRangeChange($event)"
-          nzShowTime
-          nzFormat="yyyy-MM-dd HH:mm:ss"
+          nzFormat="yyyy-MM-dd"
         ></nz-range-picker>
       </nz-form-control>
     </nz-form-item>
@@ -101,47 +100,54 @@
       </nz-form-control>
     </nz-form-item>
   </div>
-  <nz-table #middleTable nzSize="middle" [nzData]="data">
-    <thead>
-      <tr>
-        <th>Thời Gian Giao Dịch</th>
-        <th>Số tiền Giao Dịch</th>
-        <th>Trạng thái giao dịch</th>
-        <th>Loại giao dịch</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (data of middleTable.data; track data) {
-      <tr>
-        <td>{{ data.createdDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
-        <td>
-          @if(data.rechargeType == 1){
-          <p class="text-red-500">
-            - {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
-          </p>
-          }@else {
-          <p class="text-[#00b141]">
-            + {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
-          </p>
-          }
-        </td>
-        <td>
-          <ng-container [ngSwitch]="data.rechargeStatus">
-            <p *ngSwitchCase="0" class="status-warning">Chờ xử lý</p>
-            <p *ngSwitchCase="1" class="status-success">Thành công</p>
-            <p *ngSwitchCase="2" class="status-error">Thất bại</p>
-          </ng-container>
-        </td>
-        <td>
-          <ng-container [ngSwitch]="data.rechargeType">
-            <p *ngSwitchCase="0" class="uppercase">Nạp tiền</p>
-            <p *ngSwitchCase="1" class="uppercase">Thanh Toán</p>
-            <p *ngSwitchCase="2" class="uppercase">Nhận Cọc</p>
-            <p *ngSwitchCase="3" class="uppercase">Hoàn Cọc</p>
-          </ng-container>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </nz-table>
+  <div *ngIf="!dataNull; else noData">
+    <nz-table #middleTable nzSize="middle" [nzData]="data">
+      <thead>
+        <tr>
+          <th>Thời Gian Giao Dịch</th>
+          <th>Số tiền Giao Dịch</th>
+          <th>Trạng thái giao dịch</th>
+          <th>Loại giao dịch</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of middleTable.data; track data) {
+        <tr>
+          <td>{{ data.createdDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+          <td>
+            @if(data.rechargeType == 1){
+            <p class="text-red-500">
+              - {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
+            </p>
+            }@else {
+            <p class="text-[#00b141]">
+              + {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
+            </p>
+            }
+          </td>
+          <td>
+            <ng-container [ngSwitch]="data.rechargeStatus">
+              <p *ngSwitchCase="0" class="status-warning">Chờ xử lý</p>
+              <p *ngSwitchCase="1" class="status-success">Thành công</p>
+              <p *ngSwitchCase="2" class="status-error">Thất bại</p>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container [ngSwitch]="data.rechargeType">
+              <p *ngSwitchCase="0" class="uppercase">Nạp tiền</p>
+              <p *ngSwitchCase="1" class="uppercase">Thanh Toán</p>
+              <p *ngSwitchCase="2" class="uppercase">Nhận Cọc</p>
+              <p *ngSwitchCase="3" class="uppercase">Hoàn Cọc</p>
+            </ng-container>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </div>
 </div>
+<ng-template #noData>
+  <div class="flex justify-center">
+    <nz-result nzTitle="Không có danh sách phù hợp"> </nz-result>
+  </div>
+</ng-template>

@@ -8,6 +8,7 @@ import { RentalShopOutputDto } from '../../interfaces/rental-shop.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoShopComponent {
+  @Input() totalProduct: number | null = null;
   @Input() shopInfo?: RentalShopOutputDto | null
   @Input() isOpen?: boolean;
   @Output() handleRentalMoreProduct = new EventEmitter();

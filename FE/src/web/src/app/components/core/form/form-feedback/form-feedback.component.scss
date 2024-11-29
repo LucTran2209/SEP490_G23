@@ -7,3 +7,22 @@
 ::ng-deep .ant-modal-close-x{
     display: none;
 }
+::ng-deep .ant-btn{
+    height: auto;
+    
+}
+.btn{
+    font-size: 10px !important;
+}
+
+input[type="checkbox"] {
+    display: none;
+  }
+  
+  /* Hiển thị label như một nút */
+  label.active {
+    background-color: #ffcc00; /* Màu nền khi nút được chọn */
+    color: #fff; /* Màu chữ khi nút được chọn */
+    border-color: #e6a800; /* Màu viền khi nút được chọn */
+    transform: scale(0.98); /* Hiệu ứng co lại khi nhấn */
+  }

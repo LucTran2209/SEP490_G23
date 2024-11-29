@@ -120,7 +120,8 @@ export class ManagerShopComponent  implements OnInit{
   loadShop(){
     this.rentalShopService.getRentalShop(this.shopid).subscribe((res: RentalShopResultService) => {
       this.shop = res.data;
-      this.loadProducts(this.shopid, this.currentPage, this.pageSize);    
+      this.loadProducts(this.shopid, this.currentPage, this.pageSize);  
+      console.log("shop: ", res.data);  
   });
   }
   

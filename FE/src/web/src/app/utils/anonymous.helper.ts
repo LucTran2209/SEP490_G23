@@ -132,7 +132,7 @@ export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
     return 'Đang trả';
   }
   if (orderstatus === ORDER_STATUS.COMPLETE) {
-    return 'Trả thành công';
+    return 'Hoàn Thành';
   }
   if (orderstatus === ORDER_STATUS.CANCEL) {
     return 'Đã hủy';
