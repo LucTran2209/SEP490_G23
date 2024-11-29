@@ -71,6 +71,20 @@ namespace BE.Application.Services.Orders
                 file = await _azureService.UpLoadFileAsync(inputDto.FileAttach);
             }
 
+            if(inputDto.Status == RequestStatus.CANCEL)
+            {
+                // Nếu Status đang là 0, 1, 2 -> Cancel bình thường
+
+                // Nếu Status đang là 3 -> Cancel = -10%
+            }
+
+            if (inputDto.Status == RequestStatus.COMPLETE)
+            {
+                // Return tiền cọc còn lại sau khi đã trừ tiền thu
+
+                // Nếu Status đang là 3 -> Cancel = -10%
+            }
+
             var orderStatus = OrderExtention.CreateOrderStatus(inputDto, file);
 
             await unitOfWork.OrderStatusRepository.AddAsync(orderStatus);
