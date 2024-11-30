@@ -15,7 +15,7 @@
         [totalProduct]="pageTotal$ | async"
       />
     </div>
-    <div *ngIf="vouchers.length > 0" class="my-3">
+    <div *ngIf="vouchers && vouchers.length > 0" class="my-3">
       <h3 class="text-2xl my-2 uppercase">Voucher</h3>
       <div class="grid grid-cols-12 gap-10 pb-3">
         <div *ngFor="let voucher of vouchers" class="col-span-6">

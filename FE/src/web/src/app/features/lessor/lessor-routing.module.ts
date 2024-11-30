@@ -10,27 +10,33 @@ import { ManageNotificationComponent } from './components/manage-notification/ma
 const routes: Routes = [
   {
     path:'dashboard',
-    component: OverviewComponent
+    component: OverviewComponent,
+    title: 'Thống Kê | ERMS'
   },
   {
     path: 'shop/:id',
     component: ManagerShopComponent,
+    title: 'Quản Lý Cửa Hàng Của Tôi | ERMS'
   },
   {
     path: "order",
-    component: ManageOrderComponent
+    component: ManageOrderComponent,
+    title: 'Quản Lý Đơn Hàng | ERMS'
   },
   {
     path: "order/:id",
-    component: OrderDetailComponent
+    component: OrderDetailComponent,
+    title: 'Chi Tiết Đơn Hàng | ERMS'
   },
   {
     path: "voucher",
-    component: ManageVoucherComponent
+    component: ManageVoucherComponent,
+    title: 'Quản Lý Voucher | ERMS'
   },
   {
     path: "notification",
-    component: ManageNotificationComponent
+    component: ManageNotificationComponent,
+    title: 'Thông Báo | ERMS'
   },
 ];
 

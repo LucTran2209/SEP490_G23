@@ -51,15 +51,25 @@
           <span nz-icon nzType="shop" nzTheme="outline"></span>
           <span>Danh Sách Cửa Hàng</span>
         </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./manage-shops']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span nz-icon nzType="apartment" nzTheme="outline"></span>
+          <span>Danh Sách Loại Thiết Bị</span>
+        </li>
       </ng-container>
 
       <!-- Lessor Role -->
       <ng-container *ngIf="hasLessorRole()">
-        <li nz-menu-item 
-        nz-menu-item
-        [routerLink]="['./dashboard']"
-        routerLinkActive="ant-menu-item-selected"
-        [routerLinkActiveOptions]="{ exact: true }"
+        <li
+          nz-menu-item
+          nz-menu-item
+          [routerLink]="['./dashboard']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
         >
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thông Kê</span>

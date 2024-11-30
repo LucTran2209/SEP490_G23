@@ -324,4 +324,9 @@ export class ManagerShopComponent  implements OnInit{
     this.avatarUrl = this.shop.avatarShop;
     this.bannerUrl = this.shop.banner;
   }
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/images/6306486.jpg'; // Đặt lại ảnh mặc định khi có lỗi
+  }
+
 }

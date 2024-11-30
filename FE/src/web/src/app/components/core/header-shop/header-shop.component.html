@@ -19,23 +19,23 @@
       <div class="ml-4">
         <h3 class="text-lg font-bold text-gray-800">{{ shop.shopName }}</h3>
         <p class="text-sm text-gray-500">{{ shop.address }}</p>
-        <p class="text-xs text-gray-500">
-          <span class="text-gray-900 font-semibold">12.4k</span> Người Theo Dõi
-          | <span class="text-gray-900 font-semibold">73</span> Đang Theo
-        </p>
       </div>
     </div>
     <div class="flex justify-between text-primary">
       <!-- Products -->
       <div class="text-center mx-2">
         <i nz-icon nzType="shop" nzTheme="twotone" class="text-lg mb-1"></i>
-        <span class="block text-sm font-bold text-[#0C92FF]">24</span>
+        <span class="block text-sm font-bold text-[#0C92FF]">{{
+          shop.numberOfProduct
+        }}</span>
         <p class="text-sm text-gray-500">Sản Phẩm</p>
       </div>
       <!-- Ratings -->
       <div class="text-center mx-2">
         <i nz-icon nzType="star" nzTheme="twotone" class="text-lg mb-1"></i>
-        <span class="block text-sm font-bold text-[#0C92FF]">4.9</span>
+        <span class="block text-sm font-bold text-[#0C92FF]">{{
+          shop.avegateVote | number : "1.1-1" : "en-US"
+        }}</span>
         <p class="text-sm text-gray-500">Đánh Giá</p>
       </div>
       <!-- Response Rate -->

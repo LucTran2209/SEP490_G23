@@ -19,11 +19,13 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomePageComponent,
+    title: 'Trang Chủ | ERMS'
     // data: { breadcrumb: 'Trang Chủ' }
   },
   {
     path: 'howitorder',
     component: HowitorderComponent,
+    title: 'Quy Trình Thuê | ERMS',
     data: { breadcrumb: 'Quy Trình Thuê' }
   },
   {
@@ -33,52 +35,52 @@ const routes: Routes = [
       { 
         path: 'account', 
         children: [
-          { path: 'profile', component: ProfileComponent  },
+          { path: 'profile', component: ProfileComponent, title: 'Hồ Sơ | ERMS'  },
+          
         ],
       },
       { 
         path: 'payment', 
         children: [
-          { path: 'my-wallet', component: MyWalletComponent  },
+          { path: 'my-wallet', component: MyWalletComponent, title: 'Ví Tiền | ERMS'  },
         ],
       },
-      { path: 'my-voucher', component: MyVoucherComponent  },
+      { path: 'my-voucher', component: MyVoucherComponent, title: 'Kho Voucher | ERMS'  },
       {
         path: 'order',
         children: [
-          { path: '', component: ListMyOrderComponent  },
-          { path: 'order-detail/:id', component: MyOrderDetailComponent },
+          { path: '', component: ListMyOrderComponent, title: 'Danh Sách Đơn Hàng Của Tôi | ERMS'  },
+          { path: 'order-detail/:id', component: MyOrderDetailComponent, title: 'Chi Tiết Đơn Hàng | ERMS' },
       ]
       },
       {
         path:'notification',
-        component: NotificationListComponent
+        component: NotificationListComponent,
+        title: 'Thông Báo | ERMS'
       }
     ]
   },
   {
-    path: 'product-list/:slug/caid/:id',
-    component: ProductRentalListComponent,
-    data: { breadcrumb: 'Danh Sách Sản Phẩm' },
-    title: 'Chi tiết sản phẩm'
-  },
-  {
     path: 'product-search',
     component: ProductRentalListComponent,
+    title: 'Danh Sách Tìm Kiếm Thiết Bị | ERMS'
   },
   {
     path: 'product-detail/:slug/.i/:id/.suid/:suid/:subslug',
     component: ProductRentalDetailComponent,
-    data: { breadcrumb: 'Chi Tiết Sản Phẩm' }
+    data: { breadcrumb: 'Chi Tiết Sản Phẩm' },
+    title: 'Danh Sách Tìm Kiếm | ERMS'
   },
   {
     path: 'shop/:id',
     component: ShopPersonalComponent,
-    data: { breadcrumb: 'Shop' }
+    data: { breadcrumb: 'Shop' },
+    title: 'Cửa Hàng | ERMS'
   },
   {
     path: 'shopList',
     component: ShopRentalListComponent,
+    title: 'Danh Sách Tìm Kiếm Cửa Hàng | ERMS'
   },
 ];
 

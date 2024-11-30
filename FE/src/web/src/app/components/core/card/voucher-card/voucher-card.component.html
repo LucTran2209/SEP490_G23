@@ -37,11 +37,14 @@
   </div>
   <div
     class="voucher-discount text-center ml-5"
-    *ngIf="isShop && shopId !== voucher.shopId"
+    *ngIf="isShop && shopId !== voucher.shopId && !voucher.isSave"
   >
     <button class="ml-3" nz-button nzType="primary" (click)="onSaveVoucher()">
       Lưu
     </button>
+  </div>
+  <div class="voucher-discount text-center ml-5" *ngIf="voucher.isSave">
+    <p class="text-gray-400 uppercase p-5">Đã Lưu</p>
   </div>
   <!-- Top Cutout -->
   <div

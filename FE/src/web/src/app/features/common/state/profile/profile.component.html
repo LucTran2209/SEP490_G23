@@ -10,7 +10,7 @@
   </ng-container>
 
   <ng-template #profileContent>
-    <div class="m-5 container flex justify-center">
+    <div class="mx-20 my-5">
       <div class="grid grid-cols-2 gap-8">
         <div class="col-span-2">
           <div class="rounded overflow-hidden shadow-lg font-mono border-2">
@@ -22,32 +22,54 @@
               </div>
               <div class="flex justify-between">
                 <div class="flex justify-start mt-6 pr-20 pl-0">
-                  <div class="columns-2 gap-6">
-                    <p class="font-bold mb-4 text-xl">Tên người dùng:</p>
-                    <p class="font-bold mb-4 text-xl">Họ và Tên:</p>
-                    <p class="font-bold mb-4 text-xl">Email:</p>
-                    <p class="font-bold mb-4 text-xl">Số điện thoại:</p>
-                    <p class="font-bold mb-4 text-xl">Địa chỉ:</p>
-                    <p class="font-bold mb-4 text-xl">Giới tính:</p>
-                    <p class="font-bold mb-4 text-xl">Ngày sinh:</p>
-
-                    <p class="text-xl mb-4">
+                  <div class="grid grid-cols-2 gap-x-10 gap-y-6">
+                    <!-- Tiêu đề thông tin -->
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Tên người dùng:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
                       {{ user.userName || "[chưa có thông tin]" }}
                     </p>
-                    <p class="text-xl mb-4">
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Họ và Tên:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
                       {{ user.fullName || "[chưa có thông tin]" }}
                     </p>
-                    <p class="text-xl mb-4">
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Email:
+                    </p>
+                    <p class="text-xl min-h-[3rem] flex items-center">
                       {{ user.email || "[chưa có thông tin]" }}
                     </p>
-                    <p class="text-xl mb-4">
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Số điện thoại:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
                       {{ user.phoneNumber || "[chưa có thông tin]" }}
                     </p>
-                    <p class="text-xl mb-4">
+
+                    <p class="font-bold text-xl min-h-[3rem] flex items-center">
+                      Địa chỉ:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
                       {{ user.address || "[chưa có thông tin]" }}
                     </p>
-                    <p class="text-xl mb-4">{{ user.gender ? "Nam" : "Nữ" }}</p>
-                    <p class="text-xl mb-4">
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Giới tính:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
+                      {{ user.gender ? "Nam" : "Nữ" }}
+                    </p>
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Ngày sinh:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
                       {{
                         user.dateOfBirth
                           ? (user.dateOfBirth | date : "dd/MM/yyyy")
