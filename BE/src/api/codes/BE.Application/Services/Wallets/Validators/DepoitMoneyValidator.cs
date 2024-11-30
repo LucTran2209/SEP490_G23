@@ -8,8 +8,8 @@ namespace BE.Application.Services.Wallets.Validators
         public DepoitMoneyValidator(ApplicationDbContext context, IUser user) : base(context, user)
         {
             RuleFor(x => x.DepoitAmount)
-                .NotEmpty().WithMessage("Depoit Money is required")
-                .LessThanOrEqualTo((decimal)user.Balance!).WithMessage("Not Enough Balance");
+                .NotEmpty().WithMessage("Depoit Money is required");
+               // .LessThanOrEqualTo((decimal)user.Balance!).WithMessage("Not Enough Balance");
         }
     }
 }

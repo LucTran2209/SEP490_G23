@@ -114,6 +114,13 @@ namespace BE.Application.Services.Wallets
             {
                 StatusCode = (int)HttpStatusCode.Unauthorized,
             };
+
+            if (userDepoit.Balance < inputDto.DepoitAmount) return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Message = "Số dư không đủ"
+            };
+
             await ChangeBalance(userDepoit.Id, inputDto.DepoitAmount, false);
 
             // Update Balance Losser
