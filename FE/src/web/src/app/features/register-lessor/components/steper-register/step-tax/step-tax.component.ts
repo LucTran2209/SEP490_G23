@@ -14,29 +14,12 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { StatusProcess } from '../../../../../interfaces/anonymous.interface';
 import { Province } from '../../../../../interfaces/province.interface';
 import { IRequestRegisterLessor_Step3 } from '../../../../../interfaces/register-lessor.interface';
 import { GlobalState } from '../../../../../store/app.state';
-import * as ProvinceActions from '../../../../../store/province/province.actions';
-import {
-  selectDataDistrict,
-  selectDataProvince,
-  selectDataWard,
-  selectStatusDistrict,
-  selectStatusProvince,
-  selectStatusWard,
-} from '../../../../../store/province/province.reducer';
 import { stepInfoTax } from '../../../state/register_lessor.actions';
-import {
-  selectAddress,
-  selectBusinessLicense,
-  selectDescription,
-  selectRentalScale,
-  selectTaxNumber,
-} from '../../../state/register_lessor.reducer';
 
 @Component({
   selector: 'app-step-tax',
