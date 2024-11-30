@@ -74,6 +74,7 @@ export interface ProductItemResponse {
   description: string;
   quantity: number;
   subCategoryId: string;
+  numberOfVoted: string | number;
   rentalPrice: string | number;
   depositPrice: string | number;
   rentalLimitDays: string | number;

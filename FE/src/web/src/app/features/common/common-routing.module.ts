@@ -59,7 +59,8 @@ const routes: Routes = [
   {
     path: 'product-list/:slug/caid/:id',
     component: ProductRentalListComponent,
-    data: { breadcrumb: 'Danh Sách Sản Phẩm' }
+    data: { breadcrumb: 'Danh Sách Sản Phẩm' },
+    title: 'Chi tiết sản phẩm'
   },
   {
     path: 'product-search',

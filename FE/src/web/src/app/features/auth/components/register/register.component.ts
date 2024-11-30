@@ -12,7 +12,7 @@ import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import { FormatDate } from '../../../../utils/constant';
 import * as AuthActions from '../../state/auth.actions';
-import { selectStatusCode } from '../../state/auth.feature';
+import { selectStatus, selectStatusCode } from '../../state/auth.feature';
 
 @Component({
   selector: 'app-register',
@@ -66,7 +66,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   canDeactivate(): boolean {
-    return false; 
+    let canDeactivate = false;
+
+    this.store
+      .select(selectStatus)
+      .pipe(map((st) => st === 'loaded'))
+      .subscribe((res) => {
+        canDeactivate = res;
+      })
+      .unsubscribe();
+    return canDeactivate;
   }
   handleselectAddress(address: string) {
     this.forminfocommongroup.patchValue({ address });
