@@ -204,7 +204,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
             recipientPhoneNumber: formValues.recipientPhoneNumber,
             orderDetails: "",
             orderDetailsJson: orderDetailsJson,
-            voucherId: res[7],
+            voucherId: res[7] || '',
             totalDepositPrice: Number(res[1]),
             totalRentPrice: Number(res[2]),
             startDate: convertToLocalISOString(res[3][0]) ,

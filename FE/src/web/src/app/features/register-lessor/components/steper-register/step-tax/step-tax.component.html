@@ -9,49 +9,34 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item *ngIf="!isChooseRentalScalePersonal">
-    <nz-form-label [nzSpan]="24" nzRequired
-      >́Giấy phép đăng ký kinh doanh</nz-form-label
-    >
+    <nz-form-label [nzSpan]="24" nzRequired>́Giấy phép đăng ký kinh doanh &nbsp;
+      <span nz-icon nzType="question-circle" nzTheme="outline" class="hover:text-[#0f6cf8] cursor-pointer"
+        nzTooltipTitle="Định dạng file giấy phép kinh doanh là .pdf" nzTooltipPlacement="right" nz-tooltip></span>
+    </nz-form-label>
     <nz-form-control [nzSpan]="24" class="relative">
-      <app-upload-list
-        title="Tải Giáy phép đăng ký kinh doanh"
-        boundTypeFile=".pdf"
-        (listFiles)="onSelectedFile($event)"
-        (removeAFile)="onRemoveAFile($event)"
-      />
+      <app-upload-list title="Tải Giáy phép đăng ký kinh doanh" boundTypeFile=".pdf"
+        (listFiles)="onSelectedFile($event)" (removeAFile)="onRemoveAFile($event)" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item class="w-full">
-    <nz-form-label [nzSpan]="24" nzRequired
-      >Địa chỉ đăng ký kinh doanh</nz-form-label
-    >
+    <nz-form-label [nzSpan]="24" nzRequired>Địa chỉ đăng ký kinh doanh</nz-form-label>
     <div class="gap-x-3 w-full">
       <app-input-address formControlName="address"></app-input-address>
     </div>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSpan]="24" nzRequired>́Mã số thuế</nz-form-label>
-    <nz-form-control
-      [nzSpan]="24"
-      [nzErrorTip]="
+    <nz-form-control [nzSpan]="24" [nzErrorTip]="
         formTax.get('taxCode')?.touched &&
         formTax.get('taxCode')?.hasError('required')
           ? 'Vui lòng nhập mã số thuế'
           : ''
-      "
-    >
-      <input
-        nz-input
-        placeholder="Nhập mã số thuế vào đây"
-        type="text"
-        formControlName="taxCode"
-      />
+      ">
+      <input nz-input placeholder="Nhập mã số thuế vào đây" type="text" formControlName="taxCode" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSpan]="24" nzRequired
-      >Mô tả về cửa hàng bạn</nz-form-label
-    >
+    <nz-form-label [nzSpan]="24" nzRequired>Mô tả về cửa hàng bạn</nz-form-label>
     <nz-form-control [nzSpan]="24">
       <nz-textarea-count [nzMaxCharacterCount]="100">
         <textarea formControlName="description" rows="4" nz-input></textarea>
@@ -62,14 +47,8 @@
     <button nz-button class="w-full" nzType="primary" (click)="goBack()">
       <span>Trở lại</span>
     </button>
-    <button
-      nz-button
-      type="submit"
-      class="w-full"
-      nzType="default"
-      (click)="onSubmit()"
-      [disabled]="isDisableBtnFinal"
-      >
+    <button nz-button type="submit" class="w-full  " [ngClass]="{'bg-[#0A66EB] text-white': !isDisableBtnFinal}" nzType="default" (click)="onSubmit()"
+      [disabled]="isDisableBtnFinal">
       <span>Xác nhận</span>
     </button>
   </div>
