@@ -70,6 +70,7 @@ namespace BE.Infrastructure.Repositories
                 .Include(p => p.SubCategory)
                     .ThenInclude(sc => sc.Category)
                 .Include(p => p.ProductImages)
+                .Include(p => p.Feedbacks)
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
             return product;

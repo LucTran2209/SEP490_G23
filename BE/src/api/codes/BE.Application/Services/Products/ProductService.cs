@@ -1,7 +1,10 @@
 ﻿using BE.Application.Common.Dtos;
 using BE.Application.Services.Products.ProductServiceInputDto;
 using BE.Application.Services.Products.ProductServiceOutputDto;
+using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
+using BE.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Application.Services.Products
 {
@@ -42,6 +45,17 @@ namespace BE.Application.Services.Products
 
             var productDetail = _mapper.Map<ProductDetailOutputDto>(product);
 
+            if (product.Feedbacks?.Count == 0)
+            {
+                productDetail.Evaluate = 0;
+                productDetail.NumberOfVoted = 0;
+            }
+            else
+            {
+                productDetail.NumberOfVoted = (int)product.Feedbacks?.Count!;
+                productDetail.Evaluate = Math.Round(product.Feedbacks!.Sum(x => x.Rating) / productDetail.NumberOfVoted, 1);
+            }
+
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
@@ -72,14 +86,32 @@ namespace BE.Application.Services.Products
                 .ToPageList(inputDto)
                 .ToPageResult(await query.CountAsync(), inputDto, p => _mapper.Map<ProductDetailDto>(p));
 
+            // RentalShop Search
             var rentalShops = unitOfWork.RentalShopRepository.GetAll()
                 .Filter(inputDto.Search, p => p.ShopName!.Contains(inputDto.Search))
-                .ToList();
+            .ToList();
+
+            var rentalShopDetails = _mapper.Map<List<GetRentalShopDetailByIdOuputDto>>(rentalShops);
+
+            foreach (var item in rentalShopDetails)
+            {
+                item.NumberOfRenter = unitOfWork.OrderRepository.GetRentalShopOrder((Guid)item.Id!)
+                                                            .Where(o => o.OrderStatuses!.Any(s => s.Status != RequestStatus.CANCEL))
+                                                            .ToList().Count;
+
+                var x = await unitOfWork.ProductRepository.GetListProductByRetalShopId((Guid)item.Id!).ToListAsync();
+                item.NumberOfProduct = x.Count;
+
+                var voted = await unitOfWork.OrderRepository.RentalShopDetailVoted((Guid)item.Id!);
+
+                item.NumberOfVote = voted.Item1;
+                item.AvegateVote = voted.Item2;
+            }
 
             var output = new GetListProductOutputDto()
             {
                 Products = products,
-                RentalShops = _mapper.Map<List<RentalShopDto>>(rentalShops)
+                RentalShops = rentalShopDetails
             };
 
             return new ResultService
