@@ -39,7 +39,7 @@ export class AuthEffect {
               });
             }),
             catchError((error) => {
-              console.log('error',error);
+              console.log('error', error);
               const errorMessage = getErrorMessage(error);
               const statusCode = error.status || error.statusCode;
               return of(
@@ -90,11 +90,16 @@ export class AuthEffect {
               });
             }),
             catchError((error) => {
-              console.log('error',error);
+              console.log('error', error);
               const errorMessage = getErrorMessage(error);
               const statusCode = error.status || error.statusCode;
-             
-              return of(AuthActions.forgotPassword_failure({ error: errorMessage, statusCode }));
+
+              return of(
+                AuthActions.forgotPassword_failure({
+                  error: errorMessage,
+                  statusCode,
+                })
+              );
             })
           )
         )
@@ -141,7 +146,9 @@ export class AuthEffect {
             }),
             catchError((err) => {
               const statusCode = err.status;
-              let diffErrArr = err.errorList.map((item: any) => item.errorMessage)
+              let diffErrArr = err.errorList.map(
+                (item: any) => item.errorMessage
+              );
               return of(
                 AuthActions.resetPassword_failure({
                   error: diffErrArr,
@@ -170,7 +177,9 @@ export class AuthEffect {
               AuthActions.verifyEmail_success({ statusCode })
             ),
             catchError((error) => {
-              let diffErrArr = error.errorList.map((item: any) => item.errorMessage)
+              let diffErrArr = error.errorList.map(
+                (item: any) => item.errorMessage
+              );
               return of(
                 AuthActions.verifyEmail_failure({
                   error: diffErrArr,
@@ -202,12 +211,18 @@ export class AuthEffect {
                     });
                   }),
                   catchError((err) =>
-                    of(AuthActions.register_failure({ error: 'Đã xảy ra lỗi trong khi tạo tài khoản' }))
+                    of(
+                      AuthActions.register_failure({
+                        error: 'Đã xảy ra lỗi trong khi tạo tài khoản',
+                      })
+                    )
                   )
-                )
+                );
               } else {
                 return of(
-                  AuthActions.verifyEmail_failure({ error: 'Mã OTP không hợp lệ!' })
+                  AuthActions.verifyEmail_failure({
+                    error: 'Mã OTP không hợp lệ!',
+                  })
                 );
               }
             }),
@@ -234,15 +249,20 @@ export class AuthEffect {
           if (data) {
             this.loadingSerivce.setOtherLoading('loaded');
             this.authService.startSession(data.accessToken, data.refreshToken);
+            this.messageNZ.success('Đăng nhập thành công');
           } else {
             this.loadingSerivce.setOtherLoading('error');
-            catchError((err) =>
-              of(
-                AuthActions.checkOtpCode_failure({
-                  error: 'Mã xác nhận không hợp lệ vui lòng thử lại',
+            catchError((error) => {
+              let diffErrArr = error.errorList.map(
+                (item: any) => item.errorMessage
+              );
+              return of(
+                AuthActions.login_failure({
+                  error: diffErrArr,
+                  statusCode: 0,
                 })
-              )
-            );
+              );
+            });
           }
         })
       ),
@@ -363,7 +383,7 @@ export class AuthEffect {
           AuthActions.confirmVerifyEmail_failure
         ),
         tap((action) => {
-          console.log('action',action);
+          console.log('action', action);
           this.loadingSerivce.setOtherLoading('error');
           this.toastMT.handleError(action.error);
         })
