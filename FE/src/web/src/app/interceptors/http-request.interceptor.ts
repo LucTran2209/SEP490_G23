@@ -21,6 +21,8 @@ const ignoredUrls: string[] = [
   ProductSlug.ListProduct.api,
   RentalShopSlug.GetRentalShop.api,
   FeedBackSlug.ListFeedBack.api,
+  VoucherSlug.ListVoucher.api,
+  VoucherSlug.MyVoucher.api
 ];
 
 //exist when authentication, but don't want to redirect to login page
