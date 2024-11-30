@@ -35,6 +35,7 @@ export interface VoucherOutputDto {
     isActive: boolean;
     discountType: number;
     usageLimit: number;
+    isSave?: boolean;
 }
 export interface VoucherDetailOutputDto {
     id?: string;
@@ -50,6 +51,7 @@ export interface VoucherDetailOutputDto {
     usageLimit: number;       // Giới hạn số lần sử dụng
     isActive?: boolean;
     usedCount?: number;
+    isSave?: boolean;
 }
 
 export interface VoucherResultService {

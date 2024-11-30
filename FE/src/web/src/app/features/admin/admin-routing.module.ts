@@ -14,18 +14,22 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    title: 'Thống Kê | ERMS'
   },
   {
     path: 'manage-users',
     component: ManageUserComponent,
+    title: 'Quản Lý Người Dùng | ERMS'
   },
   {
     path: 'manage-register-lessor',
     component: ManageRegisterLessorComponent,
+    title: 'Quản Lý Đơn Đăng Ký | ERMS'
   },
   {
     path: 'manage-shops',
     component: ManageShopsComponent,
+    title: 'Quản Lý Cửa Hàng | ERMS'
   },
 ];
 

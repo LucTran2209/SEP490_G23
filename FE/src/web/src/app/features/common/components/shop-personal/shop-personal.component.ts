@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, Observable, of, Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { updateFilter } from '../../../../store/filters/filter.actions';
 import { FilterParameters } from '../../../../store/filters/filter.reducers';
 import * as ShopRentalProductActions from '../../state/shop/shop-personal.actions';
 import * as selectShopRentalProduct from '../../state/shop/shop-personal.reducer';
-import { VoucherOutputDto, VoucherResultService } from '../../../../interfaces/voucher.interface';
+import { VoucherDetailOutputDto, VoucherDetailResultService, VoucherOutputDto, VoucherResultService } from '../../../../interfaces/voucher.interface';
 import { VoucherService } from '../../../../services/voucher.service';
 import { MessageResponseService } from '../../../../services/message-response.service';
 @Component({
@@ -24,6 +24,7 @@ import { MessageResponseService } from '../../../../services/message-response.se
 })
 export class ShopPersonalComponent implements OnInit, OnDestroy {
   vouchers!: VoucherOutputDto[];
+  voucherExist!: VoucherDetailOutputDto[];
   //infoShop
   shopInfo$: Observable<RentalShopOutputDto | null> = of(null);
   // param shop url
@@ -115,6 +116,7 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     this.onQueryParams();
     this.loadShopInfo();
     this.onloadVoucher();
+    this.myVoucher();
   }
 
   ngOnDestroy(): void {}
@@ -127,13 +129,21 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     private rentalShopService: RentalShopService,
     private voucherService: VoucherService,
     private messageService: MessageResponseService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.paramHave = this.route.snapshot.paramMap.get('id');
   }
   async onloadVoucher() {
-    if(this.paramHave){
+    if (this.paramHave) {
       this.voucherService.listVoucher(this.paramHave).subscribe((res: VoucherResultService) => {
-        this.vouchers = res.data
+        const currentDate = new Date(); // Ngày và giờ hiện tại
+        // Lọc các voucher chưa hết hạn
+        this.vouchers = res.data.filter(voucher => {
+          const expiryDate = new Date(voucher.expiryDate); // Giả sử voucher có trường expiryDate
+          return expiryDate > currentDate; // Chỉ giữ những voucher chưa hết hạn theo cả ngày và giờ
+        });
+        this.myVoucher();
+        this.cdr.detectChanges();
       });
     }
   }
@@ -141,10 +151,29 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     this.voucherService.saveVoucher(voucherId).subscribe({
       next: (response) => {
         this.messageService.showSuccess('Lưu Voucher Thành Công!', 3000);
+        this.onloadVoucher();
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.messageService.handleError('Lưu Voucher Thất Bại!', 3000);
       }
+    });
+  }
+  myVoucher(){
+    this.voucherService.myVoucher().subscribe((res: VoucherDetailResultService) => {
+      this.voucherExist = res.data;
+      this.cdr.detectChanges();
+      setTimeout(() => {
+        console.log("My Voucher: ", this.voucherExist);
+        if (this.voucherExist && this.voucherExist.length > 0) {
+          this.vouchers.forEach(voucher => {
+            if (this.voucherExist.some(existingVoucher => existingVoucher.id === voucher.id)) {
+              voucher.isSave = true;
+            }
+          });
+          this.cdr.detectChanges();
+        }
+      }, 0);
     });
   }
 }

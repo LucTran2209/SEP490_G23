@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { OptionSelect } from '../../../../configs/anonymous.config';
 import { selectSortByOrder } from '../../../../configs/post.config';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
@@ -43,7 +43,8 @@ export class ProductRentalListComponent {
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private cdRef: ChangeDetectorRef,
   ) {
     this.loading$ = this.loadingService.status$;
   }
@@ -53,7 +54,6 @@ export class ProductRentalListComponent {
     this.subscriptions.add(
       this.route.queryParams.subscribe((params) => {
         this.search = params['search'] || '';
-        // this.searchText = params['searchText'] || '';
         this.subCategory = params['subCategory'] || '';
         this.currentPage = +params['page'] || 1;
         this.loadProducts();
@@ -62,10 +62,9 @@ export class ProductRentalListComponent {
 
     // Subscribe to route parameters
     this.subscriptions.add(
-      this.route.paramMap.subscribe((params) => {
-        const slug = params.get('slug');
-        const caid = params.get('id');
-        this.subCategory = slug && caid ? caid : '';
+      combineLatest([this.route.paramMap, this.route.queryParams]).subscribe(([paramMap, queryParams]) => {
+        const caid = paramMap.get('id');
+        this.subCategory = caid || '';
         this.loadProducts();
       })
     );
@@ -86,7 +85,6 @@ export class ProductRentalListComponent {
     this.router.navigate([], {
       queryParams: {
         search: this.search || null,
-        // searchText: this.searchText || null,
         subCategory: this.subCategory || null,
         page: this.currentPage,
       },
@@ -95,17 +93,6 @@ export class ProductRentalListComponent {
   }
 
   loadProducts(): void {
-    // // Set up the searchProduct object
-    // if(this.search){
-    //   this.searchProduct.search = this.search;
-    // }
-    // this.searchProduct.pageIndex = this.currentPage;
-    // if(this.subCategory){
-    //   this.searchProduct.subCategory = this.subCategory
-    //     ? this.subCategory.split(',')
-    //     : [];
-    // }
-
     const productRequest: SearchProduct = {
       pageSize: this.pageSize,
       pageIndex: this.currentPage,
@@ -124,12 +111,15 @@ export class ProductRentalListComponent {
       next: (res: ProductDtoResponse) => {
         this.productList = res.data.products.items;
         this.shop = res.data.rentalShops[0];
+        console.log(res.data.rentalShops[0]);
         this.totalProducts = res.data.products.totalCount;
         this.loadingService.setOtherLoading('loaded');
+        this.cdRef.markForCheck();
       },
       error: (err) => {
         console.error('Error loading products:', err);
         this.loadingService.setOtherLoading('error');
+        this.cdRef.markForCheck();
       },
     });
   }

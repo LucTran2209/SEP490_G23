@@ -4,7 +4,7 @@
       <img
         [src]="shopInfo?.banner || 'assets/images/logo-shop-default.png'"
         alt="banner_shop.png"
-        class="rounded-lg w-full h-auto"
+        class="rounded-lg w-full h-full"
       />
       <div class="absolute inset-0 flex items-center justify-center">
         <div
@@ -47,8 +47,10 @@
             ></span>
             <span class="text-lg mx-2"> Đánh Giá: </span>
             <span class="text-blue-500 ml-1 text-lg"
-              >{{ shopInfo?.avegateVote }} ({{ shopInfo?.numberOfVote }} đánh
-              giá)</span
+              >{{ shopInfo?.avegateVote | number : "1.1-1" : "en-US" }} ({{
+                shopInfo?.numberOfVote
+              }}
+              đánh giá)</span
             >
           </p>
         </div>
@@ -79,7 +81,7 @@
             ></span>
             <span class="text-lg mx-2"> Tham Gia: </span>
             <span class="text-blue-500 ml-1 text-lg">{{
-              shopInfo?.createDate | date : "dd/MM/yyyy"
+              calculateTime(shopInfo?.createDate)
             }}</span>
           </p>
         </div>

@@ -69,6 +69,8 @@ export interface RentalShop  {
     status: number;
     isActive: boolean;
     description: string;
+    avegateVote: number;
+    numberOfProduct: number;
 }
 export interface UpdateRentalShop {
     shopName: string;
