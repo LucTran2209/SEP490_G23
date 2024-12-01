@@ -128,7 +128,10 @@ export class MyOrderDetailComponent implements OnInit {
         
       },
       error: (error) => {
-        this.messageService.handleError('Bạn Đã Thanh Toán Đơn Hàng Thất Bại!', 3000);
+        this.messageService.handleError('Tài Khoản Của Bạn Không Đử! Vui Lòng Nạp Thêm TIền Để Thanh Toán', 3000);
+        setTimeout(() => {
+          this.router.navigate(['/common/user/payment/my-wallet']);
+        }, 3000);
         this.isVisible = false;
       }
     });
