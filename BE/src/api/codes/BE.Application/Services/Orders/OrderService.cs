@@ -75,24 +75,18 @@ namespace BE.Application.Services.Orders
             }
 
             var order = await unitOfWork.OrderRepository.GetDetailOrderAsync(inputDto.OrderId);
-
             var currentOrderStatus = await unitOfWork.OrderStatusRepository.GetCurrentStatusAsync(order!.Id);
-
             var userDepoit = await unitOfWork.UserRepository.FindByIdAsync((Guid)user.Id!);
-
             Guid rentalShopId = order!.OrderDetails!.Select(o => o.Product.RentalShopId).FirstOrDefault();
-
             var ownerRentalShop = await unitOfWork.UserRepository.FindByRentalShopIdAsync(rentalShopId);
-
             var returnAmount = order.TotalDepositPrice > order.TotalRentPrice ? order.TotalDepositPrice : order.TotalRentPrice;
 
             if (inputDto.Status == RequestStatus.CANCEL && currentOrderStatus!.Status == RequestStatus.PAYMENTED)
             {
-                // Nếu Status đang là 0, 1, 2 -> Cancel bình thường
-               
+                // Nếu Status đang là 0, 1, 2 -> Cancel bình thường               
                 await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
 
-                await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);                
+                await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);
             }
 
             if (inputDto.Status == RequestStatus.REFUND)
@@ -113,7 +107,6 @@ namespace BE.Application.Services.Orders
             var orderStatus = OrderExtention.CreateOrderStatus(inputDto, file);
 
             await unitOfWork.OrderStatusRepository.AddAsync(orderStatus);
-
             await unitOfWork.SaveChangesAsync();
 
             return new ResultService
