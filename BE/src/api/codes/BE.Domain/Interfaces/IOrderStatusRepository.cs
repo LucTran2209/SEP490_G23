@@ -5,6 +5,6 @@ namespace BE.Domain.Interfaces
 {
     public interface IOrderStatusRepository : IBaseRepository<OrderStatus>
     {
-
+        Task<OrderStatus?> GetCurrentStatusAsync(Guid orderId);
     }
 }

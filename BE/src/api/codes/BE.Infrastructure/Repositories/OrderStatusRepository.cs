@@ -2,6 +2,7 @@
 using BE.Domain.Interfaces;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BE.Infrastructure.Repositories
 {
@@ -24,6 +25,15 @@ namespace BE.Infrastructure.Repositories
         public Task<OrderStatus?> FindByIdAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<OrderStatus?> GetCurrentStatusAsync(Guid orderId)
+        {
+            var status = await context.OrderStatuses.Where(o => o.OrderId == orderId)
+                                                    .OrderByDescending(o => o.Status)
+                                                    .FirstOrDefaultAsync();
+
+            return status;
         }
 
         public Task UpdateAsync(OrderStatus entity)
