@@ -106,5 +106,6 @@ export class ProductRentalDetailComponent implements OnDestroy{
   ngOnDestroy(): void {
     this.store.dispatch(resetRentalProduct());
     this.store.dispatch(resetProductRental());
+    this.storageService.unset(LocalStorageKey.rangeDate);
   }
 }

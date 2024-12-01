@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Observable, Subscription, take, tap } from 'rxjs';
 import { timePeriodSelect } from '../../../configs/timer.config';
 import { setNumberOfDays } from '../../../features/common/state/rental/rental.actions';
@@ -10,6 +10,7 @@ import { RentalTimerService } from '../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../store/app.state';
 import { StorageService } from '../../../services/storage.service';
 import { LocalStorageKey } from '../../../utils/constant';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-picker-timer',
@@ -23,6 +24,7 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
   timePickerTo: any = { label: '00:00', value: '00:00' };
   timePickerEnd: any = { label: '23:30', value: '23:30' };
   selectAllProductRental$?: Observable<OrderState[]>;
+  isTimePickFine: Boolean = true;
   //date time
   rangePickerTime$?: Observable<Date[]>;
   selectedTimeStart$?: Observable<any>;
@@ -35,19 +37,19 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
   constructor(
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
-    private modalRef: NzModalRef,
-    private storeService: StorageService
-  ) {
-    console.log(this.timeChooseStart,'timeChooseStart');
-  }
+    private modalService: NzModalService,
+    private storeService: StorageService,
+    private messageNZ: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.rangeDatePicker = this.storeService.get(LocalStorageKey.rangeDate)
-    ? (JSON.parse(
-        this.storeService.get(LocalStorageKey.rangeDate)!
-      ) as [])
-    : undefined;
+      ? (JSON.parse(
+          this.storeService.get(LocalStorageKey.rangeDate)!
+        ) as Date[])
+      : undefined;
     this.selectAllProductRental$ = this.store.select(selectAllProductRental);
+    this.trackValueTimeCurrent();
   }
   ngOnDestroy(): void {
     if (this.pickerTimeSubscription) {
@@ -65,6 +67,12 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
   }
 
   handleOkPickTime(): void {
+    if (!this.isTimePickFine) {
+      this.messageNZ.warning(
+        'Thời gian bắt đầu và kết thúc không được để trống!'
+      );
+      return;
+    }
     if (
       this.rangeDatePicker &&
       this.rangeDatePicker.length === 2 &&
@@ -72,22 +80,23 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
       this.timePickerTo
     ) {
       this.rangeDatePicker[0] = this.rentalTimerService.setTimeForDate(
-        this.rangeDatePicker[0],
+        new Date(this.rangeDatePicker[0]),
         this.timePickerTo.label
       );
       this.rangeDatePicker[1] = this.rentalTimerService.setTimeForDate(
-        this.rangeDatePicker[1],
+        new Date(this.rangeDatePicker[1]),
         this.timePickerEnd.label
       );
-      this.storeService.set(LocalStorageKey.rangeDate, JSON.stringify(this.rangeDatePicker))
+      this.storeService.set(
+        LocalStorageKey.rangeDate,
+        JSON.stringify(this.rangeDatePicker)
+      );
       const diffInDays = this.rentalTimerService.convertRentalDays(
         this.rangeDatePicker
       );
 
       this.pickerTimeSubscription = this.selectAllProductRental$
-        ?.pipe(
-          take(1)
-        )
+        ?.pipe(take(1))
         .subscribe((orders) => {
           orders.forEach((order) => {
             const productId = order.productId;
@@ -104,8 +113,8 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
       this.rentalTimerService.setRangePickerTime(this.rangeDatePicker);
       this.rentalTimerService.setTimeStart(this.timePickerTo);
       this.rentalTimerService.setTimeEnd(this.timePickerEnd);
+      this.modalService.closeAll();
     }
-    this.modalRef.triggerOk();
   }
 
   disabledDate = (current: Date): boolean => {
@@ -114,4 +123,17 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
     tomorrow.setHours(0, 0, 0, 0);
     return current && current.getTime() < tomorrow.getTime();
   };
+
+  trackValueTimeCurrent() {
+    this.rentalTimerService.timeStart$.subscribe((res) => {
+      this.timePickerTo = this.timeChooseStart[res.value];
+    });
+    this.rentalTimerService.timeEnd$.subscribe((res) => {
+      this.timePickerEnd = this.timeChooseEnd[res.value];
+    });
+  }
+
+  onSetTime(typeTime: 'To' | 'End', val: any) {
+    this.isTimePickFine = val === null ? false : true;
+  }
 }
