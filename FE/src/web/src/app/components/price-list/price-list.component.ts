@@ -39,12 +39,11 @@ export class PriceListComponent implements OnInit {
       discountPriceVoucher === null ? 0 : discountPriceVoucher;
     let totalAfter =
       allProductRental.reduce((acc, order) => {
-        const depositActualPrice = Number(order.depositActualPrice) || 0;
         const rentalActualPrice = Number(order.rentalActualPrice) || 0;
-        const orderTotal = depositActualPrice + rentalActualPrice;
+        const orderTotal = rentalActualPrice;
 
         return acc + orderTotal;
       }, 0) - tmpSubtract;
-      return totalAfter < 0 ? 0 : totalAfter;
+    return totalAfter < 0 ? 0 : totalAfter;
   }
 }

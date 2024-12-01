@@ -20,15 +20,8 @@ import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process
 import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
 import { ListVoucherAvailableComponent } from '../../../modal/list-voucher-available/list-voucher-available.component';
 import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
-
-interface IProductShortSearch {
-  id: string | number;
-  productName: string;
-  rentalPrice: number;
-  depositPrice: number;
-  rentalLimitDays: number;
-  images: string;
-}
+import { IPayLoad } from '../../../../interfaces/account.interface';
+import { LocalStorageKey } from '../../../../utils/constant';
 
 @Component({
   selector: 'app-form-rental-product-v2',
@@ -39,6 +32,7 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   isConfirmLoading = false;
   isVisible = false;
   inputValue?: string;
+  userCurrent?: IPayLoad;
   productRentalDetailArray$?: Observable<OrderState[]>;
   depositPriceActual$?: Observable<string | number>;
   voucherAvaiable$?: Observable<VoucherDetailOutputDto | null>
@@ -55,6 +49,11 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   private voucherModalRef: NzModalRef | null = null;
 
   onChooseRental(titleTemplate: TemplateRef<any>) {
+    if (!this.userCurrent) {
+      this.toastMS.handleError('Bạn cần đăng nhập để tạo đơn thuê!', 401);
+      this.router.navigateByUrl('/auth/login');
+      return;
+    }
     this.rentalModalRef = this.modal.create({
       nzTitle: titleTemplate,
       nzContent: ConfimOrderProcessComponent,
@@ -132,11 +131,16 @@ this.store.dispatch(removeOneOrder({pid}))
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
     private storageService: StorageService,
-    private ToasMS: MessageResponseService,
+    private toastMS: MessageResponseService,
     private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+    ? (JSON.parse(
+        this.storageService.get(LocalStorageKey.currentUser)!
+      ) as IPayLoad)
+    : undefined;
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
 

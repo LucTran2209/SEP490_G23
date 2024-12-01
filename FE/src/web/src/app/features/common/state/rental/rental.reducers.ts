@@ -101,6 +101,7 @@ export const rentalOrderReducer = createReducer(
       ...order,
       quantityRequest: quantityRequest,
       depositActualPrice: quantityRequest * Number(order.depositPrice),
+      rentalActualPrice: quantityRequest * Number(order.rentalPrice) * order.numberOfDays,
       isBoundQuantity: quantityRequest <= Number(order.quantityAvailable),
     };
     const updatedOrders = [
@@ -118,7 +119,7 @@ export const rentalOrderReducer = createReducer(
     const updatedOrder = {
       ...order,
       numberOfDays: days,
-      rentalActualPrice: days * Number(order.rentalPrice),
+      rentalActualPrice: Number(order.quantityRequest) * Number(order.rentalPrice) * days,
     };
     const updatedOrders = [
       ...state.orders.slice(0, existingOrderIndex),

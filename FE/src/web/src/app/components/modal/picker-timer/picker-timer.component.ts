@@ -8,6 +8,8 @@ import { OrderState } from '../../../features/common/state/rental/rental.reducer
 import { selectAllProductRental } from '../../../features/common/state/rental/rental.selectors';
 import { RentalTimerService } from '../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../store/app.state';
+import { StorageService } from '../../../services/storage.service';
+import { LocalStorageKey } from '../../../utils/constant';
 
 @Component({
   selector: 'app-picker-timer',
@@ -33,12 +35,18 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
   constructor(
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
-    private modalRef: NzModalRef
+    private modalRef: NzModalRef,
+    private storeService: StorageService
   ) {
     console.log(this.timeChooseStart,'timeChooseStart');
   }
 
   ngOnInit(): void {
+    this.rangeDatePicker = this.storeService.get(LocalStorageKey.rangeDate)
+    ? (JSON.parse(
+        this.storeService.get(LocalStorageKey.rangeDate)!
+      ) as [])
+    : undefined;
     this.selectAllProductRental$ = this.store.select(selectAllProductRental);
   }
   ngOnDestroy(): void {
@@ -71,9 +79,7 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
         this.rangeDatePicker[1],
         this.timePickerEnd.label
       );
-      console.log('this.rangeDatePicker', this.rangeDatePicker); 
-      console.log('this.rangeDatePicker 1', this.rangeDatePicker[0].toISOString()); 
-      console.log('this.rangeDatePicker 2', this.rangeDatePicker[1].toISOString()); 
+      this.storeService.set(LocalStorageKey.rangeDate, JSON.stringify(this.rangeDatePicker))
       const diffInDays = this.rentalTimerService.convertRentalDays(
         this.rangeDatePicker
       );
