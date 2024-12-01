@@ -12,6 +12,7 @@
         [(ngModel)]="timePickerTo"
         nzAllowClear
         nzPlaceHolder="Chọn thời gian bắt đầu"
+        (ngModelChange)="onSetTime('To',$event)"
       >
         @for (option of timeChooseStart; track option) {
         <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
@@ -25,6 +26,7 @@
         [(ngModel)]="timePickerEnd"
         nzAllowClear
         nzPlaceHolder="Chọn thời gian kết thúc"
+        (ngModelChange)="onSetTime('End',$event)"
       >
         @for (option of timeChooseEnd; track option) {
         <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>

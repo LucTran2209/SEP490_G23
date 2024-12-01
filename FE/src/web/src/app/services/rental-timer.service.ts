@@ -51,6 +51,7 @@ export class RentalTimerService {
   }
 
   setTimeForDate(date: Date, time: string): Date {
+    console.log('date,time',typeof date,time);
     const [hour, minute] = time.split(':').map(Number);
     const newDate = new Date(date.getTime());
     newDate.setHours(hour);
