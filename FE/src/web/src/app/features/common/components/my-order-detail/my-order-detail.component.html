@@ -21,24 +21,18 @@
           <!-- Cột trái: Tiến trình đơn hàng (Timeline) -->
           <div nz-col [nzSpan]="4" class="border-r pr-4">
             <nz-timeline class="mt-4">
-              <nz-timeline-item [nzColor]="'blue'"
-                >Xử lý đơn hàng (1/11/2024)</nz-timeline-item
+              <nz-timeline-item
+                *ngFor="let item of sortedStatuses"
+                [nzColor]="item.color"
               >
-              <nz-timeline-item [nzColor]="'blue'"
-                >Chuẩn bị giao hàng (2/11/2024)</nz-timeline-item
-              >
-              <nz-timeline-item [nzColor]="'blue'"
-                >Đang giao hàng (3/11/2024)</nz-timeline-item
-              >
-              <nz-timeline-item [nzColor]="'blue'"
-                >Giao thành công (3/11/2024)</nz-timeline-item
-              >
-              <nz-timeline-item [nzColor]="'gray'"
-                >Đang hoàn trả hàng (11/11/2024)</nz-timeline-item
-              >
-              <nz-timeline-item [nzColor]="'gray'"
-                >Hoàn trả thành công (12/11/2024)</nz-timeline-item
-              >
+                {{ item.label }}
+                <span *ngIf="item.date"
+                  >({{ item.date | date : "dd/MM/yyyy" }})</span
+                >
+                <p *ngIf="item.message" class="text-blue-500">
+                  {{ item.message }}
+                </p>
+              </nz-timeline-item>
             </nz-timeline>
           </div>
 

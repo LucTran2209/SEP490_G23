@@ -164,6 +164,7 @@ export interface OrderStatus {
   message: string;
   status: ORDER_STATUS;
   fileAttach: null;
+  createdDate?: string;
 }
 export interface OrderListResponse {
   id: string;
