@@ -66,6 +66,12 @@ const routes: Routes = [
     title: 'Danh Sách Tìm Kiếm Thiết Bị | ERMS'
   },
   {
+    path: 'product-list/:slug/caid/:id',
+    component: ProductRentalListComponent,
+    data: { breadcrumb: 'Danh Sách Sản Phẩm' },
+    title: 'Danh Sách Tìm Kiếm Thiết Bị | ERMS'
+  },
+  {
     path: 'product-detail/:slug/.i/:id/.suid/:suid/:subslug',
     component: ProductRentalDetailComponent,
     data: { breadcrumb: 'Chi Tiết Sản Phẩm' },
