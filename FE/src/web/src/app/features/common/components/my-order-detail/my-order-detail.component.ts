@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Deposit, MyOrderDetailDto, OrderDetailResultService, OrderListResponse, OrderResultService } from '../../../../interfaces/order.interface';
+import { Deposit, MyOrderDetailDto, OrderDetailResultService, OrderListResponse, OrderResultService, OrderStatus } from '../../../../interfaces/order.interface';
 import { OrderService } from '../../../../services/order.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,12 +32,25 @@ export class MyOrderDetailComponent implements OnInit {
   timeString: string = '';
   voucherPrice: number = 0;
   loading$?: Observable<StatusProcess>;
+  orderStatuses: OrderStatus[] = [];
   orderStatusMessage: string = '';
   orderStatusClass: string = '';
   // Handle the step change event
   onStepChange(index: number): void {
     this.currentStep = index;
   }
+  sortedStatuses: any[] = [];
+  timelineItems = [
+    { label: 'Xử lý đơn hàng', status: 0 },
+    { label: 'Chuẩn bị giao hàng', status: 1 },
+    { label: 'Đang giao hàng', status: 2 },
+    { label: 'Giao thành công', status: 3 },
+    { label: 'Đã nhận hàng', status: 4 },
+    { label: 'Đang hoàn trả hàng', status: 5 },
+    { label: 'Hoàn trả thành công', status: 6 },
+    { label: 'Hủy Đơn', status: 7 },
+
+  ];
   constructor(
     private orderService: OrderService,
     private location: Location,
@@ -68,10 +81,33 @@ export class MyOrderDetailComponent implements OnInit {
     this.orderService.getOrder(orderId).subscribe({
       next: (res: OrderDetailResultService) => {
         this.order = res.data;
+        this.orderStatuses = res.data.orderStatuses;
         this.loadingService.setOtherLoading('loaded');
-        // this.calculateTimeDifferenceInHours();
         this.calculateTotalRentAndDeposit();
-        console.log(this.order);
+        // Lọc trạng thái có mặt trong orderStatuses
+        const statuses = this.orderStatuses.map(status => status.status);
+
+        // Nếu có trạng thái "Hủy Đơn" (status 7)
+        if (statuses.includes(7)) {
+          // Chỉ hiển thị "Xử lý đơn hàng" và "Hủy Đơn" (status 0 và 7)
+          this.sortedStatuses = this.timelineItems.filter(item => item.status === 0 || item.status === 7);
+        } else {
+          // Nếu không có status 7, hiển thị tất cả các bước bình thường trừ "Hủy Đơn"
+          this.sortedStatuses = this.timelineItems.filter(item => item.status !== 7);
+        }
+
+        this.sortedStatuses = this.timelineItems
+        .filter(item => statuses.includes(7) ? [0, 7].includes(item.status) : item.status !== 7)
+        .map((timeline) => {
+        const matchedStatus = this.orderStatuses.find(status => status.status === timeline.status);
+        return {
+          ...timeline,
+          date: matchedStatus ? matchedStatus.createdDate : null,
+          color: statuses.includes(7) ? 'red' : (matchedStatus ? 'blue' : 'gray'),
+          message: matchedStatus ? matchedStatus.message : null,
+        };
+      });
+        console.log("Status List: ", this.orderStatuses);
       },
       error: () => {
       }
@@ -155,5 +191,4 @@ export class MyOrderDetailComponent implements OnInit {
      
      this.voucherPrice = this.realTotal - this.totalPrice;
   }
-  
 }
