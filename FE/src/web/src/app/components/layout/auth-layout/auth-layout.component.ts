@@ -15,6 +15,9 @@ export class AuthLayoutComponent implements OnInit {
   get isVerifyEmailRoute(){
     return this.currentRoute === 'verify-email'
   }
+  get isChangePasswordRoute(){
+    return this.currentRoute === 'change-password'
+  }
   constructor(private router: Router) {}
 
   ngOnInit(): void {
