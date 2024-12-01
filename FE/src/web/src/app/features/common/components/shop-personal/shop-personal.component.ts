@@ -17,6 +17,8 @@ import * as selectShopRentalProduct from '../../state/shop/shop-personal.reducer
 import { VoucherDetailOutputDto, VoucherDetailResultService, VoucherOutputDto, VoucherResultService } from '../../../../interfaces/voucher.interface';
 import { VoucherService } from '../../../../services/voucher.service';
 import { MessageResponseService } from '../../../../services/message-response.service';
+import { StorageService } from '../../../../services/storage.service';
+import { LocalStorageKey } from '../../../../utils/constant';
 @Component({
   selector: 'app-shop-personal',
   templateUrl: './shop-personal.component.html',
@@ -119,7 +121,9 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     this.myVoucher();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.storageService.unset(LocalStorageKey.rangeDate);
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -129,6 +133,7 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     private rentalShopService: RentalShopService,
     private voucherService: VoucherService,
     private messageService: MessageResponseService,
+    private storageService: StorageService,
     private cdr: ChangeDetectorRef,
   ) {
     this.paramHave = this.route.snapshot.paramMap.get('id');
