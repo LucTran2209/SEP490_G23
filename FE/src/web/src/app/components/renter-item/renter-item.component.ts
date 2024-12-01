@@ -41,6 +41,9 @@ export class RenterItemComponent implements OnInit {
   private quantitySubject = new Subject<number>();
 
   handleRequestQuantity(val: number) {
+    if(!val || val < 0){
+      return;
+    }
     this.productRentalFollowId$
       ?.pipe(
         take(1),
