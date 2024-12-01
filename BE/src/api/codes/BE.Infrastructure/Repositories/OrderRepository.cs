@@ -47,6 +47,7 @@ namespace BE.Infrastructure.Repositories
         public Task<Order?> GetDetailOrderAsync(Guid orderId)
         {
             var order = context.Orders.Include(o => o.User)
+                                      .Include(o => o.Voucher)
                                       .Include(o => o.OrderStatuses)
                                       .Include(o => o.OrderDetails!)
                                         .ThenInclude(o => o.Product)
