@@ -237,15 +237,15 @@
       </div>
     </div>
   </div>
-  <div class="pb-5">
-    <h3 class="font-semibold text-lg mb-2">Địa chỉ giao sản phẩm khả dụng</h3>
-    <div class="px-2">
+  <!-- <div class="pb-5"> -->
+    <!-- <h3 class="font-semibold text-lg mb-2">Địa chỉ giao sản phẩm khả dụng</h3> -->
+    <!-- <div class="px-2"> -->
       <!-- <p class="">Quận Phú Nhuận, TP. Hồ Chí Minh</p>
       <p class="text-sm text-gray-300">
         Địa chỉ cụ thể sẽ được hiển thị sau khi giữ chỗ.
       </p> -->
-    </div>
-  </div>
+    <!-- </div> -->
+  <!-- </div> -->
   <form
   [nzAutoTips]="autoTips"
     nz-form
@@ -499,7 +499,7 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Bắt đầu thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeStart$ | async).value }} -
+            {{ (selectedTimeStart$ | async).label }} -
             {{ time[0] | date : "dd/MM/yyyy" }}
           </p>
         </div>
@@ -590,7 +590,7 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Kết thúc thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeEnd$ | async).value }} -
+            {{ (selectedTimeEnd$ | async).label }} -
             {{ time[1] | date : "dd/MM/yyyy" }}
           </p>
         </div>
@@ -641,7 +641,7 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" 
         >Email</nz-form-label
       >
       <nz-form-control>
@@ -655,19 +655,14 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
-        >Địa chỉ người nhận</nz-form-label
-      >
-      <nz-form-control>
-        <input
-          type="text"
-          nz-input
-          formControlName="recipientAddress"
-          placeholder="Nhập địa chỉ người nhận"
-        />
-      </nz-form-control>
+      >Địa chỉ người nhận</nz-form-label
+    >
+    <nz-form-control>
+      <app-input-address formControlName="recipientAddress"></app-input-address>
+    </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" >
         Lời nhắc tới chủ cho thuê
       </nz-form-label>
       <nz-textarea-count [nzMaxCharacterCount]="100" class="w-full">
