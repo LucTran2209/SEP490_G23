@@ -13,6 +13,8 @@ import { ShopRentalListComponent } from './components/shop-rental-list/shop-rent
 import { NotificationListComponent } from './components/notification-list/notification-list.component';
 import { MyWalletComponent } from './components/my-wallet/my-wallet.component';
 import { MyVoucherComponent } from './components/my-voucher/my-voucher.component';
+import { AuthSlug } from '../../configs/api.configs';
+import { ChangePasswordComponent } from '../auth/components/change-password/change-password.component';
 
 
 const routes: Routes = [
@@ -36,9 +38,14 @@ const routes: Routes = [
         path: 'account', 
         children: [
           { path: 'profile', component: ProfileComponent, title: 'Hồ Sơ | ERMS'  },
-          
+          {
+            path: AuthSlug.ChangePassword.label,
+            component: ChangePasswordComponent,
+            title: AuthSlug.ChangePassword.title,
+          },
         ],
       },
+     
       { 
         path: 'payment', 
         children: [

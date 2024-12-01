@@ -11,7 +11,6 @@ import {
   UserOutputDto,
   UserUpdateInputDto
 } from '../../../../interfaces/user.interface';
-import { ImageFileService } from '../../../../services/image-file.service';
 import { LoadingService } from '../../../../services/loading.service';
 import { MessageResponseService } from '../../../../services/message-response.service';
 import { UserProfileService } from '../../../../services/user-profile.service';

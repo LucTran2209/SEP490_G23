@@ -7,7 +7,7 @@
     nz-col
     [nzMd]="{ span: 12 }"
     class="bg-bg-4 bg-no-repeat bg-center bg-cover z-30"
-    [ngClass]="{ 'bg-bg-verifyEmail': isVerifyEmailRoute }"
+    [ngClass]="{ 'bg-bg-verifyEmail': isVerifyEmailRoute, 'bg-bg-changePassword': isChangePasswordRoute }"
   >
     <div class="image_logo absolute brightness-150 p-10">
       <img
@@ -23,7 +23,7 @@
     [nzSm]="{ span: 24 }"
     class="form-section relative"
   >
-    @if(!isVerifyEmailRoute){
+    @if(!isVerifyEmailRoute && !isChangePasswordRoute){
     <img [src]="imageUse.ShapeT1" alt="" />
     <img [src]="imageUse.ShapeT2" alt="" class="fixed -right-6" />
     }

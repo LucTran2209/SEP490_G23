@@ -42,11 +42,7 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: AuthSlug.ChangePassword.label,
-    component: ChangePasswordComponent,
-    title: AuthSlug.ChangePassword.title,
-  },
+  
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -37,7 +37,14 @@
           >
             Hồ Sơ
           </li>
-          <li nz-menu-item>Đổi Mật Khẩu</li>
+          <li
+            nz-menu-item
+            [routerLink]="['./account/change-password']"
+            routerLinkActive="ant-menu-item-selected"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Thay đổi mật khẩu
+          </li>
         </ul>
       </li>
       <li
