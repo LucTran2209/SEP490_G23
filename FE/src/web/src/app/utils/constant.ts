@@ -60,6 +60,7 @@ export const LocalStorageKey = {
   breadCrumb: 'bread_crumb',
   prevBreadcrumb: 'prev_bread_crumb',
   orderProcess: 'order_process',
+  rangeDate: 'rangeDate'
 };
 export const Sessionkey = {
   orderProcess: 'order_process',
