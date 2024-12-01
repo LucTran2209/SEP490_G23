@@ -75,25 +75,14 @@
                 </div>
               </div>
               <div class="columns-2 gap-6 mt-8 pb-4 border-b border-gray-300">
-                <p class="mb-2">Giá thuê 1 ngày của đơn hàng:</p>
-                <p class="mb-2">Phí đặt cọc:</p>
                 <p class="mb-2">Thời gian thuê:</p>
                 <p class="mb-2">Ngày nhận:</p>
                 <p class="mb-2">Ngày trả:</p>
                 <p class="mb-2">Tổng tiền thuê:</p>
+                <p class="mb-2">Tổng tiền cọc:</p>
                 @if(voucherPrice !== 0){
-                <p class="mb-2">Voucher của shop:</p>
+                <p class="mb-2">Khuyến mãi được áp dụng:</p>
                 }
-                <p class="text-right mb-2 text-[#525E6F]">
-                  {{ totalRentPrice | currency : "VND" : "" : "1.0-0" }}
-                  VND
-                </p>
-                <p class="text-right mb-2 text-[#525E6F]">
-                  {{
-                    order.totalDepositPrice | currency : "VND" : "" : "1.0-0"
-                  }}
-                  VND
-                </p>
                 <p class="text-right mb-2 text-[#525E6F]">
                   <!-- {{ timeString }} -->
                   {{ convertRentalDay(order.startDate, order.endDate) }} ngày
@@ -105,7 +94,14 @@
                   {{ order.endDate | date : "HH:mm dd/MM/yyyy" }}
                 </p>
                 <p class="text-right mb-2 text-[#525E6F]">
-                  {{ realTotal | currency : "VND" : "" : "1.0-0" }} VND
+                  {{ order.totalRentPrice | currency : "VND" : "" : "1.0-0" }}
+                  VND
+                </p>
+                <p class="text-right mb-2 text-[#525E6F]">
+                  {{
+                    order.totalDepositPrice | currency : "VND" : "" : "1.0-0"
+                  }}
+                  VND
                 </p>
                 @if(voucherPrice !== 0){
                 <p class="text-right mb-2 text-[#525E6F]">
@@ -167,12 +163,15 @@
             </div>
             <div class="p-4 rounded-md shadow-sm mt-4 bg-gray-100">
               <h4 class="font-semibold text-lg">Ghi chú:</h4>
-              <p class="text-sm text-gray-600 mt-2">
-                - Chính sách hoàn trả: Cọc sẽ được hoàn lại sau khi thiết bị
-                được trả và kiểm tra tình trạng hoàn tất.<br />
-                - Liên hệ hỗ trợ 1000-xxxx nếu có bất kỳ vấn đề nào trong quá
-                trình thuê hoặc hoàn trả thiết bị.
-              </p>
+              <br class="text-sm text-gray-600 mt-2" />
+              - Chính sách hoàn trả: Cọc sẽ được hoàn lại sau khi thiết bị được
+              trả và kiểm tra tình trạng hoàn tất.<br />
+              - <span class="text-red-500">*</span> Nếu đơn của bạn có tổng tiền
+              cọc lớn hơn tổng tiền thuê thì tiền đơn hàng của bạn phải trả là
+              tổng tiền cọc. Tiền hoàn về sẽ trừ đi tổng tiền thuê.
+              <br />
+              - Liên hệ hỗ trợ 1000-xxxx nếu có bất kỳ vấn đề nào trong quá
+              trình thuê hoặc hoàn trả thiết bị.
             </div>
           </div>
         </div>
