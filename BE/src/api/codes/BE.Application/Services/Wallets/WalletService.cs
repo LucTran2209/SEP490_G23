@@ -108,6 +108,10 @@ namespace BE.Application.Services.Wallets
         {
             await _depoitMoneyValidator.ValidateAndThrowAsync(inputDto);
 
+            var order = await unitOfWork.OrderRepository.GetDetailOrderAsync(inputDto.OrderId);
+
+            var amountPayment = order!.TotalDepositPrice > order.TotalRentPrice ? order.TotalDepositPrice : order.TotalRentPrice;
+
             // Update Balance Renter
             var userDepoit = await unitOfWork.UserRepository.FindByIdAsync((Guid)user.Id!);
             if (userDepoit == null) return new ResultService()
@@ -115,17 +119,17 @@ namespace BE.Application.Services.Wallets
                 StatusCode = (int)HttpStatusCode.Unauthorized,
             };
 
-            if (userDepoit.Balance < inputDto.DepoitAmount) return new ResultService()
+            if (userDepoit.Balance < amountPayment) return new ResultService()
             {
                 StatusCode = (int)HttpStatusCode.BadRequest,
                 Message = "Số dư không đủ"
             };
 
-            await ChangeBalance(userDepoit.Id, inputDto.DepoitAmount, false);
+            await ChangeBalance(userDepoit.Id, amountPayment, false);
 
             // Update Balance Losser
             var ownerRentalShop = await unitOfWork.UserRepository.FindByRentalShopIdAsync(inputDto.RentalShopId);
-            await ChangeBalance(ownerRentalShop!.Id, inputDto.DepoitAmount, true);
+            await ChangeBalance(ownerRentalShop!.Id, amountPayment, true);
 
 
             // Update Status Order
@@ -144,7 +148,6 @@ namespace BE.Application.Services.Wallets
                 StatusCode = (int)HttpStatusCode.OK,
             };
         }
-
 
         public async Task ChangeBalance(Guid userId, decimal amount, bool isAdding)
         {

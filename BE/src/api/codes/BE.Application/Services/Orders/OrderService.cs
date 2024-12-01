@@ -10,17 +10,20 @@ namespace BE.Application.Services.Orders
         private readonly IValidator<GetOrderDetailInputDto> _getOrderDetailInputDto;
         private readonly IMapper _mapper;
         private readonly IAzureService _azureService;
+        private readonly IWalletService _walletService;
 
         public OrderService(IUnitOfWork unitOfWork, IUser user,
             IMapper mapper,
             IValidator<CreateOrderInputDto> createOrderValidator,
             IValidator<GetOrderDetailInputDto> getOrderDetailInputDto,
+            IWalletService walletService,
             IAzureService azureService) : base(unitOfWork, user)
         {
             this.createOrderValidator = createOrderValidator;
             _getOrderDetailInputDto = getOrderDetailInputDto;
             _mapper = mapper;
             _azureService = azureService;
+            _walletService = walletService;
         }
 
         public async Task<ResultService> CreateAsync(CreateOrderInputDto inputDto)
@@ -71,18 +74,40 @@ namespace BE.Application.Services.Orders
                 file = await _azureService.UpLoadFileAsync(inputDto.FileAttach);
             }
 
-            if(inputDto.Status == RequestStatus.CANCEL)
+            var order = await unitOfWork.OrderRepository.GetDetailOrderAsync(inputDto.OrderId);
+
+            var currentOrderStatus = await unitOfWork.OrderStatusRepository.GetCurrentStatusAsync(order!.Id);
+
+            var userDepoit = await unitOfWork.UserRepository.FindByIdAsync((Guid)user.Id!);
+
+            Guid rentalShopId = order!.OrderDetails!.Select(o => o.Product.RentalShopId).FirstOrDefault();
+
+            var ownerRentalShop = await unitOfWork.UserRepository.FindByRentalShopIdAsync(rentalShopId);
+
+            var returnAmount = order.TotalDepositPrice > order.TotalRentPrice ? order.TotalDepositPrice : order.TotalRentPrice;
+
+            if (inputDto.Status == RequestStatus.CANCEL && currentOrderStatus!.Status == RequestStatus.PAYMENTED)
             {
                 // Nếu Status đang là 0, 1, 2 -> Cancel bình thường
+               
+                await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
 
-                // Nếu Status đang là 3 -> Cancel = -10%
+                await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);                
             }
 
-            if (inputDto.Status == RequestStatus.COMPLETE)
+            if (inputDto.Status == RequestStatus.REFUND)
             {
                 // Return tiền cọc còn lại sau khi đã trừ tiền thu
 
                 // Nếu Status đang là 3 -> Cancel = -10%
+            }
+
+            if (inputDto.Status == RequestStatus.COMPLETE && returnAmount == order.TotalDepositPrice)
+            {
+                // Return tiền cọc còn lại sau khi đã trừ tiền thu
+                await _walletService.ChangeBalance((Guid)user.Id, order.TotalDepositPrice - order.TotalRentPrice, true);
+
+                await _walletService.ChangeBalance(ownerRentalShop!.Id, order.TotalDepositPrice - order.TotalRentPrice, false);
             }
 
             var orderStatus = OrderExtention.CreateOrderStatus(inputDto, file);

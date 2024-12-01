@@ -12,6 +12,5 @@ namespace BE.Application.Abstractions.ServiceInterfaces
 
         Task AddHistory(Guid userId, decimal? BeforeBalance, decimal? AmountRecharge, RechargeStatus RechargeStatus, RechargeType RechargeType);
         Task ChangeBalance(Guid userId, decimal amount, bool isAdding);
-
     }
 }
