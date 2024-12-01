@@ -1,6 +1,7 @@
 import { ORDER_STATUS } from '../utils/constant';
 import { ProductOutputDto } from './product.interface';
 import { UserOutputDto } from './user.interface';
+import { VoucherDetailOutputDto } from './voucher.interface';
 export interface ProductImage {
   id: string;
   productId: string;
@@ -83,7 +84,7 @@ export interface MyOrderDetailDto {
   mortgagePaperImageFont: any | null;
   mortgagePaperImageBack: any | null;
   user: User;
-  voucher: any | null;
+  voucher: VoucherDetailOutputDto;
   orderDetails: OrderDetailDto[];
   orderStatuses: OrderStatus[];
 }

@@ -14,6 +14,7 @@ import { MessageResponseService } from '../../../../services/message-response.se
 import { ProductItemResponse, ProductOutputDto, ProductResultService } from '../../../../interfaces/product.interface';
 import { ProductService } from '../../../../services/product.service';
 import { BaseResponseApi } from '../../../../interfaces/api.interface';
+import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
 
 @Component({
   selector: 'app-my-order-detail',
@@ -30,6 +31,7 @@ export class MyOrderDetailComponent implements OnInit {
   numberofRentalTimes: number = 0;
   realTotal: number = 0;
   timeString: string = '';
+  voucher!: VoucherDetailOutputDto;
   voucherPrice: number = 0;
   loading$?: Observable<StatusProcess>;
   orderStatuses: OrderStatus[] = [];
@@ -82,6 +84,10 @@ export class MyOrderDetailComponent implements OnInit {
       next: (res: OrderDetailResultService) => {
         this.order = res.data;
         this.orderStatuses = res.data.orderStatuses;
+        this.voucher = res.data.voucher;
+        if(this.voucher !== null){
+          this.voucherPrice = res.data.voucher.discountValue;
+        }
         this.loadingService.setOtherLoading('loaded');
         this.calculateTotalRentAndDeposit();
         // Lọc trạng thái có mặt trong orderStatuses
@@ -164,7 +170,7 @@ export class MyOrderDetailComponent implements OnInit {
         
       },
       error: (error) => {
-        this.messageService.handleError('Tài Khoản Của Bạn Không Đử! Vui Lòng Nạp Thêm TIền Để Thanh Toán', 3000);
+        this.messageService.handleError('Tài Khoản Của Bạn Không Đủ! Vui Lòng Nạp Thêm TIền Để Thanh Toán', 3000);
         setTimeout(() => {
           this.router.navigate(['/common/user/payment/my-wallet']);
         }, 3000);
@@ -185,10 +191,12 @@ export class MyOrderDetailComponent implements OnInit {
       return total + rentalPrice * quantity;
     }, 0);
     this.totalRentPrice = totalRentPrice;
-     this.realTotal = totalRentPrice * this.convertRentalDay(this.order.startDate, this.order.endDate) + this.order.totalDepositPrice;
+     this.realTotal = this.order.totalRentPrice - this.voucherPrice;
      // Tính tổng tiền thuê và tiền đặt cọc
-     this.totalPrice = this.order.totalRentPrice + this.order.totalDepositPrice;
-     
-     this.voucherPrice = this.realTotal - this.totalPrice;
+     if(this.realTotal >= this.order.totalDepositPrice){
+       this.totalPrice = this.realTotal + this.order.totalDepositPrice;
+     }else{
+      this.totalPrice = this.order.totalDepositPrice;
+     }
   }
 }
