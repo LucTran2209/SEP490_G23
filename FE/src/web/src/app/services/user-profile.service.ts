@@ -20,32 +20,35 @@ export class UserProfileService {
     }
   }
 
-  get currentUser(): IPayLoad {
+  get currentUser(): IPayLoad | null {
     try {
-      return JSON.parse(
-        this.storgageService.get(LocalStorageKey.currentUser) || ''
-      );
+      const userJson = this.storgageService.get(LocalStorageKey.currentUser);
+      return userJson ? JSON.parse(userJson) : null; // Handle empty string or null
     } catch (error) {
-      return JSON.parse('');
+      console.error('Error parsing currentUser JSON:', error);
+      return null; // Return null if JSON parsing fails
     }
   }
+  
 
   get roleCurrentUser(): string | string[] | undefined {
-    return this.currentUser.Role;
+    return this.currentUser?.Role; 
   }
-  get UserId(): string {
-    return this.currentUser.UserId;
+  
+  get UserId(): string | undefined {
+    return this.currentUser?.UserId;
   }
+  
   // Getter for avatar
-  get avatar(): string {
-    return this.currentUser.Avatar;
+  get avatar(): string | undefined {
+    return this.currentUser?.Avatar;
   }
-  get rentalshopId(): string {
-    return this.currentUser.RentalShopId;
+  get rentalshopId(): string | undefined {
+    return this.currentUser?.RentalShopId;
   }
 
-  get email(): string {
-    return this.currentUser.Email;
+  get email(): string | undefined {
+    return this.currentUser?.Email;
   }
   
 

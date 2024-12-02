@@ -33,7 +33,7 @@ export class MyWalletComponent implements OnInit {
 
   // Fetch the current balance and update the component state
   private loadBalance(): void {
-    const id = this.userProfileService.UserId;
+    const id = this.userProfileService.UserId ?? '';
     this.userService.viewProfile(id).subscribe({
       next: (res: ProfileResultService) => {
         this.balance = res.data.balance;

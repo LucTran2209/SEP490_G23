@@ -60,21 +60,26 @@ export class UserFireStoreService {
     );
   }
 
-  //get list member chat of current user
   getListMemberChat() {
     const currentUserId = this.userProfileService.UserId;
+  
+    if (!currentUserId) {
+      throw new Error('UserId is undefined. Ensure the user is properly authenticated.');
+    }
+  
     const userRef = collection(this.firestore, 'chats');
     const myQuery = query(
       userRef,
-      where('userIds', 'array-contains', currentUserId)
+      where('userIds', 'array-contains', currentUserId) 
     );
-
+  
     return collectionData(myQuery, { idField: 'id' }).pipe(
       map((chats) =>
         this.addChatNameAndPic(currentUserId, chats as IChatFireBase[])
       )
     ) as Observable<IChatFireBase[]>;
   }
+  
 
   addChatNameAndPic(
     currentUserId: string,
