@@ -36,7 +36,7 @@
               ></path>
             </svg>
           </span>
-           {{productDetail.rentalShop.address}}
+          {{ productDetail.rentalShop.address }}
         </p>
       </div>
     </div>
@@ -252,18 +252,17 @@
       <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
         >Số điện thoại</nz-form-label
       >
-      <nz-form-control >
+      <nz-form-control>
         <input
           type="text"
           nz-input
           formControlName="recipientPhoneNumber"
           placeholder="Nhập số điện thoại liên hệ"
-        
         />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" 
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24"
         >Email</nz-form-label
       >
       <nz-form-control>
@@ -280,7 +279,9 @@
         >Địa chỉ người nhận</nz-form-label
       >
       <nz-form-control>
-        <app-input-address formControlName="recipientAddress"></app-input-address>
+        <app-input-address
+          formControlName="recipientAddress"
+        ></app-input-address>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -308,9 +309,9 @@
       ></span>
     </div>
     <app-select-radio-collateral
-    [(selectedValue)]="parentSelectedValue"
-    (listFileCollateral)="handleFileList($event)"
-></app-select-radio-collateral>
+      [(selectedValue)]="parentSelectedValue"
+      (listFileCollateral)="handleFileList($event)"
+    ></app-select-radio-collateral>
   </div>
   <div class="pb-5">
     <app-price-list />
@@ -332,7 +333,6 @@
       [disabled]="!infoOrderCommonForm.valid"
     >
       Gửi yêu cầu thuê thiết bị
-      
     </button>
   </div>
 </ng-container>
@@ -622,7 +622,7 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" 
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24"
         >Email</nz-form-label
       >
       <nz-form-control>
@@ -636,14 +636,16 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
-      >Địa chỉ người nhận</nz-form-label
-    >
-    <nz-form-control>
-      <app-input-address formControlName="recipientAddress"></app-input-address>
-    </nz-form-control>
+        >Địa chỉ người nhận</nz-form-label
+      >
+      <nz-form-control>
+        <app-input-address
+          formControlName="recipientAddress"
+        ></app-input-address>
+      </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" >
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24">
         Lời nhắc tới chủ cho thuê
       </nz-form-label>
       <nz-textarea-count [nzMaxCharacterCount]="100" class="w-full">
@@ -667,9 +669,9 @@
       ></span>
     </div>
     <app-select-radio-collateral
-    [(selectedValue)]="parentSelectedValue"
-    (listFileCollateral)="handleFileList($event)"
-></app-select-radio-collateral>
+      [(selectedValue)]="parentSelectedValue"
+      (listFileCollateral)="handleFileList($event)"
+    ></app-select-radio-collateral>
   </div>
   <div class="pb-5">
     <app-price-list />
@@ -693,3 +695,4 @@
     </button>
   </div>
 </ng-container>
+

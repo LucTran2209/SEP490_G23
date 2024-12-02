@@ -32,6 +32,7 @@ const exceptionUrls: string[] = [
 ]
 
 export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
+  debugger;
   const authService = inject(AuthService);
   const token = authService.token;
   const messageResponse  = inject(MessageResponseService);
