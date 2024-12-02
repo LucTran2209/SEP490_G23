@@ -28,11 +28,9 @@ const ignoredUrls: string[] = [
 //exist when authentication, but don't want to redirect to login page
 const exceptionUrls: string[] = [
   VoucherSlug.MyVoucher.api
-
 ]
 
 export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
-  debugger;
   const authService = inject(AuthService);
   const token = authService.token;
   const messageResponse  = inject(MessageResponseService);

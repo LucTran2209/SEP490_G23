@@ -66,7 +66,6 @@ export class AuthService {
     route: ActivatedRouteSnapshot,
     url: any
   ): Observable<boolean> {
-    debugger;
     const data = route.data as RouteData;
     const roleCheck: string[] = ([] as string[]).concat(
       this.userProfileService.roleCurrentUser ?? []

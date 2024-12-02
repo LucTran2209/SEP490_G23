@@ -64,19 +64,17 @@
           Thông tin sản phẩm
           <span class="capitalize">{{ productDetail.productName }}</span>
         </h1>
-        <div class="grid grid-cols-5 p-5">
+        <div class="flex flex-col items-start gap-5 p-5">
           <div class="">
             <h3 class="font-bold">Giá cho thuê</h3>
-            <div>
-              rentalPrice:{{ productDetail.rentalPrice | currency:'VND':'VND':'1.0-0':'vi' }}
-            </div>
-            <div>
-              depositPrice: {{ productDetail.depositPrice | currency:'VND':'VND':'1.0-0':'vi' }}
-            </div>
+            <ul class="my-3 list-disc capitalize">
+             <li class=""> giá thuê:{{ productDetail.rentalPrice | currency:'VND':'VND':'1.0-0':'vi' }}</li>
+             <li>giá cọc: {{ productDetail.depositPrice | currency:'VND':'VND':'1.0-0':'vi' }}</li>
+            </ul>
           </div>
           <div class="">
-            <span class="font-bold mx-2">Thời gian cho thuê</span>
-            <p>rentalLimitDays: {{ productDetail.rentalLimitDays }}</p>
+            <h3 class="font-bold">Thời gian cho thuê</h3>
+            <ul class="my-3 list-disc capitalize"><li>giới hạn ngày thuê: {{ productDetail.rentalLimitDays }}</li></ul>
           </div>
         </div>
       </div>

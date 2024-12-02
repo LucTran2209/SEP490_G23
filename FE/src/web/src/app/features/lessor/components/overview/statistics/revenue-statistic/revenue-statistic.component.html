@@ -1,4 +1,4 @@
-<div class="bg-white my-3 p-6 rounded-md h-[620px]">
+<div class="bg-white my-3 p-6 rounded-md">
   <div class="flex items-center justify-between mb-3">
     <h3 class="font-semibold text-[22px]">Thống kê doanh thu</h3>
     <div>
@@ -9,5 +9,13 @@
       />
     </div>
   </div>
-  <canvas baseChart [data]="barChartData" [options]="barChartOptions"></canvas>
+  <div class="overflow-x-scroll md:overflow-x-hidden">
+    <div class="min-w-[600px]">
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+      ></canvas>
+    </div>
+  </div>
 </div>
