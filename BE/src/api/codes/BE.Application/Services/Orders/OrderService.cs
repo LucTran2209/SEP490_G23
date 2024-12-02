@@ -37,7 +37,7 @@ namespace BE.Application.Services.Orders
 
             var order = _mapper.Map<Order>(inputDto);
 
-            order.Code = DateTime.Now.Ticks.ToString() + "E";            
+            order.Code = DateTime.Now.Ticks.ToString() + "E";
 
             order.MortgagePaperImageFont = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageFont);
             order.MortgagePaperImageBack = await _azureService.UpLoadFileAsync(inputDto.MortgagePaperImageBack);
@@ -69,7 +69,7 @@ namespace BE.Application.Services.Orders
         {
             var file = string.Empty;
 
-            if (inputDto.FileAttach !=  null)
+            if (inputDto.FileAttach != null)
             {
                 file = await _azureService.UpLoadFileAsync(inputDto.FileAttach);
             }
@@ -79,11 +79,15 @@ namespace BE.Application.Services.Orders
             var userDepoit = await unitOfWork.UserRepository.FindByIdAsync((Guid)user.Id!);
             Guid rentalShopId = order!.OrderDetails!.Select(o => o.Product.RentalShopId).FirstOrDefault();
             var ownerRentalShop = await unitOfWork.UserRepository.FindByRentalShopIdAsync(rentalShopId);
-            var returnAmount = order.TotalDepositPrice > order.TotalRentPrice ? order.TotalDepositPrice : order.TotalRentPrice;
 
+            // amount return
+            var returnAmount = ApplyVoucher(order.Voucher, order.TotalRentPrice);
+           
             if (inputDto.Status == RequestStatus.CANCEL && currentOrderStatus!.Status == RequestStatus.PAYMENTED)
             {
-                // Nếu Status đang là 0, 1, 2 -> Cancel bình thường               
+                returnAmount = returnAmount < order.TotalDepositPrice ? order.TotalDepositPrice : order.TotalDepositPrice + returnAmount;
+
+                // Nếu Status đang là 0, 1, 2 -> Cancel bình thường
                 await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
 
                 await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);
@@ -96,12 +100,14 @@ namespace BE.Application.Services.Orders
                 // Nếu Status đang là 3 -> Cancel = -10%
             }
 
-            if (inputDto.Status == RequestStatus.COMPLETE && returnAmount == order.TotalDepositPrice)
+            if (inputDto.Status == RequestStatus.COMPLETE)
             {
-                // Return tiền cọc còn lại sau khi đã trừ tiền thu
-                await _walletService.ChangeBalance((Guid)user.Id, order.TotalDepositPrice - order.TotalRentPrice, true);
+                returnAmount = returnAmount < order.TotalDepositPrice ? order.TotalDepositPrice - returnAmount : order.TotalDepositPrice;
 
-                await _walletService.ChangeBalance(ownerRentalShop!.Id, order.TotalDepositPrice - order.TotalRentPrice, false);
+                // Return tiền cọc còn lại sau khi đã trừ tiền thu
+                await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
+
+                await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);
             }
 
             var orderStatus = OrderExtention.CreateOrderStatus(inputDto, file);
@@ -114,6 +120,21 @@ namespace BE.Application.Services.Orders
                 StatusCode = (int)HttpStatusCode.Created,
                 Message = "created successfully."
             };
+        }
+
+        private decimal ApplyVoucher(Voucher? voucher, decimal totalRentPrice)
+        {
+            if (voucher == null)
+                return totalRentPrice;
+
+            if (voucher.DiscountType == DiscountType.Percentage)
+            {
+                return totalRentPrice - totalRentPrice * voucher.DiscountValue;
+            }
+            else
+            {
+                return totalRentPrice - voucher.DiscountValue;
+            }
         }
 
         public async Task<ResultService> ListOrderAsync(GetListOrderByUserInputDto inputDto)
@@ -177,7 +198,7 @@ namespace BE.Application.Services.Orders
 
             myOrders = myOrders.Filter(inputDto.Search, o => o.Code!.Contains(inputDto.Search)
                                                             || o.OrderDetails!.Any(od => od.Product.ProductName!.Contains(inputDto.Search)));
-                                //.Filter(inputDto.NearDays.ToString(), o => o.)
+            //.Filter(inputDto.NearDays.ToString(), o => o.)
 
             var result = await myOrders.ToPageList(inputDto)
                                        .ToPageResult(await myOrders.CountAsync(), inputDto,
@@ -226,7 +247,7 @@ namespace BE.Application.Services.Orders
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
-                Datas= result
+                Datas = result
             };
         }
     }
