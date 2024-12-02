@@ -115,7 +115,7 @@ export class SubCategoryStatisticComponent implements OnInit, OnDestroy {
   }
   getRangeDate(typeChoose: string | number) {
     let fromDate, toDate;
-    toDate = dayjs().format('YYYY-MM-DD');
+    toDate = dayjs().endOf('month').format('YYYY-MM-DD');
 
     if (typeChoose === 'month') {
       fromDate = dayjs()
