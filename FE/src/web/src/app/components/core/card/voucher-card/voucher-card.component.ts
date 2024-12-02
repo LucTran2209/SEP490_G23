@@ -10,7 +10,7 @@ import { UserProfileService } from '../../../../services/user-profile.service';
 export class VoucherCardComponent implements OnInit {
    @Input() voucher!: VoucherOutputDto | VoucherDetailOutputDto;
    @Input() isShop: boolean = false;
-   shopId: string = '';
+   shopId?: string;
    @Output() saveVoucher = new EventEmitter<string>();  
    constructor(
     private userProfileService: UserProfileService, 

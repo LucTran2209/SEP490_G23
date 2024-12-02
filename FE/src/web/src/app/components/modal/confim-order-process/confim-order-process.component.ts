@@ -33,6 +33,7 @@ import { FeatureAppState } from '../../../store/app.state';
 import { LocalStorageKey } from '../../../utils/constant';
 import { convertToLocalISOString } from '../../../utils/timer.helper';
 import { MyValidators } from '../../../utils/validators';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -58,14 +59,6 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
     recipientAddress: FormControl<string>;
     note: FormControl<string>;
   }>;
-
-  // config autoTip
-  autoTips: Record<string, Record<string, string>> = {
-    en: {
-      required: 'Trường nhập là bắt buộc',
-    },
-  };
-  // config autoTip
   //form
   // radio
   parentSelectedValue: string = '';
@@ -103,6 +96,10 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
       this.toastMS.handleError('Bạn cần đăng nhập để tạo đơn thuê!', 401);
       this.router.navigateByUrl('/auth/login');
       this.modalRef.triggerOk();
+      return;
+    }
+    if(this.infoOrderCommonForm.valid && !this.parentSelectedValue){
+      this.messageService.error("Tài sản thế chấp không được để trống");
       return;
     }
     if (this.infoOrderCommonForm.valid) {
@@ -251,7 +248,8 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private router: Router,
     private toastMS: MessageResponseService,
-    private store: Store<FeatureAppState>
+    private store: Store<FeatureAppState>,
+    private messageService: NzMessageService
   ) {
     this.infoOrderCommonForm = this.initForm();
   }

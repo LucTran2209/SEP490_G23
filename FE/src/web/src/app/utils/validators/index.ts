@@ -1,13 +1,9 @@
 import {
   AbstractControl,
-  AsyncValidatorFn,
   ValidationErrors,
   ValidatorFn,
-  Validators,
+  Validators
 } from '@angular/forms';
-import { catchError, first, map, Observable, of, switchMap } from 'rxjs';
-import { HttpStatusCode } from '../../configs/status-code.config';
-import { AuthService } from '../../services/auth.service';
 import { REGEX } from '../constant';
 
 export function confirmValidator(
@@ -25,7 +21,7 @@ export function confirmValidator(
 
 export type MyValidationErrors = Record<
   string,
-  {  vn: string }
+  {  vn: string, en: string }
 >;
 
 export class MyValidators {
@@ -38,6 +34,7 @@ export class MyValidators {
       return {
         minlength: {
           vn: `Độ dài tối thiểu là ${min}`,
+          en: `Độ dài tối thiểu là ${min}`,
         },
       };
     };
@@ -51,6 +48,7 @@ export class MyValidators {
       return {
         maxlength: {
           vn: `Độ dài tối đa là ${max}`,
+          en: `Độ dài tối đa là ${max}`,
         },
       };
     };
@@ -64,6 +62,7 @@ export class MyValidators {
     return {
       email: {
         vn: 'Không nhập đúng định dạng email',
+        en: 'Không nhập đúng định dạng email',
       },
     };
   }
@@ -77,7 +76,8 @@ export class MyValidators {
     }
     return {
       mobile: {
-        vn: 'Không nhập đúng định dạng số điện thoại',
+        vn: 'Số điện thoại yêu cầu gồm 10 chữ số',
+        en: `Số điện thoại yều cầu gồm 10 chữ số`
       },
     };
   }
@@ -102,6 +102,7 @@ export class MyValidators {
     return {
       required: {
         vn: 'Trường này là bắt buộc',
+        en: 'Trường này là bắt buộc',
       },
     };
   }

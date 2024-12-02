@@ -95,8 +95,7 @@ export class ProfileComponent implements OnInit {
   }
   loadUser() {
     this.loadingService.setLoading();
-    this.userid = this.userProfileService.UserId;
-    console.log(this.userid);
+    this.userid = this.userProfileService.UserId ?? '';
     this.userService.viewProfile(this.userid).subscribe({
       next: (res: ProfileResultService) => {
         this.loadingService.setOtherLoading('loaded');

@@ -115,7 +115,7 @@ export class ManageVoucherComponent {
   }
 
   onSubmitForm(voucher: VoucherInputDto) {
-    voucher.shopId = this.userProfileService.rentalshopId;
+    voucher.shopId = this.userProfileService.rentalshopId ?? '';
     this.voucherService.createVoucher(voucher).subscribe({
       next: (response) => {
         this.messageService.showSuccess('Tạo Voucher Mới Thành Công!');
@@ -143,7 +143,7 @@ export class ManageVoucherComponent {
   async onloadVoucher() {
     this.loadingSerivce.setLoading();
     const id = this.userProfileService.rentalshopId;
-    this.voucherService.listVoucher(id).subscribe((res: VoucherResultService) => {
+    this.voucherService.listVoucher(id ?? '').subscribe((res: VoucherResultService) => {
       this.listData = res.data
       this.loadingSerivce.setOtherLoading('loaded');
     });

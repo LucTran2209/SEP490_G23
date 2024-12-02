@@ -15,7 +15,7 @@ export class LayoutDashboardComponent implements OnInit {
   notificationCount: number = 5;
   isShopSlected = false;
   isRenterSlected = false;
-  shopId: string = '';
+  shopId?: string;
   userRole: USER_ROLE = USER_ROLE.LESSOR; // Set your default role
 
   onToggleSidebar(collapsed: boolean): void {

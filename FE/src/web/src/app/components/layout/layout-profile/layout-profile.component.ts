@@ -14,8 +14,8 @@ export class LayoutProfileComponent implements OnInit {
   isAccountOpen = false;
   isPaymentOpen = false;
   isOrderSlected= false;
-  userName: string = '';
-  avatarPersonal: string = '';
+  userName?: string;
+  avatarPersonal?: string;
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
 
@@ -42,7 +42,7 @@ export class LayoutProfileComponent implements OnInit {
     this.checkRole();
     const userCurrent = this.userProfileService.currentUser;
     this.userName = userCurrent?.UserName;
-    this.avatarPersonal = userCurrent.Avatar;
+    this.avatarPersonal = userCurrent?.Avatar;
   }
   checkRole(){
     const role = this.userProfileService.roleCurrentUser;
