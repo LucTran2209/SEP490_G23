@@ -127,15 +127,6 @@
             ></path>
           </svg>
         </div>
-        <!-- @if() {
-              <p>
-                {{ (selectedTimeStart$ | async).value }}
-                {{ rangePickerTime[0] | date : "dd/MM/yyyy" }}
-                <span nz-icon nzType="minus" nzTheme="outline"></span>
-                {{ (selectedTimeEnd$ | async).value }}
-                {{ rangePickerTime[1] | date : "dd/MM/yyyy" }}
-              </p>
-              } -->
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Bắt đầu thuê thiết bị</p>
           <p class="text-lg">
@@ -237,17 +228,7 @@
       </div>
     </div>
   </div>
-  <!-- <div class="pb-5"> -->
-    <!-- <h3 class="font-semibold text-lg mb-2">Địa chỉ giao sản phẩm khả dụng</h3> -->
-    <!-- <div class="px-2"> -->
-      <!-- <p class="">Quận Phú Nhuận, TP. Hồ Chí Minh</p>
-      <p class="text-sm text-gray-300">
-        Địa chỉ cụ thể sẽ được hiển thị sau khi giữ chỗ.
-      </p> -->
-    <!-- </div> -->
-  <!-- </div> -->
   <form
-  [nzAutoTips]="autoTips"
     nz-form
     action=""
     nz-form
@@ -271,12 +252,13 @@
       <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
         >Số điện thoại</nz-form-label
       >
-      <nz-form-control>
+      <nz-form-control >
         <input
           type="text"
           nz-input
           formControlName="recipientPhoneNumber"
           placeholder="Nhập số điện thoại liên hệ"
+        
         />
       </nz-form-control>
     </nz-form-item>
@@ -607,7 +589,6 @@
     </div>
   </div> -->
   <form
-  [nzAutoTips]="autoTips"
     nz-form
     action=""
     nz-form
