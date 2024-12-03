@@ -1,11 +1,12 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
+using BE.Application.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class SubCategoryController : ControllerBase
+    public class SubCategoryController : BaseController
     {
         private readonly ISubCategoryService _subCategoryService;
 
@@ -19,7 +20,23 @@ namespace BE.Api.Controllers
         {
             var result = await _subCategoryService.GetAllSubCategoriesAsync();
 
-            return Ok(result);
+            return ReturnFollowStatusCode(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSubCategoy([FromBody] SubCategoryDto subCategory)
+        {
+            var result = await _subCategoryService.AddSubCategoryAsync(subCategory);
+
+            return ReturnFollowStatusCode(result);
+        }
+
+        [HttpPost("category")]
+        public async Task<IActionResult> AddCategoy([FromBody] CategoryDto category)
+        {
+            var result = await _subCategoryService.AddCategoryAsync(category);
+
+            return ReturnFollowStatusCode(result);
         }
     }
 }

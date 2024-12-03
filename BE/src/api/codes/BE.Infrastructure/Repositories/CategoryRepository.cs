@@ -10,9 +10,9 @@ namespace BE.Infrastructure.Repositories
     {
         public CategoryRepository(ApplicationDbContext context) : base(context) { }
 
-        public Task AddAsync(Category entity)
+        public async Task AddAsync(Category entity)
         {
-            throw new NotImplementedException();
+            await context.Categories.AddAsync(entity);
         }
 
         public Task DeleteAsync(Category entity)

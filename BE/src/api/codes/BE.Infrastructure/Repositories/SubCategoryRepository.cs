@@ -10,9 +10,9 @@ namespace BE.Infrastructure.Repositories
     {
         public SubCategoryRepository(ApplicationDbContext context) : base(context) { }
 
-        public Task AddAsync(SubCategory entity)
+        public async Task AddAsync(SubCategory entity)
         {
-            throw new NotImplementedException();
+            await context.SubCategories.AddAsync(entity);
         }
 
         public Task DeleteAsync(SubCategory entity)
@@ -27,7 +27,7 @@ namespace BE.Infrastructure.Repositories
 
         public IQueryable<SubCategory> GetAll()
         {
-            return context.SubCategories.AsQueryable();
+            return context.SubCategories.Include(i => i.Category).AsQueryable();
         }
 
         public Task UpdateAsync(SubCategory entity)

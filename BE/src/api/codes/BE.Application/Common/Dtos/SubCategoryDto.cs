@@ -3,6 +3,7 @@
     public class SubCategoryDto
     {
         public Guid? Id { get; set; }
+        public Guid CategoryId { get; set; }
         public string? SubCategoryName { get; set; }
         public string? Description { get; set; }
         //public CategoryDto? Category { get; set; }
