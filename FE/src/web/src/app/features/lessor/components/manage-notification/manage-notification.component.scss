@@ -1,0 +1,10 @@
+.tr_row .action {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .tr_row:hover .action,
+  .tr_row .action .nz-popconfirm-open ~ .action {
+    opacity: 1;
+  }
+  

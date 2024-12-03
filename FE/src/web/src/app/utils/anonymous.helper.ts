@@ -1,7 +1,7 @@
 import { concatMap, delay, map, Observable, of, range, takeWhile } from 'rxjs';
 import { ItimeClock } from '../interfaces/anonymous.interface';
 import { OrderStatus } from '../interfaces/order.interface';
-import { ORDER_STATUS } from './constant';
+import { DISCOUNT_TYPE, ORDER_STATUS } from './constant';
 
 export function encodeBase64(str: string) {
   const bytes = new TextEncoder().encode(str);
@@ -119,18 +119,60 @@ export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
   if (orderstatus === ORDER_STATUS.PENDING_APPROVAL) {
     return 'Chờ xác nhận';
   }
-  if (orderstatus === ORDER_STATUS.DEPOSIT_REFUND) {
-    return 'Đã thanh toán cọc';
-  }
-  if (orderstatus === ORDER_STATUS.PENDING_DELIVERY) {
-    return 'Chờ giao hàng';
-  }
   if (orderstatus === ORDER_STATUS.PENDING_PAYMENT) {
     return 'Chờ thanh toán';
   }
-  if (orderstatus === ORDER_STATUS.RECEIVED) {
-    return 'Đã nhận hàng';
+  if (orderstatus === ORDER_STATUS.PAYMENTED) {
+    return 'Đã thanh toán';
+  }
+  if (orderstatus === ORDER_STATUS.PENDING_DELIVERY) {
+    return 'Đang giao hàng';
+  }
+  if (orderstatus === ORDER_STATUS.DEPOSIT_REFUND) {
+    return 'Đang trả';
+  }
+  if (orderstatus === ORDER_STATUS.COMPLETE) {
+    return 'Hoàn Thành';
+  }
+  if (orderstatus === ORDER_STATUS.CANCEL) {
+    return 'Đã hủy';
   } else {
-    return 'Hoàn tiền';
+    return 'Đã nhận';
   }
 };
+
+export const convertButtonChangeStatusOrder = (orderstatus: ORDER_STATUS) => {
+  switch (orderstatus) {
+    case ORDER_STATUS.PENDING_APPROVAL:
+      return 'Xác Nhận Yêu Cầu Thuê';
+    case ORDER_STATUS.PAYMENTED:
+      return 'Giao hàng';
+    case ORDER_STATUS.REFUND:
+      return 'Trả hàng';
+    default:
+      return 'Xác nhận hàng trả về';
+  }
+};
+
+export const convertDiscountType = (discountType: DISCOUNT_TYPE): string => {
+  if (discountType === DISCOUNT_TYPE.PERCENTAGE) {
+    return 'Phần Trăm Theo Đơn Hàng';
+  }
+  if (discountType === DISCOUNT_TYPE.FIXED_AMOUNT) {
+    return 'Giá Cố Định Theo Đơn Hàng';
+  }
+  return ''; // Trả về chuỗi rỗng nếu không tìm thấy
+};
+
+export function getErrorMessage(response: any) {
+  if (response.error && response.status) {
+    return response.error.message;
+  } else if (response.status && response.errorList) {
+    const firstError = response.errorList[0];
+    return firstError
+      ? `${firstError.errorMessage}`
+      : 'Đã xảy ra lỗi không xác định!';
+  } else {
+    return 'Định dạng lỗi không hợp lệ!';
+  }
+}

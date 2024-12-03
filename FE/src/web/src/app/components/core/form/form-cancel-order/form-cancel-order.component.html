@@ -1,0 +1,98 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="title"
+  [nzMaskClosable]="true"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzWidth]="'700px'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="formCancelOrder" (ngSubmit)="onSubmit()">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="message" nzRequired>
+          Lý Do Hủy Đơn
+        </nz-form-label>
+        <nz-form-control>
+          <textarea
+            nz-input
+            class="w-full"
+            formControlName="message"
+            placeholder="Lý do hủy đơn"
+            [nzAutosize]="{ minRows: 6, maxRows: 12 }"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="text-center">
+        <nz-form-control>
+          <div class="flex justify-start">
+            <div class="columns-2 gap-6">
+              <button
+                class="w-full mt-3"
+                nz-button
+                type="button"
+                (click)="setMessage('Thay đổi địa chỉ')"
+              >
+                Thay đổi địa chỉ
+              </button>
+              <button
+                class="w-full mt-3"
+                nz-button
+                type="button"
+                (click)="setMessage('Tìm được shop cho thuê rẻ hơn')"
+              >
+                Tìm được shop cho thuê rẻ hơn
+              </button>
+              <button
+                class="w-full mt-3"
+                nz-button
+                type="button"
+                (click)="setMessage('Thay đổi voucher')"
+              >
+                Thay đổi voucher
+              </button>
+              <button
+                class="w-full mt-3"
+                nz-button
+                type="button"
+                (click)="setMessage('Thay đổi số điện thoại')"
+              >
+                Thay đổi số điện thoại
+              </button>
+              <button
+                class="w-full mt-3"
+                nz-button
+                type="button"
+                (click)="setMessage('Không muốn thuê nữa')"
+              >
+                Không muốn thuê nữa
+              </button>
+              <button
+                class="w-full mt-3"
+                nz-button
+                type="button"
+                (click)="setMessage('Chi phí thuê quá cao')"
+              >
+                Chi phí thuê quá cao
+              </button>
+            </div>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <div>
+            <button
+              class="w-full"
+              nz-button
+              type="submit"
+              nzType="default"
+              nzDanger
+            >
+              Hủy Đơn
+            </button>
+          </div>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

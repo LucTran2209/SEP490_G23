@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { finalize, switchMap, throwError, timer } from 'rxjs';
 import { MessageResponseService } from '../services/message-response.service';
-import { AuthSlug, CategorySlug, ProductSlug } from '../configs/api.configs';
+import { AuthSlug, CategorySlug, FeedBackSlug, ProductSlug, RentalShopSlug, VoucherSlug } from '../configs/api.configs';
 
 const ignoredUrls: string[] = [
   AuthSlug.Login.api,
@@ -11,13 +11,24 @@ const ignoredUrls: string[] = [
   AuthSlug.Register.api,
   AuthSlug.ResetPassWord.api,
   AuthSlug.VerifyEmail.api,
+  AuthSlug.IsExistEmail.api,
   AuthSlug.ConfirmEmail.api,
   CategorySlug.ListCategory.api,
   CategorySlug.ListSubCategory.api,
   'https://esgoo.net/api-tinhthanh/',
   ProductSlug.RentalShopProduct.api,
-  ProductSlug.GetDetailProduct.api
+  ProductSlug.GetDetailProduct.api,
+  ProductSlug.ListProduct.api,
+  RentalShopSlug.GetRentalShop.api,
+  FeedBackSlug.ListFeedBack.api,
+  VoucherSlug.ListVoucher.api,
+  VoucherSlug.MyVoucher.api
 ];
+
+//exist when authentication, but don't want to redirect to login page
+const exceptionUrls: string[] = [
+  VoucherSlug.MyVoucher.api
+]
 
 export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -35,7 +46,7 @@ export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
     );
   }
 
-  const clonedRequest = !shouldIgnore && token
+  const clonedRequest = !shouldIgnore && token || exceptionUrls
     ? req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,

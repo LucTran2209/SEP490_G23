@@ -1,0 +1,85 @@
+<div class="relative mx-auto py-5">
+  <div class="absolute bottom-0 right-4">
+    <img src="assets/images/Vector_4.png" alt="" class="w-full h-full" />
+  </div>
+  <div class="absolute bottom-0 -left-96">
+    <img src="assets/images/Vector_3.png" alt="" class="w-full h-full" />
+  </div>
+  <div class="z-10 flex flex-col items-center gap-y-5 mb-7">
+    <h4 class="text-4xl font-medium">Các bài viết liên quan</h4>
+    <div class="flex justify-center">
+      <div class="flex justify-between">
+        <div class="w-[60px] h-[4px] bg-[#007bff] rounded-sm"></div>
+        <div class="w-[10px] h-[4px] bg-[#007bff] rounded-sm ml-1"></div>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-[1200px] mx-auto grid grid-cols-2 gap-x-16">
+    <div class="grid grid-rows-3 gap-10">
+      @for (item of postFeatureMock; track $index) { @if ($index !==
+      postFeatureMock.length - 1) {
+      <div class="inline-flex items-start gap-4 cursor-pointer">
+        <div class="w-[40%]">
+          <img
+            [src]="item.thumbnail"
+            [alt]="item.thumbnail"
+            class="w-full object-cover rounded-sm"
+          />
+        </div>
+        <div class=" flex flex-col h-full justify-between">
+          <div class="">
+            <div class="flex items-center justify-start gap-x-3 mb-3">
+                <img
+                  [src]="item.author.avatar"
+                  [alt]="item.author.avatar"
+                  class="w-8 h-8 rounded-full object-cover"
+                />
+                <p>{{ item.author.name }}</p>
+              </div>
+            <p class="font-semibold text-xl mb-3">
+              {{ item.title }}
+            </p>
+          </div>
+          <div class="flex items-center gap-3 justify-start">
+            <span nz-icon nzType="field-time" nzTheme="outline"></span>
+            <p>{{ item.time }}</p>
+          </div>
+        </div>
+      </div>
+      } }
+    </div>
+    <div class="flex flex-col gap-5 cursor-pointer">
+      <div>
+        <img
+          [src]="postFeatureMock[0].thumbnail"
+          [alt]="postFeatureMock[0].thumbnail"
+          class="w-full h-[373px] rounded-sm object-cover"
+        />
+      </div>
+      <div class="flex-1 flex-col justify-between h-full">
+        <div class="flex items-center justify-start gap-x-3 mb-3">
+          <img
+            [src]="postFeatureMock[0].author.avatar"
+            [alt]="postFeatureMock[0].author.avatar"
+            class="w-8 h-8 rounded-full object-cover"
+          />
+          <p>{{ postFeatureMock[0].author.name }}</p>
+        </div>
+        <div class="mb-4">
+          <p class="font-semibold text-xl mb-3">
+            {{ postFeatureMock[0].title }}
+          </p>
+          <p class="text-sm text-[#626687] line-clamp-3">
+            Want to buy a house but are unsure about what we should know, here I
+            will try to explain what we should know and check when we want to
+            buy a house
+          </p>
+        </div>
+        <div class="flex items-center gap-3 justify-start">
+          <span nz-icon nzType="field-time" nzTheme="outline"></span>
+          <p>{{ postFeatureMock[0].time }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

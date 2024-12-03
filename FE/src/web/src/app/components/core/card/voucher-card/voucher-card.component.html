@@ -1,0 +1,57 @@
+<div
+  class="voucher-card relative flex justify-between items-center bg-blue-100 rounded-lg p-4 w-10/12"
+>
+  <!-- Header -->
+  <div class="voucher-header flex items-center">
+    <!-- Icon -->
+    <div class="icon-container bg-blue-100 rounded-full p-2 mr-4">
+      <nz-avatar
+        [nzSrc]="'/assets/images/logo-shop-default.png'"
+        nzShape="circle"
+        nzSize="large"
+        class="h-12 w-12 object-cover"
+      ></nz-avatar>
+    </div>
+    <!-- Details -->
+    <div class="voucher-details">
+      <h3 class="text-sm font-semibold line-clamp-1">
+        {{ voucher.description }}
+      </h3>
+      <p class="text-xs text-gray-500">
+        HSD: {{ voucher.expiryDate | date : "dd/MM/yyyy" }}
+      </p>
+    </div>
+  </div>
+  <!-- Discount -->
+  <div class="voucher-discount text-center text-nowrap ml-2">
+    @if(voucher.discountType == 0){
+    <span class="block text-xl font-bold text-blue-500"
+      >{{ voucher.discountValue }} %</span
+    >
+    <p class="text-gray-700 text-sm">OFF</p>
+    }@else{
+    <span class="block text-xl font-bold text-blue-500"
+      >{{ voucher.discountValue }} VND</span
+    >
+    }
+  </div>
+  <div
+    class="voucher-discount text-center ml-5"
+    *ngIf="isShop && shopId !== voucher.shopId && !voucher.isSave"
+  >
+    <button class="ml-3" nz-button nzType="primary" (click)="onSaveVoucher()">
+      Lưu
+    </button>
+  </div>
+  <div class="voucher-discount text-center ml-5" *ngIf="voucher.isSave">
+    <p class="text-gray-400 uppercase p-5">Đã Lưu</p>
+  </div>
+  <!-- Top Cutout -->
+  <div
+    class="absolute top-0 left-3/4 -translate-x-3/4 bg-white w-6 h-3 rounded-b-full"
+  ></div>
+  <!-- Bottom Cutout -->
+  <div
+    class="absolute bottom-0 left-3/4 -translate-x-3/4 bg-white w-6 h-3 rounded-t-full"
+  ></div>
+</div>

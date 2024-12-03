@@ -42,21 +42,37 @@
           <span nz-icon nzType="solution" nzTheme="outline"></span>
           <span>Danh Sách Đơn Yêu Cầu</span>
         </li>
-        <li nz-menu-item>
+        <li
+          nz-menu-item
+          [routerLink]="['./manage-shops']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <span nz-icon nzType="shop" nzTheme="outline"></span>
           <span>Danh Sách Cửa Hàng</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['./manage-category']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span nz-icon nzType="apartment" nzTheme="outline"></span>
+          <span>Danh Sách Loại Thiết Bị</span>
         </li>
       </ng-container>
 
       <!-- Lessor Role -->
       <ng-container *ngIf="hasLessorRole()">
-        <li nz-menu-item>
+        <li
+          nz-menu-item
+          nz-menu-item
+          [routerLink]="['./dashboard']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <span nz-icon nzType="bar-chart" nzTheme="outline"></span>
           <span>Thông Kê</span>
-        </li>
-        <li nz-menu-item>
-          <span nz-icon nzType="file-text" nzTheme="outline"></span>
-          <span>Danh Sách Bài Đăng</span>
         </li>
         <li
           nz-menu-item
@@ -65,16 +81,34 @@
           [routerLinkActiveOptions]="{ exact: false }"
         >
           <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
-          <span>Danh Sách Người Thuê</span>
+          <span>Danh Sách Đơn Thuê</span>
         </li>
         <li
           nz-menu-item
-          [routerLink]="['./shop', shopId]"
+          [routerLink]="['./notification']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          <span nz-icon nzType="bell" nzTheme="outline"></span>
+          <span>Danh Sách Thông Báo</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['/lessor/shop', shopId]"
           routerLinkActive="ant-menu-item-selected"
           [routerLinkActiveOptions]="{ exact: true }"
         >
           <span nz-icon nzType="shop" nzTheme="outline"></span>
           <span>Cửa Hàng</span>
+        </li>
+        <li
+          nz-menu-item
+          [routerLink]="['/lessor/voucher']"
+          routerLinkActive="ant-menu-item-selected"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          <span nz-icon nzType="profile" nzTheme="outline"></span>
+          <span>Quản Lý Khuyến Mãi</span>
         </li>
       </ng-container>
     </ul>

@@ -52,26 +52,26 @@
               Số lượng sản phẩm thuê
             </td>
             <td class="font-medium py-[4px]">
-              {{ totalQuantity }}
+              {{ totalQuantity$ | async }}
             </td>
           </tr>
           <tr>
             <td class="text-[14px] font-normal py-[4px] w-full">Tiền cọc</td>
             <td class="font-medium py-[4px]">
-              - {{ orderDetails.totalDepositPrice | currency : "VND" }}
+              - {{ orderDetails.totalDepositPrice |currency:'VND':'VND':'1.0-0':'vi' }}
             </td>
           </tr>
           <tr>
             <td class="text-[14px] font-normal py-[4px] w-full">Thành tiền</td>
             <td class="font-medium py-[4px]">
               <!-- giá voucher fix -->
-              {{ +orderDetails.totalRentPrice + +orderDetails.totalDepositPrice | currency : "VND" }}
+              {{ +orderDetails.totalRentPrice + +orderDetails.totalDepositPrice |currency:'VND':'VND':'1.0-0':'vi' }}
             </td>
           </tr>
           <tr>
             <td class="text-[14px] font-normal py-[4px] w-full">Tổng tiền</td>
             <td class="font-medium py-[4px]">
-              {{ +orderDetails.totalRentPrice + +orderDetails.totalDepositPrice | currency : "VND" }}
+              {{ +orderDetails.totalRentPrice + +orderDetails.totalDepositPrice |currency:'VND':'VND':'1.0-0':'vi' }}
             </td>
           </tr>
           <tr>
@@ -79,24 +79,29 @@
               Trạng thái đơn hàng
             </td>
             <td class="font-medium py-[4px]">
-              <app-status-label [label]="convertStatus(orderDetails.orderStatuses[0].status)"
-                [statusType]="orderDetails.orderStatuses[0].status" />
+              <app-status-label [label]="convertStatus(getOrderStatusLatest(orderDetails))"
+                [statusType]="getOrderStatusLatest(orderDetails)" />
             </td>
+            
           </tr>
         </tbody>
       </table>
-      <section class="flex flex-col gap-2 pt-3" *ngIf="orderDetails.orderStatuses[0].status === 0">
-        <button nz-button class="w-full" nzType="primary">
-          Chấp nhận yêu cầu
-        </button>
-        <button nz-button class="w-full" nzType="default">
-          Từ chối yêu cầu
-        </button>
+      <section class="flex flex-col gap-2 pt-3">
+        @if(avaiableAprroveRequestOrder.includes(getOrderStatusLatest(orderDetails))){
+          <button nz-button class="w-full" nzType="primary" (click)="popUpChangeStatus(modalTitle)">
+            {{convertTextButton(getOrderStatusLatest(orderDetails))}}
+          </button>
+        }
+        @if(availableCancelRequestOrder.includes(getOrderStatusLatest(orderDetails))){
+          <button nz-button class="w-full" nzType="default" (click)="popUpCancelOrderStatus()">
+            Hủy yêu cầu
+          </button>
+        }
       </section>
     </section>
     <section class="flex-1 p-5 bg-white rounded-md">
       <h4 class="pb-3 text-lg font-medium">Chi tiết sản phẩm thuê</h4>
-      <nz-table #basicTable [nzBordered]="true" [nzData]="listOfData" [nzSize]="'middle'">
+      <nz-table #basicTable [nzBordered]="true" [nzData]="orderDetails.orderDetails"  [nzSize]="'middle'">
         <thead>
           <tr>
             <th nzWidth="5%">
@@ -139,7 +144,7 @@
               Tiền cọc:
             </td>
             <td class="font-medium py-[4px]">
-              {{ data.product.depositPrice | currency : "VND" }}
+              {{ data.product.depositPrice |currency:'VND':'VND':'1.0-0':'vi' }}
             </td>
           </tr>
           </td>
@@ -149,3 +154,7 @@
     </section>
   </div>
 </ng-container>
+
+<ng-template #modalTitle>
+  <h3 class="font-medium">Xét duyệt yêu cầu đơn thuê</h3>
+</ng-template>

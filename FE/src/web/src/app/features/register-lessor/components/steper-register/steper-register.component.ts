@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { IPayLoad } from '../../../../interfaces/account.interface';
-import { IAddressDeep } from '../../../../interfaces/register-lessor.interface';
 import { UserProfileService } from '../../../../services/user-profile.service';
 import { FeatureAppState } from '../../../../store/app.state';
 import { renterShop } from '../../state/register_lessor.actions';
@@ -27,14 +26,14 @@ import {
 })
 export class SteperRegisterComponent {
   current = 0;
-  userCurrent: IPayLoad;
+  userCurrent: IPayLoad | null;
   shopName$: Observable<string>;
   imageFront$: Observable<File | null>;
   imageBack$: Observable<File | null>;
   taxNumber$: Observable<string>;
   businessLicense$: Observable<File | null>;
   rentalScale$: Observable<string | number>;
-  address$: Observable<IAddressDeep>;
+  address$: Observable<string>;
   phoneNumber$: Observable<string>;
   email$: Observable<string>;
   isActive$: Observable<boolean>;
@@ -82,7 +81,12 @@ export class SteperRegisterComponent {
         return;
       }
 
-      const addressTest = `${address.address_province.name}-${address.address_district.name}-${address.address_ward.name}`
+      if(!this.userCurrent){
+        console.error('Not define user current');
+        return;
+      }
+
+      const addressTest = `${address}`
       const formData = new FormData();
       formData.append('userId', this.userCurrent.UserId); 
       formData.append('shopName', shopName);

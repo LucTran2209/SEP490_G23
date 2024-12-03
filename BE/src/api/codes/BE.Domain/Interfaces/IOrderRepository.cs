@@ -9,5 +9,7 @@ namespace BE.Domain.Interfaces
         Task<Order?> GetDetailOrderAsync(Guid orderId);
         IQueryable<Order> GetMyOrder(Guid? id);
         IQueryable<Order> GetRentalShopOrder(Guid rentalShopId);
+        Task<(int, decimal)> RentalShopDetailVoted(Guid rentalShopId);
+
     }
 }

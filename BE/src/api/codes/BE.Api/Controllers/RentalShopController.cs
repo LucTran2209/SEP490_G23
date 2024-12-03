@@ -25,11 +25,11 @@ namespace BE.Api.Controllers
             return Ok(output);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("detail/{id}")]
         public async Task<IActionResult> GetRentalShopDetailAsync(Guid id)
         {
             var output = await rentalShopService.GetRentalShopDetailByIdAsync(id);
-            return Ok(output);
+            return ReturnFollowStatusCode(output);
         }
 
         [HttpPost]
@@ -41,9 +41,9 @@ namespace BE.Api.Controllers
             return ReturnFollowStatusCode(output);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/MyShop/{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateRentalShopInputDto inputDto)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromForm] UpdateRentalShopInputDto inputDto)
         {
             var output = await rentalShopService.UpdateAsync(inputDto, id);
 

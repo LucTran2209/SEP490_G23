@@ -11,6 +11,7 @@ module.exports = {
       backgroundImage: {
         'bg-4': "url('../src/assets/images/bg-auth-other.jpg')",
         'bg-verifyEmail': "url('../src/assets/images/DeWatermark.ai_1731512741490.png')",
+        'bg-changePassword': "url('https://img.freepik.com/free-vector/forgot-password-concept-illustration_114360-1123.jpg')"
       },
       spacing: {
         '9/16': '56.25%',

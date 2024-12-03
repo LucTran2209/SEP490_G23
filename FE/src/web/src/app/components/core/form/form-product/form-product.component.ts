@@ -195,7 +195,7 @@ export class FormProductComponent {
     this.imageList = [];
   }
   formatCurrency = (value: number | string): string => {
-    return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' VND';
+    return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VND';
   };
   
   parseCurrency = (value: string): string => {

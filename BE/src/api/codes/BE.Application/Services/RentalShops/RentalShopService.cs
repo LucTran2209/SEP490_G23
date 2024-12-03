@@ -62,12 +62,8 @@ namespace BE.Application.Services.RentalShops
                 return new ResultService { StatusCode = (int)HttpStatusCode.NotFound, Message = "Rental shop not found." };
 
             rentalShop.ShopName = inputDto.ShopName;
-            rentalShop.Email = inputDto.Email;
-            rentalShop.PhoneNumber = inputDto.PhoneNumber;
-            rentalShop.Address = inputDto.Address;
-            rentalShop.Description = inputDto.Description;
-            rentalShop.Status = inputDto.Status;
-            rentalShop.IsActive = inputDto.IsActive;
+            rentalShop.AvatarShop = await _azureService.UpLoadFileAsync(inputDto.AvatarShop!);
+            rentalShop.Banner = await _azureService.UpLoadFileAsync(inputDto.Banner!);
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
 
@@ -136,8 +132,17 @@ namespace BE.Application.Services.RentalShops
                 FirstOrDefault(r => r.RoleId == Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff"))!.CreatedDate.DateTime;
 
             result.NumberOfRenter = unitOfWork.OrderRepository.GetRentalShopOrder(id)
-                                                        .Where(o => o.OrderStatuses!.Any(s => s.Status != RequestStatus.Cancel))
+                                                        .Where(o => o.OrderStatuses!.Any(s => s.Status != RequestStatus.CANCEL))
                                                         .ToList().Count;
+
+            var  x  = await unitOfWork.ProductRepository.GetListProductByRetalShopId(id).ToListAsync();
+            result.NumberOfProduct = x.Count;
+
+            var voted = await unitOfWork.OrderRepository.RentalShopDetailVoted(id);
+
+            result.NumberOfVote = voted.Item1;
+            result.AvegateVote = voted.Item2;
+
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
@@ -218,7 +223,7 @@ namespace BE.Application.Services.RentalShops
         public async Task<ResultService> ActivityRentalShopAsync(ActivityRentalShopInputDto input)
         {
             await activityValidator.ValidateAndThrowAsync(input);
-            var rentalShop = await unitOfWork.RentalShopRepository.GetRentalShopByNotActiveAsync(input.Id);
+            var rentalShop = await unitOfWork.RentalShopRepository.FindByIdAsync(input.Id);
             if (rentalShop == null)
             {
                 return new ResultService
@@ -228,6 +233,7 @@ namespace BE.Application.Services.RentalShops
                 };
             }
             rentalShop.IsActive = input.IsActive;
+            rentalShop.AdminNote = input.AdminNote;
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
             return new ResultService

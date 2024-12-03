@@ -1,4 +1,4 @@
-<nz-layout class="inner-layout h-full">
+<nz-layout class="inner-layout min-h-screen">
   <nz-sider nzWidth="250px" nzTheme="light">
     <div class="flex justify-start p-1 pt-5">
       <nz-avatar
@@ -37,18 +37,41 @@
           >
             Hồ Sơ
           </li>
-          <li nz-menu-item>Đổi Mật Khẩu</li>
+          <li
+            nz-menu-item
+            [routerLink]="['./account/change-password']"
+            routerLinkActive="ant-menu-item-selected"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Thay đổi mật khẩu
+          </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="Tiền Của Tôi" nzIcon="wallet">
+      <li
+        [nzOpen]="isPaymentOpen"
+        nz-submenu
+        nzTitle="Tiền Của Tôi"
+        nzIcon="wallet"
+      >
         <ul>
-          <li nz-menu-item>Ví Tiền</li>
-          <li nz-menu-item>Lịch Sử Giao Dịch</li>
+          <li
+            nz-menu-item
+            [routerLink]="['./payment/my-wallet']"
+            routerLinkActive="ant-menu-item-selected"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Ví Tiền
+          </li>
         </ul>
       </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="bell" nzTheme="outline"></span>
-        <span>Thông Báo</span>
+      <li
+        nz-menu-item
+        [routerLink]="['./my-voucher']"
+        routerLinkActive="ant-menu-item-selected"
+        [routerLinkActiveOptions]="{ exact: false }"
+      >
+        <span nz-icon nzType="gift" nzTheme="outline"></span>
+        <span>Kho Voucher</span>
       </li>
       <li
         nz-menu-item

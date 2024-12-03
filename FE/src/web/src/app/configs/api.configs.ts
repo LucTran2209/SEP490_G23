@@ -21,9 +21,9 @@ export const AuthSlug = {
     api: 'api/Authentication/Register',
   },
   ChangePassword: {
-    label: 'change-passowrd',
+    label: 'change-password',
     title: 'change password | ERMS',
-    api: 'api/user/changepassword',
+    api: 'api/Authentication/ChangePassword',
   },
   ResetPassWord: {
     label: 'reset-password/:token/:email',
@@ -34,6 +34,9 @@ export const AuthSlug = {
     label: 'verify-email',
     title: 'verify email | ERMS',
     api: 'api/Authentication/VerifyEmail',
+  },
+  IsExistEmail: {
+    api: 'api/Authentication/check-not-existed-email',
   },
   ConfirmEmail: {
     title: 'confirm email | ERMS',
@@ -177,6 +180,11 @@ export const OrderSlug = {
     title: 'Active Order | ERMS',
     api: 'ActiveOrder',
   },
+  RequestOrder: {
+    label: 'Request Order',
+    title: 'Request Order | ERMS',
+    api: 'api/Order/orderstatus',
+  },
 };
 export const CategorySlug = {
   ListCategory: {
@@ -195,7 +203,22 @@ export const RentalShopSlug = {
   GetRentalShop: {
     label: 'Get Rental Shop',
     title: 'Get Rental Shop | ERMS',
-    api: 'RentalShop/',
+    api: 'RentalShop/detail/',
+  },
+  UpdateRentalShop: {
+    label: 'Update Rental Shop',
+    title: 'Update Rental Shop | ERMS',
+    api: 'MyShop/',
+  },
+  DeactiveRentalShop: {
+    label: 'Deactive Rental Shop',
+    title: 'Deactive Rental Shop | ERMS',
+    api: 'RentalShop/ActivityShopById',
+  },
+  ListRentalShop: {
+    label: 'List Rental Shop',
+    title: 'List Rental Shop | ERMS',
+    api: 'RentalShop/AllRequestShop',
   }
 
 }
@@ -223,6 +246,72 @@ export const FeedBackSlug = {
     label: 'Create Feedback',
     title: 'Create Feedback | ERMS',
     api: 'api/Feedback/create',
+  },
+  ListFeedBack: {
+    label: 'List Feedback',
+    title: 'List Feedback | ERMS',
+    api: 'api/Feedback/product/',
   }
+
+}
+export const VoucherSlug = {
+  CreateVoucher: {
+    label: 'Create Voucher',
+    title: 'Create Voucher | ERMS',
+    api: 'Voucher/create',
+  },
+  UpdateVoucher: {
+    label: 'Update Voucher',
+    title: 'Update Voucher | ERMS',
+    api: 'Voucher/',
+  },
+  DeleteVoucher: {
+    label: 'Delete Voucher',
+    title: 'Delete Voucher | ERMS',
+    api: 'Voucher/',
+  },
+  DeactivateVoucher: {
+    label: 'Deactivate Voucher',
+    title: 'Deactivate Voucher | ERMS',
+    api: 'Voucher/',
+  },
+  ListVoucher: {
+    label: 'List Voucher',
+    title: 'List Voucher | ERMS',
+    api: 'Voucher/list/',
+  },
+  GetVoucher: {
+    label: 'Get Voucher',
+    title: 'Get Voucher | ERMS',
+    api: 'Voucher/',
+  },
+  SaveVoucher: {
+    label: 'Save Voucher',
+    title: 'Save Voucher | ERMS',
+    api: 'Voucher/save',
+  },
+  MyVoucher: {
+    label: 'My Voucher',
+    title: 'My Voucher | ERMS',
+    api: 'Voucher/my-voucher',
+  }
+
+}
+export const PaymentSlug = {
+  RechargeMoney: {
+    label: 'Recharge Money',
+    title: 'Recharge Money | ERMS',
+    api: 'Wallet/recharge',
+  },
+  DepositMoney: {
+    label: 'Deposit Money',
+    title: 'Deposit Money | ERMS',
+    api: 'Wallet/deposit',
+  },
+  RechargeHistory: {
+    label: 'Recharge History',
+    title: 'Recharge History | ERMS',
+    api: 'Wallet/list',
+  },
 
 }

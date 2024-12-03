@@ -1,15 +1,10 @@
 import {
   AbstractControl,
-  AsyncValidatorFn,
   ValidationErrors,
   ValidatorFn,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { REGEX } from '../constant';
-import { Store } from '@ngrx/store';
-import { AuthService } from '../../services/auth.service';
-import { catchError, debounceTime, distinctUntilChanged, first, map, Observable, of, switchMap } from 'rxjs';
-import { HttpStatusCode } from '../../configs/status-code.config';
 
 export function confirmValidator(
   passwordControl: AbstractControl
@@ -26,7 +21,7 @@ export function confirmValidator(
 
 export type MyValidationErrors = Record<
   string,
-  { 'zh-cn': string; en: string }
+  {  vn: string, en: string }
 >;
 
 export class MyValidators {
@@ -38,7 +33,7 @@ export class MyValidators {
       }
       return {
         minlength: {
-          'zh-cn': `最小长度为 ${min}`,
+          vn: `Độ dài tối thiểu là ${min}`,
           en: `Độ dài tối thiểu là ${min}`,
         },
       };
@@ -52,7 +47,7 @@ export class MyValidators {
       }
       return {
         maxlength: {
-          'zh-cn': `最大长度为 ${max}`,
+          vn: `Độ dài tối đa là ${max}`,
           en: `Độ dài tối đa là ${max}`,
         },
       };
@@ -66,7 +61,7 @@ export class MyValidators {
     }
     return {
       email: {
-        'zh-cn': '邮箱格式不正确',
+        vn: 'Không nhập đúng định dạng email',
         en: 'Không nhập đúng định dạng email',
       },
     };
@@ -81,8 +76,8 @@ export class MyValidators {
     }
     return {
       mobile: {
-        'zh-cn': '手机号格式不正确',
-        en: 'Không nhập đúng định dạng số điện thoại',
+        vn: 'Số điện thoại yêu cầu gồm 10 chữ số',
+        en: `Số điện thoại yều cầu gồm 10 chữ số`
       },
     };
   }
@@ -106,42 +101,9 @@ export class MyValidators {
     }
     return {
       required: {
-        'zh-cn': '此项为必填项',
+        vn: 'Trường này là bắt buộc',
         en: 'Trường này là bắt buộc',
       },
     };
   }
-
-  static emailAsync(authService: AuthService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<MyValidationErrors | null> => {
-      return control.valueChanges.pipe(
-        switchMap((value) =>
-          authService.verifyEmail({ email: value }).pipe(
-            map((res) =>
-              res.statusCode === HttpStatusCode.OK
-                ? 
-                null
-                :
-                {
-                 emailExists: {
-                'zh-cn': '无法验证邮箱，请稍后再试',
-                en: 'Không thể xác thực email, vui lòng thử lại sau',
-              },
-                }
-            ),
-            catchError((error) =>
-              of({
-                emailExists: {
-                  'zh-cn': '邮箱已存在',
-                  en: 'Email đã tồn tại',
-                },
-              })
-            )
-          )
-        ),
-        first()
-      );
-    };
-  }
-  
 }

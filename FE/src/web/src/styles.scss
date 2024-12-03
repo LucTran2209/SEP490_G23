@@ -113,3 +113,17 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+
+//selection
+/* Đặt màu khi bôi đen */
+::selection {
+  background-color: #cce4ff; /* Màu nền xanh nhạt */
+  color: black; /* Màu chữ đen */
+}
+
+/* Hỗ trợ trên trình duyệt webkit (Chrome, Safari, Edge) */
+::-moz-selection {
+  background-color: #cce4ff; /* Màu nền xanh nhạt */
+  color: black; /* Màu chữ đen */
+}

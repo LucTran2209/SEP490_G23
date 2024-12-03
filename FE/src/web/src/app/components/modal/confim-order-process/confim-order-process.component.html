@@ -36,7 +36,7 @@
               ></path>
             </svg>
           </span>
-          Hà Nội
+          {{ productDetail.rentalShop.address }}
         </p>
       </div>
     </div>
@@ -127,19 +127,10 @@
             ></path>
           </svg>
         </div>
-        <!-- @if() {
-              <p>
-                {{ (selectedTimeStart$ | async).value }}
-                {{ rangePickerTime[0] | date : "dd/MM/yyyy" }}
-                <span nz-icon nzType="minus" nzTheme="outline"></span>
-                {{ (selectedTimeEnd$ | async).value }}
-                {{ rangePickerTime[1] | date : "dd/MM/yyyy" }}
-              </p>
-              } -->
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Bắt đầu thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeStart$ | async).value }} -
+            {{ (selectedTimeStart$ | async).label }} -
             {{ time[0] | date : "dd/MM/yyyy" }}
           </p>
         </div>
@@ -230,24 +221,14 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Kết thúc thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeEnd$ | async).value }} -
+            {{ (selectedTimeEnd$ | async).label }} -
             {{ time[1] | date : "dd/MM/yyyy" }}
           </p>
         </div>
       </div>
     </div>
   </div>
-  <div class="pb-5">
-    <h3 class="font-semibold text-lg mb-2">Địa chỉ giao sản phẩm khả dụng</h3>
-    <div class="px-2">
-      <!-- <p class="">Quận Phú Nhuận, TP. Hồ Chí Minh</p>
-      <p class="text-sm text-gray-300">
-        Địa chỉ cụ thể sẽ được hiển thị sau khi giữ chỗ.
-      </p> -->
-    </div>
-  </div>
   <form
-  [nzAutoTips]="autoTips"
     nz-form
     action=""
     nz-form
@@ -281,7 +262,7 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24"
         >Email</nz-form-label
       >
       <nz-form-control>
@@ -298,16 +279,13 @@
         >Địa chỉ người nhận</nz-form-label
       >
       <nz-form-control>
-        <input
-          type="text"
-          nz-input
+        <app-input-address
           formControlName="recipientAddress"
-          placeholder="Nhập địa chỉ người nhận"
-        />
+        ></app-input-address>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24">
         Lời nhắc tới chủ cho thuê
       </nz-form-label>
       <nz-textarea-count [nzMaxCharacterCount]="100" class="w-full">
@@ -331,9 +309,9 @@
       ></span>
     </div>
     <app-select-radio-collateral
-    [(selectedValue)]="parentSelectedValue"
-    (listFileCollateral)="handleFileList($event)"
-></app-select-radio-collateral>
+      [(selectedValue)]="parentSelectedValue"
+      (listFileCollateral)="handleFileList($event)"
+    ></app-select-radio-collateral>
   </div>
   <div class="pb-5">
     <app-price-list />
@@ -355,7 +333,6 @@
       [disabled]="!infoOrderCommonForm.valid"
     >
       Gửi yêu cầu thuê thiết bị
-      
     </button>
   </div>
 </ng-container>
@@ -504,7 +481,7 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Bắt đầu thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeStart$ | async).value }} -
+            {{ (selectedTimeStart$ | async).label }} -
             {{ time[0] | date : "dd/MM/yyyy" }}
           </p>
         </div>
@@ -595,7 +572,7 @@
         <div class="flex flex-col justify-start gap-y-1">
           <p class="text-slate-400 font-light">Kết thúc thuê thiết bị</p>
           <p class="text-lg">
-            {{ (selectedTimeEnd$ | async).value }} -
+            {{ (selectedTimeEnd$ | async).label }} -
             {{ time[1] | date : "dd/MM/yyyy" }}
           </p>
         </div>
@@ -612,7 +589,6 @@
     </div>
   </div> -->
   <form
-  [nzAutoTips]="autoTips"
     nz-form
     action=""
     nz-form
@@ -646,7 +622,7 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24"
         >Email</nz-form-label
       >
       <nz-form-control>
@@ -663,16 +639,13 @@
         >Địa chỉ người nhận</nz-form-label
       >
       <nz-form-control>
-        <input
-          type="text"
-          nz-input
+        <app-input-address
           formControlName="recipientAddress"
-          placeholder="Nhập địa chỉ người nhận"
-        />
+        ></app-input-address>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label class="font-semibold text-lg" [nzSpan]="24" nzRequired>
+      <nz-form-label class="font-semibold text-lg" [nzSpan]="24">
         Lời nhắc tới chủ cho thuê
       </nz-form-label>
       <nz-textarea-count [nzMaxCharacterCount]="100" class="w-full">
@@ -696,9 +669,9 @@
       ></span>
     </div>
     <app-select-radio-collateral
-    [(selectedValue)]="parentSelectedValue"
-    (listFileCollateral)="handleFileList($event)"
-></app-select-radio-collateral>
+      [(selectedValue)]="parentSelectedValue"
+      (listFileCollateral)="handleFileList($event)"
+    ></app-select-radio-collateral>
   </div>
   <div class="pb-5">
     <app-price-list />
@@ -722,3 +695,4 @@
     </button>
   </div>
 </ng-container>
+

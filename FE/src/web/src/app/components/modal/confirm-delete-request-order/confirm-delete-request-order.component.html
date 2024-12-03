@@ -1,0 +1,23 @@
+<div class="p-4 flex justify-start items-center gap-x-3">
+  <img
+    src="./assets/images/attention-square.png"
+    alt=""
+    width="40"
+    height="39"
+  />
+  <h4 class="font-semibold">
+    Bạn có chắc chắn muốn hủy yêu cầu đơn hàng này ?
+  </h4>
+</div>
+<div class="mb-3">
+  <textarea
+    class="bg-gray-50 border border-gray-200 rounded-md shadow-sm"
+    placeholder="Nhập lý do từ chối đơn hàng"
+    nz-input
+    [formControl]="noteMessage"
+    [nzAutosize]="{ minRows: 5, maxRows: 5 }"
+  ></textarea>
+</div>
+<div class="modal-footer flex items-center justify-end gap-x-3">
+  <button nz-button nzType="primary" (click)="confirm()">Xác nhận</button>
+</div>

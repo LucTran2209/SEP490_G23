@@ -1,0 +1,57 @@
+<div class="relative flex flex-col items-center gap-y-5 py-5">
+  <p class="text-4xl font-bold">
+    <span class="bg-[#cce4ff]"
+      >Kết nối người thuê và nhà cung cấp cho thuê sản phẩm</span
+    >
+  </p>
+  <div class="grid grid-cols-2 gap-5 w-[70%] mt-7 mx-auto z-10">
+    @for (item of listWeBring; track $index) {
+    <div
+      class="relative border border-solid border-[#ebebeb] p-3 rounded-sm cursor-pointer hover:bg-[#cce4ff]"
+    >
+      <div
+        class="relative w-20 h-20 mb-3 shadow-lg rounded-full bg-[#2c7df53d]"
+      >
+        <div class="absolute z-10 bottom-0 right-0">
+          <svg
+            width="35"
+            height="35"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 7L10 3L21 7M3 7V12L14 16L21 12V7M3 7L14 11L21 7"
+              stroke="#222222"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M3 12V17L14 21L21 17V12"
+              stroke="#222222"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="flex flex-col gap-y-3 mb-3">
+        <h3 class="font-semibold capitalize text-xl tracking-wide">
+          {{ item.title }}
+        </h3>
+        <p class="text-[#a9a9a9] tracking-wide">{{ item.desc }}</p>
+      </div>
+      <div class="absolute right-5 top-5">
+        <button
+          nz-button
+          nzType="default"
+          class="border border-solid border-[#0F6CF8] h-[50px] hover:bg-[#0F6CF8] hover:text-white"
+        >
+          Xem chi tiết
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="absolute -top-20 -left-96">
+    <img src="assets/images/Vector_1.png" alt="" class="w-full h-full">
+  </div>
+</div>

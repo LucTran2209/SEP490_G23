@@ -1,0 +1,60 @@
+<div
+  class="relative py-10 bg-[url('assets/images/banner-feelback.png')] bg-no-repeat bg-cover"
+>
+  <div class="absolute bg-black inset-0 opacity-60"></div>
+
+  <div class="grid">
+    <nz-carousel class="max-w-[1900px] mx-auto" nzAutoPlay>
+      @for (index of mockFeedBack; track index) {
+      <div nz-carousel-content>
+        <div
+          class="text-center relative max-w-[960px] flex flex-col mx-auto gap-10 items-center bg-[#04040487] py-8 px-8"
+        >
+          <p class="line-clamp-3 text-white capitalize text-lg">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi non
+            asperiores fugit accusamus illum temporibus! Necessitatibus nulla
+            fuga veniam illo quibusdam omnis aperiam rerum soluta error? Aut,
+            mollitia, culpa unde cumque vitae nulla iste quo atque consequatur
+            expedita dignissimos voluptates?
+          </p>
+          <div>
+            <img
+              src="assets/images/banner-feelback.png"
+              alt=""
+              class="w-24 h-24 rounded-full"
+            />
+          </div>
+          <div class="absolute -left-11 -top-3">
+            <svg
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M44.1391 50.3516V82H12.7252V73.7949C12.7252 60.9792 13.6629 51.4457 15.5384 45.1941C17.5702 38.7863 22.8058 29.7216 31.2454 18L44.608 25.5018C37.575 37.536 33.5115 45.8193 32.4175 50.3516H44.1391ZM86.8058 50.3516V82H55.3919V73.7949C55.3919 60.9792 56.3296 51.4457 58.2051 45.1941C60.2368 38.7863 65.4725 29.7216 73.912 18L87.2747 25.5018C80.2417 37.536 76.1782 45.8193 75.0842 50.3516H86.8058Z"
+                fill="#CDCDCE"
+              />
+            </svg>
+          </div>
+          <div class="absolute -right-11 bottom-20 rotate-180">
+            <svg
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M44.1391 50.3516V82H12.7252V73.7949C12.7252 60.9792 13.6629 51.4457 15.5384 45.1941C17.5702 38.7863 22.8058 29.7216 31.2454 18L44.608 25.5018C37.575 37.536 33.5115 45.8193 32.4175 50.3516H44.1391ZM86.8058 50.3516V82H55.3919V73.7949C55.3919 60.9792 56.3296 51.4457 58.2051 45.1941C60.2368 38.7863 65.4725 29.7216 73.912 18L87.2747 25.5018C80.2417 37.536 76.1782 45.8193 75.0842 50.3516H86.8058Z"
+                fill="#CDCDCE"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      }
+    </nz-carousel>
+  </div>
+</div>

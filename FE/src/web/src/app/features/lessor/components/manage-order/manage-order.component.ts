@@ -1,14 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import dayjs from 'dayjs';
 import { NzCustomColumn } from 'ng-zorro-antd/table';
-import {
-  catchError,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap
-} from 'rxjs';
+import { map, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { OptionSelectCheckBox } from '../../../../configs/anonymous.config';
 import { OrderListResponse } from '../../../../interfaces/order.interface';
 import { LoadingService } from '../../../../services/loading.service';
@@ -18,7 +12,7 @@ import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { convertStatusOrder } from '../../../../utils/anonymous.helper';
 import { ORDER_STATUS } from '../../../../utils/constant';
 
-interface CustomColumns extends NzCustomColumn {
+export interface CustomColumns extends NzCustomColumn {
   name: string;
   position?: 'left' | 'right';
 }
@@ -28,7 +22,7 @@ interface CustomColumns extends NzCustomColumn {
   templateUrl: './manage-order.component.html',
   styleUrl: './manage-order.component.scss',
 })
-export class ManageOrderComponent implements OnInit {
+export class ManageOrderComponent implements OnInit, OnDestroy {
   listData: OrderListResponse[] = [];
   pageIndex$: Observable<number> = of(1);
   pageTotal$?: Observable<number>;
@@ -116,11 +110,20 @@ export class ManageOrderComponent implements OnInit {
     },
   ];
 
+  subscription?: Subscription;
+
   handleChooseViewCell(arr: OptionSelectCheckBox[]) {
     this.customColumn = this.customColumn.map((item, index) => ({
       ...item,
       default: arr[index].checked,
     }));
+  }
+
+  getOrderStatusLatest(orderDetail: OrderListResponse): number {
+    return orderDetail.orderStatuses.reduce(
+      (max, item) => Math.max(max, item.status),
+      -Infinity
+    );
   }
 
   convertRentalDay(startDate: string, endDate: string) {
@@ -145,9 +148,13 @@ export class ManageOrderComponent implements OnInit {
     const { orderCode, orderStatus, humanRental, phoneNumber, timeRange } =
       valGroup;
     const startDate =
-      timeRange && timeRange.length !== 0 ? timeRange[0].toISOString() : null;
+      timeRange && timeRange.length !== 0
+        ? dayjs(timeRange[0]).format('YYYY-MM-DD')
+        : null;
     const endDate =
-      timeRange && timeRange.length !== 0 ? timeRange[1].toISOString() : null;
+      timeRange && timeRange.length !== 0
+        ? dayjs(timeRange[1]).format('YYYY-MM-DD')
+        : null;
     this.onloadOrder({
       pageIndex: 1,
       pageSize: 10,
@@ -186,26 +193,26 @@ export class ManageOrderComponent implements OnInit {
     });
   }
 
-
   async onloadOrder(paramFilter?: any) {
     this.loadingSerivce.setLoading();
-    this.orderService.listOrderLessor(paramFilter ?? {}).pipe(
-      map((res) => {
-        const {
-          data: { items, pageIndex, pageSize, totalCount },
-        } = res;
-        this.listData = items;
-        this.pageIndex$ = of(pageIndex);
-        this.pageTotal$ = of(totalCount);
-        this.pageSize$ = of(pageSize);
-        this.loadingSerivce.setOtherLoading('loaded');
-      }),
-      catchError((err) => {
-        this.loadingSerivce.setOtherLoading('error');
-        console.error('Order loading error:', err);
-        return of([]);
-      })
-    ).subscribe();
+    this.subscription = this.orderService
+      .listOrderLessor(paramFilter ?? {})
+      .subscribe({
+        next: (res) => {
+          const {
+            data: { items, pageIndex, pageSize, totalCount },
+          } = res;
+          this.listData = items;
+          this.pageIndex$ = of(pageIndex);
+          this.pageTotal$ = of(totalCount);
+          this.pageSize$ = of(pageSize);
+          this.loadingSerivce.setOtherLoading('loaded');
+        },
+        error: (err) => {
+          this.loadingSerivce.setOtherLoading('error');
+          console.error('Order loading error:', err);
+        },
+      });
   }
 
   onQueryParams() {
@@ -221,7 +228,9 @@ export class ManageOrderComponent implements OnInit {
           };
           return filters;
         }),
-        tap((filters) => {this.navigateService.updateParams(filters);}),
+        tap((filters) => {
+          this.navigateService.updateParams(filters);
+        }),
         switchMap((filters) => this.onloadOrder(filters))
       )
       .subscribe();
@@ -239,5 +248,9 @@ export class ManageOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.onQueryParams();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

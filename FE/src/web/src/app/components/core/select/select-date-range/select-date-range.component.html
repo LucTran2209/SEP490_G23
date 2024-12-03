@@ -1,0 +1,9 @@
+<nz-range-picker
+  [nzSize]="nzSize"
+  [nzMode]="nzMode"
+  [nzPopupStyle]="{ borderRadius: '8px' }"
+  class="rounded-md"
+  [nzDisabledDate]="disabledDate"
+  [(ngModel)]="selectedDateRange"
+  (ngModelChange)="onDateChange($event)"
+></nz-range-picker>

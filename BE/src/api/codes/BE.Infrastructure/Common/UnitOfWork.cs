@@ -59,6 +59,14 @@ namespace BE.Infrastructure.Common
         public IProductImageRepository productImageRepository;
         public IProductImageRepository ProductImageRepository => productImageRepository = new ProductImageRepository(context);
 
+        public IRechargeHistoryRepository rechargeHistoryRepository;
+        public IRechargeHistoryRepository RechargeHistoryRepository => rechargeHistoryRepository = new RechargeHistoryRepository(context);
+
+        public IVoucherRepository voucherRepository;
+        public IVoucherRepository VoucherRepository => voucherRepository = new VoucherRepository(context);
+        public IStatisticalRepository statisticalRepository;
+        public IStatisticalRepository StatisticalRepository => statisticalRepository = new StatisticalRepository(context);
+
         public async Task BeginTransactionAsync()
         {
             if (_currentTransaction == null)
@@ -124,7 +132,7 @@ namespace BE.Infrastructure.Common
                     case EntityState.Added:
                         if (entry.Entity is EntityAuditBase added)
                         {
-                            added.CreatedDate = DateTime.UtcNow;
+                            added.CreatedDate = DateTime.Now;
                         }
 
                         if (entry.Entity is IUserTracking hasTrace)
@@ -137,14 +145,14 @@ namespace BE.Infrastructure.Common
                             {
                                 hasTrace.CreatedBy = Guid.Empty;
                             }
-                            
+
                         }
 
                         break;
                     case EntityState.Modified:
                         if (entry.Entity is EntityAuditBase modified)
                         {
-                            modified.LastModifiedDate = DateTime.UtcNow;
+                            modified.LastModifiedDate = DateTime.Now;
                         }
 
                         if (entry.Entity is IUserTracking trace)

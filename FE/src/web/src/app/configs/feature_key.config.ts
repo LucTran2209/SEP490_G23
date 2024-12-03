@@ -9,7 +9,13 @@ export const feature_key = {
   rentalProductFeature: 'feature_rentalProductFeature',
   filtersFeature: "feature_filter",
   orderProductFeature: "feature_orderProduct",
-  resizeChatFeature: 'feature_resize'
+  resizeChatFeature: 'feature_resize',
+  orderRequestFeature: 'feature_orderrequest',
+  orderDetailFeature: 'feature_orderdetail',
+  cardOverviewFeature: 'feature_CardOverView',
+    dataChartSubCategory: 'feature_getDATACHARTSUBCATEGORY',
+    dataChartRevenue: 'feature_getDATACHARTREVENUE',
+    dataChartOrder: 'feature_getDATACHARTORDER'
 } as const;
 
 export type FeatureKeyValues = (typeof feature_key)[keyof typeof feature_key];

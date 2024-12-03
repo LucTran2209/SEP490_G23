@@ -1,0 +1,21 @@
+<div class="bg-white my-3 p-6 rounded-md">
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="font-semibold text-[22px]">Thống kê doanh thu</h3>
+    <div>
+      <app-select-view-statistic
+        [defaultValue]="'month'"
+        [optionSelect]="chooseFollowDate"
+        (chooseItemOption)="getRangeDate($event)"
+      />
+    </div>
+  </div>
+  <div class="overflow-x-scroll md:overflow-x-hidden">
+    <div class="min-w-[600px]">
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+      ></canvas>
+    </div>
+  </div>
+</div>

@@ -189,11 +189,11 @@ export class ManageRegisterLessorComponent implements OnInit {
           if(status == 1){
             this.messageService.showSuccess('Bạn Đã Duyệt Đơn Yêu Cầu Thành Công!');
           }else{
-            this.messageService.handleError('Bạn Đã Từ Chối Đơn Yêu Cầu Thành Công!');
+            this.messageService.showSuccess('Bạn Đã Từ Chối Đơn Yêu Cầu Thành Công!');
           }
         },
         (error) => {
-          this.messageService.handleError('Bạn Đã Xét Duyệt Đơn Yêu Cầu Thất Bại!Lỗi: error');
+          this.messageService.handleError('Bạn Đã Xét Duyệt Đơn Yêu Cầu Thất Bại!');
           console.error('Error changing status:', error);
         }
       );

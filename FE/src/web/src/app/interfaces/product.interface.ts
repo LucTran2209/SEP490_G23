@@ -74,6 +74,7 @@ export interface ProductItemResponse {
   description: string;
   quantity: number;
   subCategoryId: string;
+  numberOfVoted: string | number;
   rentalPrice: string | number;
   depositPrice: string | number;
   rentalLimitDays: string | number;
@@ -100,4 +101,18 @@ export interface ProductDtoResponse {
       totalCount: number;
     };
   };
+}
+export interface SearchProduct {
+  pageSize: number;
+  pageIndex: number;
+  search?: string;
+  orderBy?: string;
+  orderByDesc?: boolean;
+  thenBy?: string;
+  thenByDesc?: boolean;
+  addresses?: string[];
+  subCategory?: string[];
+  evaluates?: number[];
+  minPrice?: number;
+  maxPrice?: number;
 }

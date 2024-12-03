@@ -1,0 +1,18 @@
+::ng-deep .slick-track {display: flex !important}
+::ng-deep .slick-list{
+    max-height: 300px;
+}
+
+::ng-deep .ant-carousel .slick-dots {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    left: -288px;
+    z-index: 15;
+    display: flex !important;
+    justify-content: center;
+    margin-right: 15%;
+    margin-left: 15%;
+    padding-left: 0;
+    list-style: none;
+}

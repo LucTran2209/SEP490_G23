@@ -1,4 +1,7 @@
-<div class="flex overflow-hidden" [ngClass]="{ container: !visible, 'h-screen': visible }">
+<div
+  class="flex overflow-hidden"
+  [ngClass]="{ container: !visible, 'h-screen': visible }"
+>
   <!-- left hand -->
   <div
     class="left_content overflow-y-scroll p-4 h-full"
@@ -9,29 +12,42 @@
         (handleRentalMoreProduct)="open($event)"
         [isOpen]="visible"
         [shopInfo]="shopInfo$ | async"
+        [totalProduct]="pageTotal$ | async"
       />
+    </div>
+    <div *ngIf="vouchers && vouchers.length > 0" class="my-3">
+      <h3 class="text-2xl my-2 uppercase">Voucher</h3>
+      <div class="grid grid-cols-12 gap-10 pb-3">
+        <div *ngFor="let voucher of vouchers" class="col-span-6">
+          <app-voucher-card
+            [voucher]="voucher"
+            (saveVoucher)="saveVoucher($event)"
+            [isShop]="true"
+          ></app-voucher-card>
+        </div>
+      </div>
     </div>
     <div
       class="grid grid-cols-10 gap-4 pb-3 bg-white rounded-lg border border-solid border-[#e5e7eb] p-5"
     >
-      <div class="col-span-2">
-        <div class="pb-5">
-          <p class="icon_text pb-3">
+      <!-- <div class="col-span-2"> -->
+      <!-- <div class="pb-5"> -->
+      <!-- <p class="icon_text pb-3">
             <span nz-icon nzType="profile" nzTheme="outline"></span>
             Danh mục thiết bị thuê
-          </p>
-          <!-- <app-view-more-item
+          </p> -->
+      <!-- <app-view-more-item
             [items]="categoryOptions"
             [itemTemplate]="contentTemplate"
           >
           </app-view-more-item> -->
-        </div>
-      </div>
-      <div class="col-span-8">
+      <!-- </div> -->
+      <!-- </div> -->
+      <div class="col-span-10">
         <div
           class="bg-[#e5e7eb] flex justify-between items-center flex-wrap p-3 rounded-sm"
         >
-          <div class="flex items-center gap-3">
+          <!-- <div class="flex items-center gap-3">
             <p>Sắp xếp theo</p>
             <nz-button-group class="flex justify-center items-center gap-3">
               <button nz-button nzType="default">Phổ biến</button>
@@ -53,7 +69,7 @@
                 }
               </nz-select>
             </nz-button-group>
-          </div>
+          </div> -->
           <div class="inline-block">
             <nz-pagination
               [nzPageIndex]="pageIndex$ | async"
@@ -66,8 +82,8 @@
         </div>
         <nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 16 }">
           <!-- *ngFor="let product of productListShopFilter$ | async" -->
-           @if ((productListShopFilter$ | async)?.length !== 0) {
-            <nz-col
+          @if ((productListShopFilter$ | async)?.length !== 0) {
+          <nz-col
             *ngFor="let product of productListShopFilter$ | async"
             [nzXs]="24"
             [nzSm]="12"
@@ -76,12 +92,11 @@
           >
             <app-product-card [product]="product"> </app-product-card>
           </nz-col>
-           }@else {
-            <nz-col>
-              <p>Shop hiện chưa có sản phẩm cho thuê nào</p>
-            </nz-col>
-           }
-         
+          }@else {
+          <nz-col>
+            <p>Shop hiện chưa có sản phẩm cho thuê nào</p>
+          </nz-col>
+          }
         </nz-row>
       </div>
     </div>

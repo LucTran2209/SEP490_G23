@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
 
 export const setInit = createAction(
   '[Rental] Set init Rental price product',
@@ -27,4 +28,15 @@ export const checkIsQuantityExceed = createAction(
   props<{ pid: string | number; quantityRequest: string | number }>()
 );
 
+export const removeOneOrder = createAction(
+  '[Rental] Remove one order',
+  props<{ pid: string | number }>()
+);
+export const applyVoucher = createAction(
+  '[Rental] Apply voucher in new order',
+  props<{ voucher: VoucherDetailOutputDto }>()
+);
+export const removeVoucher = createAction(
+  '[Rental] Remove voucher in new order',
+);
 export const resetRentalProduct = createAction('[Rental] reset rental product');

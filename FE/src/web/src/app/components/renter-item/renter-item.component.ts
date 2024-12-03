@@ -2,13 +2,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { debounceTime, map, Observable, Subject, take } from 'rxjs';
 import { selectIsInitialState } from '../../features/common/state/product/product-detail.reducer';
 import {
+  removeOneOrder,
   setQuantityRequest
 } from '../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../features/common/state/rental/rental.reducers';
@@ -19,6 +22,7 @@ import {
 } from '../../features/common/state/rental/rental.selectors';
 import { MessageResponseService } from '../../services/message-response.service';
 import { FeatureAppState } from '../../store/app.state';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-renter-item',
@@ -30,12 +34,16 @@ export class RenterItemComponent implements OnInit {
   productRentalFollowId$?: Observable<OrderState | undefined>;
   isInitialStateProductDetail$?: Observable<boolean>;
   @Input() pId?: string;
+  @Output() removeOneRow = new EventEmitter<string | number>();
   rentalPriceActual$?: Observable<string | number | undefined>;
   numberDay$?: Observable<string | number | undefined>;
   demoValue = 1;
   private quantitySubject = new Subject<number>();
 
   handleRequestQuantity(val: number) {
+    if(!val || val < 0){
+      return;
+    }
     this.productRentalFollowId$
       ?.pipe(
         take(1),
@@ -69,7 +77,7 @@ export class RenterItemComponent implements OnInit {
       );
       this.productRentalFollowId$ = this.store.select(
         selectProductRentalById(String(this.pId))
-      );
+      )
     }
   }
 
@@ -85,6 +93,14 @@ export class RenterItemComponent implements OnInit {
     });
   }
 
+  get isRentalMore(){
+    return this.router.url.includes('/common/shop');
+  }
+
+  deleteOneItem(){
+    this.removeOneRow.emit(this.pId);
+  }
+
   ngOnInit(): void {
     this.selectStateFromNgRx();
     this.dispatchActionNessarray();
@@ -94,6 +110,7 @@ export class RenterItemComponent implements OnInit {
   constructor(
     private store: Store<FeatureAppState>,
     private cdRef: ChangeDetectorRef,
-    private messageResponseMS: MessageResponseService
+    private messageResponseMS: MessageResponseService,
+    private router: Router
   ) {}
 }

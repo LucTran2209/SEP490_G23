@@ -1,0 +1,21 @@
+<div class="input-address">
+  <input
+    nz-input
+    [value]="value"
+    placeholder="Nhập địa chỉ"
+    (input)="onInput($event)"
+    [nzAutocomplete]="auto"
+  />
+  <nz-autocomplete
+    [nzDataSource]="options"
+    nzBackfill
+    #auto
+    (selectionChange)="onSelectionChange($event)"
+  >
+    <nz-option
+      *ngFor="let option of options"
+      [nzValue]="option"
+      [nzLabel]="option"
+    ></nz-option>
+  </nz-autocomplete>
+</div>

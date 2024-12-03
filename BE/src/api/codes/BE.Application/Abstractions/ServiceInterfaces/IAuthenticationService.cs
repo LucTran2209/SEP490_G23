@@ -13,5 +13,7 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> LogoutAsync();
         Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto);
         Task<ResultService> ComfirmVerifyEmailAsync(ComfirmVerifyEmailInputDto inputDto);
+        Task<ResultService> CheckNotExistedEmailAsync(CheckNotExistedEmailInputDto inputDto);
+        Task<ResultService> CheckNotExistedUserNameAsync(CheckNotExistedUserNameInputDto inputDto);
     }
 }

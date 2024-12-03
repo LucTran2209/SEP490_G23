@@ -17,10 +17,13 @@ namespace BE.Application.Services.Users.Validators
                 .NotEmpty().WithMessage("PhoneNumber is requierd")
                 .MaximumLength(10).WithMessage("Max length 10");
 
-            RuleFor(u => u.Email)
-               .NotEmpty().WithMessage("Email is required")
-               .EmailAddress().WithMessage("Invalid email format")
-               .Must(email => email.EndsWith("@gmail.com")).WithMessage("Email must be a @gmail.com address");
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage("Email required")
+                .EmailAddress().WithMessage("Email không hợp lệ")
+                .MustAsync(async (email, cancellationToken) =>
+                {
+                    return !await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
+                }).WithMessage("Email đã tồn tại");
 
             RuleFor(u => u.Address)
                 .NotEmpty().WithMessage("Address is required");
@@ -45,10 +48,29 @@ namespace BE.Application.Services.Users.Validators
                 .NotEmpty().WithMessage("PhoneNumber is required")
                 .MaximumLength(10).WithMessage("Max length is 10");
 
-            RuleFor(u => u.Email)
-                .NotEmpty().WithMessage("Email is required")
-                .EmailAddress().WithMessage("Invalid email format")
-                .Must(email => email.EndsWith("@gmail.com")).WithMessage("Email must be a @gmail.com address");
+            RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("Email required")
+            .EmailAddress().WithMessage("Email không hợp lệ")
+            .MustAsync(async (dto, email, cancellationToken) =>
+            {
+                // Lấy user hiện tại từ cơ sở dữ liệu dựa trên Id
+                var currentUser = await context.Users
+                    .Where(u => u.Id == dto.Id) // dto.Id là Id của user đang được cập nhật
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                // Nếu không tìm thấy user hoặc email không thay đổi, pass validation
+                if (currentUser == null || currentUser.Email == email)
+                {
+                    return true; // Không cần kiểm tra thêm
+                }
+
+                // Nếu email thay đổi, kiểm tra xem có trùng với email nào khác không
+                var isEmailTaken = await context.Users
+                    .AnyAsync(u => u.Email == email && u.Id != dto.Id, cancellationToken);
+
+                return !isEmailTaken; // Trả về false nếu email đã tồn tại
+            }).WithMessage("Email đã tồn tại");
+
 
             RuleFor(u => u.Address)
                 .NotEmpty().WithMessage("Address is required");

@@ -3,8 +3,8 @@ import {
   SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
-import { NgModule } from '@angular/core';
+import localeVI from '@angular/common/locales/vi';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -115,9 +115,31 @@ import { HeaderShopComponent } from '../core/header-shop/header-shop.component';
 import { CodeInputModule } from 'angular-code-input';
 import { CodeInputComponent } from 'angular-code-input';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-registerLocaleData(en);
+import { ChangeStatusOrderComponent } from '../modal/change-status-order/change-status-order.component';
+import { SelectViewStatisticComponent } from '../core/select/select-view-statistic/select-view-statistic.component';
+import { SelectDateRangeComponent } from '../core/select/select-date-range/select-date-range.component';
+import { NotificationItemComponent } from '../notification-item/notification-item.component';
+import { NotificationPopupComponent } from '../../features/notification/components/notification-popup/notification-popup.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { FormSearchVoucherComponent } from '../core/form/form-search-voucher/form-search-voucher.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDeleteRequestOrderComponent } from '../modal/confirm-delete-request-order/confirm-delete-request-order.component';
+import { FormVoucherComponent } from '../core/form/form-voucher/form-voucher.component';
+import { FormRechargeComponent } from '../core/form/form-recharge/form-recharge.component';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { FormDeactiveShopComponent } from '../core/form-deactive-shop/form-deactive-shop.component';
+import { InputAddressComponent } from '../core/input-address/input-address.component';
+import { VoucherCardComponent } from '../core/card/voucher-card/voucher-card.component';
+import { FormCancelOrderComponent } from '../core/form/form-cancel-order/form-cancel-order.component';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { ListVoucherAvailableComponent } from '../modal/list-voucher-available/list-voucher-available.component';
+import { DetailVoucherAvailableComponent } from '../modal/detail-voucher-available/detail-voucher-available.component';
+import { FormConfirmComponent } from '../core/form/form-confirm/form-confirm.component';
+registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
+  NzImageModule,
+  NzPopconfirmModule,
   NzStatisticModule,
   NzNotificationModule,
   NzDividerModule,
@@ -164,9 +186,22 @@ const ANTD_MODULES = [
   NzTypographyModule,
   NzCollapseModule,
 ];
-
-const MATERIAL_MODULES = [MatButtonModule, MatSnackBarModule, MatInputModule];
+const MATERIAL_MODULES = [
+  MatDialogModule,
+  MatButtonModule,
+  MatSnackBarModule,
+  MatInputModule,
+  MatMenuModule,
+];
 const SHARED_MODULES = [
+  DetailVoucherAvailableComponent,
+  ListVoucherAvailableComponent,
+  ConfirmDeleteRequestOrderComponent,
+  NotificationPopupComponent,
+  NotificationItemComponent,
+  SelectDateRangeComponent,
+  SelectViewStatisticComponent,
+  ChangeStatusOrderComponent,
   ChatListComponent,
   ChatMessageComponent,
   ChatInputComponent,
@@ -224,6 +259,14 @@ const SHARED_MODULES = [
   ProductRelatedComponent,
   RequestShopCardComponent,
   HeaderShopComponent,
+  FormSearchVoucherComponent,
+  FormVoucherComponent,
+  FormRechargeComponent,
+  FormDeactiveShopComponent,
+  InputAddressComponent,
+  VoucherCardComponent,
+  FormCancelOrderComponent,
+  FormConfirmComponent,
 ];
 
 @NgModule({
@@ -250,6 +293,7 @@ const SHARED_MODULES = [
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    { provide: LOCALE_ID, useValue: 'vi' },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

@@ -1,0 +1,159 @@
+<form nz-form [formGroup]="formVoucher" (ngSubmit)="onSubmit()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzFor="code" nzRequired>
+      Mã Khuyến Mãi
+    </nz-form-label>
+    <nz-form-control nzErrorTip="Vui lòng nhập mã khuyến mãi!">
+      <input placeholder="Mã khuyến mãi" nz-input formControlName="code" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzFor="description" nzRequired>
+      Thông Tin Khuyến Mãi
+    </nz-form-label>
+    <nz-form-control
+      nzErrorTip="Vui lòng nhập thông tin khuyến mãi!"
+      nzRequired
+    >
+      <textarea
+        class="w-full"
+        nz-input
+        formControlName="description"
+        placeholder="Thông tin khuyến mãi"
+        [nzAutosize]="{ minRows: 3, maxRows: 5 }"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <div class="grid grid-cols-3 gap-x-3">
+    <nz-form-item>
+      <nz-form-label
+        class="font-medium"
+        nzFor="discountType"
+        [nzSpan]="24"
+        nzRequired
+        >Loại Khuyến Mãi</nz-form-label
+      >
+      <nz-form-control>
+        <nz-input-group>
+          <nz-select
+            class="w-full"
+            formControlName="discountType"
+            [nzOptions]="discountTypeOptions"
+            nzPlaceHolder="Chọn Loại Khuyến Mãi"
+            (ngModelChange)="handleDiscountTypeChange($event)"
+          >
+          </nz-select>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        class="font-medium"
+        nzFor="discountValue"
+        [nzSpan]="24"
+        nzRequired
+        >Giá Trị Khuyến Mãi</nz-form-label
+      >
+      <nz-form-control>
+        <nz-input-group>
+          <nz-input-number
+            class="w-full"
+            formControlName="discountValue"
+            [nzMin]="currentMin"
+            [nzMax]="currentMax"
+            [nzStep]="currentStep"
+            [nzFormatter]="currentFormatter"
+            [nzParser]="currentParser"
+          ></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="">
+      <nz-form-label
+        class="font-medium"
+        nzFor="minimumSpend"
+        [nzSpan]="24"
+        nzRequired
+        >Số Tiền Tối Thiểu Để Áp Dụng Mã</nz-form-label
+      >
+      <nz-form-control>
+        <nz-input-number
+          class="w-full"
+          formControlName="minimumSpend"
+          [nzFormatter]="formatterVND"
+          [nzParser]="parserVND"
+        ></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div class="grid grid-cols-3 gap-x-3">
+    <nz-form-item class="">
+      <nz-form-label class="font-medium" nzFor="maximumDiscount" [nzSpan]="24"
+        >Giảm Giá Tối Đa (dành cho giảm theo %)</nz-form-label
+      >
+      <nz-form-control>
+        <nz-input-number
+          class="w-full"
+          formControlName="maximumDiscount"
+          [nzFormatter]="formatterVND"
+          [nzParser]="parserVND"
+        ></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="">
+      <nz-form-label
+        class="font-medium"
+        nzFor="startDate"
+        [nzSpan]="24"
+        nzRequired
+        >Ngày Bắt Đầu Áp Dụng</nz-form-label
+      >
+      <nz-form-control>
+        <nz-date-picker
+          class="w-full"
+          formControlName="startDate"
+        ></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="">
+      <nz-form-label
+        class="font-medium"
+        nzFor="expiryDate"
+        [nzSpan]="24"
+        nzRequired
+        >Ngày Hết Hạn</nz-form-label
+      >
+      <nz-form-control
+        nzErrorTip="Vui lòng nhập ngày hết hạn lớn hơn ngày hiện tại!"
+      >
+        <nz-date-picker
+          class="w-full"
+          formControlName="expiryDate"
+        ></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="24" nzFor="usageLimit" nzRequired>
+      Số Lượng Voucher
+    </nz-form-label>
+    <nz-form-control nzErrorTip="Vui lòng nhập số lần sử dụng mã này!">
+      <nz-input-number class="w-full" formControlName="usageLimit" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item class="text-end">
+    <div
+      class="my-2 text-red-600"
+      *ngIf="formVoucher.hasError('startDateInvalid')"
+    >
+      <span>Ngày bắt đầu phải nhỏ hơn ngày hết hạn.</span>
+    </div>
+    <nz-form-control>
+      <button nz-button type="submit" nzType="primary">
+        {{ labelButton }}
+      </button>
+      &nbsp;
+      <button nz-button type="button" (click)="resetForm()">Đặt lại</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -3,6 +3,7 @@ using BE.Domain.Interfaces;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BE.Infrastructure.Repositories
 {
@@ -46,6 +47,7 @@ namespace BE.Infrastructure.Repositories
         public Task<Order?> GetDetailOrderAsync(Guid orderId)
         {
             var order = context.Orders.Include(o => o.User)
+                                      .Include(o => o.Voucher)
                                       .Include(o => o.OrderStatuses)
                                       .Include(o => o.OrderDetails!)
                                         .ThenInclude(o => o.Product)
@@ -91,6 +93,38 @@ namespace BE.Infrastructure.Repositories
                                       .OrderBy(o => o.CreatedDate)
                                       .AsQueryable();
             return query;
+        }
+
+        public async Task<(int, decimal)> RentalShopDetailVoted(Guid rentalShopId)
+        {
+            var votes = await context.RentalShops
+                        .Include(r => r.Products!)
+                            .ThenInclude(p => p.Feedbacks)
+                        .FirstOrDefaultAsync(r => r.Id == rentalShopId);
+
+            int totalVote = 0;
+            decimal avegateVote = 0;
+
+            if (votes.Products?.Count() <= 0)
+            {
+                return (0,0);
+            }
+
+            foreach (var product in votes.Products)
+            {
+                if (product.Feedbacks?.Count() <= 0)
+                {
+                    continue;
+                }
+
+                foreach(var f in product.Feedbacks!)
+                {
+                    totalVote += 1;
+                    avegateVote += f.Rating;
+                }
+            }
+
+            return (totalVote, Math.Round(avegateVote / totalVote, 1));
         }
 
         public Task UpdateAsync(Order entity)

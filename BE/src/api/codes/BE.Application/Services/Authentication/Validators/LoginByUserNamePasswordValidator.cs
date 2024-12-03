@@ -9,12 +9,7 @@ namespace BE.Application.Services.Authentication.Validators
         {
             RuleFor(x => x.UserName)
                 .NotEmpty()
-                .WithMessage("UserName is required")
-                .MustAsync(async (userName, cancellationToken) =>
-                {
-                    return await context.Users.AnyAsync(x => x.UserName == userName);
-                })
-                .WithMessage("UserName has not exist!");
+                .WithMessage("UserName is required");               
 
             RuleFor(x => x.Password)
                 .NotEmpty()

@@ -16,6 +16,7 @@ const intialState: ProductDetailState = {
     depositPrice: '',
     description: '',
     evaluate: '',
+    numberOfVoted: '',
     images: [],
     rentalShop: {
       address: '',

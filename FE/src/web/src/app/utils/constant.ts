@@ -1,3 +1,4 @@
+import { OptionSelect } from '../configs/anonymous.config';
 import { HttpStatusCode } from '../configs/status-code.config';
 
 export enum STRING {
@@ -59,6 +60,7 @@ export const LocalStorageKey = {
   breadCrumb: 'bread_crumb',
   prevBreadcrumb: 'prev_bread_crumb',
   orderProcess: 'order_process',
+  rangeDate: 'rangeDate'
 };
 export const Sessionkey = {
   orderProcess: 'order_process',
@@ -67,7 +69,7 @@ export const Sessionkey = {
 export const REGEX = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   password: /^.{8,30}$/,
-  phoneNumber: /^[0-9]{1,11}$/,
+  phoneNumber: /^(03|05|07|08|09|01[2|6|8|9])\d{8}$/,
   onlyOneNumber: /^\d{1}$/,
 };
 
@@ -75,12 +77,29 @@ export const FormatDate = {
   DDMMYYYY: 'dd/MM/YYYY',
 };
 
+export const ORDER_STATUS_MAX = 7;
 export enum ORDER_STATUS {
   PENDING_APPROVAL = 0,
   PENDING_PAYMENT = 1,
-  PENDING_DELIVERY = 2,
-  RECEIVED = 3,
+  PAYMENTED = 2,
+  PENDING_DELIVERY = 3,
   REFUND = 4,
   DEPOSIT_REFUND = 5,
-  CANCEL = 6,
+  COMPLETE = 6,
+  CANCEL = 7,
 }
+export enum DISCOUNT_TYPE {
+  PERCENTAGE = 0,
+  FIXED_AMOUNT = 1,
+}
+
+export const chooseFollowDate: OptionSelect[] = [
+  {
+    label: 'Theo tuần',
+    value: 'week',
+  },
+  {
+    label: 'Theo tháng',
+    value: 'month',
+  },
+];

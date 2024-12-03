@@ -1,0 +1,131 @@
+<div class="p-5 my-3 bg-white rounded-md">
+  <div class="bg-[#116DFC] rounded-md p-5 text-white text-center h-48">
+    <h3 class="text-xl font-semibold uppercase text-white">ERMSPAY</h3>
+    <div class="flex justify-center mt-3">
+      <p class="mr-2 text-lg">Số Dư Ví</p>
+      <a (click)="toggleShow()">
+        <span
+          *ngIf="!isShow"
+          nz-icon
+          nzType="eye-invisible"
+          nzTheme="outline"
+        ></span>
+        <span *ngIf="isShow" nz-icon nzType="eye" nzTheme="outline"></span>
+      </a>
+    </div>
+    <p *ngIf="!isShow" class="mt-3 text-lg">*** VND</p>
+    <p *ngIf="isShow" class="mt-3 text-lg">
+      {{ balance | currency : "VND" : "" : "1.0-0" }} VND
+    </p>
+  </div>
+</div>
+<div class="mx-30 p-8 grid grid-cols-1 md:grid-cols-3 gap-6 option-payment">
+  <div
+    class="bg-white p-3 rounded-xl shadow-lg text-center cursor-pointer hover:bg-blue-50 hover:shadow-xl hover:scale-105 transition duration-300"
+    (click)="toggleRecharge()"
+  >
+    <span
+      nz-icon
+      nzType="plus-square"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">Nạp Tiền</h3>
+  </div>
+  <div
+    class="bg-white p-3 rounded-xl shadow-lg text-center cursor-pointer hover:bg-blue-50 hover:shadow-xl hover:scale-105 transition duration-300"
+    (click)="toggleHistory()"
+  >
+    <span
+      nz-icon
+      nzType="history"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">Lịch Sử Giao Dịch</h3>
+  </div>
+  <div
+    class="bg-white p-3 rounded-xl shadow-lg text-center cursor-pointer hover:bg-blue-50 hover:shadow-xl hover:scale-105 transition duration-300"
+  >
+    <span
+      nz-icon
+      nzType="bank"
+      nzTheme="outline"
+      class="text-xl text-blue-900"
+    ></span>
+    <h3 class="font-highlight text-slate-400 mt-2">Rút Tiền</h3>
+  </div>
+</div>
+<div class="my-5 mb-10 flex justify-center" *ngIf="isRecharge">
+  <app-form-recharge (saveForm)="rechargeMoney($event)"></app-form-recharge>
+</div>
+<div class="m-5" *ngIf="isShowHistory">
+  <h4 class="text-2xl my-2">Lịch Sử Giao Dịch</h4>
+  <div class="my-2 flex justify-center">
+    <nz-form-item>
+      <nz-form-control [nzSpan]="20">
+        <nz-range-picker
+          [(ngModel)]="dateRange"
+          (ngModelChange)="onDateRangeChange($event)"
+          nzFormat="yyyy-MM-dd"
+        ></nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" class="search-button">
+        <button nz-button nzType="primary" (click)="search()">Tìm kiếm</button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngIf="!dataNull; else noData">
+    <nz-table #middleTable nzSize="middle" [nzData]="data">
+      <thead>
+        <tr>
+          <th>Thời Gian Giao Dịch</th>
+          <th>Số tiền Giao Dịch</th>
+          <th>Trạng thái giao dịch</th>
+          <th>Loại giao dịch</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of middleTable.data; track data) {
+        <tr>
+          <td>{{ data.createdDate | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+          <td>
+            @if(data.rechargeType == 1){
+            <p class="text-red-500">
+              - {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
+            </p>
+            }@else {
+            <p class="text-[#00b141]">
+              + {{ data.amountRecharge | currency : "VND" : "" : "1.0-0" }} VND
+            </p>
+            }
+          </td>
+          <td>
+            <ng-container [ngSwitch]="data.rechargeStatus">
+              <p *ngSwitchCase="0" class="status-warning">Chờ xử lý</p>
+              <p *ngSwitchCase="1" class="status-success">Thành công</p>
+              <p *ngSwitchCase="2" class="status-error">Thất bại</p>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container [ngSwitch]="data.rechargeType">
+              <p *ngSwitchCase="0" class="uppercase">Nạp tiền</p>
+              <p *ngSwitchCase="1" class="uppercase">Thanh Toán</p>
+              <p *ngSwitchCase="2" class="uppercase">Nhận Cọc</p>
+              <p *ngSwitchCase="3" class="uppercase">Hoàn Cọc</p>
+            </ng-container>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+<ng-template #noData>
+  <div class="flex justify-center">
+    <nz-result nzTitle="Không có danh sách phù hợp"> </nz-result>
+  </div>
+</ng-template>

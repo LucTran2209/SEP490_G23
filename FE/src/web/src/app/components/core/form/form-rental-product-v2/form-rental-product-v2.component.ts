@@ -1,30 +1,27 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { filter, Observable, Subscription } from 'rxjs';
+import { removeOneOrder, removeVoucher, resetRentalProduct } from '../../../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../../../features/common/state/rental/rental.reducers';
 import {
   selectAllProductRental,
+  selectCalcActualDiscountVoucher,
   selectTotalAllProductDepositPrice,
   selectTotalAllProductRentalPrice,
+  selectVoucherAvaiable,
 } from '../../../../features/common/state/rental/rental.selectors';
 import { MessageResponseService } from '../../../../services/message-response.service';
 import { RentalTimerService } from '../../../../services/rental-timer.service';
 import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
-import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
 import { ConfimOrderProcessComponent } from '../../../modal/confim-order-process/confim-order-process.component';
-import { resetRentalProduct } from '../../../../features/common/state/rental/rental.actions';
-
-interface IProductShortSearch {
-  id: string | number;
-  productName: string;
-  rentalPrice: number;
-  depositPrice: number;
-  rentalLimitDays: number;
-  images: string;
-}
+import { PickerTimerComponent } from '../../../modal/picker-timer/picker-timer.component';
+import { ListVoucherAvailableComponent } from '../../../modal/list-voucher-available/list-voucher-available.component';
+import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
+import { IPayLoad } from '../../../../interfaces/account.interface';
+import { LocalStorageKey } from '../../../../utils/constant';
 
 @Component({
   selector: 'app-form-rental-product-v2',
@@ -35,10 +32,11 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   isConfirmLoading = false;
   isVisible = false;
   inputValue?: string;
-  options: Array<IProductShortSearch> = [];
-  tags?: IProductShortSearch[];
+  userCurrent?: IPayLoad;
   productRentalDetailArray$?: Observable<OrderState[]>;
-
+  depositPriceActual$?: Observable<string | number>;
+  voucherAvaiable$?: Observable<VoucherDetailOutputDto | null>
+  calcActualDiscountVoucher$?: Observable<number>;
   rentalPriceActualAll$?: Observable<string | number>;
   depositPriceActualAll$?: Observable<string | number>;
   //date time
@@ -46,18 +44,17 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   //subscription
   private routeSubscription?: Subscription;
   //date time
-
-  sliceTagName(tag: string): string {
-    const isLongTag = tag.length > 20;
-    return isLongTag ? `${tag.slice(0, 20)}...` : tag;
-  }
-
-  handleCloseTag(removedTag: {}): void {
-    this.tags = this.tags?.filter((tag) => tag !== removedTag);
-  }
+  private rentalModalRef: NzModalRef | null = null;
+  private dateModalRef: NzModalRef | null = null;
+  private voucherModalRef: NzModalRef | null = null;
 
   onChooseRental(titleTemplate: TemplateRef<any>) {
-    this.modal.create({
+    if (!this.userCurrent) {
+      this.toastMS.handleError('Bạn cần đăng nhập để tạo đơn thuê!', 401);
+      this.router.navigateByUrl('/auth/login');
+      return;
+    }
+    this.rentalModalRef = this.modal.create({
       nzTitle: titleTemplate,
       nzContent: ConfimOrderProcessComponent,
       nzFooter: null,
@@ -69,7 +66,7 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
   }
 
   onChooseDateCustom() {
-    this.modal.create({
+    this.dateModalRef =  this.modal.create({
       nzTitle: 'Thời gian',
       nzContent: PickerTimerComponent,
       nzFooter: null,
@@ -77,29 +74,23 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
     });
   }
 
-  onSearchProductShort(e: Event): void {
-    const value = (e.target as HTMLInputElement).value;
-    this.options = new Array(this.getRandomInt(5, 15))
-      .join('.')
-      .split('.')
-      .map((_item, idx) => ({
-        id: idx + 1,
-        productName: `${value}${idx}`,
-        depositPrice: 20000,
-        images:
-          'https://cdn.tgdd.vn/Files/2014/12/06/586947/y-nghia-cua-toc-do-quay-vat-tren-may-giat-6.jpg',
-        rentalLimitDays: 12,
-        rentalPrice: 30000,
-      }));
+  openAvaiableVoucher(){
+    this.voucherModalRef = this.modal.create({
+      nzTitle: 'Mã khuyến mãi',
+      nzContent: ListVoucherAvailableComponent,
+      nzFooter: null,
+      nzWidth: 500,
+    })
+    if (this.voucherModalRef)
+      this.voucherModalRef.afterClose.subscribe(() => {
+        this.voucherModalRef = null;
+      });
   }
 
-  onSelectProduct(e: IProductShortSearch) {
-    this.tags?.push(e);
-  }
+onRemoveRow(pid: string | number){
+this.store.dispatch(removeOneOrder({pid}))
+}
 
-  private getRandomInt(max: number, min: number = 0): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
 
   showModal(): void {
     this.isVisible = true;
@@ -113,15 +104,21 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
     this.isVisible = false;
   }
 
+  onClose(): void {
+    this.store.dispatch(removeVoucher());
+  }
+
   // on choose more
   onChooseRentalMore() {}
 
   selectStateFromNgRx() {
+    this.voucherAvaiable$ = this.store.select(selectVoucherAvaiable);
+    this.calcActualDiscountVoucher$ = this.store.select(selectCalcActualDiscountVoucher);
     this.rentalPriceActualAll$ = this.store.select(
-      selectTotalAllProductRentalPrice()
+      selectTotalAllProductRentalPrice
     );
     this.depositPriceActualAll$ = this.store.select(
-      selectTotalAllProductDepositPrice()
+      selectTotalAllProductDepositPrice
     );
     this.productRentalDetailArray$ = this.store.select(selectAllProductRental);
   }
@@ -134,11 +131,16 @@ export class FormRentalProductV2Component implements OnInit, OnDestroy {
     private rentalTimerService: RentalTimerService,
     private store: Store<FeatureAppState>,
     private storageService: StorageService,
-    private ToasMS: MessageResponseService,
+    private toastMS: MessageResponseService,
     private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
+    this.userCurrent = this.storageService.get(LocalStorageKey.currentUser)
+    ? (JSON.parse(
+        this.storageService.get(LocalStorageKey.currentUser)!
+      ) as IPayLoad)
+    : undefined;
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
 

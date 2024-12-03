@@ -45,7 +45,8 @@ namespace BE.Application.Services.RentalShops
                 Email = rentalShop.Email,
                 Status = rentalShop.Status,
                 IsActive = rentalShop.IsActive,
-                Description = rentalShop.Description
+                Description = rentalShop.Description,
+                AdminNote = rentalShop.AdminNote
             };
         }
     }

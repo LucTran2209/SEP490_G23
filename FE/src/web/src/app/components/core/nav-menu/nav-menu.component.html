@@ -13,13 +13,8 @@
       nzTitle="Loại Sản Phẩm"
       class="uppercase"
     >
-      <ul class="">
-        <li
-          nz-menu-group
-          nzTitle="{{ category.categoryName }}"
-          class=""
-          *ngFor="let category of categoryList"
-        >
+      <ul class="" *ngFor="let category of categoryList">
+        <li nz-submenu nzTitle="{{ category.categoryName }}">
           <ul *ngFor="let sub of category.subCategories">
             <li nz-menu-item (click)="onNavigate(sub)">
               {{ sub.subCategoryName }}

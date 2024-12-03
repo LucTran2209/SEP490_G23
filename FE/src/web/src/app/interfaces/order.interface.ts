@@ -1,6 +1,7 @@
 import { ORDER_STATUS } from '../utils/constant';
 import { ProductOutputDto } from './product.interface';
 import { UserOutputDto } from './user.interface';
+import { VoucherDetailOutputDto } from './voucher.interface';
 export interface ProductImage {
   id: string;
   productId: string;
@@ -83,7 +84,7 @@ export interface MyOrderDetailDto {
   mortgagePaperImageFont: any | null;
   mortgagePaperImageBack: any | null;
   user: User;
-  voucher: any | null;
+  voucher: VoucherDetailOutputDto;
   orderDetails: OrderDetailDto[];
   orderStatuses: OrderStatus[];
 }
@@ -109,13 +110,13 @@ export interface OrderCreateRequest {
   voucherId: string | null;
   recipientName: string;
   recipientPhoneNumber: string;
-  recipientEmail: string;
+  recipientEmail?: string;
   recipientAddress: string;
   startDate: string;
   endDate: string;
   totalRentPrice: number;
   totalDepositPrice: number;
-  note: string;
+  note?: string;
   mortgagePaperType: string;
   mortgagePaperImageFont: File;
   mortgagePaperImageBack: File;
@@ -164,6 +165,7 @@ export interface OrderStatus {
   message: string;
   status: ORDER_STATUS;
   fileAttach: null;
+  createdDate?: string;
 }
 export interface OrderListResponse {
   id: string;
@@ -186,4 +188,10 @@ export interface OrderListResponse {
   mortgagePaperType: number;
   mortgagePaperImageFont: null;
   mortgagePaperImageBack: null;
+}
+
+export interface Deposit{
+    orderId: string,
+    rentalShopId: string | null,
+    depoitAmount: number;
 }

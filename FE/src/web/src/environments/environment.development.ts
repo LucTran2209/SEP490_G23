@@ -2,6 +2,8 @@ export const environment = {
   serverUrl: 'http://localhost:7088/',
   apiUrl: 'https://localhost:7088/',
   baseDomain: location.hostname,
+  apiUrlGoong: 'https://rsapi.goong.io/Place/AutoComplete',
+  apiKeyGoong: 'OROWRrTPOf7LICIyp997s9Miz5iFDLSTrMX1oQ4D',
   googleID:
     '340351071914-5t0m80o6qnf7a8q7ad66482blh4gc0e9.apps.googleusercontent.com',
   tokenFake:

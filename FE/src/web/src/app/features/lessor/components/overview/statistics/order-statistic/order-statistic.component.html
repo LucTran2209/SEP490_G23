@@ -1,0 +1,21 @@
+<div class="bg-white p-6 rounded-md">
+  <div class="mb-3">
+    <h3 class="font-semibold text-[22px]">Thống kê đơn hàng</h3>
+    <div class="flex item-center justify-between my-3">
+      <div class="flex items-center gap-x-3">
+      </div>
+      <app-select-date-range [nzMode]="'month'" nzSize="default" (onFilterDate)="handleDateChange($event)"/>
+    </div>
+  </div>
+ <div class="overflow-x-scroll md:overflow-x-hidden">
+  <div class="min-w-[600px]">
+    <canvas
+    baseChart
+    [data]="barChartData"
+    [type]="barChartType"
+    [options]="barCharOptions"
+    style="width: 100%"
+    ></canvas>
+  </div>
+ </div>
+</div>

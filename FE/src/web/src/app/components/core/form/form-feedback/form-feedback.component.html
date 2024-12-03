@@ -31,7 +31,7 @@
               >
                 <div class="columns-2 gap-6">
                   <p>SỐ LƯỢNG:</p>
-                  <p class="font-normal">{{ pro.product.quantity }}</p>
+                  <p class="font-normal">{{ pro.quantity }}</p>
                 </div>
               </div>
             </div>
@@ -57,7 +57,64 @@
 
         <!-- Review input for each product -->
         <div class="my-5">
-          <h3 class="font-medium text-lg mb-2">Đánh Giá</h3>
+          <h3 class="font-medium text-lg mb-2">Đánh Giá (Bắt buộc)</h3>
+          <div class="flex justify-between flex-wrap my-3">
+            <button
+              class="w-24 mt-3 rounded-xl text-wrap btn"
+              nz-button
+              type="button"
+              (click)="setMessage('Sản phẩm tuyệt vời 😍', i)"
+            >
+              Sản phẩm tuyệt vời 😍
+            </button>
+            <button
+              class="w-24 mt-3 rounded-xl text-wrap btn"
+              nz-button
+              type="button"
+              (click)="setMessage('Shop nhiệt tình, chủ shop thân thiện 👌', i)"
+            >
+              Shop nhiệt tình, chủ shop thân thiện 👌
+            </button>
+            <button
+              class="w-24 mt-3 rounded-xl text-wrap btn"
+              nz-button
+              type="button"
+              (click)="
+                setMessage(
+                  'Dịch vụ rất tuyệt vời, mọi thứ đều như mong đợi!',
+                  i
+                )
+              "
+            >
+              Dịch vụ rất tuyệt vời, mọi thứ đều như mong đợi!
+            </button>
+            <button
+              class="w-24 mt-3 rounded-xl text-wrap btn"
+              nz-button
+              type="button"
+              (click)="setMessage('Tạm ổn. Hy vọng lần sau tốt hơn', i)"
+            >
+              Tạm ổn. Hy vọng lần sau tốt hơn
+            </button>
+            <button
+              class="w-24 mt-3 rounded-xl text-wrap btn"
+              nz-button
+              type="button"
+              (click)="setMessage('Tệ! Không có lần sau', i)"
+            >
+              Tệ! Không có lần sau
+            </button>
+            <button
+              class="w-24 mt-3 rounded-xl text-wrap btn"
+              nz-button
+              type="button"
+              (click)="
+                setMessage('Chất lượng không như mong đợi, cần cải thiện', i)
+              "
+            >
+              Chất lượng không như mong đợi, cần cải thiện
+            </button>
+          </div>
           <textarea
             nz-input
             placeholder="Đánh Giá Thiết Bị Thuê"
@@ -68,7 +125,7 @@
         </div>
       </div>
 
-      <div class="flex justify-end">
+      <div class="flex justify-end mt-8">
         <button nz-button nzType="primary" (click)="handleCancel()" nzGhost>
           Trở Lại
         </button>

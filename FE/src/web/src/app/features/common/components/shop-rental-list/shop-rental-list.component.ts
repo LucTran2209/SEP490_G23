@@ -5,7 +5,7 @@ import { ProductService } from '../../../../services/product.service';
 import { LoadingService } from '../../../../services/loading.service';
 import { Observable } from 'rxjs';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
-import { ProductDtoResponse } from '../../../../interfaces/product.interface';
+import { ProductDtoResponse, SearchProduct } from '../../../../interfaces/product.interface';
 
 @Component({
   selector: 'app-shop-rental-list',
@@ -19,6 +19,7 @@ export class ShopRentalListComponent implements OnInit {
   currentPage = 1;    
   pageSize = 12;
   loading$?: Observable<StatusProcess>;
+  searchProduct!: SearchProduct;
   constructor(
     private productService: ProductService,
     private router: Router,
@@ -38,7 +39,12 @@ export class ShopRentalListComponent implements OnInit {
     });
   }
   loadShops(){
-    this.productService.listProduct(this.currentPage, this.pageSize, this.search).subscribe((res: ProductDtoResponse) => {
+    const productRequest: SearchProduct = {
+      pageSize: this.pageSize,
+      pageIndex: this.currentPage,
+      search: this.search?.trim() || undefined, // Nếu không có, đặt undefined
+    };
+    this.productService.listProduct(productRequest).subscribe((res: ProductDtoResponse) => {
       this.shopList = res.data.rentalShops;
       console.log(this.search);
       this.loadingService.setOtherLoading('loaded');

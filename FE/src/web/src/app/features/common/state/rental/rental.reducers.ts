@@ -1,5 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as RentalActions from './rental.actions';
+import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
+import { DISCOUNT_TYPE } from '../../../../utils/constant';
 
 export interface OrderState {
   productId: string | number;
@@ -16,10 +18,14 @@ export interface OrderState {
 }
 export interface RentalOrderState {
   orders: OrderState[];
+  voucherApply: VoucherDetailOutputDto | null;
+  discountPriceAfterVoucher: number
 }
 
 const initialState: RentalOrderState = {
   orders: [],
+  voucherApply: null,
+  discountPriceAfterVoucher: 0
 };
 const checkProductRentalExist = (
   orders: OrderState[],
@@ -95,6 +101,7 @@ export const rentalOrderReducer = createReducer(
       ...order,
       quantityRequest: quantityRequest,
       depositActualPrice: quantityRequest * Number(order.depositPrice),
+      rentalActualPrice: quantityRequest * Number(order.rentalPrice) * order.numberOfDays,
       isBoundQuantity: quantityRequest <= Number(order.quantityAvailable),
     };
     const updatedOrders = [
@@ -112,7 +119,7 @@ export const rentalOrderReducer = createReducer(
     const updatedOrder = {
       ...order,
       numberOfDays: days,
-      rentalActualPrice: days * Number(order.rentalPrice),
+      rentalActualPrice: Number(order.quantityRequest) * Number(order.rentalPrice) * days,
     };
     const updatedOrders = [
       ...state.orders.slice(0, existingOrderIndex),
@@ -122,4 +129,26 @@ export const rentalOrderReducer = createReducer(
     return { ...state, orders: updatedOrders };
   }),
 
+  on(RentalActions.removeOneOrder, (state, action) => {
+    const updatedOrders = state.orders.filter(
+      (order) => order.productId !== action.pid
+    );
+    return { ...state, orders: [...updatedOrders] };
+  }),
+  on(RentalActions.applyVoucher, (state, action) => {
+    const { voucher } = action;
+    let totalRentalActualPrice = state.orders.reduce((acc,init) => acc + Number(init.rentalActualPrice),0);
+   let actualDiscountPrice;
+    if(voucher.discountType === DISCOUNT_TYPE.PERCENTAGE){
+      const tmpDiscount = (voucher.discountValue / 100) * totalRentalActualPrice;
+      actualDiscountPrice = tmpDiscount <= voucher.maximumDiscount ? tmpDiscount : voucher.maximumDiscount;
+    }else{
+      actualDiscountPrice =  voucher.discountValue;
+    }
+     
+    return { ...state, voucherApply: voucher, discountPriceAfterVoucher: actualDiscountPrice };
+  }),
+  on(RentalActions.removeVoucher, (state, action) => {
+    return { ...state, voucherApply: null, discountPriceAfterVoucher: 0 };
+  }),
 );

@@ -20,9 +20,9 @@ export class UserNavbarHeaderComponent implements OnInit {
   @Output() avatarClick = new EventEmitter<void>();
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
-  avatarPersonal: string = '';
-  rentalShopId: string = '';
-
+  avatarPersonal?: string;
+  rentalShopId?: string;
+  userName?: string;
 
   constructor(
     private router: Router,
@@ -30,14 +30,15 @@ export class UserNavbarHeaderComponent implements OnInit {
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
     private activatedRoute: ActivatedRoute,
-    private messageService: MessageResponseService,
+    private messageService: MessageResponseService
   ) {}
   ngOnInit(): void {
     this.handleAssginInfo();
     this.checkRole();
     this.avatarPersonal = this.userProfileService.avatar;
     this.rentalShopId = this.userProfileService.rentalshopId;
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.userName = this.userProfileService.currentUser?.UserName;
+    this.activatedRoute.queryParams.subscribe((params) => {
       const currentRoute = this.router.url; // Get current route
       if (currentRoute.includes('/common/product-search')) {
         const searchQuery = params['search'];
@@ -68,19 +69,22 @@ export class UserNavbarHeaderComponent implements OnInit {
   logout() {
     this.store.dispatch(logout());
   }
-  checkRole(){
+  checkRole() {
     const role = this.userProfileService.roleCurrentUser;
-  
-  // Check if the role is valid and assign it to userRole
-  if (typeof role === 'string' && Object.values(USER_ROLE).includes(role as USER_ROLE)) {
-    this.userRole = role as USER_ROLE;
-  } else if (Array.isArray(role) && role.length > 0) {
-    // If the role is an array, you may want to handle which role to set (e.g., the first role)
-    this.userRole = role[0] as USER_ROLE;
-  } else {
-    // Handle the case where role is undefined or invalid if needed
-    console.warn('Invalid or undefined user role');
-  }
+
+    // Check if the role is valid and assign it to userRole
+    if (
+      typeof role === 'string' &&
+      Object.values(USER_ROLE).includes(role as USER_ROLE)
+    ) {
+      this.userRole = role as USER_ROLE;
+    } else if (Array.isArray(role) && role.length > 0) {
+      // If the role is an array, you may want to handle which role to set (e.g., the first role)
+      this.userRole = role[0] as USER_ROLE;
+    } else {
+      // Handle the case where role is undefined or invalid if needed
+      console.warn('Invalid or undefined user role');
+    }
   }
   hasLessorRole(): boolean {
     const role = this.userProfileService.roleCurrentUser;
@@ -89,16 +93,17 @@ export class UserNavbarHeaderComponent implements OnInit {
     }
     return role === USER_ROLE.LESSOR;
   }
-  onSearch(){
-    this.router.navigate(['/common/product-search'], { queryParams: { search: this.searchText } });
+  onSearch() {
+    this.router.navigate(['/common/product-search'], {
+      queryParams: { search: this.searchText },
+    });
   }
-  onShow(){
+  onShow() {
     const shopId = this.userProfileService.rentalshopId;
-    if(shopId){
+    if (shopId) {
       this.messageService.showInfo('Yêu Cầu Đang Chờ Xét Duyệt Vui Lòng Đợi!');
-    }else{
+    } else {
       this.router.navigate(['/portal/register-lessor']);
     }
   }
-
 }

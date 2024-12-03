@@ -14,8 +14,9 @@ public class UsersDataSeedContributor : IDataSeedContributor
 
     public async Task SeedAsync()
     {
-        var email = "abc@gamil.com";
+        var email = "admin.erms@gmail.com";
         var user = await context.Users.SingleOrDefaultAsync(u => u.Email == email);
+
         if (user == null)
         {
             user = new User()
@@ -23,7 +24,7 @@ public class UsersDataSeedContributor : IDataSeedContributor
                 Id = Guid.NewGuid(),
                 FullName = "Admin",
                 UserName = "admin",
-                Password = "Pass123@",
+                Password = "$2a$11$5TyZkYOwEOLe1y0YFFCUtussjnf4RVYqw3TbSTVMF92Q83TuW2OJC",
                 Email = email,
                 PhoneNumber = "1234567890",
                 Address = "Ha Noi",
@@ -36,7 +37,16 @@ public class UsersDataSeedContributor : IDataSeedContributor
 
             };
 
+            var userRoleAdmin = new UserRole()
+            {
+                UserId = user.Id,
+                RoleId = Guid.Parse("9fca96df-9e41-4975-8d7d-98605f01a0bd")
+            };
+
+
             await context.Users.AddAsync(user);
+            await context.UserRoles.AddAsync(userRoleAdmin);
+
         }
 
         await context.SaveChangesAsync();

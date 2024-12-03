@@ -1,47 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { NzCustomColumn } from 'ng-zorro-antd/table';
-import { LoadingService } from '../../../../../services/loading.service';
-import { OrderService } from '../../../../../services/order.service';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import {
+  combineLatest,
+  concatMap,
+  map,
+  Observable,
+  Subscription,
+  tap,
+} from 'rxjs';
+import { ChangeStatusOrderComponent } from '../../../../../components/modal/change-status-order/change-status-order.component';
 import { OrderListResponse } from '../../../../../interfaces/order.interface';
-import { ORDER_STATUS } from '../../../../../utils/constant';
-import { convertStatusOrder } from '../../../../../utils/anonymous.helper';
 import { RentalTimerService } from '../../../../../services/rental-timer.service';
+import { FeatureAppState } from '../../../../../store/app.state';
+import { convertButtonChangeStatusOrder, convertStatusOrder } from '../../../../../utils/anonymous.helper';
+import { ORDER_STATUS, ORDER_STATUS_MAX } from '../../../../../utils/constant';
 
-interface IOrderDetail {
-  nguoiThue: string;
-  soDienThoai: string;
-  email: string;
-  ngayTao: string;
-  thoiGianThue: string;
-  maDonHang: string | number;
-  quantityProduct: number | string;
-  giaCoc: string;
-  tongTien: string;
-  trangThaiDonHang: string;
-  trangThaiThanhToan: string;
-  address: string;
-}
+
+import { ConfirmDeleteRequestOrderComponent } from '../../../../../components/modal/confirm-delete-request-order/confirm-delete-request-order.component';
+import { OrderService } from '../../../../../services/order.service';
+import { MessageResponseService } from '../../../../../services/message-response.service';
+import { selectOrderDetail, selectTotalQuantity } from '../../../state/_order/order-detail.reducer';
+import { getOrderDetail, resetStateOrderDetail } from '../../../state/_order/order-detail.actions';
+
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.scss',
 })
-export class OrderDetailComponent implements OnInit {
+export class OrderDetailComponent implements OnInit, OnDestroy {
   allChecked = false;
-  orderDetail: IOrderDetail = mockData;
-  orderDetail$?: Observable<OrderListResponse>;
-  totalQuantity: number = 0;
-  listOfData = mockData2;
+  preventContinueChangeStatus: number = ORDER_STATUS_MAX;
+  availableCancelRequestOrder: number[] = [
+    ORDER_STATUS.PENDING_APPROVAL,
+    ORDER_STATUS.PAYMENTED,
+  ];
+  avaiableAprroveRequestOrder: number[] = [
+    ORDER_STATUS.PENDING_APPROVAL,
+    ORDER_STATUS.PAYMENTED,
+    ORDER_STATUS.DEPOSIT_REFUND,
+  ]
+  orderDetail$?: Observable<OrderListResponse | null>;
+  totalQuantity$?: Observable<number | null>;
+  private rentalModalRef: NzModalRef | null = null;
+  subScription?: Subscription;
+  onAllChecked(checked: boolean): void {}
 
-  onAllChecked(checked: boolean): void {
-    this.listOfData.forEach((item) => (item.checked = checked));
-  }
-
-  onItemChecked(): void {
-    this.allChecked = this.listOfData.every((item) => item.checked);
-  }
+  onItemChecked(): void {}
 
   convertRentalDay(startDate: string, endDate: string) {
     let diffDate_start = new Date(startDate);
@@ -56,78 +62,108 @@ export class OrderDetailComponent implements OnInit {
     return convertStatusOrder(orderStatus);
   }
 
-  async loadOrder() {
-    const param = this.activateRoute.snapshot.paramMap.get('id');
-    this.loadingService.setLoading();
-    this.orderService.getOrderDetailLessor(param ?? '').pipe(
-      tap((res) => {
-        const { data: { orderDetails } } = res;
-        this.totalQuantity = orderDetails.reduce((acc, item) => item.quantity + acc, 0)
-      }),
-      map((res) => {
-        const { data } = res;
-        this.orderDetail$ = of(data);
-        this.loadingService.setOtherLoading('loaded');
-      }),
-      catchError((err) => {
-        this.loadingService.setOtherLoading('error');
-        return of([]);
-      })
-    ).subscribe();
+  convertTextButton(orderStatus: ORDER_STATUS){
+    return convertButtonChangeStatusOrder(orderStatus);
+  }
+
+  selectStateFromNgRx() {
+    this.totalQuantity$ = this.store.select(selectTotalQuantity);
+    this.orderDetail$ = this.store.select(selectOrderDetail);
+  }
+  getOrderStatusLatest(orderDetail: OrderListResponse): number {
+    return orderDetail.orderStatuses.reduce(
+      (max, item) => Math.max(max, item.status),
+      -Infinity
+    );
+  }
+
+  dispatchActionNessarray() {
+    this.subScription = this.activateRoute.paramMap
+      .pipe(
+        map((p) => {
+          const pid = p.get('id');
+          if (pid) this.store.dispatch(getOrderDetail({ pid: pid }));
+        })
+      )
+      .subscribe();
+  }
+
+  popUpChangeStatus(titleTpl: TemplateRef<any>) {
+    this.rentalModalRef = this.modalService.create({
+      nzTitle: titleTpl,
+      nzContent: ChangeStatusOrderComponent,
+      nzFooter: null,
+      nzBodyStyle: { padding: '12px' },
+      nzData: {
+        orderDetail$: this.orderDetail$,
+      },
+    });
+
+    if (this.rentalModalRef)
+      this.rentalModalRef.afterClose.subscribe((result) => {
+        if (result === 'updated') {
+          this.rentalModalRef = null;
+        }
+      });
+  }
+
+  popUpCancelOrderStatus() {
+    this.rentalModalRef = this.modalService.create({
+      nzContent: ConfirmDeleteRequestOrderComponent,
+      nzCloseIcon: '',
+      nzFooter: null,
+      nzBodyStyle: { padding: '12px' },
+    });
+
+    const instance = this.rentalModalRef.getContentComponent();
+    instance.noteReasonCancel.subscribe((noteMessage: string) => {
+      combineLatest([ this.activateRoute.paramMap])
+        .pipe(
+          concatMap(([p]) => {
+            const pid = p.get('id');
+            const formData = new FormData();
+            formData.append('Id', '');
+            formData.append('OrderId', `${pid}`);
+            formData.append('Message', `${noteMessage}`);
+            formData.append('Status', `${ORDER_STATUS.CANCEL}`);
+            formData.append('FileAttach', '');
+            return this.orderService.requestOrderStatus(formData);
+          }),
+          tap(() => {
+            this.dispatchActionNessarray();
+          })
+        )
+        .subscribe({
+          next: () => {
+            this.messageResponseMS.showInfo(
+              'Sẽ thông báo đơn hàng hủy tới bên thuê'
+            );
+          },
+          error: (err) => {
+            console.error('Lỗi xử lý:', err);
+          },
+        });
+    });
   }
 
   ngOnInit(): void {
-    this.loadOrder();
+    this.dispatchActionNessarray();
+    this.selectStateFromNgRx();
+    console.log('Oninit call');
+  }
+
+  ngOnDestroy(): void {
+    console.log('OnDestroy call');
+    this.subScription?.unsubscribe();
+    this.store.dispatch(resetStateOrderDetail());
   }
 
   constructor(
     private activateRoute: ActivatedRoute,
-    private loadingService: LoadingService,
-    private orderService: OrderService,
     private timerCalculatorService: RentalTimerService,
-  ) { }
+    private modalService: NzModalService,
+    private store: Store<FeatureAppState>,
+    private orderService: OrderService,
+    private messageResponseMS: MessageResponseService
+  ) {}
 }
-
-const mockData: IOrderDetail = {
-  nguoiThue: 'Nam123',
-  soDienThoai: '0559.123.456',
-  email: 'nguyenvana@gmail.com',
-  ngayTao: '04/09/2024  10:25',
-  thoiGianThue: '20 ngày',
-  address: 'Trang Ha, Tu Son, Bac Ninh',
-  maDonHang: 'ABC12r14981',
-  quantityProduct: 3,
-  giaCoc: '- 300.000 VND',
-  tongTien: '600.000 VND ',
-  trangThaiThanhToan: 'Đã thanh toán cọc',
-  trangThaiDonHang: 'Đang xử lý',
-};
-const mockData2 = [
-  {
-    checked: false,
-    name: 'Thiết bị A',
-    quantity: 3,
-    deposit: 200000,
-    rental: 400000,
-    image:
-      'https://matika.vn/wp-content/uploads/2023/02/quat-tich-dien-pvn-5626.jpg',
-  },
-  {
-    checked: false,
-    name: 'Thiết bị A',
-    quantity: 3,
-    deposit: 200000,
-    rental: 400000,
-    image:
-      'https://matika.vn/wp-content/uploads/2023/02/quat-tich-dien-pvn-5626.jpg',
-  },
-  {
-    checked: false,
-    name: 'Thiết bị A',
-    quantity: 3,
-    deposit: 200000,
-    rental: 400000,
-    image:
-      'https://matika.vn/wp-content/uploads/2023/02/quat-tich-dien-pvn-5626.jpg',
-  },
-];

@@ -1,189 +1,71 @@
 <div
-  class="hero-wrapper"
-  [ngStyle]="{ 'background-image': 'url(' + backgroundImageUrl + ')' }"
+  class="py-[300px] bg-[url('assets/images/header-home.png')] bg-cover bg-center relative"
 >
-  <div class="content-header">
-    <h1 class="text-5xl font-bold">Khám Phá Nơi Cho Thuê</h1>
-    <h1 class="text-5xl text-sky-500 font-bold">Lý Tưởng Của Bạn</h1>
-    <p class="pt-5 text-lg">Thuê các thiết bị chỉ bằng vài cú nhấp chuột</p>
-    <div class="flex justify-evenly">
-      <div class="mt-6">
-        <nz-input-group
-          class="w-80 rounded-full-search p-2"
-          [nzPrefix]="prefixIconSearch"
-        >
-          <input
-            class="p-1"
-            type="text"
-            nz-input
-            placeholder="Tìm kiếm thiết bị bạn cần nào!!"
-          />
-        </nz-input-group>
-        <ng-template #prefixIconSearch>
-          <span
-            class="pl-1.5 text-lg text-gray-400 p-2.5"
-            nz-icon
-            nzType="search"
-          ></span>
-        </ng-template>
-      </div>
-      <div class="mt-6 relative">
-        <nz-input-group
-          class="w-80 rounded-full-location p-2"
-          [nzPrefix]="prefixIconLocation"
-        >
-          <input
-            class="p-1 h-[38px]"
-            type="text"
-            nz-input
-            placeholder="Lựa chọn địa điểm"
-          />
-        </nz-input-group>
-        <ng-template #prefixIconLocation
-          ><span
-            class="text-lg text-gray-400"
-            nz-icon
-            nzType="environment"
-            nzTheme="outline"
-          ></span
-        ></ng-template>
-      </div>
-      <div class="absolute bottom-[6px] right-0" style="z-index: 99">
-        <button>
-          <span
-            class="me-1.5 text-lg text-white bg-blue-600 p-2.5 pe-3.5 ps-3.5 rounded-full"
-            nz-icon
-            nzType="search"
-          ></span>
-        </button>
-      </div>
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-y-5"
+  >
+    <div
+      class="border border-solid border-[#EBEBEB] rounded-full flex items-center w-fit gap-x-3 py-2 px-4"
+    >
+      <p class="text-[#0f6cf8] font-semibold">30.000+ người tin dùng</p>
+      <nz-avatar-group>
+        <nz-avatar
+          nzIcon="user"
+          nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+        ></nz-avatar>
+        <nz-avatar style="background-color: #f56a00" nzText="U"></nz-avatar>
+        <nz-avatar
+          style="background-color: #87d068"
+          nz-tooltip
+          nzTooltipTitle="NG-ZORRO User"
+          nzIcon="user"
+        ></nz-avatar>
+        <nz-avatar style="background-color: #1890ff" nzText="NG"></nz-avatar>
+      </nz-avatar-group>
+    </div>
+    <div class="flex flex-col items-center gap-y-5">
+      <h1 class="font-bold text-6xl text-center tracking-wide">
+        Khám Phá Nơi Cho Thuê Lý Tưởng Của Bạn
+      </h1>
+      <p class="pt-5 text-lg font-medium">
+        {{ typedText$ | async }}
+      </p>
+      <button
+        nz-button
+        nzType="primary"
+        class="h-[60px] w-[280px] shadow-sm rounded-full hover:shadow-xl transform hover:scale-105 transition duration-300"
+        style="
+          background: linear-gradient(
+            123.35152783379965deg,
+            #0f6cf8 0%,
+            #00bfff 100%
+          );
+        "
+      >
+        <span class="text-xl"
+          ><strong
+            >Khám phá ngay {{ "   " }}
+            <span nz-icon nzType="arrow-right" nzTheme="outline"></span></strong
+        ></span>
+      </button>
     </div>
   </div>
 </div>
-<div class="">
-  <h1 class="font-bold text-center text-3xl">Duyệt từ các danh mục hàng đầu</h1>
-  <div class="flex justify-center mt-2">
-    <div class="flex justify-between">
-      <div class="w-[60px] h-[4px] bg-[#007bff] rounded-sm"></div>
-      <div class="w-[10px] h-[4px] bg-[#007bff] rounded-sm ml-1"></div>
-    </div>
-  </div>
-  <div class="flex justify-center gap-x-10 flex-wrap mx-20 py-10">
-    <div *ngFor="let item of items">
-      <div
-        class="flex justify-center items-center border-2 border-[#ededed] rounded-full gap-3"
-      >
-        <span
-          class="bg-red-200 text-red-600 p-5 rounded-full"
-          nz-icon
-          nzType="like"
-          nzTheme="outline"
-        ></span>
-        <p class="p-3">Thiết bị AAA</p>
-      </div>
-    </div>
-  </div>
-  <div class="mt-10">
-    <h1 class="font-bold text-center text-3xl">Danh sách thiết bị nổi bật</h1>
-    <div class="flex justify-center mt-2 mb-5">
-      <div class="flex justify-between">
-        <div class="w-[60px] h-[4px] bg-[#007bff] rounded-sm"></div>
-        <div class="w-[10px] h-[4px] bg-[#007bff] rounded-sm ml-1"></div>
-      </div>
-    </div>
-    <div class="mx-20">
-      <div class="xl:columns-4 md:columns-2 pt-10">
-        <div *ngFor="let post of postList">
-          <app-post-card
-            [post]="post"
-            [routerLink]="['../post-detail']"
-          ></app-post-card>
-        </div>
-      </div>
-      <div class="my-14 flex justify-center">
-        <button nz-button nzType="primary" nzSize="large" nzShape="round">
-          Xem nhiều hơn
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- list category product -->
-  <div class="flex flex-col gap-y-10 px-28 py-28 bg-[#f6f6f6]">
-    <div>
-      <h1 class="font-bold text-center text-3xl">Các loại thiết bị nổi bật</h1>
-      <div class="flex justify-center mt-2 mb-5">
-        <div class="flex justify-between">
-          <div class="underline-title-first"></div>
-          <div class="underline-title-second"></div>
-        </div>
-      </div>
-    </div>
-    <div class="grid grid-cols-6 gap-10 items-center">
-      @for (item of categoryListTop; track $index) {
-      <app-category-card [categoriesItem]="item" />
-      }
-    </div>
-    <div class="my-14 flex justify-center">
-      <button nz-button nzType="primary" nzSize="large" nzShape="round">
-        Xem nhiều hơn
-      </button>
-    </div>
-  </div>
-  <!-- list post rental -->
-
-  <!-- list feedback -->
-  <div class="flex flex-col gap-y-10 px-28 py-28">
-    <div>
-      <h1 class="font-bold text-center text-3xl">
-        Những phản hồi mới nhất từ người thuê
-      </h1>
-      <div class="flex justify-center mt-2 mb-5">
-        <div class="flex justify-between">
-          <div class="underline-title-first"></div>
-          <div class="underline-title-second"></div>
-        </div>
-      </div>
-    </div>
-    <div class="grid grid-cols-3 gap-10 items-center">
-      @for (item of feedbackDataList; track $index) {
-      <app-feelback-card [feedBackDetail]="item" />
-      }
-    </div>
-    <div class="my-14 flex justify-center">
-      <button nz-button nzType="primary" nzSize="large" nzShape="round">
-        Xem nhiều hơn
-      </button>
-    </div>
-  </div>
-  <!-- if renter authen , no lessor : goi y co muon dang ky la nguoi cho thue khong -->
-
-  <!-- Performance metrics and insights -->
-  <div class="my-10">
-    <div class="p-16 bg-zinc-200">
-      <div class="flex justify-between items-center">
-        <h1
-          class="font-semibold text-start text-4xl w-2/5 px-2 h-20 tracking-wide leading-relaxed"
-        >
-          Thông tin chi tiết và số liệu hiệu suất
-        </h1>
-        <div class="max-w-sm p-4 bg-black rounded-lg shadow mx-2 w-72">
-          <h1 class="m-3 font-bold text-4xl text-white text-center">5000+</h1>
-          <p class="mt-3 text-white text-center text-sm">
-            Tổng số danh sách trong hệ thống
-          </p>
-        </div>
-        <div class="max-w-sm p-4 bg-black rounded-lg shadow mx-2 w-72">
-          <h1 class="m-3 font-bold text-4xl text-white text-center">1000+</h1>
-          <p class="mt-3 text-white text-center">Danh sách đang hoạt động</p>
-        </div>
-        <div class="max-w-sm p-6 bg-black rounded-lg shadow mx-2 w-72">
-          <h1 class="m-3 font-bold text-4xl text-white text-center">30+</h1>
-          <p class="mt-3 text-white text-center text-sm">
-            Người dùng thuê sản phẩm
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="my-10">
+  <app-we-bring />
+</div>
+<div class="my-10">
+  <app-top-bring-category />
+</div>
+<div class="my-10">
+  <app-brief-procedure-rental />
+</div>
+<div class="my-10">
+  <app-banner-you-are-lessor />
+</div>
+<div class="my-10">
+  <app-feedback-about-we />
+</div>
+<div class="my-10">
+  <app-feature-posts />
 </div>

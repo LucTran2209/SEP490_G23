@@ -1,12 +1,19 @@
-﻿namespace BE.Application.Services.Feedbacks.FeedbackServiceOutputDto
+﻿using BE.Application.Common.Dtos;
+
+namespace BE.Application.Services.Feedbacks.FeedbackServiceOutputDto
 {
-    public class FeedbackOutputDto
+    public class FeedbackOutputDto : FeedbackDto
     {
-        public Guid Id { get; set; }
         public Guid ProductId { get; set; }
-        public decimal Rating { get; set; }
-        public string Comment { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
-        public DateTimeOffset CreatedDate { get; set; }
+        public List<UserDto>? Users { get; set; }
+
+        public class Mapping : Profile
+        {
+            public Mapping()
+            {
+                CreateMap<Feedback, FeedbackOutputDto>()
+                    .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Product.RentalShop.User.AvatarPersonal));
+            }
+        }
     }
 }

@@ -2,6 +2,9 @@
     background-color: #418cfb;
     width: 100%;
 }
+::ng-deep .ant-tabs-tab + .ant-tabs-tab{
+    margin: 0 0 0 18px;
+}
 ::ng-deep .ant-tabs-tab {
     padding: 10px 15px;
     margin: 0;

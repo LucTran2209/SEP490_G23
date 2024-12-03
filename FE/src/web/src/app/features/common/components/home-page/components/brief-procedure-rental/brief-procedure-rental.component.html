@@ -1,0 +1,37 @@
+<div class="py-5 bg-[#4b4e580a] shadow-md">
+  <div class="max-w-[1500px] mx-auto flex flex-col gap-y-5 p-10 mb-5">
+    <div class="pl-3" style="border-left: 10px solid #0f6cf8">
+      <h4 class="text-3xl font-bold">Tiến trình thuê sản phẩm</h4>
+    </div>
+    <div class="flex items-center justify-center gap-5 flex-wrap mb-5">
+      @for (itemCommonProcess of commonProcessRental_renter; track $index) {
+      <div class="step-card flex flex-col items-start gap-5 w-[25%]">
+        <div class="icon-container relative bg-white rounded-full w-fit p-10">
+          <div
+            class="absolute inline-flex items-center flex-row-reverse gap-x-3 top-1/2 -right-10 -translate-x-1/2 -translate-y-1/2"
+          >
+            <div class="step-number font-bold text-xl">
+              0{{ itemCommonProcess.key }}
+            </div>
+            <span
+              nz-icon
+              [nzType]="itemCommonProcess.iconContent"
+              class="text-2xl"
+              nzTheme="outline"
+            ></span>
+          </div>
+        </div>
+        <h3 class="title text-2xl">{{ itemCommonProcess.title }}</h3>
+        <p class="description text-[#a9a9a9] max-h-[105px] line-clamp-3">
+          {{ itemCommonProcess.content }}
+        </p>
+      </div>
+      }
+    </div>
+    <div class="mx-auto">
+      <button nz-button nzType="primary" class="h-[60px] min-w-[10rem] rounded-sm">
+        <span class="text-xl"> Tìm hiểu thêm </span>
+      </button>
+    </div>
+  </div>
+</div>

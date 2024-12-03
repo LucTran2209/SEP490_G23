@@ -10,6 +10,7 @@ export interface UserOutputDto {
   dateOfBirth: string;
   avatarPersonal: string;
   isActive: boolean;
+  balance: number;
   listRole: [];
   }
   export interface UserInputDto {
@@ -34,7 +35,7 @@ export interface UserOutputDto {
     address: string,
     gender: boolean,
     dateOfBirth: string
-    avatarPersonal?: File | string;
+    avatarPersonal?: File | null;
   }
   export interface ActiveUserInputDto{
     id: string;

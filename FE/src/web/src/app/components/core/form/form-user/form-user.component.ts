@@ -12,7 +12,7 @@ import { ageValidator } from '../../../../utils/form-validators';
 export class FormUserComponent{
   dateFormat = 'dd/MM/yyyy';
   userForm: FormGroup;
-  avatarPreview: string | ArrayBuffer | null = 'assets/images/default-avatar.jpg'; // Changed to match base64 string or null
+  avatarPreview: string | ArrayBuffer | null = null; // Changed to match base64 string or null
   @Input() user: UserInputDto = {
     userName: '',
     password: '123456789',
@@ -66,7 +66,8 @@ export class FormUserComponent{
 
   populateForm(): void {
     const dateOfBirth = new Date(this.userUpdate.dateOfBirth);
-    const isoString = dateOfBirth.toISOString().split('T')[0];
+    // Trích xuất phần ngày mà không ảnh hưởng múi giờ
+    const localDateString = dateOfBirth.toLocaleDateString('en-CA');
     
     this.userForm.patchValue({
       fullName: this.userUpdate.fullName,
@@ -74,9 +75,10 @@ export class FormUserComponent{
       phoneNumber: this.userUpdate.phoneNumber,
       address: this.userUpdate.address,
       gender: this.userUpdate.gender,
-      dateOfBirth: isoString, // Format for date
+      dateOfBirth: localDateString, // Format for date
       avatarPersonal: this.userUpdate.avatarPersonal ?? null, // Ensure it's null if undefined
     });
+    console.log('FormControl Address:', this.userForm.get('address')?.value);
 
     // Check if avatarPersonal is a string or a File and convert it accordingly
     if (this.userUpdate.avatarPersonal) {
@@ -135,6 +137,8 @@ export class FormUserComponent{
     if (input?.files && input.files.length > 0) {
       const file = input.files[0];
       const reader = new FileReader();
+      this.userUpdate.avatarPersonal = file;
+      this.avatarPreview = URL.createObjectURL(file);
 
       // Convert file to Blob for form
       const blob = new Blob([file], { type: file.type });
@@ -151,6 +155,8 @@ export class FormUserComponent{
     }
   }
   submitForm() {
+    const addressValue = this.userForm.get('address')?.value;
+    console.log('Address Value:', addressValue);
     // Update dateOfBirth to ISO string format
     const dateOfBirthControl = this.userForm.get('dateOfBirth');
     if (dateOfBirthControl?.value) {

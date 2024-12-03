@@ -3,16 +3,15 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { catchError, delay, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, delay, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { HttpStatusCode } from '../../../configs/status-code.config';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
 import { MessageResponseService } from '../../../services/message-response.service';
 import { StorageService } from '../../../services/storage.service';
+import { getErrorMessage } from '../../../utils/anonymous.helper';
 import { STRING } from '../../../utils/constant';
 import * as AuthActions from './auth.actions';
-import { removeCookie, replaceCookie } from '../../../utils/cookie.helper';
-import { IErrorApi } from '../../../interceptors/http-error.interceptor';
 
 @Injectable()
 export class AuthEffect {
@@ -34,15 +33,15 @@ export class AuthEffect {
         switchMap(({ data }) =>
           this.authService.login(data).pipe(
             map((res) => {
-              console.log('res', res);
               return AuthActions.login_success({
                 accessToken: res.data.accessToken,
                 refreshToken: res.data.refreshToken,
               });
             }),
             catchError((error) => {
-              const errorMessage = error.error?.message || 'Đã xảy ra lỗi!';
-              const statusCode = error.status;
+              console.log('error', error);
+              const errorMessage = getErrorMessage(error);
+              const statusCode = error.status || error.statusCode;
               return of(
                 AuthActions.login_failure({ error: errorMessage, statusCode })
               );
@@ -91,7 +90,16 @@ export class AuthEffect {
               });
             }),
             catchError((error) => {
-              return of(AuthActions.forgotPassword_failure({ error }));
+              console.log('error', error);
+              const errorMessage = getErrorMessage(error);
+              const statusCode = error.status || error.statusCode;
+
+              return of(
+                AuthActions.forgotPassword_failure({
+                  error: errorMessage,
+                  statusCode,
+                })
+              );
             })
           )
         )
@@ -137,11 +145,13 @@ export class AuthEffect {
               }
             }),
             catchError((err) => {
-              const errorMessage = err.error?.message || 'Đã xảy ra lỗi!';
               const statusCode = err.status;
+              let diffErrArr = err.errorList.map(
+                (item: any) => item.errorMessage
+              );
               return of(
                 AuthActions.resetPassword_failure({
-                  error: 'Đường dẫn hết thời gian thay đổi mật khẩu!',
+                  error: diffErrArr,
                   statusCode: statusCode,
                 })
               );
@@ -161,15 +171,18 @@ export class AuthEffect {
         tap(() => {
           this.loadingSerivce.setLoading();
         }),
-        switchMap(({ email }) =>
-          this.authService.verifyEmail({ email }).pipe(
+        switchMap(({ email, username }) =>
+          this.authService.verifyEmail({ email, userName: username }).pipe(
             map(({ statusCode }) =>
               AuthActions.verifyEmail_success({ statusCode })
             ),
-            catchError((err) => {
+            catchError((error) => {
+              let diffErrArr = error.errorList.map(
+                (item: any) => item.errorMessage
+              );
               return of(
                 AuthActions.verifyEmail_failure({
-                  error: 'Có lỗi xảy ra vui lòng thử lại',
+                  error: diffErrArr,
                 })
               );
             })
@@ -198,12 +211,18 @@ export class AuthEffect {
                     });
                   }),
                   catchError((err) =>
-                    of(AuthActions.register_failure({ error: 'Đã xảy ra lỗi trong khi tạo tài khoản' }))
+                    of(
+                      AuthActions.register_failure({
+                        error: 'Đã xảy ra lỗi trong khi tạo tài khoản',
+                      })
+                    )
                   )
-                )
+                );
               } else {
                 return of(
-                  AuthActions.verifyEmail_failure({ error: 'Mã OTP không hợp lệ!' })
+                  AuthActions.verifyEmail_failure({
+                    error: 'Mã OTP không hợp lệ!',
+                  })
                 );
               }
             }),
@@ -230,15 +249,20 @@ export class AuthEffect {
           if (data) {
             this.loadingSerivce.setOtherLoading('loaded');
             this.authService.startSession(data.accessToken, data.refreshToken);
+            this.messageNZ.success('Đăng nhập thành công');
           } else {
             this.loadingSerivce.setOtherLoading('error');
-            catchError((err) =>
-              of(
-                AuthActions.checkOtpCode_failure({
-                  error: 'Mã xác nhận không hợp lệ vui lòng thử lại',
+            catchError((error) => {
+              let diffErrArr = error.errorList.map(
+                (item: any) => item.errorMessage
+              );
+              return of(
+                AuthActions.login_failure({
+                  error: diffErrArr,
+                  statusCode: 0,
                 })
-              )
-            );
+              );
+            });
           }
         })
       ),
@@ -279,7 +303,7 @@ export class AuthEffect {
           this.loadingSerivce.setOtherLoading('loaded');
           this.messageNZ.create(
             'success',
-            'Vui lòng đăng nhập lại vào hệ thống'
+            'Bạn đã cập nhật mật khẩu mới thành công. Vui lòng đăng nhập lại vào hệ thống!'
           );
           this.router.navigate(['auth/login']);
         })
@@ -359,6 +383,7 @@ export class AuthEffect {
           AuthActions.confirmVerifyEmail_failure
         ),
         tap((action) => {
+          console.log('action', action);
           this.loadingSerivce.setOtherLoading('error');
           this.toastMT.handleError(action.error);
         })

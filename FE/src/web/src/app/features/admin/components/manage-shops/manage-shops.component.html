@@ -1,0 +1,149 @@
+<div class="bg-light">
+  <div class="row flex-nowrap">
+    <div class="col py-3 m-3">
+      <div class="card">
+        <h1 class="text-3xl">Danh sách Cửa Hàng</h1>
+        <div class="flex justify-start mt-5">
+          <div class="search-bar w-25 ms-0">
+            <div class="search-form d-flex align-items-center">
+              <input
+                class="form-control w-96"
+                type="text"
+                name="query"
+                placeholder="Tìm kiếm cửa hàng..."
+                title="Enter search keyword"
+                [(ngModel)]="searchText"
+                (keyup.enter)="onSearch()"
+              />
+              <button title="Search" (click)="onSearch()">
+                <span
+                  class="text-xl"
+                  nz-icon
+                  nzType="search"
+                  nzTheme="outline"
+                ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <nz-table
+          #basicTable
+          [nzData]="rentalList"
+          [nzFrontPagination]="false"
+          [nzPageSize]="pageSize"
+          [nzTotal]="totalRentals"
+          [(nzPageIndex)]="currentPage"
+          (nzPageIndexChange)="onPageChange($event)"
+          [nzLoading]="isloading"
+          class="mt-2"
+        >
+          <thead>
+            <tr>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name">No.</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Tên Cửa Hàng</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Địa Chỉ</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Số Điện Thoại</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name">Email</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <span class="name">Xem Cửa Hàng</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+                <span class="name"></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let rental of rentalList; let i = index"
+              class="tr-product"
+            >
+              <td>
+                <span class="name text-secondary p-3 text-center">
+                  {{ i + 1 + (currentPage - 1) * pageSize | number : "2.0" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ rental.shopName }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ rental.address || "[CHƯA CÓ]" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ rental.phoneNumber || "[CHƯA CÓ]" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ rental.email || "[CHƯA CÓ]" }}
+                </span>
+              </td>
+              @if(!rental.isActive){
+              <td>
+                <div class="flex flex-wrap justify-center p-3">
+                  <a
+                    class="text-sky-600"
+                    [routerLink]="['/common/shop', rental.id]"
+                  >
+                    <span
+                      nz-tooltip
+                      nzTooltipTitle="Đi Đến Cửa Hàng"
+                      nz-icon
+                      nzType="shop"
+                      nzTheme="outline"
+                    ></span>
+                  </a>
+                </div>
+              </td>
+              <td>
+                <div class="flex flex-wrap justify-center p-3">
+                  <a
+                    class="text-rose-600"
+                    (click)="showDeactiveShop(rental.id)"
+                  >
+                    <span
+                      nz-tooltip
+                      nzTooltipTitle="Dừng Hoạt Động Shop Này"
+                      nz-icon
+                      nzType="stop"
+                      nzTheme="outline"
+                    ></span>
+                  </a>
+                </div>
+              </td>
+              } @else{
+              <td colspan="2">
+                <div class="flex flex-wrap justify-center p-3">
+                  <p class="text-rose-600 name">
+                    Shop Đã Bị Xóa Vì: {{ rental.adminNote }}
+                  </p>
+                </div>
+              </td>
+              }
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-form-deactive-shop
+  [isVisible]="isVisible"
+  (closeModal)="handleCloseModal()"
+  (saveShop)="DeactiveShop($event)"
+></app-form-deactive-shop>

@@ -26,16 +26,24 @@ export class FormOrderComponent implements OnInit {
       label: convertStatusOrder(ORDER_STATUS.PENDING_PAYMENT),
     },
     {
-      value: ORDER_STATUS.RECEIVED,
-      label: convertStatusOrder(ORDER_STATUS.RECEIVED),
-    },
-    {
       value: ORDER_STATUS.REFUND,
       label: convertStatusOrder(ORDER_STATUS.REFUND),
     },
     {
       value: ORDER_STATUS.DEPOSIT_REFUND,
       label: convertStatusOrder(ORDER_STATUS.DEPOSIT_REFUND),
+    },
+    {
+      value: ORDER_STATUS.PAYMENTED,
+      label: convertStatusOrder(ORDER_STATUS.PAYMENTED),
+    },
+    {
+      value: ORDER_STATUS.COMPLETE,
+      label: convertStatusOrder(ORDER_STATUS.COMPLETE),
+    },
+    {
+      value: ORDER_STATUS.CANCEL,
+      label: convertStatusOrder(ORDER_STATUS.CANCEL),
     },
   ];
 

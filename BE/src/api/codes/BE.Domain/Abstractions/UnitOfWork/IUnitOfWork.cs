@@ -5,7 +5,7 @@ namespace BE.Domain.Abstractions.UnitOfWork
     public interface IUnitOfWork
     {
         public IUserRepository UserRepository { get; }
-
+        public IRechargeHistoryRepository RechargeHistoryRepository { get; }
         public IProductRepository ProductRepository { get; }
         public IProductImageRepository ProductImageRepository { get; }
         public IRentalShopRepository RentalShopRepository { get; }
@@ -15,6 +15,9 @@ namespace BE.Domain.Abstractions.UnitOfWork
         public IFeedbackRepository FeedbackRepository { get; }
         public ICategoryRepository CategoryRepository { get; }
         public ISubCategoryRepository SubCategoryRepository { get; }
+
+        public IVoucherRepository VoucherRepository { get; }
+        public IStatisticalRepository StatisticalRepository { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

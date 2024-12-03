@@ -10,7 +10,10 @@ namespace BE.Application.Extensions
             CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailDto>().ReverseMap();
-            CreateMap<OrderStatus, OrderStatusDto>().ReverseMap();
+            CreateMap<OrderStatus, OrderStatusDto>()
+                .ForMember(dest => dest.CreatedDate,
+                            opt => opt.MapFrom(src => src.CreatedDate.UtcDateTime)
+                           ).ReverseMap();
             CreateMap<RentalShop, RentalShopDto>();
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<ProductImage, ProductImageDto>().ReverseMap();

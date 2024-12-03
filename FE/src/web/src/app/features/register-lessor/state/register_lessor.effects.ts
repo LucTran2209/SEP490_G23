@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { RenterShopService } from '../../../services/renter-shop.service';
-import * as RegisterLessorActions from './register_lessor.actions';
+import { Store } from '@ngrx/store';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { LoadingService } from '../../../services/loading.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { MessageResponseService } from '../../../services/message-response.service';
-import { Store } from '@ngrx/store';
+import { RenterShopService } from '../../../services/renter-shop.service';
 import { GlobalState } from '../../../store/app.state';
-import { logout } from '../../auth/state/auth.actions';
+import * as RegisterLessorActions from './register_lessor.actions';
 @Injectable()
 export class RegisterLessorEffects {
   constructor(
@@ -17,7 +17,8 @@ export class RegisterLessorEffects {
     private loadingSerivce: LoadingService,
     private messageNZ: NzMessageService,
     private responseMessage: MessageResponseService,
-    private store: Store<GlobalState>
+    private store: Store<GlobalState>,
+    private route: Router
   ) {}
 
   proccessRegisterLessor$ = createEffect(
@@ -55,7 +56,7 @@ export class RegisterLessorEffects {
         tap(({ message }) => {
           this.loadingSerivce.setOtherLoading('loaded');
           this.responseMessage.showInfo("Chúng tôi đã nhận được thông tin, vui lòng chờ xử lý");
-          this.store.dispatch(logout());
+          this.route.navigateByUrl("/");
         })
       ),
     {

@@ -22,17 +22,19 @@ export class StatusLabelComponent implements OnInit {
     switch (type) {
       case 'success':
       case ORDER_STATUS.DEPOSIT_REFUND:
+      case ORDER_STATUS.COMPLETE:
         return 'status-success';
       case 'warning':
       case ORDER_STATUS.PENDING_PAYMENT:
         return 'status-warning';
       case 'error':
+      case ORDER_STATUS.CANCEL:
         return 'status-error';
       case ORDER_STATUS.PENDING_APPROVAL:
         return 'status-pending_approval';
       case ORDER_STATUS.PENDING_DELIVERY:
         return 'status-pending_delivery';
-      case ORDER_STATUS.RECEIVED:
+      case ORDER_STATUS.PAYMENTED:
         return 'status-received';
       case ORDER_STATUS.REFUND:
         return 'status-refund';

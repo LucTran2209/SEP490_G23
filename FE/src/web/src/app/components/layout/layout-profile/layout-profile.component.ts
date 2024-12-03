@@ -12,9 +12,10 @@ import { USER_ROLE } from '../../../utils/constant';
 })
 export class LayoutProfileComponent implements OnInit {
   isAccountOpen = false;
+  isPaymentOpen = false;
   isOrderSlected= false;
-  userName: string = '';
-  avatarPersonal: string = '';
+  userName?: string;
+  avatarPersonal?: string;
   readonly USERROLE = USER_ROLE;
   userRole: USER_ROLE = USER_ROLE.LESSOR;
 
@@ -31,6 +32,7 @@ export class LayoutProfileComponent implements OnInit {
   checkActiveAccountRoute() {
     const currentUrl = this.router.url;
     this.isAccountOpen = currentUrl.startsWith('/common/user/account');
+    this.isPaymentOpen = currentUrl.startsWith('/common/user/payment');
   }
   checkActiveOrderRoute() {
     const currentUrl = this.router.url;
@@ -40,7 +42,7 @@ export class LayoutProfileComponent implements OnInit {
     this.checkRole();
     const userCurrent = this.userProfileService.currentUser;
     this.userName = userCurrent?.UserName;
-    this.avatarPersonal = userCurrent.Avatar;
+    this.avatarPersonal = userCurrent?.Avatar;
   }
   checkRole(){
     const role = this.userProfileService.roleCurrentUser;

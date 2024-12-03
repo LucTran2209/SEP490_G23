@@ -1,0 +1,123 @@
+<div *ngIf="(loading$ | async) !== 'loading'">
+  <ng-container *ngIf="userError; else profileContent">
+    <div class="flex justify-center">
+      <nz-result
+        nzStatus="500"
+        nzTitle="500"
+        nzSubTitle="Xin lỗi, có lỗi trên máy chủ."
+      ></nz-result>
+    </div>
+  </ng-container>
+
+  <ng-template #profileContent>
+    <div class="mx-20 my-5">
+      <div class="grid grid-cols-2 gap-8">
+        <div class="col-span-2">
+          <div class="rounded overflow-hidden shadow-lg font-mono border-2">
+            <div class="px-24 py-10">
+              <div
+                class="font-bold text-4xl mb-2 text-start text-gray-500 mt-6 uppercase"
+              >
+                Thông Tin Cá Nhân
+              </div>
+              <div class="flex justify-between">
+                <div class="flex justify-start mt-6 pr-20 pl-0">
+                  <div class="grid grid-cols-2 gap-x-10 gap-y-6">
+                    <!-- Tiêu đề thông tin -->
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Tên người dùng:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
+                      {{ user.userName || "[chưa có thông tin]" }}
+                    </p>
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Họ và Tên:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
+                      {{ user.fullName || "[chưa có thông tin]" }}
+                    </p>
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Email:
+                    </p>
+                    <p class="text-xl min-h-[3rem] flex items-center">
+                      {{ user.email || "[chưa có thông tin]" }}
+                    </p>
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Số điện thoại:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
+                      {{ user.phoneNumber || "[chưa có thông tin]" }}
+                    </p>
+
+                    <p class="font-bold text-xl min-h-[3rem] flex items-center">
+                      Địa chỉ:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
+                      {{ user.address || "[chưa có thông tin]" }}
+                    </p>
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Giới tính:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
+                      {{ user.gender ? "Nam" : "Nữ" }}
+                    </p>
+
+                    <p class="font-bold text-xl min-h-[2rem] flex items-center">
+                      Ngày sinh:
+                    </p>
+                    <p class="text-xl min-h-[2rem] flex items-center">
+                      {{
+                        user.dateOfBirth
+                          ? (user.dateOfBirth | date : "dd/MM/yyyy")
+                          : "[chưa có thông tin]"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <div class="pl-24 divide">
+                  <nz-avatar
+                    [nzSize]="200"
+                    [nzSrc]="
+                      user.avatarPersonal
+                        ? user.avatarPersonal
+                        : 'assets/images/default-avatar.jpg'
+                    "
+                  ></nz-avatar>
+                  <p class="text-xl text-gray-400 text-center mt-2">
+                    Ảnh Đại Diện
+                  </p>
+                  <div class="flex justify-center mt-4">
+                    <button
+                      nz-button
+                      [nzSize]="'large'"
+                      nzType="primary"
+                      (click)="showEditProfile()"
+                    >
+                      Sửa Hồ Sơ
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end"></div>
+              <app-form-user
+                [isEditMode]="true"
+                [userUpdate]="userInformation"
+                [isVisible]="isVisible"
+                [title]="title"
+                (closeModal)="handleCloseModal()"
+                [alertType]="alertType"
+                [alertMessage]="alertMessage"
+                [showAlert]="showAlert"
+                (updateUser)="updateUser($event)"
+              ></app-form-user>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

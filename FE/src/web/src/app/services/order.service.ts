@@ -13,19 +13,23 @@ import {
 } from '../interfaces/order.interface';
 import { AppHttpClientService } from './app-http-client.service';
 import { cleanParams } from '../utils/anonymous.helper';
-import { FeedBackInputDto } from '../interfaces/feedback.interface';
+import { FeedBackInputDto, FeedbackResultService } from '../interfaces/feedback.interface';
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
   constructor(private httpClient: AppHttpClientService) {}
 
-  listMyOrder(pageIndex: number, pageSize: number, nearDays: number): Observable<OrderResultService>{
+  listMyOrder(
+    pageIndex: number,
+    pageSize: number,
+    Search?: string,
+  ): Observable<OrderResultService> {
     let params: any = {
       PageSize: pageSize.toString(),
       PageIndex: pageIndex.toString(),
-      NearDays: nearDays.toString(),
     };
+    if (Search) params.Search = Search;
     return this.httpClient.get<OrderResultService>(
       OrderSlug.ListMyOrder.api,
       params
@@ -39,7 +43,9 @@ export class OrderService {
    * @description: get order detail
    */
   getOrder(orderId: string): Observable<OrderDetailResultService> {
-    return this.httpClient.get<OrderDetailResultService>(OrderSlug.GetOrder.api + orderId );
+    return this.httpClient.get<OrderDetailResultService>(
+      OrderSlug.GetOrder.api + orderId
+    );
   }
 
   /**
@@ -69,44 +75,40 @@ export class OrderService {
     param: any
   ): Observable<BaseResponseApiV2<OrderListResponse>> {
     const cleanedParams = cleanParams(param);
-    return this.httpClient
-      .get<BaseResponseApiV2<OrderListResponse>>(
-        OrderSlug.ListOrderLessor.api,
-        cleanedParams
-      )
-      .pipe(
-        catchError((error) => {
-          console.error('API error:', error);
-          const errorResponse: BaseResponseApiV2<OrderListResponse> = {
-            statusCode: 500,
-            data: {
-              items: [],
-              pageIndex: -1,
-              pageSize: 0,
-              totalCount: 0,
-            },
-            message: 'Failed to fetch order list',
-          };
-          return of(errorResponse);
-        })
-      );
+    return this.httpClient.get<BaseResponseApiV2<OrderListResponse>>(
+      OrderSlug.ListOrderLessor.api,
+      cleanedParams
+    );
   }
 
   getOrderDetailLessor(
     pid: string
   ): Observable<BaseResponseApi<OrderListResponse>> {
-    return this.httpClient
-      .get<BaseResponseApi<OrderListResponse>>(
-        OrderSlug.GetOrderLessor.api + `${pid}`
-      )
-      .pipe(
-        catchError((error) => {
-          console.error('API error:', error);
-          return of(error);
-        })
-      );
+    return this.httpClient.get<BaseResponseApi<OrderListResponse>>(
+      OrderSlug.GetOrderLessor.api + `${pid}`
+    );
   }
-  createFeedBack(data: FeedBackInputDto): Observable<BaseResponseApi<null>>{
-    return this.httpClient.post<BaseResponseApi<null>>(FeedBackSlug.CreateFeedBack.api, data);
+
+  requestOrderStatus(formData: FormData): Observable<BaseResponseApi<any>> {
+    const header = new HttpHeaders();
+    header.append('Content-Type', 'multipart/form-data');
+    return this.httpClient.post<BaseResponseApi<any>>(
+      OrderSlug.RequestOrder.api,
+      formData,
+      header,
+      true
+    );
+  }
+
+  createFeedBack(data: FeedBackInputDto): Observable<BaseResponseApi<null>> {
+    return this.httpClient.post<BaseResponseApi<null>>(
+      FeedBackSlug.CreateFeedBack.api,
+      data
+    );
+  }
+  listFeedBack(id: string): Observable<FeedbackResultService> {
+    return this.httpClient.get<FeedbackResultService>(
+      FeedBackSlug.ListFeedBack.api + id
+    );
   }
 }

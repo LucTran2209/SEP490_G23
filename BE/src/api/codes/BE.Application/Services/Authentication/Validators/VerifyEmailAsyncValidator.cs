@@ -1,19 +1,28 @@
 ﻿using BE.Application.Services.Authentication.AuthenServiceInputDto;
+using BE.Persistence;
 
 namespace BE.Application.Services.Authentication.Validators
 {
-    public class VerifyEmailAsyncValidator : AbstractValidator<VerifyEmailInputDto>
+    public class VerifyEmailAsyncValidator : ValidatorBase<VerifyEmailInputDto>
     {
-        public VerifyEmailAsyncValidator(IUnitOfWork unitOfWork)
+        public VerifyEmailAsyncValidator(ApplicationDbContext context, IUser user) : base(context, user)
         {
-            RuleFor(r => r.Email)
-                .NotEmpty().WithMessage("Email is required.") // Kiểm tra không được để trống
-                .EmailAddress().WithMessage("Invalid email format.") // Kiểm tra định dạng email
-                .MustAsync(async (email, cancellation) =>
-                    {
-                        var user = await unitOfWork.UserRepository.GetsUserByUserEmailAsync(email);
-                        return user == null; // Return true nếu email chưa tồn tại
-                    }).WithMessage("Email already exists in the database."); // Thông báo nếu email đã tồn tại
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage("Email required")
+                .EmailAddress().WithMessage("Invalid Email")
+                .MustAsync(async (email, cancellationToken) =>
+                {
+                    return !await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
+                }).WithMessage("Email đã tồn tại");
+
+            RuleFor(r => r.UserName)
+                 .NotEmpty().WithMessage("UserName is required.")
+                 .MustAsync(async (email, cancellation) =>
+                 {
+                     var user = await context.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+                     return user == null;
+                 }).WithMessage("UserName đã tồn tại");
         }
     }
 }

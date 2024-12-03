@@ -35,6 +35,7 @@ export interface IResetPassword {
 
 export interface IVerifyEmailRequest {
   email: string;
+  userName: string;
 }
 
 
@@ -60,6 +61,7 @@ export interface IRegisterRequest
 export interface IPayLoad {
   _id: string;
   Avatar: string;
+  Balance: number;
   UserId: string;
   RentalShopId: string;
   FullName: string;

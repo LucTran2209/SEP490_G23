@@ -1,8 +1,9 @@
 <div class="">
   <div class="pb-3">
     <img
-      class="w-full object-cover max-h-[540px] min-h-[540px] shadow-sm border border-solid border-[#ededed]"
-      src="{{ selectedImage }}"
+      nz-image
+      class="w-full object-cover max-h-[500px] cursor-pointer min-h-[500px] shadow-sm border border-solid border-[#ededed]"
+      nzSrc="{{ selectedImage }}"
       alt=""
     />
   </div>
@@ -20,7 +21,11 @@
       class="mx-1 cursor-pointer shadow-lg"
       (click)="onSelectImage(slide)"
     >
-        <img [src]="slide" alt="" class="h-[100px] w-full object-cover hover:border-2 hover:border-solid hover:border-[#1890FF]" />
+      <img
+        [src]="slide"
+        alt=""
+        class="h-[100px] w-full object-cover hover:border-2 hover:border-solid hover:border-[#1890FF]"
+      />
     </div>
   </ngx-slick-carousel>
 </div>

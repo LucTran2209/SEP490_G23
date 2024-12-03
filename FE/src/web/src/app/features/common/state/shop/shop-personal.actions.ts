@@ -23,5 +23,5 @@ export const getListProductRentalShop_success = createAction(
 );
 export const getListProductRentalShop_failure = createAction(
   GET_LIST_PRODUCT_RENTAL_FAILURE,
-  props<{ message: string; statusCode: number | undefined }>()
+  props<{ message: string; statusCode: number  }>()
 );

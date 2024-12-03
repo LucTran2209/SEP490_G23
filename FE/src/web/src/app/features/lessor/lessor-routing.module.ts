@@ -4,23 +4,39 @@ import { ManageOrderComponent } from './components/manage-order/manage-order.com
 import { OrderDetailComponent } from './components/manage-order/order-detail/order-detail.component';
 import { ManagerShopComponent } from './components/manager-shop/manager-shop.component';
 import { OverviewComponent } from './components/overview/overview.component';
+import { ManageVoucherComponent } from './components/manage-voucher/manage-voucher.component';
+import { ManageNotificationComponent } from './components/manage-notification/manage-notification.component';
 
 const routes: Routes = [
   {
     path:'dashboard',
-    component: OverviewComponent
+    component: OverviewComponent,
+    title: 'Thống Kê | ERMS'
   },
   {
     path: 'shop/:id',
     component: ManagerShopComponent,
+    title: 'Quản Lý Cửa Hàng Của Tôi | ERMS'
   },
   {
     path: "order",
-    component: ManageOrderComponent
+    component: ManageOrderComponent,
+    title: 'Quản Lý Đơn Hàng | ERMS'
   },
   {
     path: "order/:id",
-    component: OrderDetailComponent
+    component: OrderDetailComponent,
+    title: 'Chi Tiết Đơn Hàng | ERMS'
+  },
+  {
+    path: "voucher",
+    component: ManageVoucherComponent,
+    title: 'Quản Lý Voucher | ERMS'
+  },
+  {
+    path: "notification",
+    component: ManageNotificationComponent,
+    title: 'Thông Báo | ERMS'
   },
 ];
 

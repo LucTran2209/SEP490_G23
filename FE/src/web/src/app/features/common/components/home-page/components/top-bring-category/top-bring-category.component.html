@@ -1,0 +1,29 @@
+<div class="relative mx-auto text-center py-5">
+  <div class="flex flex-col gap-y-5">
+    <h4 class="text-4xl font-medium">Các danh mục sản phẩm nổi bật</h4>
+    <p class="text-lg">
+      ERMS luôn cập nhật cách danh mục sản phẩm thuê đa dạng
+    </p>
+    <div class="flex justify-center mt-2">
+      <div class="flex justify-between">
+        <div class="w-[60px] h-[4px] bg-[#007bff] rounded-sm"></div>
+        <div class="w-[10px] h-[4px] bg-[#007bff] rounded-sm ml-1"></div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex justify-center flex-wrap items-center max-w-[1200px] mt-7 mx-auto gap-3"
+  >
+    @for (item of listCategoryHot; track $index) {
+    <div
+      class="flex items-center gap-3 border-2 h-[50px] border-solid border-[#0f6cf8] rounded-sm py-2 px-3 hover:bg-[#0F6CF8] hover:text-white"
+    >
+      <span>{{ item.icon }} </span>
+      <p>{{ item.title }}</p>
+    </div>
+    }
+  </div>
+  <div class="absolute bottom-0 right-4">
+    <img src="assets/images/Vector_2.png" alt="" class="w-full h-full" />
+  </div>
+</div>
