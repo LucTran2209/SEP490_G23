@@ -20,7 +20,7 @@ export class FormRechargeComponent implements OnInit{
   // Hàm khởi tạo form
   private initForm() {
     this.formRecharge = new FormGroup({
-      amount: new FormControl(0, [Validators.required, Validators.min(10000)]),
+      amount: new FormControl(0, [Validators.required, Validators.min(10000), Validators.max(14000000)]),
     });
   }
   constructor(private messageService: MessageResponseService) {}

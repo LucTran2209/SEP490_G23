@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -32,7 +32,8 @@ export class NavbarHeadearComponent implements OnInit {
     private storageService: StorageService,
     private store: Store<FeatureAppState>,
     private userProfileService: UserProfileService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +55,7 @@ export class NavbarHeadearComponent implements OnInit {
   }
   logout() {
     this.store.dispatch(logout());
+    this.cdRef.markForCheck();
   }
 
   handleAssginInfo() {

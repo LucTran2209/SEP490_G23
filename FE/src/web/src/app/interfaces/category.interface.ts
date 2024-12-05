@@ -1,3 +1,13 @@
+export interface SubcategoryInputDto{
+    id: string | null,
+    categoryId: string,
+    subCategoryName: string,
+    description: string
+}
+export interface CategoryInputDto{
+    id: string | null,
+    categoryName: string,
+}
 export interface SubcategoryOutputDto{
     id: string;
     subCategoryName: string;
@@ -22,7 +32,7 @@ export interface Subcategory {
   subCategoryName: string;
   description: string;
   categoryId: string;
-  category: Category | string |null;
+  category: Category| string |null;
   products: any[];
   id: string;
   createdBy: string | null;

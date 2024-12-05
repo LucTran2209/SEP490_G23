@@ -119,6 +119,7 @@ export class FormVoucherComponent {
       usageLimit: 0,
     });
     this.labelButton = 'Tạo Mới';
+    this.voucher = undefined;
   }
 
   // Phương thức xử lý disable/enable maximumDiscount

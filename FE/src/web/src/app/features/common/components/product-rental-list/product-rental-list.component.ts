@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { combineLatest, filter, Observable, Subscription } from 'rxjs';
 import { OptionSelect } from '../../../../configs/anonymous.config';
 import { selectSortByOrder } from '../../../../configs/post.config';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
@@ -50,26 +50,24 @@ export class ProductRentalListComponent {
   }
 
   ngOnInit(): void {
-    // Subscribe to query parameters
-    this.subscriptions.add(
-      this.route.queryParams.subscribe((params) => {
-        this.search = params['search'] || '';
-        this.subCategory = params['subCategory'] || '';
-        this.currentPage = +params['page'] || 1;
-        this.loadProducts();
-      })
-    );
+      // Theo dõi thay đổi từ queryParams và paramMap
+  this.subscriptions.add(
+    combineLatest([
+      this.route.paramMap,
+      this.route.queryParams
+    ]).subscribe(([paramMap, queryParams]) => {
+      // Lấy giá trị từ paramMap và queryParams
+      const caid = paramMap.get('id');
+      this.subCategory = caid || queryParams['subCategory'] || ''; // Ưu tiên paramMap trước
 
-    // Subscribe to route parameters
-    this.subscriptions.add(
-      combineLatest([this.route.paramMap, this.route.queryParams]).subscribe(([paramMap, queryParams]) => {
-        const caid = paramMap.get('id');
-        this.subCategory = caid || '';
-        this.loadProducts();
-      })
-    );
+      this.search = queryParams['search'] || '';
+      this.currentPage = +queryParams['page'] || 1;
+
+      // Gọi API chỉ khi các giá trị đã được xử lý
+      this.loadProducts();
+    })
+  );
   }
-
   ngOnDestroy(): void {
     // Clean up subscriptions
     this.subscriptions.unsubscribe();

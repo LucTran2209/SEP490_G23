@@ -40,8 +40,15 @@ const routes: Routes = [
         title: AuthSlug.Register.title,
         canDeactivate: [WarningOutRegisterGuard],
       },
+      {
+        path: AuthSlug.ChangePassword.label,
+        component: ChangePasswordComponent,
+        title: AuthSlug.ChangePassword.title,
+        canDeactivate: [WarningOutRegisterGuard],
+      },
     ],
   },
+
   
 ];
 @NgModule({

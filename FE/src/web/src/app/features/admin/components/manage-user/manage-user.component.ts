@@ -157,7 +157,7 @@ export class ManageUserComponent implements OnInit {
         );
       },
       nzCancelText: 'Không',
-      nzOnCancel: () => this.messageService.handleError('Cấm tài khoản thất bại!', 3000)
+      nzOnCancel: () => this.messageService.showInfo('Bạn đã từ bỏ cấm tài khoản này!', 3000)
     });
   }
 }

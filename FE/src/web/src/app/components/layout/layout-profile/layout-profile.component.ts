@@ -4,6 +4,7 @@ import { UserProfileService } from '../../../services/user-profile.service';
 import { UserService } from '../../../services/user.service';
 import { ProfileResultService } from '../../../interfaces/user.interface';
 import { USER_ROLE } from '../../../utils/constant';
+import { MessageResponseService } from '../../../services/message-response.service';
 
 @Component({
   selector: 'app-layout-profile',
@@ -22,6 +23,7 @@ export class LayoutProfileComponent implements OnInit {
   constructor(
     private router: Router, 
     private userProfileService: UserProfileService,
+    private messageResponseService: MessageResponseService,
     private userService: UserService,
   ) {
     this.router.events.subscribe(() => {
@@ -39,10 +41,15 @@ export class LayoutProfileComponent implements OnInit {
     this.isOrderSlected = currentUrl.startsWith('/common/user/order');
   }
   ngOnInit(): void {
-    this.checkRole();
     const userCurrent = this.userProfileService.currentUser;
-    this.userName = userCurrent?.UserName;
-    this.avatarPersonal = userCurrent?.Avatar;
+    if(userCurrent){
+      this.checkRole();
+      this.userName = userCurrent?.UserName;
+      this.avatarPersonal = userCurrent?.Avatar;
+    }else{
+      this.messageResponseService.handleError('Bạn Cần Đăng Nhập Để Truy Cập Trang này');
+      this.router.navigateByUrl('/auth/login');
+    }
   }
   checkRole(){
     const role = this.userProfileService.roleCurrentUser;
