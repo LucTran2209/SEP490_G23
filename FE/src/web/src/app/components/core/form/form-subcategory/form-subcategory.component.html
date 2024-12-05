@@ -1,0 +1,57 @@
+<h3 class="text-xl mb-3">Tạo Danh Mục Phụ</h3>
+<form
+  nz-form
+  [nzLayout]="'inline'"
+  [formGroup]="formSubcategory"
+  (ngSubmit)="onSubmit()"
+>
+  <nz-form-item>
+    <nz-form-label nzFor="categoryId">Danh Mục Chính</nz-form-label>
+    <nz-form-control nzErrorTip="Vui lòng chọn tên danh mục chính!">
+      <nz-select
+        nzPlaceHolder="Danh Mục Chính"
+        id="categoryId"
+        formControlName="categoryId"
+        class="w-72"
+      >
+        <nz-option
+          *ngFor="let category of categories"
+          [nzValue]="category.id"
+          [nzLabel]="category.categoryName"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="subCategoryName">Danh Mục Phụ</nz-form-label>
+    <nz-form-control nzErrorTip="Vui lòng nhập tên danh mục phụ!">
+      <input
+        nz-input
+        formControlName="subCategoryName"
+        id="subCategoryName"
+        placeholder="Nhập tên danh mục phụ"
+        class="w-72"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="description">Chi Tiết</nz-form-label>
+    <nz-form-control nzErrorTip="Vui lòng nhập thông tin chi tiết!">
+      <nz-textarea-count [nzMaxCharacterCount]="1000">
+        <textarea
+          nz-input
+          placeholder="Thông tin chi tiết"
+          formControlName="description"
+          [nzAutosize]="{ minRows: 5, maxRows: 8, }"
+        ></textarea>
+      </nz-textarea-count>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button nzType="primary" [disabled]="!formSubcategory.valid">
+        Tạo Mới
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -124,34 +124,29 @@ export class FormUserComponent{
       password: '123456789',
       isActive: true,
     });
+    this.avatarPreview = null;
   }
-  // onFileChange(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input?.files && input.files.length > 0) {
-  //     const file = input.files[0];
-  //     this.userForm.patchValue({ avatarPersonal: file });
-  //   }
-  // }
   async onFileChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (input?.files && input.files.length > 0) {
       const file = input.files[0];
       const reader = new FileReader();
-      this.userUpdate.avatarPersonal = file;
+  
+      // Tạo URL hiển thị hình ảnh
       this.avatarPreview = URL.createObjectURL(file);
-
-      // Convert file to Blob for form
-      const blob = new Blob([file], { type: file.type });
-      this.userForm.patchValue({ avatarPersonal: blob });
-
-      // Generate a URL for the image preview
+  
+      // Ghi file vào form
+      this.userForm.patchValue({ avatarPersonal: file });
+  
+      // Chuyển đổi ảnh sang base64 để xem trước
       reader.onload = () => {
-        this.avatarPreview = reader.result; // Set preview URL
+        this.avatarPreview = reader.result; // Lưu kết quả base64
       };
-      reader.readAsDataURL(file); // Read file as Data URL
+      reader.readAsDataURL(file);
     } else {
+      // Nếu không có file, reset preview
+      this.avatarPreview = null;
       this.userForm.patchValue({ avatarPersonal: null });
-      this.avatarPreview = null; // Reset preview
     }
   }
   submitForm() {
@@ -207,7 +202,15 @@ export class FormUserComponent{
         password: '123456789',
         isActive: true,
       });
+      this.avatarPreview = null;
     }
   
+  }
+  resetForm(){
+    this.userForm.reset({
+      password: '123456789',
+      isActive: true,
+    });
+    this.avatarPreview = null;
   }
 }

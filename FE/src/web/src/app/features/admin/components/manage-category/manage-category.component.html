@@ -1,1 +1,83 @@
-<p>manage-category works!</p>
+<div class="bg-light">
+  <div class="row flex-nowrap">
+    <div class="col py-3 m-3">
+      <div class="card">
+        <h1 class="text-3xl">Danh sách danh mục thiết bị cho thuê</h1>
+        <div class="my-5">
+          <app-form-category
+            (saveCategory)="createCategory($event)"
+          ></app-form-category>
+        </div>
+        <div class="my-5">
+          <app-form-subcategory
+            [categories]="categoryList"
+            (saveSubcategory)="createSubcategory($event)"
+          ></app-form-subcategory>
+        </div>
+
+        <nz-table
+          #basicTable
+          [nzData]="subcategoryList"
+          [nzLoading]="isloading"
+          class="mt-2"
+        >
+          <thead>
+            <tr>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name">No.</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Tên Danh Mục Phụ</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Chi Tiết</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Tên Danh Mục Chính</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Ngày Tạo</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let sub of subcategoryList; let i = index"
+              class="tr-product"
+            >
+              <td>
+                <span class="name text-secondary p-3 text-center">
+                  {{ i + 1 | number : "2.0" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ sub.subCategoryName }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ sub.description || "[CHƯA CÓ]" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ getCategoryName(sub.category) }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{
+                    sub.createdDate
+                      ? (sub.createdDate | date : "dd/MM/yyyy")
+                      : "[CHƯA CÓ]"
+                  }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+</div>

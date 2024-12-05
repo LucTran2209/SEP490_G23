@@ -119,7 +119,7 @@ export class ManageVoucherComponent {
     this.voucherService.createVoucher(voucher).subscribe({
       next: (response) => {
         this.messageService.showSuccess('Tạo Voucher Mới Thành Công!');
-        this.onloadVoucher();
+        this.onloadVoucher();  
         
       },
       error: (error) => {
@@ -132,7 +132,7 @@ export class ManageVoucherComponent {
       next: (response) => {
         this.messageService.showSuccess('Cập Nhật Voucher Thành Công!');
         this.onloadVoucher();
-        
+        this.voucherId = '';
       },
       error: (error) => {
         this.messageService.handleError('Cập Nhật Voucher thất bại!');
@@ -176,6 +176,7 @@ export class ManageVoucherComponent {
           next: (response) => {
             this.messageService.showSuccess('Dừng Chương Trình Khuyến Mãi Thành Công!');
             this.onloadVoucher();
+            this.voucherId = '';
             
           },
           error: (error) => {
@@ -201,6 +202,7 @@ export class ManageVoucherComponent {
           next: (response) => {
             this.messageService.showSuccess('Xóa Khuyến Mãi Thành Công!');
             this.onloadVoucher();
+            this.voucherId = '';
             
           },
           error: (error) => {
