@@ -76,6 +76,7 @@ export class ManageCategoryComponent implements OnInit {
   }
   getCategoryById(subcategory : Subcategory){
     if (subcategory.category && typeof subcategory.category !== "string") {
+      this.isVisibleMain = true;
       this.categoryInformation = {
         id: subcategory.category.id,
         categoryName: subcategory.category.categoryName,
@@ -84,6 +85,7 @@ export class ManageCategoryComponent implements OnInit {
   }
   getSubcategoryById(subcategory : Subcategory){
     if (subcategory.category && typeof subcategory.category !== "string") {
+      this.isVisibleSecondary = true;
       this.subcategoryInformation = {
         id: subcategory.id,
         categoryId: subcategory.category.id,

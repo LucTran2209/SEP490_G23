@@ -92,7 +92,7 @@
 {{isVisibleSecondary}}
 {{isVisibleMain}}
 <!-- form create category main-->
-<nz-modal [(nzVisible)]="isVisibleMain" nzTitle="Tạo danh mục chính" [nzFooter]='null'
+<nz-modal [(nzVisible)]="isVisibleMain" [nzWidth]="430" nzTitle="Tạo danh mục chính" [nzFooter]='null'
   (nzOnCancel)="onToggleEndModal()">
   <ng-container *nzModalContent>
     <app-form-category
