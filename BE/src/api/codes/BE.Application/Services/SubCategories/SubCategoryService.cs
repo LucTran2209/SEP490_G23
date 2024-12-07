@@ -77,6 +77,7 @@ namespace BE.Application.Services.SubCategories
             var subCategory = await unitOfWork.SubCategoryRepository.FindByIdAsync((Guid)inputDto.Id!);
 
             subCategory.SubCategoryName = inputDto.SubCategoryName;
+            subCategory.Description = inputDto.Description;
 
             await unitOfWork.SubCategoryRepository.UpdateAsync(subCategory);
 

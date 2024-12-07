@@ -56,6 +56,10 @@ namespace BE.Application.Services.Products
                 productDetail.Evaluate = Math.Round(product.Feedbacks!.Sum(x => x.Rating) / productDetail.NumberOfVoted, 1);
             }
 
+            // so luong san pham con lai
+            var rentingProduct = await unitOfWork.ProductRepository.GetQuantityRentingAsync(productId);
+            productDetail.Quantity -= rentingProduct ?? 0;
+
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,

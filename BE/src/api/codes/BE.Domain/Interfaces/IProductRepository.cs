@@ -8,5 +8,6 @@ namespace BE.Domain.Interfaces
         IQueryable<Product> GetAll();
         IQueryable<Product> GetListProductByRetalShopId(Guid rentalShopId);
         Task<Product?> GetProductDetail(Guid productId);
+        Task<int?> GetQuantityRentingAsync(Guid productId);
     }
 }
