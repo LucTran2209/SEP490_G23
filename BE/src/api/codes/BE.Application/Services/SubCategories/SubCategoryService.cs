@@ -55,5 +55,33 @@ namespace BE.Application.Services.SubCategories
                 Datas = res
             };
         }
+
+        public async Task<ResultService> UpdateCategoryAsync(CategoryDto inputDto)
+        {
+            var category = await unitOfWork.CategoryRepository.FindByIdAsync((Guid)inputDto.Id!);
+
+            category.CategoryName = inputDto.CategoryName;
+
+            await unitOfWork.CategoryRepository.UpdateAsync(category);
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK
+            };
+        }
+
+        public async Task<ResultService> UpdateSubCategoryAsync(SubCategoryDto inputDto)
+        {
+            var subCategory = await unitOfWork.SubCategoryRepository.FindByIdAsync((Guid)inputDto.Id!);
+
+            subCategory.SubCategoryName = inputDto.SubCategoryName;
+
+            await unitOfWork.SubCategoryRepository.UpdateAsync(subCategory);
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK
+            };
+        }
     }
 }

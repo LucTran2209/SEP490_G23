@@ -22,7 +22,7 @@ namespace BE.Api
 
             // # DI PersistenceService
             builder.Services.AddPersistenceServices(builder.Configuration);
-            
+
             // # DI InfrastructureService
             builder.Services.AddInfrastructureService(builder.Configuration);
 
@@ -51,11 +51,9 @@ namespace BE.Api
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.MigrationDataBase();
             app.UseHttpsRedirection();

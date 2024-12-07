@@ -38,5 +38,21 @@ namespace BE.Api.Controllers
 
             return ReturnFollowStatusCode(result);
         }
+
+        [HttpPut("category")]
+        public async Task<IActionResult> UpdateCategoy([FromBody] CategoryDto category)
+        {
+            var result = await _subCategoryService.UpdateCategoryAsync(category);
+
+            return ReturnFollowStatusCode(result);
+        }
+
+        [HttpPut("subcategory")]
+        public async Task<IActionResult> UpdateSubCategoy([FromBody] SubCategoryDto subCategory)
+        {
+            var result = await _subCategoryService.UpdateSubCategoryAsync(subCategory);
+
+            return ReturnFollowStatusCode(result);
+        }
     }
 }
