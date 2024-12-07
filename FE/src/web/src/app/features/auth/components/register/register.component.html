@@ -138,7 +138,7 @@
       >
         <nz-input-group [nzSuffix]="suffixTemplate">
           <input
-            [type]="!isPasswordVisible ? 'text' : 'password'"
+            [type]="isPasswordVisible ? 'text' : 'password'"
             formControlName="password"
             placeholder="**********"
             nz-input

@@ -19,30 +19,65 @@ export class BreadcrumbComponent {
     private cdRef: ChangeDetectorRef,
   ) {}
 
+  // ngOnInit(): void {
+  //   // Lắng nghe sự kiện của router để cập nhật breadcrumb
+  //   this.router.events
+  //     .pipe(filter(event => event instanceof NavigationEnd))
+  //     .subscribe(() => {
+  //       const currentUrl = this.router.url;
+  
+  //       // Kiểm tra xem trang hiện tại có phải là trang chủ không
+  //       this.isHomePage = currentUrl === '/common/home';
+  //       this.breadcrumbs = [];
+        
+  //       if (!this.isHomePage) {
+  //         this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
+  //         if (currentUrl.startsWith('/common')) {
+  //           this.breadcrumbs = [
+  //             { label: '', url: '/common/home' },
+  //             ...this.breadcrumbs
+  //           ];
+  //         }
+  //       } else {
+  //         console.error('Breadcrumbs not created because it is the home page');
+  //       }
+  //       this.cdRef.detectChanges();
+  //     });
+  // }
   ngOnInit(): void {
-    // Lắng nghe sự kiện của router để cập nhật breadcrumb
+    // Generate breadcrumbs for the initial load
+    this.generateBreadcrumbs();
+
+    // Listen to router navigation events for updates
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        const currentUrl = this.router.url;
-  
-        // Kiểm tra xem trang hiện tại có phải là trang chủ không
-        this.isHomePage = currentUrl === '/common/home';
-        this.breadcrumbs = [];
-        
-        if (!this.isHomePage) {
-          this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
-          if (currentUrl.startsWith('/common')) {
-            this.breadcrumbs = [
-              { label: '', url: '/common/home' },
-              ...this.breadcrumbs
-            ];
-          }
-        } else {
-          console.error('Breadcrumbs not created because it is the home page');
-        }
-        this.cdRef.detectChanges();
+        this.generateBreadcrumbs();
       });
+  }
+
+  private generateBreadcrumbs(): void {
+    const currentUrl = this.router.url;
+
+    // Check if the current page is the home page
+    this.isHomePage = currentUrl === '/common/home';
+    this.breadcrumbs = [];
+
+    if (!this.isHomePage) {
+      this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
+
+      // Add the home breadcrumb if the route starts with `/common`
+      if (currentUrl.startsWith('/common')) {
+        this.breadcrumbs = [
+          { label: '', url: '/common/home' },
+          ...this.breadcrumbs
+        ];
+      }
+    } else {
+      console.log('Breadcrumbs not created because it is the home page');
+    }
+
+    this.cdRef.detectChanges();
   }
   
   private createBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumbItem[] = []): IBreadcrumbItem[] {
