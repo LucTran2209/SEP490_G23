@@ -120,8 +120,6 @@ export class ManageCategoryComponent implements OnInit {
         this.messageService.handleError('Cập Nhật Danh Mục ChínhThất Bại!');
       }
     });
-    this.onToggleEndModal();
-
   }
   createSubcategory(data: SubcategoryInputDto){
     this.categoryService.createSubcategory(data).subscribe({
