@@ -1,18 +1,18 @@
 <h3 class="text-xl mb-3">Tạo Danh Mục Phụ</h3>
 <form
   nz-form
-  [nzLayout]="'inline'"
+  [nzLayout]="'vertical'"
   [formGroup]="formSubcategory"
   (ngSubmit)="onSubmit()"
 >
   <nz-form-item>
-    <nz-form-label nzFor="categoryId">Danh Mục Chính</nz-form-label>
+    <nz-form-label nzFor="categoryId" nzRequired>Danh Mục Chính</nz-form-label>
     <nz-form-control nzErrorTip="Vui lòng chọn tên danh mục chính!">
       <nz-select
         nzPlaceHolder="Danh Mục Chính"
         id="categoryId"
         formControlName="categoryId"
-        class="w-72"
+        class="w-full"
       >
         <nz-option
           *ngFor="let category of categories"
@@ -23,14 +23,16 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label nzFor="subCategoryName">Danh Mục Phụ</nz-form-label>
+    <nz-form-label nzFor="subCategoryName" nzRequired
+      >Danh Mục Phụ</nz-form-label
+    >
     <nz-form-control nzErrorTip="Vui lòng nhập tên danh mục phụ!">
       <input
         nz-input
         formControlName="subCategoryName"
         id="subCategoryName"
         placeholder="Nhập tên danh mục phụ"
-        class="w-72"
+        class="w-full"
       />
     </nz-form-control>
   </nz-form-item>
@@ -50,7 +52,7 @@
   <nz-form-item>
     <nz-form-control>
       <button nz-button nzType="primary" [disabled]="!formSubcategory.valid">
-        Tạo Mới
+        {{ labelButton }}
       </button>
     </nz-form-control>
   </nz-form-item>
