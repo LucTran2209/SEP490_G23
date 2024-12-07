@@ -259,7 +259,7 @@ namespace BE.Application.Services.Authentication
 
         private async Task SendMailAsync(User user)
         {
-            string subject = "ERMS Forgot Password";
+            string subject = "ERMS Quên mật khẩu";
 
             var htmlContent = await File.ReadAllTextAsync("../BE.Api/wwwroot/templates/email/ForgotPassword.html");
 
