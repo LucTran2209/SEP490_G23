@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { BaseComponentsComponent } from '../../../../../../components/base-components/base-components.component';
 
 @Component({
   selector: 'app-top-bring-category',
   templateUrl: './top-bring-category.component.html',
   styleUrl: './top-bring-category.component.scss'
 })
-export class TopBringCategoryComponent {
+export class TopBringCategoryComponent extends BaseComponentsComponent{
  listCategoryHot = [
   {
     title: 'Đồ gia dụng',

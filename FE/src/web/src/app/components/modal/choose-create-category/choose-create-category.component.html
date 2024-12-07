@@ -1,0 +1,16 @@
+<div class="grid gap-4 grid-cols-2">
+  @for (item of fieldMapping; track $index) {
+  <div
+    class="flex cursor-pointer gap-2 p-4 rounded-sm hover:border-[#0f6cf8] border-2"
+    (click)="handleChoose($index)"
+  >
+    <div class="pt-5 pb-4 pl-[18px] pr-[17px] rounded-full" [ngClass]="item.backgroundColor">
+      <span nz-icon [nzType]="item.icon" [ngClass]="item.color" class="text-xl" nzTheme="outline"></span>
+    </div>
+    <div class="text-start">
+      <div class="font-bold">{{ item.label }}</div>
+      <div class="text-[12px]">{{ item.description }}</div>
+    </div>
+  </div>
+  }
+</div>

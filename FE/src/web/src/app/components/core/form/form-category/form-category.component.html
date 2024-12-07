@@ -1,11 +1,10 @@
-<h3 class="text-xl mb-3">Tạo Danh Mục Chính</h3>
 <form
   nz-form
-  [nzLayout]="'inline'"
+  [nzLayout]="'vertical'"
   [formGroup]="formCategory"
   (ngSubmit)="onSubmit()"
 >
-  <nz-form-item>
+  <nz-form-item class="">
     <nz-form-label nzFor="categoryName" nzRequired
       >Tên Danh Mục Chính</nz-form-label
     >

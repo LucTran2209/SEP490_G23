@@ -1,10 +1,6 @@
-<div
-  class="relative py-10 bg-[url('assets/images/banner-feelback.png')] bg-no-repeat bg-cover"
->
-  <div class="absolute bg-black inset-0 opacity-60"></div>
-
-  <div class="grid">
-    <nz-carousel class="max-w-[1900px] mx-auto" nzAutoPlay>
+<div class="relative py-10">
+  <div class="flex items-center justify-center">
+    <!-- <nz-carousel class="max-w-[1900px] mx-auto" nzAutoPlay>
       @for (index of mockFeedBack; track index) {
       <div nz-carousel-content>
         <div
@@ -55,6 +51,38 @@
         </div>
       </div>
       }
-    </nz-carousel>
+    </nz-carousel> -->
+    <ngx-slick-carousel
+      class="carousel max-w-[1440px]"
+      #slickModal="slick-carousel"
+      [config]="slideConfig"
+      (breakpoint)="breakpoint($event)"
+      (afterChange)="afterChange($event)"
+      (beforeChange)="beforeChange($event)"
+    >
+      <div
+        ngxSlickItem
+        *ngFor="let f of feedbacks; let i = index"
+        class="cursor-pointer shadow-sm bg-[#f8f8f8] p-6 rounded-md mx-4 min-h-[260px]"
+      >
+        <div class="flex items-start gap-2">
+          <img
+            [src]="generateImage(f.id)"
+            alt=""
+            class="w-11 h-11 rounded-full"
+          />
+          <div>
+            <div>
+              <p class="font-medium">{{ f.name }}</p>
+              <p>{{ f.date }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="text-left">
+          <nz-rate [ngModel]="f.rating" nzDisabled></nz-rate>
+          <p class="line-clamp-4 text-lg">{{ f.comment }}</p>
+        </div>
+      </div>
+    </ngx-slick-carousel>
   </div>
 </div>
