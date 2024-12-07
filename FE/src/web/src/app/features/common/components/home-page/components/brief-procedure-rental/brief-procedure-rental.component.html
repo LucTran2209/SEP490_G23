@@ -1,7 +1,10 @@
-<div class="py-5 bg-[#4b4e580a] shadow-md">
+<div class="py-5 bg-[#f5f5f7]">
   <div class="max-w-[1500px] mx-auto flex flex-col gap-y-5 p-10 mb-5">
-    <div class="pl-3" style="border-left: 10px solid #0f6cf8">
-      <h4 class="text-3xl font-bold">Tiến trình thuê sản phẩm</h4>
+    <div class="flex flex-col gap-y-5 items-center">
+      <h4 class="text-4xl font-medium text-[#1d1d1f]">Tiến trình thuê sản phẩm</h4>
+      <p class="text-lg">
+        Thuê thiết bị yêu thích của bạn với các gói đăng ký linh hoạt, chi phí thấp.
+      </p>
     </div>
     <div class="flex items-center justify-center gap-5 flex-wrap mb-5">
       @for (itemCommonProcess of commonProcessRental_renter; track $index) {
@@ -29,8 +32,8 @@
       }
     </div>
     <div class="mx-auto">
-      <button nz-button nzType="primary" class="h-[60px] min-w-[10rem] rounded-sm">
-        <span class="text-xl"> Tìm hiểu thêm </span>
+      <button nz-button nzType="primary" class="h-[60px] bg-[#0f6cf8] min-w-[10rem] rounded-sm">
+        <span class="text-xl"  [routerLink]="[ '/common/howitorder']"> Tìm hiểu thêm </span>
       </button>
     </div>
   </div>
