@@ -267,7 +267,8 @@ namespace BE.Application.Services.Authentication
 
             var url = $"{systemConfig.BasePath}/{systemConfig.ForgotPasswordUrl}/{token}/{user.Email}";
 
-            var body = htmlContent.Replace("{{url}}", url);
+            var body = htmlContent.Replace("{{url}}", url).Replace("You can change password", "Bạn có thể thay đổi mật khẩu của mình")
+                .Replace("Click here", "Nhấn vào đây để thay đổi mật khẩu mới");
 
             await mailService.SendMailAsync(null, user.Email!, subject, body);
         }
