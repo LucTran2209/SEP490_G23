@@ -137,8 +137,23 @@ export class ManageCategoryComponent implements OnInit {
     this.onToggleEndModal();
   }
 
-  // namnh come here
-  chooseOptionCreateCategory() {
+ 
+  updateSubcategory(data: SubcategoryInputDto){
+    this.categoryService.updateSubcategory(data).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Cập Nhật Danh Mục Phụ Thành Công!');
+        this.loadSucategory();
+        this.loadCategory();
+      },
+      error: (error) => {
+        this.messageService.handleError('Cập Nhật Danh Mục Phụ Thất Bại!');
+      }
+    });
+    this.onToggleEndModal()
+  }
+
+   // namnh come here
+   chooseOptionCreateCategory() {
     this.chooseCreateCategoryRef = this.nzModalService.create({
       nzTitle: 'Chọn tạo loại danh mục',
       nzFooter: null,
@@ -162,21 +177,8 @@ export class ManageCategoryComponent implements OnInit {
     }
    
   }
-
   onToggleEndModal(): void {
     this.isVisibleMain = false;
     this.isVisibleSecondary = false;
-  }
-  updateSubcategory(data: SubcategoryInputDto){
-    this.categoryService.updateSubcategory(data).subscribe({
-      next: (response) => {
-        this.messageService.showSuccess('Cập Nhật Danh Mục Phụ Thành Công!');
-        this.loadSucategory();
-        this.loadCategory();
-      },
-      error: (error) => {
-        this.messageService.handleError('Cập Nhật Danh Mục Phụ Thất Bại!');
-      }
-    });
   }
 }
