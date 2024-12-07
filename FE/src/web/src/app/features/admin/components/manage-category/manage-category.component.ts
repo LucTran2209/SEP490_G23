@@ -100,24 +100,6 @@ export class ManageCategoryComponent implements OnInit {
       this.subcategoryTitle = "Cập nhật danh mục phụ";
     }
   }
-  getCategoryById(subcategory : Subcategory){
-    if (subcategory.category && typeof subcategory.category !== "string") {
-      this.categoryInformation = {
-        id: subcategory.category.id,
-        categoryName: subcategory.category.categoryName,
-      };
-    }
-  }
-  getSubcategoryById(subcategory : Subcategory){
-    if (subcategory.category && typeof subcategory.category !== "string") {
-      this.subcategoryInformation = {
-        id: subcategory.id,
-        categoryId: subcategory.category.id,
-        subCategoryName: subcategory.subCategoryName,
-        description: subcategory.description,
-      };
-    }
-  }
   createCategory(data: CategoryInputDto){
     this.categoryService.createCategory(data).subscribe({
       next: (response) => {
@@ -149,18 +131,6 @@ export class ManageCategoryComponent implements OnInit {
       error: (error) => {
         this.messageService.handleError('Cập Nhật Danh Mục ChínhThất Bại!');
         this.onToggleEndModal();
-      }
-    });
-  }
-  updateCategory(data: CategoryInputDto){
-    this.categoryService.updateCategory(data).subscribe({
-      next: (response) => {
-        this.messageService.showSuccess('Cập Nhật Danh Mục Chính Thành Công!');
-        this.loadSucategory();
-        this.loadCategory();
-      },
-      error: (error) => {
-        this.messageService.handleError('Cập Nhật Danh Mục ChínhThất Bại!');
       }
     });
   }
@@ -229,17 +199,5 @@ export class ManageCategoryComponent implements OnInit {
     this.isVisibleSecondary = false;
     this.categoryTilte = "Tạo danh mục chính";
     this.subcategoryTitle = "Tạo danh mục phụ";
-  }
-  updateSubcategory(data: SubcategoryInputDto){
-    this.categoryService.updateSubcategory(data).subscribe({
-      next: (response) => {
-        this.messageService.showSuccess('Cập Nhật Danh Mục Phụ Thành Công!');
-        this.loadSucategory();
-        this.loadCategory();
-      },
-      error: (error) => {
-        this.messageService.handleError('Cập Nhật Danh Mục Phụ Thất Bại!');
-      }
-    });
   }
 }
