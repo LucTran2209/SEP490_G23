@@ -119,7 +119,7 @@ namespace BE.Application.Services.Authentication
             var ouputDto = new LoginByUserNamePasswordOutputDto()
             {
                 AccessToken = accessToken,
-                RefreshToken = "adhqdasdhwncqdojaodjqoiwwwwwwjdaosjdwjdoasjdonqjdq",
+                RefreshToken = "DhjdNlJHT4Q9KXFZYEUamMjBJTIrNelirFH3KQCCNj5WmGuXpP",
             };
 
             SetCookie(accessToken);

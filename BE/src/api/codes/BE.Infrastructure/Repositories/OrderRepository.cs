@@ -124,6 +124,11 @@ namespace BE.Infrastructure.Repositories
                 }
             }
 
+            if (totalVote == 0)
+            {
+                return (totalVote, 0);
+            }
+
             return (totalVote, Math.Round(avegateVote / totalVote, 1));
         }
 
