@@ -137,9 +137,12 @@ import { DetailVoucherAvailableComponent } from '../modal/detail-voucher-availab
 import { FormConfirmComponent } from '../core/form/form-confirm/form-confirm.component';
 import { FormCategoryComponent } from '../core/form/form-category/form-category.component';
 import { FormSubcategoryComponent } from '../core/form/form-subcategory/form-subcategory.component';
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+import { BaseComponentsComponent } from '../base-components/base-components.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
+  NzAnchorModule,
   NzImageModule,
   NzPopconfirmModule,
   NzStatisticModule,
@@ -196,6 +199,7 @@ const MATERIAL_MODULES = [
   MatMenuModule,
 ];
 const SHARED_MODULES = [
+  BaseComponentsComponent,
   DetailVoucherAvailableComponent,
   ListVoucherAvailableComponent,
   ConfirmDeleteRequestOrderComponent,
