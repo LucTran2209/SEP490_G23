@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { BaseComponentsComponent } from '../../../../../../components/base-components/base-components.component';
 
 @Component({
   selector: 'app-we-bring',
   templateUrl: './we-bring.component.html',
   styleUrl: './we-bring.component.scss'
 })
-export class WeBringComponent {
+export class WeBringComponent extends BaseComponentsComponent{
  listWeBring = [
   {
     title: "Dành cho Người Thuê",
