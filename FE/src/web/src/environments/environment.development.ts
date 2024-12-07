@@ -1,6 +1,6 @@
 export const environment = {
-  serverUrl: 'http://localhost:7088/',
-  apiUrl: 'https://localhost:7088/',
+  serverUrl: 'https://erms-d0frcfabbyhwc5df.southeastasia-01.azurewebsites.net/',
+  apiUrl: 'https://erms-d0frcfabbyhwc5df.southeastasia-01.azurewebsites.net/',
   baseDomain: location.hostname,
   apiUrlGoong: 'https://rsapi.goong.io/Place/AutoComplete',
   apiKeyGoong: 'OROWRrTPOf7LICIyp997s9Miz5iFDLSTrMX1oQ4D',
