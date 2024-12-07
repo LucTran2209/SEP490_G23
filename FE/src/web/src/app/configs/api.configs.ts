@@ -206,7 +206,17 @@ export const CategorySlug = {
     label: 'Create Category',
     title: 'Create Category | ERMS',
     api: 'SubCategory/category',
-  }
+  },
+  UpdateCategory: {
+    label: 'Update Category',
+    title: 'Update Category | ERMS',
+    api: 'SubCategory/category',
+  },
+  UpdateSubcategory: {
+    label: 'Update Subcategory',
+    title: 'Update Subcategory | ERMS',
+    api: 'SubCategory/subcategory',
+  },
 
 }
 export const RentalShopSlug = {

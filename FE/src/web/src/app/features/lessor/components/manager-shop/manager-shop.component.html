@@ -185,13 +185,13 @@
     </p>
     <img
       *ngIf="!isUpdateShop"
-      class="w-full h-80 rounded object-cover object-bottom"
+      class="w-full h-[30rem] rounded object-cover object-center"
       [src]="shop.banner ? shop.banner : '/assets/images/shop-banner.jpg'"
       alt=""
     />
     <img
       *ngIf="isUpdateShop"
-      class="w-full h-80 rounded object-cover object-bottom"
+      class="w-full [30rem] rounded object-cover object-center"
       [src]="bannerUrl ? bannerUrl : '/assets/images/shop-banner.jpg'"
       alt="Shop Banner"
       (click)="triggerBannerInput()"

@@ -22,7 +22,13 @@ export class CategoryService {
   createCategory(data: CategoryInputDto): Observable<BaseResponseApi<null>>{
     return this.httpClient.post<BaseResponseApi<null>>(CategorySlug.CreateCategory.api, data);
   }
+  updateCategory(data: CategoryInputDto): Observable<BaseResponseApi<null>>{
+    return this.httpClient.put<BaseResponseApi<null>>(CategorySlug.UpdateCategory.api, data);
+  }
   createSubcategory(data: SubcategoryInputDto): Observable<BaseResponseApi<null>>{
     return this.httpClient.post<BaseResponseApi<null>>(CategorySlug.CreateSubCategory.api, data);
+  }
+  updateSubcategory(data: SubcategoryInputDto): Observable<BaseResponseApi<null>>{
+    return this.httpClient.put<BaseResponseApi<null>>(CategorySlug.UpdateSubcategory.api, data);
   }
 }

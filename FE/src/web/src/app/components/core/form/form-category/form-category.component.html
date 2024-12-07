@@ -6,7 +6,9 @@
   (ngSubmit)="onSubmit()"
 >
   <nz-form-item>
-    <nz-form-label nzFor="categoryName">Danh Mục Chính</nz-form-label>
+    <nz-form-label nzFor="categoryName" nzRequired
+      >Tên Danh Mục Chính</nz-form-label
+    >
     <nz-form-control nzErrorTip="Vui lòng nhập tên danh mục chính!">
       <input
         nz-input
@@ -20,7 +22,7 @@
   <nz-form-item>
     <nz-form-control>
       <button nz-button nzType="primary" [disabled]="!formCategory.valid">
-        Tạo Mới
+        {{ labelButton }}
       </button>
     </nz-form-control>
   </nz-form-item>

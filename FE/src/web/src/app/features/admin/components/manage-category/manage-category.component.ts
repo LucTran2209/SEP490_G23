@@ -13,6 +13,8 @@ import { MessageResponseService } from '../../../../services/message-response.se
   styleUrl: './manage-category.component.scss'
 })
 export class ManageCategoryComponent implements OnInit {
+  categoryInformation!: CategoryInputDto;
+  subcategoryInformation!: SubcategoryInputDto;
   subcategoryList: Subcategory[] = [];
   categoryList: CategoryOutputDto[] = [];
   loading$?: Observable<StatusProcess>;
@@ -54,6 +56,24 @@ export class ManageCategoryComponent implements OnInit {
     if (typeof category === 'string') return category;
     return category.categoryName || "[CHƯA CÓ]";
   }
+  getCategoryById(subcategory : Subcategory){
+    if (subcategory.category && typeof subcategory.category !== "string") {
+      this.categoryInformation = {
+        id: subcategory.category.id,
+        categoryName: subcategory.category.categoryName,
+      };
+    }
+  }
+  getSubcategoryById(subcategory : Subcategory){
+    if (subcategory.category && typeof subcategory.category !== "string") {
+      this.subcategoryInformation = {
+        id: subcategory.id,
+        categoryId: subcategory.category.id,
+        subCategoryName: subcategory.subCategoryName,
+        description: subcategory.description,
+      };
+    }
+  }
   createCategory(data: CategoryInputDto){
     this.categoryService.createCategory(data).subscribe({
       next: (response) => {
@@ -66,6 +86,18 @@ export class ManageCategoryComponent implements OnInit {
       }
     });
   }
+  updateCategory(data: CategoryInputDto){
+    this.categoryService.updateCategory(data).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Cập Nhật Danh Mục Chính Thành Công!');
+        this.loadSucategory();
+        this.loadCategory();
+      },
+      error: (error) => {
+        this.messageService.handleError('Cập Nhật Danh Mục ChínhThất Bại!');
+      }
+    });
+  }
   createSubcategory(data: SubcategoryInputDto){
     this.categoryService.createSubcategory(data).subscribe({
       next: (response) => {
@@ -75,6 +107,18 @@ export class ManageCategoryComponent implements OnInit {
       },
       error: (error) => {
         this.messageService.handleError('Thêm Một Danh Mục Phụ Mới Thất Bại!');
+      }
+    });
+  }
+  updateSubcategory(data: SubcategoryInputDto){
+    this.categoryService.updateSubcategory(data).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Cập Nhật Danh Mục Phụ Thành Công!');
+        this.loadSucategory();
+        this.loadCategory();
+      },
+      error: (error) => {
+        this.messageService.handleError('Cập Nhật Danh Mục Phụ Thất Bại!');
       }
     });
   }
