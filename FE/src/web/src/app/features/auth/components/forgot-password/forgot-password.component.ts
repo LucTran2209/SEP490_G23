@@ -1,22 +1,19 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import dayjs from 'dayjs';
+import { Observable } from 'rxjs';
 import { IForgotPassword } from '../../../../interfaces/account.interface';
 import { ItimeClock } from '../../../../interfaces/anonymous.interface';
-import { AuthService } from '../../../../services/auth.service';
-import { StorageService } from '../../../../services/storage.service';
 import { FeatureAppState } from '../../../../store/app.state';
+import { countDownTimer } from '../../../../utils/anonymous.helper';
 import * as AuthActions from '../../state/auth.actions';
 import { selectIsRecoveringPassword } from '../../state/auth.feature';
-import dayjs from 'dayjs';
-import { countDownTimer } from '../../../../utils/anonymous.helper';
 
 @Component({
   selector: 'app-forgot-password',
@@ -67,10 +64,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   constructor(
     private formbuilder: FormBuilder,
-    private cdRef: ChangeDetectorRef,
     private store: Store<FeatureAppState>,
-    private _authSerivce: AuthService,
-    private storageSerive: StorageService
   ) {
     
   }
