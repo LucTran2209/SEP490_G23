@@ -25,6 +25,8 @@ import { ChooseCreateCategoryComponent } from '../../../../components/modal/choo
 export class ManageCategoryComponent implements OnInit {
   categoryInformation!: CategoryInputDto;
   subcategoryInformation!: SubcategoryInputDto;
+  categoryTilte: string = '';
+  subcategoryTitle: string = '';
   subcategoryList: Subcategory[] = [];
   categoryList: CategoryOutputDto[] = [];
   chooseCreateCategoryRef: NzModalRef | null = null;
@@ -48,6 +50,8 @@ export class ManageCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.loadSucategory();
     this.loadCategory();
+    this.categoryTilte = "Tạo danh mục chính";
+    this.subcategoryTitle = "Tạo danh mục phụ";
   }
   loadSucategory() {
     this.isloading = true;
@@ -81,6 +85,7 @@ export class ManageCategoryComponent implements OnInit {
         id: subcategory.category.id,
         categoryName: subcategory.category.categoryName,
       };
+      this.categoryTilte = "Cập nhật danh mục chính";
     }
   }
   getSubcategoryById(subcategory : Subcategory){
@@ -92,24 +97,7 @@ export class ManageCategoryComponent implements OnInit {
         subCategoryName: subcategory.subCategoryName,
         description: subcategory.description,
       };
-    }
-  }
-  getCategoryById(subcategory : Subcategory){
-    if (subcategory.category && typeof subcategory.category !== "string") {
-      this.categoryInformation = {
-        id: subcategory.category.id,
-        categoryName: subcategory.category.categoryName,
-      };
-    }
-  }
-  getSubcategoryById(subcategory : Subcategory){
-    if (subcategory.category && typeof subcategory.category !== "string") {
-      this.subcategoryInformation = {
-        id: subcategory.id,
-        categoryId: subcategory.category.id,
-        subCategoryName: subcategory.subCategoryName,
-        description: subcategory.description,
-      };
+      this.subcategoryTitle = "Cập nhật danh mục phụ";
     }
   }
   createCategory(data: CategoryInputDto){
@@ -120,36 +108,29 @@ export class ManageCategoryComponent implements OnInit {
         );
         this.loadSucategory();
         this.loadCategory();
+        this.onToggleEndModal();
       },
       error: (error) => {
         this.messageService.handleError(
           'Thêm Một Danh Mục Chính Mới Thất Bại!'
         );
+        this.onToggleEndModal();
       },
     });
     this.onToggleEndModal();
   }
   updateCategory(data: CategoryInputDto){
+
     this.categoryService.updateCategory(data).subscribe({
       next: (response) => {
         this.messageService.showSuccess('Cập Nhật Danh Mục Chính Thành Công!');
         this.loadSucategory();
         this.loadCategory();
+        this.onToggleEndModal();
       },
       error: (error) => {
         this.messageService.handleError('Cập Nhật Danh Mục ChínhThất Bại!');
-      }
-    });
-  }
-  updateCategory(data: CategoryInputDto){
-    this.categoryService.updateCategory(data).subscribe({
-      next: (response) => {
-        this.messageService.showSuccess('Cập Nhật Danh Mục Chính Thành Công!');
-        this.loadSucategory();
-        this.loadCategory();
-      },
-      error: (error) => {
-        this.messageService.handleError('Cập Nhật Danh Mục ChínhThất Bại!');
+        this.onToggleEndModal();
       }
     });
   }
@@ -161,12 +142,14 @@ export class ManageCategoryComponent implements OnInit {
         );
         this.loadSucategory();
         this.loadCategory();
+        this.onToggleEndModal();
       },
       error: (error) => {
         this.messageService.handleError('Thêm Một Danh Mục Phụ Mới Thất Bại!');
+        this.onToggleEndModal();
       },
     });
-    this.onToggleEndModal();
+    
   }
 
  
@@ -176,12 +159,14 @@ export class ManageCategoryComponent implements OnInit {
         this.messageService.showSuccess('Cập Nhật Danh Mục Phụ Thành Công!');
         this.loadSucategory();
         this.loadCategory();
+        this.onToggleEndModal();
       },
       error: (error) => {
         this.messageService.handleError('Cập Nhật Danh Mục Phụ Thất Bại!');
+        this.onToggleEndModal();
       }
     });
-    this.onToggleEndModal()
+    
   }
 
    // namnh come here
@@ -212,17 +197,7 @@ export class ManageCategoryComponent implements OnInit {
   onToggleEndModal(): void {
     this.isVisibleMain = false;
     this.isVisibleSecondary = false;
-  }
-  updateSubcategory(data: SubcategoryInputDto){
-    this.categoryService.updateSubcategory(data).subscribe({
-      next: (response) => {
-        this.messageService.showSuccess('Cập Nhật Danh Mục Phụ Thành Công!');
-        this.loadSucategory();
-        this.loadCategory();
-      },
-      error: (error) => {
-        this.messageService.handleError('Cập Nhật Danh Mục Phụ Thất Bại!');
-      }
-    });
+    this.categoryTilte = "Tạo danh mục chính";
+    this.subcategoryTitle = "Tạo danh mục phụ";
   }
 }
