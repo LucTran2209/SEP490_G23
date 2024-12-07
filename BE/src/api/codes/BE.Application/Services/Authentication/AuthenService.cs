@@ -259,7 +259,7 @@ namespace BE.Application.Services.Authentication
 
         private async Task SendMailAsync(User user)
         {
-            string subject = "ERMS Forgot Password";
+            string subject = "ERMS Quên mật khẩu";
 
             var htmlContent = await File.ReadAllTextAsync("../BE.Api/wwwroot/templates/email/ForgotPassword.html");
 
@@ -267,16 +267,17 @@ namespace BE.Application.Services.Authentication
 
             var url = $"{systemConfig.BasePath}/{systemConfig.ForgotPasswordUrl}/{token}/{user.Email}";
 
-            var body = htmlContent.Replace("{{url}}", url);
+            var body = htmlContent.Replace("{{url}}", url).Replace("You can change password", "Bạn có thể thay đổi mật khẩu của mình")
+                .Replace("Click here", "Nhấn vào đây để thay đổi mật khẩu mới");
 
             await mailService.SendMailAsync(null, user.Email!, subject, body);
         }
         private async Task VerifyMailAsync(VerifyEmailInputDto Email, string code)
         {
             await verifyEmailValidator.ValidateAndThrowAsync(Email);
-            string subject = "ERMS Verify Code";
+            string subject = "Mã xác minh ERMS";
 
-            await mailService.SendMailAsync(null, Email.Email, subject, $"Your verification code is: {code}");
+            await mailService.SendMailAsync(null, Email.Email, subject, $"Mã xác minh của bạn là: {code}");
         }
         public async Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto)
         {
