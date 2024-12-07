@@ -20,9 +20,11 @@ namespace BE.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Category?> FindByIdAsync(Guid id)
+        public async Task<Category?> FindByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var c = await context.Categories.FindAsync(id);
+
+            return c;
         }
 
         public IQueryable<Category> GetAll()

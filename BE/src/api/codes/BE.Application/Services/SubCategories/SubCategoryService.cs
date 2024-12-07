@@ -64,6 +64,8 @@ namespace BE.Application.Services.SubCategories
 
             await unitOfWork.CategoryRepository.UpdateAsync(category);
 
+            await unitOfWork.SaveChangesAsync();
+
             return new ResultService()
             {
                 StatusCode = (int)HttpStatusCode.OK
@@ -77,6 +79,8 @@ namespace BE.Application.Services.SubCategories
             subCategory.SubCategoryName = inputDto.SubCategoryName;
 
             await unitOfWork.SubCategoryRepository.UpdateAsync(subCategory);
+
+            await unitOfWork.SaveChangesAsync();
 
             return new ResultService()
             {
