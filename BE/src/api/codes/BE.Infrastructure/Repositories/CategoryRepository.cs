@@ -32,7 +32,9 @@ namespace BE.Infrastructure.Repositories
 
         public Task UpdateAsync(Category entity)
         {
-            throw new NotImplementedException();
+            context.Categories.Update(entity);
+
+            return Task.CompletedTask;
         }
     }
 }

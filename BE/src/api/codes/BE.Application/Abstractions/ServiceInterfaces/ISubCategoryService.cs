@@ -8,5 +8,8 @@ namespace BE.Application.Abstractions.ServiceInterfaces
         Task<ResultService> GetAllSubCategoriesAsync();
         Task<ResultService> AddCategoryAsync(CategoryDto category);
         Task<ResultService> AddSubCategoryAsync(SubCategoryDto subCategory);
+
+        Task<ResultService> UpdateCategoryAsync(CategoryDto category);
+        Task<ResultService> UpdateSubCategoryAsync(SubCategoryDto subCategory);
     }
 }
