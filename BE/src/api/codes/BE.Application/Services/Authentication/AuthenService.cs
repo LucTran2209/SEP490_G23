@@ -274,9 +274,9 @@ namespace BE.Application.Services.Authentication
         private async Task VerifyMailAsync(VerifyEmailInputDto Email, string code)
         {
             await verifyEmailValidator.ValidateAndThrowAsync(Email);
-            string subject = "ERMS Verify Code";
+            string subject = "Mã xác minh ERMS";
 
-            await mailService.SendMailAsync(null, Email.Email, subject, $"Your verification code is: {code}");
+            await mailService.SendMailAsync(null, Email.Email, subject, $"Mã xác minh của bạn là: {code}");
         }
         public async Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto)
         {
