@@ -94,6 +94,24 @@ export class ManageCategoryComponent implements OnInit {
       };
     }
   }
+  getCategoryById(subcategory : Subcategory){
+    if (subcategory.category && typeof subcategory.category !== "string") {
+      this.categoryInformation = {
+        id: subcategory.category.id,
+        categoryName: subcategory.category.categoryName,
+      };
+    }
+  }
+  getSubcategoryById(subcategory : Subcategory){
+    if (subcategory.category && typeof subcategory.category !== "string") {
+      this.subcategoryInformation = {
+        id: subcategory.id,
+        categoryId: subcategory.category.id,
+        subCategoryName: subcategory.subCategoryName,
+        description: subcategory.description,
+      };
+    }
+  }
   createCategory(data: CategoryInputDto){
     this.categoryService.createCategory(data).subscribe({
       next: (response) => {
@@ -110,6 +128,18 @@ export class ManageCategoryComponent implements OnInit {
       },
     });
     this.onToggleEndModal();
+  }
+  updateCategory(data: CategoryInputDto){
+    this.categoryService.updateCategory(data).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Cập Nhật Danh Mục Chính Thành Công!');
+        this.loadSucategory();
+        this.loadCategory();
+      },
+      error: (error) => {
+        this.messageService.handleError('Cập Nhật Danh Mục ChínhThất Bại!');
+      }
+    });
   }
   updateCategory(data: CategoryInputDto){
     this.categoryService.updateCategory(data).subscribe({
@@ -182,5 +212,17 @@ export class ManageCategoryComponent implements OnInit {
   onToggleEndModal(): void {
     this.isVisibleMain = false;
     this.isVisibleSecondary = false;
+  }
+  updateSubcategory(data: SubcategoryInputDto){
+    this.categoryService.updateSubcategory(data).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Cập Nhật Danh Mục Phụ Thành Công!');
+        this.loadSucategory();
+        this.loadCategory();
+      },
+      error: (error) => {
+        this.messageService.handleError('Cập Nhật Danh Mục Phụ Thất Bại!');
+      }
+    });
   }
 }
