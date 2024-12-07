@@ -5,10 +5,10 @@ namespace BE.Application.Services.RentalShops.RentalShopServiceOutputDto
     public class GetRentalShopDetailByIdOuputDto : RentalShopDto
     {
         public DateTime CreateDate { get; set; }
-        public int NumberOfProduct {  get; set; }
-        public int NumberOfRenter {  get; set; }
-        public int NumberOfVote { get; set; }
-        public decimal AvegateVote {  get; set; }
+        public int NumberOfProduct { get; set; } = 0;
+        public int NumberOfRenter {  get; set; } = 0;
+        public int NumberOfVote { get; set; } = 0;
+        public decimal AvegateVote { get; set; } = 0;
 
         public class Mapping : Profile
         {

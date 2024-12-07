@@ -1,7 +1,4 @@
-﻿using BE.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace BE.Persistence.DataSeeds;
+﻿namespace BE.Persistence.DataSeeds;
 
 public class CategoriesDataSeedContributor : IDataSeedContributor
 {
@@ -14,26 +11,24 @@ public class CategoriesDataSeedContributor : IDataSeedContributor
 
     public async Task SeedAsync()
     {
-        if (!await context.Categories.AnyAsync())
-        {
-            var categories = new List<Category>
-            {
-                new Category
-                {
-                    Id = Guid.NewGuid(),
-                    CategoryName = "Electronics",
-                    Description = "Devices and gadgets."
-                },
-                new Category
-                {
-                    Id = Guid.NewGuid(),
-                    CategoryName = "Furniture",
-                    Description = "Home and office furniture."
-                }
-            };
+        //if (!await context.Categories.AnyAsync())
+        //{
+        //    var categories = new List<Category>
+        //    {
+        //        new Category
+        //        {
+        //            CategoryName = "Dụng cụ điện",
+        //            Description = "Dụng cụ dùng trong ngành điện"
+        //        },
+        //        new Category
+        //        {
+        //            CategoryName = "Dụng cụ thể thao",
+        //            Description = "Dụng cụ thể thao bao gồm vợt, cầu, lưới"
+        //        }
+        //    };
 
-            await context.Categories.AddRangeAsync(categories);
-            await context.SaveChangesAsync();
-        }
+        //    await context.Categories.AddRangeAsync(categories);
+        //    await context.SaveChangesAsync();
+        //}
     }
 }
