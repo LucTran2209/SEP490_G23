@@ -1,10 +1,7 @@
-﻿using BE.Application.Common.Dtos;
-using BE.Application.Services.Products.ProductServiceInputDto;
+﻿using BE.Application.Services.Products.ProductServiceInputDto;
 using BE.Application.Services.Products.ProductServiceOutputDto;
 using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
-using BE.Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Application.Services.Products
 {

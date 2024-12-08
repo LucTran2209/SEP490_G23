@@ -1,5 +1,6 @@
 ﻿using BE.Application.Abstractions.ServiceInterfaces;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Api.Controllers
@@ -82,5 +83,13 @@ namespace BE.Api.Controllers
             var result = await authenticationService.CheckNotExistedUserNameAsync(inputDto);
             return ReturnFollowStatusCode(result);
         }
+
+        [HttpPost("refresh/token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenInputDto inputDto)
+        {
+            var result = await authenticationService.RefreshTokenAsync(inputDto);
+            return ReturnFollowStatusCode(result);
+        }
+
     }
 }
