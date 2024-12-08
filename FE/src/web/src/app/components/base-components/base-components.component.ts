@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 @Component({
   selector: 'app-base-components',
   templateUrl: './base-components.component.html',
