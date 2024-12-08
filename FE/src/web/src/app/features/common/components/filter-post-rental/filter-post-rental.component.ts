@@ -96,4 +96,6 @@ export class FilterProductRentalComponent implements OnInit, OnDestroy {
       this.SubCategorySelected.emit(selectedSubCategory.id);
     } 
   }
+  
+
 }
