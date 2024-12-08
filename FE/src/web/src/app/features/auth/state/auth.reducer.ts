@@ -5,17 +5,16 @@ import { AuthState } from './auth.state';
 import { HttpStatusCode } from '../../../configs/status-code.config';
 
 const initialState: AuthState = {
-  accessToken: null,
-  refreshToken: null,
   isAuthenticated: false,
   message: null,
   errorRegister: null,
   messageRegister: null,
   status: 'idle',
+  isRefreshing: false,
   isRecoveringPassword: false,
   isRecoveredPassword: false,
   isHasConditionRegister: false,
-  statusCode: HttpStatusCode.UNKNOWN_ERROR
+  statusCode: HttpStatusCode.UNKNOWN_ERROR,
 };
 
 export const authReducer = createReducer(
@@ -27,8 +26,6 @@ export const authReducer = createReducer(
   on(AuthActions.login_success, (state, action) => ({
     ...state,
     status: 'loaded' as StatusProcess,
-    accessToken: action.accessToken,
-    refreshToken: action.refreshToken,
     isAuthenticated: true,
     message: 'ok',
   })),
@@ -45,7 +42,6 @@ export const authReducer = createReducer(
   on(AuthActions.login_external_success, (state, action) => ({
     ...state,
     status: 'loaded' as StatusProcess,
-    accessToken: action.accessToken,
     isAuthenticated: true,
     message: 'ok',
   })),
@@ -55,6 +51,25 @@ export const authReducer = createReducer(
     message: action.error,
   })),
   //----------------------------------login_external
+
+  on(AuthActions.refreshToken_init, (state, action) => ({
+    ...state,
+    isRefreshing: true,
+    status: 'loading' as StatusProcess,
+  })),
+  on(AuthActions.refreshToken_success, (state, action) => ({
+    ...state,
+    status: 'loaded' as StatusProcess,
+    isRefreshing: false,
+    message: 'ok',
+  })),
+  on(AuthActions.refreshToken_failure, (state, action) => ({
+    ...state,
+    status: 'error' as StatusProcess,
+    isRefreshing: false,
+    message: action.error,
+  })),
+  //----------------------------------refresh token
   on(AuthActions.forgotPassword, (state) => ({
     ...state,
     status: 'loading' as StatusProcess,
@@ -128,11 +143,11 @@ export const authReducer = createReducer(
     ...initialState,
     message: 'Mã xác minh đã được gửi đến hộp thư đến của bạn',
     status: 'loaded' as StatusProcess,
-    statusCode: action.statusCode as HttpStatusCode
+    statusCode: action.statusCode as HttpStatusCode,
   })),
   on(AuthActions.verifyEmail_failure, (state, { error }) => ({
     ...initialState,
-    message:  (error instanceof Array) ? 'arr error message': error,
+    message: error instanceof Array ? 'arr error message' : error,
     status: 'loading' as StatusProcess,
   })),
   //----------------------------------verify email
@@ -145,7 +160,7 @@ export const authReducer = createReducer(
     isHasConditionRegister: true,
     message: 'Email hợp lệ, tiếp tục đăng ký nào',
     status: 'loaded' as StatusProcess,
-    statusCode: action.statusCode as HttpStatusCode
+    statusCode: action.statusCode as HttpStatusCode,
   })),
   on(AuthActions.confirmVerifyEmail_failure, (state, { error }) => ({
     ...initialState,
@@ -153,6 +168,6 @@ export const authReducer = createReducer(
     status: 'loading' as StatusProcess,
   })),
   //----------------------------------confirm verify email
-on(AuthActions.reset_state, () => ({...initialState}))
+  on(AuthActions.reset_state, () => ({ ...initialState }))
   //----------------------------------reset state and reson something
 );

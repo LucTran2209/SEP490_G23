@@ -3,9 +3,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
-import {
-  RouteData
-} from '../configs/anonymous.config';
+import { RouteData } from '../configs/anonymous.config';
 import { AuthSlug } from '../configs/api.configs';
 import { ErrorStatusCode } from '../configs/status-code.config';
 import { selectIsAuthenticated } from '../features/auth/state/auth.feature';
@@ -17,9 +15,11 @@ import {
   ILoginRequest,
   ILoginResponse,
   IPayLoad,
+  IRefreshTokenRequest,
+  IRefreshTokenResponse,
   IRegisterRequest,
   IResetPassword,
-  IVerifyEmailRequest
+  IVerifyEmailRequest,
 } from '../interfaces/account.interface';
 import { BaseResponseApi } from '../interfaces/api.interface';
 import { FeatureAppState } from '../store/app.state';
@@ -52,7 +52,7 @@ export class AuthService {
     private storageService: StorageService,
     private errorPage: MessageResponseService,
     private userFireStoreService: UserFireStoreService
-  ) { }
+  ) {}
 
   get token() {
     return getCookie(STRING.ACCESS_TOKEN);
@@ -70,8 +70,12 @@ export class AuthService {
     const roleCheck: string[] = ([] as string[]).concat(
       this.userProfileService.roleCurrentUser ?? []
     );
-    const expectedRole = Array.isArray(data.expectedRole) ? data.expectedRole : [];
-    const hasExpectedRole = expectedRole.some((val, index) => roleCheck.includes(val));
+    const expectedRole = Array.isArray(data.expectedRole)
+      ? data.expectedRole
+      : [];
+    const hasExpectedRole = expectedRole.some((val, index) =>
+      roleCheck.includes(val)
+    );
     return this.isAuthenticated$.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
@@ -122,13 +126,15 @@ export class AuthService {
 
     replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
-    this.userFireStoreService.addUserInToFireStore({ displayName: userPayLoad.FullName, photoURL: userPayLoad.Avatar, uid: userPayLoad.UserId })
+    this.userFireStoreService.addUserInToFireStore({
+      displayName: userPayLoad.FullName,
+      photoURL: userPayLoad.Avatar,
+      uid: userPayLoad.UserId,
+    });
     this.storageService.set(
       LocalStorageKey.currentUser,
       JSON.stringify(userPayLoad)
     );
-    // this.routerLinkRedirectURLSubject.next(redirectUrl);
-
     this.redirectToPageAfter();
   }
 
@@ -150,15 +156,14 @@ export class AuthService {
    * @param data
    */
   login(data: ILoginRequest): Observable<BaseResponseApi<ILoginResponse>> {
-    return this.httpClient.post<BaseResponseApi<ILoginResponse>>(
-      AuthSlug.Login.api,
-      data
-    ).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error in login service:', error);
-        return throwError(() => error);
-      })
-    );;
+    return this.httpClient
+      .post<BaseResponseApi<ILoginResponse>>(AuthSlug.Login.api, data)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error in login service:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   loginwithGoogle(
@@ -166,6 +171,19 @@ export class AuthService {
   ): Observable<BaseResponseApi<ILoginResponse>> {
     return this.httpClient.post<BaseResponseApi<ILoginResponse>>(
       AuthSlug.LoginOther.api,
+      data
+    );
+  }
+  /**
+   *
+   * @param data
+   * @returns
+   */
+  refreshToken(
+    data: IRefreshTokenRequest
+  ): Observable<BaseResponseApi<IRefreshTokenResponse>> {
+    return this.httpClient.post<BaseResponseApi<IRefreshTokenResponse>>(
+      AuthSlug.RefershToken.api,
       data
     );
   }
@@ -200,13 +218,21 @@ export class AuthService {
   }
 
   verifyEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<any>> {
-    return this.httpClient.post<BaseResponseApi<any>>(AuthSlug.VerifyEmail.api, data);
+    return this.httpClient.post<BaseResponseApi<any>>(
+      AuthSlug.VerifyEmail.api,
+      data
+    );
   }
   isExistEmail(data: IVerifyEmailRequest): Observable<BaseResponseApi<any>> {
-    return this.httpClient.post<BaseResponseApi<any>>(AuthSlug.IsExistEmail.api, data);
+    return this.httpClient.post<BaseResponseApi<any>>(
+      AuthSlug.IsExistEmail.api,
+      data
+    );
   }
 
-  confirmVerifyEmail(data: IConfirmEmailRequest): Observable<BaseResponseApi<any>> {
-    return this.httpClient.post(AuthSlug.ConfirmEmail.api,data)
+  confirmVerifyEmail(
+    data: IConfirmEmailRequest
+  ): Observable<BaseResponseApi<any>> {
+    return this.httpClient.post(AuthSlug.ConfirmEmail.api, data);
   }
 }

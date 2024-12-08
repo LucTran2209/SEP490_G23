@@ -8,11 +8,11 @@ export const authFeature = createFeature({
 });
 
 export const {
-  selectAccessToken,
   selectIsAuthenticated,
   selectMessage,
   selectStatus,
   selectMessageRegister,
+  selectIsRefreshing,
   selectErrorRegister,
   selectIsRecoveringPassword,
   selectIsHasConditionRegister,

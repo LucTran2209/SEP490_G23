@@ -2,7 +2,6 @@
   class="relative flex justify-between items-center gap-x-3 border border-gray-300 rounded-lg p-3"
   *ngIf="productRentalFollowId$ | async as productRental"
 >
-
   <div class="flex-1 flex gap-2 items-center">
     @if(productRental.images && productRental.images.length !== 0){
     <img
@@ -25,14 +24,26 @@
       </p>
     </div>
   </div>
-  <nz-input-number
-    class=""
-    [(ngModel)]="demoValue"
-    (ngModelChange)="handleRequestQuantity($event)"
-    [nzMin]="1"
-    [nzStep]="1"
-  ></nz-input-number>
-  <div class="cursor-pointer" *ngIf="isRentalMore" (click)=" $event.stopPropagation(); deleteOneItem()">
+  <div class="flex flex-col gap-2">
+    @if(quantityAvaiable$ | async){
+      <nz-input-number
+      class=""
+      [(ngModel)]="demoValue"
+      (ngModelChange)="handleRequestQuantity($event)"
+      [nzMin]="1"
+      [nzStep]="1"
+    ></nz-input-number>
+    <p class="text-[#B8ACAC]">{{quantityAvaiable$ | async}} Sản phẩm có sẵn</p>
+    } @else {
+      <img src="/assets/images/soldout.png" alt="soldout.png" class="w-10 rotate-6">
+    }
+   
+  </div>
+  <div
+    class="cursor-pointer"
+    *ngIf="isRentalMore"
+    (click)="$event.stopPropagation(); deleteOneItem()"
+  >
     <span nz-icon nzType="delete" nzTheme="outline"></span>
   </div>
 </div>

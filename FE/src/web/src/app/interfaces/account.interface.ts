@@ -38,7 +38,6 @@ export interface IVerifyEmailRequest {
   userName: string;
 }
 
-
 export interface IConfirmEmailRequest {
   email: string;
   userComfirmCode: string;
@@ -57,6 +56,15 @@ export interface IRegisterTabAuth {
 export interface IRegisterRequest
   extends IRegisterTabCommon,
     IRegisterTabAuth {}
+
+export interface IRefreshTokenRequest {
+  token: string;
+  refreshToken: string;
+}
+export interface IRefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+}
 
 export interface IPayLoad {
   _id: string;

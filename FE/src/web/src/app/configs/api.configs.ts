@@ -42,6 +42,9 @@ export const AuthSlug = {
     title: 'confirm email | ERMS',
     api: 'api/Authentication/ComfirmVerifyEmailAsync',
   },
+  RefershToken: {
+    api: 'api/Authentication/refresh/token',
+  }
 };
 
 export const StepRegisterLessor = {
