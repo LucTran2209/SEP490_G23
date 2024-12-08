@@ -8,6 +8,7 @@ import {
   selectCalcActualDiscountVoucher,
   selectDepositActualPriceById,
   selectNumberOfDaysById,
+  selectQuantityAvailableById,
   selectRentalActualPriceById,
   selectVoucherAvaiable,
 } from '../../../../features/common/state/rental/rental.selectors';
@@ -36,6 +37,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   productRentalDetail$?: Observable<ProductItemResponse>;
   userCurrent?: IPayLoad;
   rentalPriceActual$?: Observable<string | number>;
+  quantityAvaiable$?: Observable<string | number | undefined>;
   numberDay$?: Observable<string | number | undefined>;
   depositPriceActual$?: Observable<string | number>;
   voucherAvaiable$?: Observable<VoucherDetailOutputDto | null>
@@ -145,6 +147,9 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
       this.numberDay$ = this.store.select(
         selectNumberOfDaysById(String(this.productIdParam))
       );
+      this.quantityAvaiable$ = this.store.select(
+        selectQuantityAvailableById(String(this.productIdParam))
+      )
     }
   }
 

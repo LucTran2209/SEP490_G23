@@ -91,7 +91,9 @@
   <button
     nz-button
     class="w-full bg-[#0A66EB] h-12 text-white rounded-md hover:border-blue-600"
+    [ngClass]="{'bg-[#a9a9a9] hover:border-[#e9e7e7]': !(quantityAvaiable$ | async)}"
     (click)="onChooseRental(modalTitle)"
+    [disabled]="!(quantityAvaiable$ | async)"
   >
     Chọn thuê
   </button>
