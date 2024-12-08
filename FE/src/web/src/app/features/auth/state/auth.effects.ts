@@ -77,6 +77,30 @@ export class AuthEffect {
     }
   );
 
+  refreshTokenProcess$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.refreshToken_init),
+        tap(() => this.loadingSerivce.setLoading()),
+        switchMap(({ data }) =>
+          this.authService.refreshToken(data).pipe(
+            map(({ data }) => {
+              return AuthActions.refreshToken_success({ data });
+            }),
+            catchError((err) => {
+              const errorMessage = getErrorMessage(err);
+              return of(
+                AuthActions.refreshToken_failure({ error: errorMessage })
+              );
+            })
+          )
+        )
+      ),
+    {
+      dispatch: true,
+    }
+  );
+
   forgotPasswordProcess$ = createEffect(
     () =>
       this.action$.pipe(
@@ -282,6 +306,30 @@ export class AuthEffect {
     { dispatch: false }
   );
 
+  refreshToken_success$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(AuthActions.refreshToken_success),
+        tap(({ data }) => {
+          if (data) {
+            this.loadingSerivce.setOtherLoading('loaded');
+            this.authService.startSession(data.accessToken, data.refreshToken);
+          } else {
+            this.loadingSerivce.setOtherLoading('error');
+            catchError((err) => {
+              const errorMessage = getErrorMessage(err);
+              return of(
+                AuthActions.refreshToken_failure({ error: errorMessage })
+              );
+            })
+          }
+        })
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
   checkOtpCodeSendToEmail_success$ = createEffect(
     () =>
       this.action$.pipe(
@@ -380,7 +428,8 @@ export class AuthEffect {
           AuthActions.register_failure,
           AuthActions.resetPassword_failure,
           AuthActions.verifyEmail_failure,
-          AuthActions.confirmVerifyEmail_failure
+          AuthActions.confirmVerifyEmail_failure,
+          AuthActions.refreshToken_failure
         ),
         tap((action) => {
           console.log('action', action);

@@ -8,8 +8,7 @@ export interface AuthState {
   messageRegister: string | null;
   errorRegister: string | null;
   isAuthenticated: boolean;
-  accessToken: string | null;
-  refreshToken: string | null;
+  isRefreshing: boolean;
   isRecoveringPassword: boolean;
   isRecoveredPassword: boolean;
   isHasConditionRegister: boolean;
