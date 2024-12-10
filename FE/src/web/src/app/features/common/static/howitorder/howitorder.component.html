@@ -6,7 +6,7 @@
     <div
       class="text-[#f7fbff] text-center font-semibold text-[3.5rem] relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
     >
-      Hưỡng dẫn đặt thuê sản phẩm & Quy chế
+      Hưỡng dẫn đặt thuê thiết bị & Quy chế
     </div>
   </div>
   <div class="py-[80px] grid grid-cols-5 gap-4">
@@ -45,8 +45,8 @@
     <h3 class="font-bold text-[2rem]">
       {{
         tabChoose === 0
-          ? " Quy trình cho thuê sản phẩm / thiết bị"
-          : " Quy trình thuê sản phẩm / thiết bị"
+          ? " Quy trình cho thuê thiết bị"
+          : " Quy trình thuê thiết bị"
       }}
     </h3>
     <nz-tabset
@@ -73,7 +73,9 @@
 </ng-template>
 <ng-template #rentalProduct>
   <div class="w-full max-w mx-auto mt-3.5">
-    <h3 class="font-bold text-[2rem] mb-8">Hướng dẫn chi tiết đặt xe</h3>
+    <h3 class="font-bold text-[2rem] mb-8">
+      Hướng dẫn chi tiết đặt thuê thiết bị
+    </h3>
 
     <nz-collapse nzBordered="false" nzGhost>
       <!-- Step 1 -->
@@ -111,8 +113,8 @@
           </p>
           <div class="flex justify-center my-3">
             <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.1.92c92c96.png"
-              alt="login"
+              src="./assets/images/guilde/register-guilde.png"
+              alt="register-guilde.png"
             />
           </div>
         </div>
@@ -142,33 +144,20 @@
         </ng-template>
         <div class="step-content p-2">
           <p class="text-lg font-extralight">
-            Bạn có thể tìm xe theo 3 cách sau:
+            Bạn có thể tìm thiết bị thuê theo các bước sau:
           </p>
-          <p class="text-lg font-extralight">
-            A. Tìm theo địa chỉ bạn nhập ở thanh tìm kiếm
-          </p>
+          <p class="text-lg font-extralight">A.</p>
           <div class="flex justify-center my-3">
             <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.2.616a33a1.png"
-              alt="search"
+              src="./assets/images/guilde/search-guidle.png"
+              alt="search-guidle.png"
             />
           </div>
-          <p class="text-lg font-extralight">
-            B. Tìm theo danh mục các địa điểm nổi bật
-          </p>
+          <p class="text-lg font-extralight">B.</p>
           <div class="flex justify-center my-3">
             <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.3.03fdefb7.png"
+              src="./assets/images/guilde/find-equipment.png"
               alt="address"
-            />
-          </div>
-          <p class="text-lg font-extralight">
-            C. Tìm theo danh mục các thiết bị nổi bật được thuê nhiều trên ERMS
-          </p>
-          <div class="flex justify-center my-3">
-            <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.4.16061a18.png"
-              alt="popular"
             />
           </div>
         </div>
@@ -199,34 +188,8 @@
           </div>
         </ng-template>
         <div class="step-content p-2">
-          <p class="text-lg font-extralight text-wrap">
-            <b style="font-weight: bold">A. Loại thiết bị:</b> Hệ thống đang mặc
-            định hiển thị tất cá thiết bị. Bạn có thể lựa chọn chỉ xem riêng các
-            danh sách thiết bị bằng cách bấm vào ô tương ứng.
-          </p>
-          <p class="text-lg font-extralight text-wrap">
-            <b style="font-weight: bold">B. Các tiêu chí thiết bị:</b> Các thiết
-            bị đang ở chế độ cho phép "Giao nhận thiết bị tận nơi", hoặc cho
-            phép "Thuê ngay" (không cần chủ cho thuê phê duyệt),...
-          </p>
           <div class="flex justify-center my-3">
-            <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.5.0ab83380.png"
-              alt="popular"
-            />
-          </div>
-          <p class="text-lg font-extralight text-wrap">
-            <b style="font-weight: bold">Nâng cao:</b> Thể hiện các tính năng
-            tìm kiếm nâng cao (sắp xếp thiết bị theo giá thấp đến giá cao,
-            khoảng cách gần nhất hoặc các thiết bị có điểm đánh giá cao nhất;
-            mức giá và nhiều điều kiện lọc nâng cao khác...) để dễ dàng tìm đúng
-            những thiết bị bạn mong muốn.
-          </p>
-          <div class="flex justify-center my-3">
-            <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.6.851e948c.png"
-              alt="popular"
-            />
+            <img src="./assets/images/guilde/filter-guilde.png" alt="popular" />
           </div>
         </div>
       </nz-collapse-panel>
@@ -263,31 +226,13 @@
           </p>
           <div class="flex justify-center my-3">
             <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.7.d23d6b8a.png"
-              alt="popular"
-            />
-          </div>
-          <p class="text-lg font-extralight text-wrap">
-            <b style="font-weight: bold">B. Kiểm tra vị trí thiết bị: </b>
-            Hệ thống sẽ khoanh vùng vị trí của thiết bị trên bản đồ. Địa chỉ cụ
-            thể của thiết bị sẽ được hiển thị sau khi khách hàng hoàn tất thanh
-            toán đặt cọc.
-          </p>
-          <div class="flex justify-center my-3">
-            <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.8.fc215ff9.png"
-              alt="popular"
-            />
-          </div>
-          <div class="flex justify-center my-3">
-            <img
-              src="https://www.mioto.vn/static/media/tutorialWeb-3.9.8a15db28.png"
+              src="./assets/images/guilde/detail-equipment.png"
               alt="popular"
             />
           </div>
           <p class="text-lg font-extralight text-wrap">
             <b style="font-weight: bold"
-              >C. Kiểm tra yêu cầu giấy tờ thuê thiết bị và xem thông tin chủ
+              >B. Kiểm tra yêu cầu giấy tờ thuê thiết bị và xem thông tin chủ
               thiết bị:
             </b>
           </p>

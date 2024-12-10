@@ -12,31 +12,31 @@ export class AnonymousComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // Cài đặt token Goong
     goongjs.accessToken = 'uAwYO4ZojSaI4wKUBHd1nnbg80n1sLKAhw3OjiJU';
-  
+
     const map = new goongjs.Map({
-      container: 'map', 
+      container: 'map',
       style: 'https://tiles.goong.io/assets/goong_map_web.json',
-      center: [105.83991, 21.02800], // Tọa độ Hà Nội
+      center: [105.83991, 21.028], // Tọa độ Hà Nội
       zoom: 4,
     });
-  
+
     // Thêm Navigation Control
     var nav = new goongjs.NavigationControl();
     map.addControl(nav, 'bottom-right');
 
     // current location
-    var getLocal = new goongjs.GeolocateControl(
-      {
-        positionOptions: {
-          enableHighAccuracy:false,
-          timeout:6000
-        },
-        trackUserLocation: false,
-        showUserLocation: true
-      })
-      map.addControl(getLocal)
+    var getLocal = new goongjs.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: false,
+        timeout: 6000,
+      },
+      trackUserLocation: false,
+      showUserLocation: true,
+    });
+    map.addControl(getLocal);
 
-  
+    
+
     // Đợi bản đồ tải xong
     map.on('load', () => {
       // Thêm nguồn GeoJSON
@@ -49,28 +49,28 @@ export class AnonymousComponent implements AfterViewInit {
               type: 'Feature',
               geometry: {
                 type: 'Point',
-                coordinates: [105.83991, 21.02800] // Tọa độ Hà Nội
+                coordinates: [105.83991, 21.028], // Tọa độ Hà Nội
               },
               properties: {
                 title: 'Hà Nội',
-                description: 'Thủ đô Việt Nam'
-              }
+                description: 'Thủ đô Việt Nam',
+              },
             },
             {
               type: 'Feature',
               geometry: {
                 type: 'Point',
-                coordinates: [106.6297, 10.8231] // Tọa độ TP. Hồ Chí Minh
+                coordinates: [106.6297, 10.8231], // Tọa độ TP. Hồ Chí Minh
               },
               properties: {
                 title: 'TP. Hồ Chí Minh',
-                description: 'Thành phố lớn nhất Việt Nam'
-              }
-            }
-          ]
-        }
+                description: 'Thành phố lớn nhất Việt Nam',
+              },
+            },
+          ],
+        },
       });
-  
+
       // Thêm layer để hiển thị dữ liệu từ nguồn
       map.addLayer({
         id: 'points-layer',
@@ -80,23 +80,23 @@ export class AnonymousComponent implements AfterViewInit {
           'circle-radius': 8, // Kích thước vòng tròn
           'circle-color': '#FF5733', // Màu sắc
           'circle-stroke-width': 2, // Viền vòng tròn
-          'circle-stroke-color': '#FFFFFF' // Màu viền
-        }
+          'circle-stroke-color': '#FFFFFF', // Màu viền
+        },
       });
-  
+
       // Thêm popup hiển thị thông tin khi click vào điểm
       map.on('click', 'points-layer', (e: any) => {
         const coordinates = e.features[0].geometry.coordinates.slice();
         const title = e.features[0].properties.title;
         const description = e.features[0].properties.description;
-  
+
         // Hiển thị Popup
         new goongjs.Popup()
           .setLngLat(coordinates)
           .setHTML(`<strong>${title}</strong><p>${description}</p>`)
           .addTo(map);
       });
-  
+
       // Thay đổi con trỏ chuột khi hover vào điểm
       map.on('mouseenter', 'points-layer', () => {
         map.getCanvas().style.cursor = 'pointer';
@@ -104,16 +104,20 @@ export class AnonymousComponent implements AfterViewInit {
       map.on('mouseleave', 'points-layer', () => {
         map.getCanvas().style.cursor = '';
       });
+
+      //marker demo
+    var marker = new goongjs.Marker({ color: 'red' }) // Đặt màu cho marker
+    .setLngLat([105.82623892800365, 21.045052629708692])
+    .addTo(map);
     });
   }
-  
 
   showSuccess() {
     this.toastMessage.showSuccess('Thành công!');
   }
 
   showError() {
-    this.toastMessage.handleError('',500);
+    this.toastMessage.handleError('', 500);
   }
 
   showInfo() {
