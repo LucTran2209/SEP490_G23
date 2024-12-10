@@ -1,0 +1,28 @@
+<form
+  nz-form
+  [nzLayout]="'vertical'"
+  [formGroup]="formCategory"
+  (ngSubmit)="onSubmit()"
+>
+  <nz-form-item class="">
+    <nz-form-label nzFor="categoryName" nzRequired
+      >Tên Danh Mục Chính</nz-form-label
+    >
+    <nz-form-control nzErrorTip="Vui lòng nhập tên danh mục chính!">
+      <input
+        nz-input
+        formControlName="categoryName"
+        id="categoryName"
+        placeholder="Nhập tên danh mục chính"
+        class="w-96"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button nzType="primary" [disabled]="!formCategory.valid">
+        {{ labelButton }}
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

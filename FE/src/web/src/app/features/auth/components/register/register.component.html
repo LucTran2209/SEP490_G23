@@ -22,7 +22,7 @@
         nzRequired
         nzFor="firstName"
         class="text-start"
-        >Tên</nz-form-label
+        >Họ Và Tên Đệm</nz-form-label
       >
       <nz-form-control
         [nzSm]="24"
@@ -46,7 +46,7 @@
         nzRequired
         nzFor="lastName"
         class="text-start"
-        >Họ Và Tên Đệm</nz-form-label
+        >Tên</nz-form-label
       >
       <nz-form-control
         [nzSm]="24"
@@ -138,7 +138,7 @@
       >
         <nz-input-group [nzSuffix]="suffixTemplate">
           <input
-            [type]="!isPasswordVisible ? 'text' : 'password'"
+            [type]="isPasswordVisible ? 'text' : 'password'"
             formControlName="password"
             placeholder="**********"
             nz-input

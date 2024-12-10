@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { IITemListNav } from '../../../../configs/anonymous.config';
 import { rateStar } from '../../../../configs/post.config';
 import {
@@ -10,13 +10,15 @@ import {
 import { convertCurrency } from '../../../../utils/anonymous.helper';
 import { CategoryService } from '../../../../services/category.service';
 import { Subcategory, SubCategoryResultService } from '../../../../interfaces/category.interface';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-filter-product-rental',
   templateUrl: './filter-post-rental.component.html',
   styleUrl: './filter-post-rental.component.scss',
 })
-export class FilterProductRentalComponent implements OnInit {
+export class FilterProductRentalComponent implements OnInit, OnDestroy {
   @Output() locationNames = new EventEmitter<string[]>();
   @Output() SubCategorySelected = new EventEmitter<string>();
   @Output() PriceRangeSelected = new EventEmitter<number[]>();
@@ -30,6 +32,7 @@ export class FilterProductRentalComponent implements OnInit {
   rentalPriceRange: number[] = [10000, 1000000];
   constructor(
     private categoryService: CategoryService,
+    private router: Router
   ){
 
   }
@@ -54,6 +57,15 @@ export class FilterProductRentalComponent implements OnInit {
     this.loadSubCategory();  // Load subcategories on component init
 
   }
+  ngOnDestroy(): void {
+    this.resetLocationCheckbox();
+  }
+
+  resetLocationCheckbox(): void {
+    this.selectLocationOptions.forEach(option => {
+      option.checked = false;
+    });
+  }
 
   loadSubCategory(): void {
     this.categoryService.listSubCategory().subscribe((res: SubCategoryResultService) => {
@@ -66,7 +78,7 @@ export class FilterProductRentalComponent implements OnInit {
     });
   }
   onCheckboxChange(item: any) {
-    if (item.selected) {
+    if (item.checked) {
       this.locations.push(item.label); // Add to the list if selected
     } else {
       this.locations = this.locations.filter(location => location !== item.label); // Remove if unselected
@@ -84,4 +96,6 @@ export class FilterProductRentalComponent implements OnInit {
       this.SubCategorySelected.emit(selectedSubCategory.id);
     } 
   }
+  
+
 }

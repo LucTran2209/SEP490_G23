@@ -49,6 +49,7 @@
         ></app-form-user>
         <nz-table
           #basicTable
+          [nzScroll]="{ x: '1300px' }"
           [nzData]="userList"
           [nzFrontPagination]="false"
           [nzPageSize]="pageSize"
@@ -60,10 +61,15 @@
         >
           <thead>
             <tr>
-              <th class="m-1 text-secondary text-uppercase">
+              <th class="m-1 text-secondary text-uppercase" nzLeft>
                 <span class="name">No.</span>
               </th>
-              <th class="m-1 text-secondary text-uppercase" nzCustomFilter>
+              <th
+                class="m-1 text-secondary text-uppercase"
+                nzCustomFilter
+                nzLeft
+                nzWidth="14%"
+              >
                 <div class="flex justify-between">
                   <span class="name text-uppercase">Họ Tên</span>
                   <nz-filter-trigger
@@ -137,19 +143,19 @@
               <th class="text-secondary text-uppercase">
                 <span class="name">Trạng Thái</span>
               </th>
-              <th class="m-1 text-secondary text-uppercase">
+              <th class="m-1 text-secondary text-uppercase" nzRight>
                 <span class="name">Cấm</span>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let user of userList; let i = index" class="tr-product">
-              <td>
+              <td nzLeft>
                 <span class="name text-secondary p-3 text-center">
                   {{ i + 1 + (currentPage - 1) * pageSize | number : "2.0" }}
                 </span>
               </td>
-              <td>
+              <td nzLeft>
                 <div class="flex justify-start flex-wrap">
                   <img
                     class="rounded-full w-5 h-5 mt-1"
@@ -212,7 +218,7 @@
                 <p class="inactive">Không hoạt động</p>
                 }
               </td>
-              <td>
+              <td nzRight>
                 <div class="flex flex-wrap justify-center p-3">
                   <a class="text-red-600">
                     <span

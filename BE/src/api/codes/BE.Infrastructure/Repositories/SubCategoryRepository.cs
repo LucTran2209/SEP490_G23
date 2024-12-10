@@ -20,9 +20,10 @@ namespace BE.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<SubCategory?> FindByIdAsync(Guid id)
+        public async Task<SubCategory?> FindByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var c = await context.SubCategories.FindAsync(id);
+            return c;
         }
 
         public IQueryable<SubCategory> GetAll()
@@ -32,7 +33,9 @@ namespace BE.Infrastructure.Repositories
 
         public Task UpdateAsync(SubCategory entity)
         {
-            throw new NotImplementedException();
+            context.SubCategories.Update(entity);
+
+            return Task.CompletedTask;
         }
     }
 }

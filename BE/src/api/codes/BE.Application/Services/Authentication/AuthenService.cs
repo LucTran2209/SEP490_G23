@@ -4,6 +4,7 @@ using BE.Application.Services.Authentication.AuthenServiceOutputDto;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -119,10 +120,8 @@ namespace BE.Application.Services.Authentication
             var ouputDto = new LoginByUserNamePasswordOutputDto()
             {
                 AccessToken = accessToken,
-                RefreshToken = "adhqdasdhwncqdojaodjqoiwwwwwwjdaosjdwjdoasjdonqjdq",
+                RefreshToken = "DhjdNlJHT4Q9KXFZYEUamMjBJTIrNelirFH3KQCCNj5WmGuXpP",
             };
-
-            SetCookie(accessToken);
 
             return new ResultService
             {
@@ -253,13 +252,9 @@ namespace BE.Application.Services.Authentication
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private void SetCookie(string accessToken)
-        {
-        }
-
         private async Task SendMailAsync(User user)
         {
-            string subject = "ERMS Forgot Password";
+            string subject = "ERMS Quên mật khẩu";
 
             var htmlContent = await File.ReadAllTextAsync("../BE.Api/wwwroot/templates/email/ForgotPassword.html");
 
@@ -267,16 +262,17 @@ namespace BE.Application.Services.Authentication
 
             var url = $"{systemConfig.BasePath}/{systemConfig.ForgotPasswordUrl}/{token}/{user.Email}";
 
-            var body = htmlContent.Replace("{{url}}", url);
+            var body = htmlContent.Replace("{{url}}", url).Replace("You can change password", "Bạn có thể thay đổi mật khẩu của mình")
+                .Replace("Click here", "Nhấn vào đây để thay đổi mật khẩu mới");
 
             await mailService.SendMailAsync(null, user.Email!, subject, body);
         }
         private async Task VerifyMailAsync(VerifyEmailInputDto Email, string code)
         {
             await verifyEmailValidator.ValidateAndThrowAsync(Email);
-            string subject = "ERMS Verify Code";
+            string subject = "Mã xác minh ERMS";
 
-            await mailService.SendMailAsync(null, Email.Email, subject, $"Your verification code is: {code}");
+            await mailService.SendMailAsync(null, Email.Email, subject, $"Mã xác minh của bạn là: {code}");
         }
         public async Task<ResultService> VerifyEmailAsync(VerifyEmailInputDto inputDto)
         {
@@ -340,6 +336,58 @@ namespace BE.Application.Services.Authentication
             return new ResultService()
             {
                 StatusCode = (int)HttpStatusCode.OK,
+            };
+        }
+
+        public async Task<ResultService> RefreshTokenAsync(RefreshTokenInputDto inputDto)
+        {
+            // so sánh Refresh token
+            if (inputDto.RefreshToken != "DhjdNlJHT4Q9KXFZYEUamMjBJTIrNelirFH3KQCCNj5WmGuXpP")
+                return new ResultService()
+                {
+                    StatusCode = (int)HttpStatusCode.Unauthorized,
+                    Message = "Xác nhận người dùng thất bại"
+                };
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.Secret))
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(inputDto.Token, tokenValidationParameters, out var securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtToken || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature, StringComparison.InvariantCultureIgnoreCase))
+                return new ResultService()
+                {
+                    StatusCode = (int)HttpStatusCode.Unauthorized,
+                    Message = "Xác nhận người dùng thất bại"
+                };
+
+            if(principal == null)
+                return new ResultService()
+                {
+                    StatusCode = (int)HttpStatusCode.Unauthorized,
+                    Message = "Xác nhận người dùng thất bại"
+                };
+
+            var userId = principal.Claims.FirstOrDefault(x => x.Type == "UserId")!.Value;
+            var userName = principal.Claims.FirstOrDefault(x => x.Type == "UserName")!.Value;
+
+            var user = await unitOfWork.UserRepository.GetsUserByUserNameAsync(userName);
+
+            return new ResultService()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Datas = new RefreshTokenOutputDto()
+                {
+                    AccessToken = GenerateToken(user),
+                    RefreshToken = "DhjdNlJHT4Q9KXFZYEUamMjBJTIrNelirFH3KQCCNj5WmGuXpP"
+                }
             };
         }
     }

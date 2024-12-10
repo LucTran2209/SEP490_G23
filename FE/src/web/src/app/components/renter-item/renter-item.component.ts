@@ -12,12 +12,13 @@ import { debounceTime, map, Observable, Subject, take } from 'rxjs';
 import { selectIsInitialState } from '../../features/common/state/product/product-detail.reducer';
 import {
   removeOneOrder,
-  setQuantityRequest
+  setQuantityRequest,
 } from '../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../features/common/state/rental/rental.reducers';
 import {
   selectNumberOfDaysById,
   selectProductRentalById,
+  selectQuantityAvailableById,
   selectRentalActualPriceById,
 } from '../../features/common/state/rental/rental.selectors';
 import { MessageResponseService } from '../../services/message-response.service';
@@ -36,12 +37,13 @@ export class RenterItemComponent implements OnInit {
   @Input() pId?: string;
   @Output() removeOneRow = new EventEmitter<string | number>();
   rentalPriceActual$?: Observable<string | number | undefined>;
+  quantityAvaiable$?: Observable<string | number | undefined>;
   numberDay$?: Observable<string | number | undefined>;
   demoValue = 1;
   private quantitySubject = new Subject<number>();
 
   handleRequestQuantity(val: number) {
-    if(!val || val < 0){
+    if (!val || val < 0) {
       return;
     }
     this.productRentalFollowId$
@@ -77,7 +79,10 @@ export class RenterItemComponent implements OnInit {
       );
       this.productRentalFollowId$ = this.store.select(
         selectProductRentalById(String(this.pId))
-      )
+      );
+      this.quantityAvaiable$ = this.store.select(
+        selectQuantityAvailableById(String(this.pId))
+      );
     }
   }
 
@@ -93,11 +98,11 @@ export class RenterItemComponent implements OnInit {
     });
   }
 
-  get isRentalMore(){
+  get isRentalMore() {
     return this.router.url.includes('/common/shop');
   }
 
-  deleteOneItem(){
+  deleteOneItem() {
     this.removeOneRow.emit(this.pId);
   }
 

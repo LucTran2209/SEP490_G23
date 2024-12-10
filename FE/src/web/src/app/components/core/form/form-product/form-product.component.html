@@ -18,7 +18,15 @@
       <div nz-row nzGutter="16" class="mt-10">
         <div nz-col nzSpan="18">
           <nz-form-item>
-            <nz-form-control>
+            <nz-form-control
+              [nzErrorTip]="
+                productForm.get('productName')?.hasError('required')
+                  ? 'Tên thiết bị là bắt buộc!'
+                  : productForm.get('productName')?.hasError('maxlength')
+                  ? 'Tên thiết bị không được vượt quá 100 ký tự!'
+                  : ''
+              "
+            >
               <input
                 class="w-96"
                 nz-input
@@ -57,7 +65,7 @@
           <p class="mb-2.5">Ảnh thiết bị</p>
           <nz-form-item>
             <nz-form-control
-              nzErrorTip="Please upload at least one image."
+              nzErrorTip="Vui lòng tải lên ít nhất 1 ảnh"
               [nzValidateStatus]="imagesControl.status"
             >
               <nz-upload
@@ -71,7 +79,7 @@
               >
                 <div>
                   <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
-                  <div>Drag and drop upload</div>
+                  <div>Kéo và thả ảnh tải lên</div>
                 </div>
               </nz-upload>
             </nz-form-control>
@@ -89,7 +97,16 @@
                   nzSpan="6"
                   >Giá cho thuê</nz-form-label
                 >
-                <nz-form-control nzSpan="18">
+                <nz-form-control
+                  nzSpan="18"
+                  [nzErrorTip]="
+                    productForm.get('rentalPrice')?.hasError('required')
+                      ? 'Giá cho thuê là bắt buộc!'
+                      : productForm.get('rentalPrice')?.hasError('min')
+                      ? 'Giá cho thuê phải lớn hơn 0!'
+                      : ''
+                  "
+                >
                   <nz-input-number
                     class="w-full"
                     placeholder="Giá cho thuê"
@@ -109,7 +126,16 @@
                   nzSpan="6"
                   >Giá cọc</nz-form-label
                 >
-                <nz-form-control nzSpan="18">
+                <nz-form-control
+                  nzSpan="18"
+                  [nzErrorTip]="
+                    productForm.get('depositPrice')?.hasError('required')
+                      ? 'Giá cọc là bắt buộc!'
+                      : productForm.get('depositPrice')?.hasError('min')
+                      ? 'Giá cọc phải lớn hơn 0!'
+                      : ''
+                  "
+                >
                   <nz-input-number
                     class="w-full"
                     placeholder="Giá cọc"
@@ -129,7 +155,18 @@
                   nzSpan="6"
                   >Giới hạn ngày</nz-form-label
                 >
-                <nz-form-control nzSpan="18">
+                <nz-form-control
+                  nzSpan="18"
+                  [nzErrorTip]="
+                    productForm.get('rentalLimitDays')?.hasError('required')
+                      ? 'Giới hạn cho thuê là bắt buộc!'
+                      : productForm.get('rentalLimitDays')?.hasError('min')
+                      ? 'Giới hạn cho thuê phải ít nhất 1 ngày!'
+                      : productForm.get('rentalLimitDays')?.hasError('max')
+                      ? 'Giới hạn cho thuê phải ít hơn 60 ngày!'
+                      : ''
+                  "
+                >
                   <nz-input-number
                     class="w-full"
                     placeholder="Giới hạn cho thuê"
@@ -153,7 +190,17 @@
                 <nz-form-label nzRequired nzFor="quantity"
                   >Số Lượng Thiết Bị</nz-form-label
                 >
-                <nz-form-control nzErrorTip="Vui Lòng chọn số lượng thiết bị!">
+                <nz-form-control
+                  [nzErrorTip]="
+                    productForm.get('quantity')?.hasError('required')
+                      ? 'Số lượng thiết bị là bắt buộc!'
+                      : productForm.get('quantity')?.hasError('min')
+                      ? 'Số lượng thiết bị phải lớn hơn 0!'
+                      : productForm.get('quantity')?.hasError('max')
+                      ? 'Số lượng thiết bị phải nhỏ hơn 50!'
+                      : ''
+                  "
+                >
                   <nz-input-number
                     class="w-full"
                     placeholder="Số lượng thiết bị cho thuê"
@@ -188,15 +235,28 @@
 
         <div nz-col nzSpan="12">
           <nz-form-label nzRequired nzFor="description"
-            >Mô Tả Thiết Bị</nz-form-label
+          >Mô Tả Thiết Bị</nz-form-label
           >
           <nz-form-item>
-            <textarea
-              nz-input
-              placeholder="Thông tin thiết bị cho thuê"
-              formControlName="description"
-              [nzAutosize]="{ minRows: 6, maxRows: 12 }"
-            ></textarea>
+          <nz-form-control
+            nzHasFeedback
+            [nzErrorTip]="
+              productForm.get('description')?.hasError('required')
+                ? 'Mô tả thiết bị là bắt buộc!'
+                : productForm.get('description')?.hasError('maxlength')
+                ? 'Mô tả không được vượt quá 1000 ký tự!'
+                : ''
+            "
+          >
+            <nz-textarea-count [nzMaxCharacterCount]="1000">
+              <textarea
+                nz-input
+                placeholder="Thông tin thiết bị cho thuê"
+                formControlName="description"
+                [nzAutosize]="{ minRows: 6, maxRows: 12 }"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
           </nz-form-item>
         </div>
       </div>

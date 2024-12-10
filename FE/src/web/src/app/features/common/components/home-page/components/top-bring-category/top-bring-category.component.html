@@ -16,14 +16,12 @@
   >
     @for (item of listCategoryHot; track $index) {
     <div
+    (click)="scrollToTop()"
       class="flex items-center gap-3 border-2 h-[50px] border-solid border-[#0f6cf8] rounded-sm py-2 px-3 hover:bg-[#0F6CF8] hover:text-white"
     >
       <span>{{ item.icon }} </span>
       <p>{{ item.title }}</p>
     </div>
     }
-  </div>
-  <div class="absolute bottom-0 right-4">
-    <img src="assets/images/Vector_2.png" alt="" class="w-full h-full" />
   </div>
 </div>

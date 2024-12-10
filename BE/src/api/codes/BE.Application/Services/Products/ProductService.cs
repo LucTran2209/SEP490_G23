@@ -1,10 +1,7 @@
-﻿using BE.Application.Common.Dtos;
-using BE.Application.Services.Products.ProductServiceInputDto;
+﻿using BE.Application.Services.Products.ProductServiceInputDto;
 using BE.Application.Services.Products.ProductServiceOutputDto;
 using BE.Application.Services.RentalShops.RentalShopServiceOutputDto;
-using BE.Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BE.Application.Services.Products
 {
@@ -55,6 +52,10 @@ namespace BE.Application.Services.Products
                 productDetail.NumberOfVoted = (int)product.Feedbacks?.Count!;
                 productDetail.Evaluate = Math.Round(product.Feedbacks!.Sum(x => x.Rating) / productDetail.NumberOfVoted, 1);
             }
+
+            // so luong san pham con lai
+            var rentingProduct = await unitOfWork.ProductRepository.GetQuantityRentingAsync(productId);
+            productDetail.Quantity -= rentingProduct ?? 0;
 
             return new ResultService
             {

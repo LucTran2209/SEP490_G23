@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -45,15 +45,16 @@ export class FormProductComponent {
     private msg: NzMessageService, 
     private categoryService: CategoryService, 
     private imageFileService: ImageFileService,
+    private cdRef: ChangeDetectorRef,
   ) {
       this.productForm = new FormGroup({
-        productName: new FormControl(this.product.productName, [Validators.required]),
-        description: new FormControl(this.product.description, [Validators.required]),
-        quantity: new FormControl(this.product.quantity, [Validators.required, Validators.min(1)]),
+        productName: new FormControl(this.product.productName, [Validators.required, Validators.maxLength(100)]),
+        description: new FormControl(this.product.description, [Validators.required, Validators.maxLength(1000)]),
+        quantity: new FormControl(this.product.quantity, [Validators.required, Validators.min(1), Validators.max(50)]),
         subCategoryId: new FormControl(this.product.subCategoryId, [Validators.required]),
         rentalPrice: new FormControl(this.product.rentalPrice, [Validators.required, Validators.min(1)]),
-        depositPrice: new FormControl(this.product.depositPrice, [Validators.min(0)]),
-        rentalLimitDays: new FormControl(this.product.rentalLimitDays, [Validators.required, Validators.min(1)]),
+        depositPrice: new FormControl(this.product.depositPrice, [Validators.min(1)]),
+        rentalLimitDays: new FormControl(this.product.rentalLimitDays, [Validators.required, Validators.min(1), Validators.max(60)]),
         evaluate: new FormControl(0), // Rating between 0-5
         images: new FormControl(this.product.images, [Validators.required])
       });
@@ -176,8 +177,7 @@ export class FormProductComponent {
         this.saveProduct.emit(formData);
       }
       this.resetForm();
-      
-      
+      this.cdRef.detectChanges();  
   }
   resetForm() {
     this.productForm.reset({

@@ -4,10 +4,11 @@ import {
   IExternalLoginRequest,
   IForgotPassword,
   ILoginRequest,
+  IRefreshTokenRequest,
+  IRefreshTokenResponse,
   IRegisterRequest,
   IResetPassword,
 } from '../../../interfaces/account.interface';
-import { HttpStatusCode } from '../../../configs/status-code.config';
 
 export const LOGIN_INIT = '[Auth] login init';
 export const LOGIN_SUCCESS = '[Auth] login success';
@@ -15,6 +16,10 @@ export const LOGIN_FAILURE = '[Auth] login failure';
 export const LOGIN_EXTERNAL_INIT = '[Auth] login EXTERNAL init';
 export const LOGI_EXTERNAL_SUCCESS = '[Auth] login EXTERNAL success';
 export const LOGIN_EXTERNAL_FAILURE = '[Auth] login EXTERNAL failure';
+
+export const REFRESH_TOKEN_INIT = '[Auth] refresh token init';
+export const REFRESH_TOKEN_SUCCESS = '[Auth] refresh token success';
+export const REFRESH_TOKEN_FAILURE = '[Auth] refresh token failure';
 
 export const FORGOT_PASSWORD = '[Auth] forgot passwork init';
 export const FORGOT_PASSWORD_SUCCESS = '[Auth] forgot password success';
@@ -68,6 +73,25 @@ export const login_external_failure = createAction(
   props<{ error: string }>()
 );
 
+export const refreshToken_init = createAction(
+  REFRESH_TOKEN_INIT,
+  props<{
+    data: IRefreshTokenRequest;
+  }>()
+);
+export const refreshToken_success = createAction(
+  REFRESH_TOKEN_SUCCESS,
+  props<{
+    data: IRefreshTokenResponse;
+  }>()
+);
+export const refreshToken_failure = createAction(
+  REFRESH_TOKEN_FAILURE,
+  props<{
+    error: string;
+  }>()
+);
+
 export const forgotPassword = createAction(
   FORGOT_PASSWORD,
   props<{ data: IForgotPassword }>()
@@ -78,7 +102,7 @@ export const forgotPassword_success = createAction(
 );
 export const forgotPassword_failure = createAction(
   FORGOT_PASSWORD_FAILURE,
-  props<{ error: string, statusCode: number }>()
+  props<{ error: string; statusCode: number }>()
 );
 
 export const resetPassword = createAction(
@@ -124,7 +148,7 @@ export const tokenExpire = createAction(
 
 export const verifyEmail = createAction(
   VERIFY_EMAIL,
-  props<{ email: string, username: string }>()
+  props<{ email: string; username: string }>()
 );
 
 export const verifyEmail_success = createAction(
@@ -138,11 +162,12 @@ export const verifyEmail_failure = createAction(
 );
 export const confirmVerifyEmail = createAction(
   CONFIRM_VERIFY_EMAIL,
-  props<{ data: IConfirmEmailRequest, dataRegister: IRegisterRequest }>()
+  props<{ data: IConfirmEmailRequest; dataRegister: IRegisterRequest }>()
 );
 
 export const confirmVerifyEmail_success = createAction(
-  CONFIRM_VERIFY_EMAIL_SUCCESS,  props<{ statusCode: string | number }>()
+  CONFIRM_VERIFY_EMAIL_SUCCESS,
+  props<{ statusCode: string | number }>()
 );
 
 export const confirmVerifyEmail_failure = createAction(

@@ -42,6 +42,9 @@ export const AuthSlug = {
     title: 'confirm email | ERMS',
     api: 'api/Authentication/ComfirmVerifyEmailAsync',
   },
+  RefershToken: {
+    api: 'api/Authentication/refresh/token',
+  }
 };
 
 export const StepRegisterLessor = {
@@ -196,7 +199,27 @@ export const CategorySlug = {
     label: 'List SubCategory',
     title: 'List SubCategory | ERMS',
     api: 'SubCategory',
-  }
+  },
+  CreateSubCategory: {
+    label: 'Create SubCategory',
+    title: 'Create SubCategory | ERMS',
+    api: 'SubCategory',
+  },
+  CreateCategory: {
+    label: 'Create Category',
+    title: 'Create Category | ERMS',
+    api: 'SubCategory/category',
+  },
+  UpdateCategory: {
+    label: 'Update Category',
+    title: 'Update Category | ERMS',
+    api: 'SubCategory/category',
+  },
+  UpdateSubcategory: {
+    label: 'Update Subcategory',
+    title: 'Update Subcategory | ERMS',
+    api: 'SubCategory/subcategory',
+  },
 
 }
 export const RentalShopSlug = {

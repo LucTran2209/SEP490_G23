@@ -1,1 +1,135 @@
-<p>manage-category works!</p>
+<div class="bg-light">
+  <div class="row flex-nowrap">
+    <div class="col py-3 m-3">
+      <div class="card">
+        <div class="flex items-center justify-between">
+          <h1 class="text-3xl">Danh sách danh mục thiết bị cho thuê</h1>
+          <button
+            nzType="primary"
+            (click)="chooseOptionCreateCategory()"
+            nz-button
+          >
+            Tạo thêm danh mục
+          </button>
+        </div>
+        <nz-table
+          #basicTable
+          [nzData]="subcategoryList"
+          [nzLoading]="isloading"
+          class="mt-2"
+        >
+          <thead>
+            <tr>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name">No.</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Tên Danh Mục Phụ</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Chi Tiết</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Tên Danh Mục Chính</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Ngày Tạo</span>
+              </th>
+              <th class="m-1 text-secondary text-uppercase">
+                <span class="name text-uppercase">Chỉnh Sửa</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let sub of subcategoryList; let i = index"
+              class="tr-product"
+            >
+              <td>
+                <span class="name text-secondary p-3 text-center">
+                  {{ i + 1 | number : "2.0" }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ sub.subCategoryName }}
+                </span>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{ sub.description || "[CHƯA CÓ]" }}
+                </span>
+              </td>
+              <td class="">
+                <a
+                  class="text-blue-600 name text-secondary p-3 text-center"
+                  (click)="getCategoryById(sub)"
+                >
+                  <span>
+                    {{ getCategoryName(sub.category) }}
+                  </span>
+                  <span
+                    class="mx-2"
+                    nz-icon
+                    nzType="edit"
+                    nzTheme="outline"
+                  ></span>
+                </a>
+              </td>
+              <td class="">
+                <span class="name text-secondary p-3 text-center">
+                  {{
+                    sub.createdDate
+                      ? (sub.createdDate | date : "dd/MM/yyyy")
+                      : "[CHƯA CÓ]"
+                  }}
+                </span>
+              </td>
+              <td>
+                <a
+                  class="text-blue-600 name text-secondary p-3 text-center"
+                  (click)="getSubcategoryById(sub)"
+                >
+                  <span nz-icon nzType="form" nzTheme="outline"></span>
+                  <span class="mx-2">Chỉnh Sửa</span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- form create category main-->
+<nz-modal
+  [(nzVisible)]="isVisibleMain"
+  [nzWidth]="430"
+  nzTitle="{{ categoryTilte }}"
+  [nzFooter]="null"
+  (nzOnCancel)="onToggleEndModal()"
+>
+  <ng-container *nzModalContent>
+    <app-form-category
+      [category]="categoryInformation"
+      (saveCategory)="createCategory($event)"
+      (updateCategory)="updateCategory($event)"
+    ></app-form-category>
+  </ng-container>
+</nz-modal>
+<!-- form create category secondary-->
+<nz-modal
+  [(nzVisible)]="isVisibleSecondary"
+  nzTitle="{{ subcategoryTitle }}"
+  [nzFooter]="null"
+  (nzOnCancel)="onToggleEndModal()"
+>
+  <ng-container *nzModalContent>
+    <app-form-subcategory
+      [subcategory]="subcategoryInformation"
+      [categories]="categoryList"
+      (saveSubcategory)="createSubcategory($event)"
+      (updateSubcategory)="updateSubcategory($event)"
+    ></app-form-subcategory>
+  </ng-container>
+</nz-modal>

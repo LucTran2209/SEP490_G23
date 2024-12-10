@@ -19,6 +19,7 @@ import { VoucherService } from '../../../../services/voucher.service';
 import { MessageResponseService } from '../../../../services/message-response.service';
 import { StorageService } from '../../../../services/storage.service';
 import { LocalStorageKey } from '../../../../utils/constant';
+import { UserProfileService } from '../../../../services/user-profile.service';
 @Component({
   selector: 'app-shop-personal',
   templateUrl: './shop-personal.component.html',
@@ -40,6 +41,7 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
   selectedValue = null;
   groupOptionFilterSelect: OptionSelect[] = selectSortByOrder;
   visible = false;
+  currentUserId: string | undefined;
 
   //subscription
   subScription?: Subscription;
@@ -119,6 +121,7 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     this.loadShopInfo();
     this.onloadVoucher();
     this.myVoucher();
+    this.currentUserId = this.userProfileService.UserId;
   }
 
   ngOnDestroy(): void {
@@ -135,6 +138,7 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
     private messageService: MessageResponseService,
     private storageService: StorageService,
     private cdr: ChangeDetectorRef,
+    private userProfileService: UserProfileService, 
   ) {
     this.paramHave = this.route.snapshot.paramMap.get('id');
   }

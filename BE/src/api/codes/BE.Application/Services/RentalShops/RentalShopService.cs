@@ -135,14 +135,16 @@ namespace BE.Application.Services.RentalShops
                                                         .Where(o => o.OrderStatuses!.Any(s => s.Status != RequestStatus.CANCEL))
                                                         .ToList().Count;
 
-            var  x  = await unitOfWork.ProductRepository.GetListProductByRetalShopId(id).ToListAsync();
+            var x = await unitOfWork.ProductRepository.GetListProductByRetalShopId(id).ToListAsync();
             result.NumberOfProduct = x.Count;
 
-            var voted = await unitOfWork.OrderRepository.RentalShopDetailVoted(id);
-
-            result.NumberOfVote = voted.Item1;
-            result.AvegateVote = voted.Item2;
-
+            if (result.NumberOfProduct > 0)
+            {
+                var voted = await unitOfWork.OrderRepository.RentalShopDetailVoted(id);
+                result.NumberOfVote = voted.Item1;
+                result.AvegateVote = voted.Item2;
+            }
+            
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,

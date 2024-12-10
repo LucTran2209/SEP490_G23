@@ -1,4 +1,6 @@
-﻿using BE.Domain.Entities;
+﻿using Azure.Core;
+using BE.Domain.Abstractions.Enums;
+using BE.Domain.Entities;
 using BE.Domain.Interfaces;
 using BE.Infrastructure.Abstractions;
 using BE.Persistence;
@@ -74,6 +76,20 @@ namespace BE.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
             return product;
+        }
+
+        public async Task<int?> GetQuantityRentingAsync(Guid productId)
+        {
+            var rentingQuantity = await context.OrderDetails
+                .Include(p => p.Order)
+                    .ThenInclude(o => o.OrderStatuses)
+                .Where(od => od.ProductId == productId
+                       && od.Order.OrderStatuses!.Any(a => a.Status != RequestStatus.CANCEL 
+                                                        && a.Status != RequestStatus.COMPLETE 
+                                                        && a.Status != RequestStatus.PENDING_APPROVAL))
+                .SumAsync(od => od.Quantity);
+
+            return rentingQuantity;
         }
     }
 }
