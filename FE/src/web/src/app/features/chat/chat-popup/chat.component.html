@@ -1,4 +1,4 @@
-@if(!isChatOpen){
+@if(!(isChatOpen$ | async)){
 <div
   class="fixed-chat-icon bg-[#0d6dfa] text-white rounded-lg p-3 px-4"
   (click)="openChat()"
