@@ -1,4 +1,4 @@
-@if(!isChatOpen){
+@if(!(isChatOpen$ | async)){
 <div
   class="fixed-chat-icon bg-[#0d6dfa] text-white rounded-lg p-3 px-4"
   (click)="openChat()"
@@ -7,7 +7,7 @@
 </div>
 }@else {
 <section
-  class="fixed bottom-0 right-0 z-99 w-[300px]  border border-solid border-[#E1E1E1] bg-white shadow-lg rounded-sm transition-all duration-100 ease-linear"
+  class="fixed bottom-0 right-0 z-99 w-[300px] z-[99]  border border-solid border-[#E1E1E1] bg-white shadow-lg rounded-sm transition-all duration-100 ease-linear"
   [ngClass]="{'w-[812px]' : resizeChat$ | async}"
 >
   <app-chat-header (closeChat)="closeChat()"/>

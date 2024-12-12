@@ -14,6 +14,7 @@ import { StorageService } from '../../../../services/storage.service';
 import { LocalStorageKey } from '../../../../utils/constant';
 import { FeedbackOutputDto, FeedbackResultService } from '../../../../interfaces/feedback.interface';
 import { OrderService } from '../../../../services/order.service';
+import { PopUpChatService } from '../../../../services/pop-up-chat.service';
 
 @Component({
   selector: 'app-product-rental-detail',
@@ -44,7 +45,7 @@ export class ProductRentalDetailComponent implements OnDestroy{
       return;
     }
     else {
-      console.log('chat with shop', val);
+      this.popupService.tooglePopUp(true);
       this.chatFireStoreService.addChatRoom(val.rentalShop.userId);
     }
   }
@@ -90,6 +91,7 @@ export class ProductRentalDetailComponent implements OnDestroy{
     private chatFireStoreService: ChatFireStoreService,
     private storageService: StorageService,
     private orderService: OrderService,
+    private popupService: PopUpChatService
   ) {}
 
   ngOnInit(): void {

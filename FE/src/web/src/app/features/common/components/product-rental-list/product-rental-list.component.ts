@@ -4,15 +4,21 @@ import { combineLatest, filter, Observable, Subscription } from 'rxjs';
 import { OptionSelect } from '../../../../configs/anonymous.config';
 import { selectSortByOrder } from '../../../../configs/post.config';
 import { StatusProcess } from '../../../../interfaces/anonymous.interface';
-import { ProductDtoResponse, ProductOutputDto, SearchProduct } from '../../../../interfaces/product.interface';
+import {
+  ProductDtoResponse,
+  ProductOutputDto,
+  SearchProduct,
+} from '../../../../interfaces/product.interface';
 import { RentalShop } from '../../../../interfaces/rental-shop.interface';
 import { LoadingService } from '../../../../services/loading.service';
 import { ProductService } from '../../../../services/product.service';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { ModelMapSearchComponent } from '../../../../components/modal/model-map-search/model-map-search.component';
 
 @Component({
   selector: 'app-product-rental-list',
   templateUrl: './product-rental-list.component.html',
-  styleUrl: './product-rental-list.component.scss'
+  styleUrl: './product-rental-list.component.scss',
 })
 export class ProductRentalListComponent {
   search = '';
@@ -26,7 +32,7 @@ export class ProductRentalListComponent {
   subCategory = '';
   subcategoryFilter = '';
   searchText = '';
-  groupOptionFilterSelect: OptionSelect[] = selectSortByOrder;
+  isViewMapSearch = false;
   searchProduct: SearchProduct = {
     pageSize: this.pageSize,
     pageIndex: this.currentPage,
@@ -38,35 +44,35 @@ export class ProductRentalListComponent {
   };
   loading$?: Observable<StatusProcess>;
   private subscriptions: Subscription = new Subscription();
-
+  private modelMapRef: NzModalRef | null = null;
   constructor(
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
     private loadingService: LoadingService,
     private cdRef: ChangeDetectorRef,
+    private modalService: NzModalService
   ) {
     this.loading$ = this.loadingService.status$;
   }
 
   ngOnInit(): void {
-      // Theo dõi thay đổi từ queryParams và paramMap
-  this.subscriptions.add(
-    combineLatest([
-      this.route.paramMap,
-      this.route.queryParams
-    ]).subscribe(([paramMap, queryParams]) => {
-      // Lấy giá trị từ paramMap và queryParams
-      const caid = paramMap.get('id');
-      this.subCategory = caid || queryParams['subCategory'] || ''; // Ưu tiên paramMap trước
+    // Theo dõi thay đổi từ queryParams và paramMap
+    this.subscriptions.add(
+      combineLatest([this.route.paramMap, this.route.queryParams]).subscribe(
+        ([paramMap, queryParams]) => {
+          // Lấy giá trị từ paramMap và queryParams
+          const caid = paramMap.get('id');
+          this.subCategory = caid || queryParams['subCategory'] || ''; // Ưu tiên paramMap trước
 
-      this.search = queryParams['search'] || '';
-      this.currentPage = +queryParams['page'] || 1;
+          this.search = queryParams['search'] || '';
+          this.currentPage = +queryParams['page'] || 1;
 
-      // Gọi API chỉ khi các giá trị đã được xử lý
-      this.loadProducts();
-    })
-  );
+          // Gọi API chỉ khi các giá trị đã được xử lý
+          this.loadProducts();
+        }
+      )
+    );
   }
   ngOnDestroy(): void {
     // Clean up subscriptions
@@ -140,7 +146,9 @@ export class ProductRentalListComponent {
   }
 
   onSubCategorySelected(subcategory: string): void {
-    const subCategoriesSet = new Set(this.subCategory.split(',').filter(Boolean));
+    const subCategoriesSet = new Set(
+      this.subCategory.split(',').filter(Boolean)
+    );
     subCategoriesSet.add(subcategory);
     this.subCategory = Array.from(subCategoriesSet).join(',');
     this.searchProduct.subCategory = Array.from(subCategoriesSet);
@@ -156,7 +164,25 @@ export class ProductRentalListComponent {
   }
 
   goAllShopRelated(): void {
-    this.router.navigate(['/common/shopList'], { queryParams: { search: this.search } });
+    this.router.navigate(['/common/shopList'], {
+      queryParams: { search: this.search },
+    });
   }
-  
+
+  onModelMapSearch(isview: boolean) {
+    if(isview){
+      this.modelMapRef = this.modalService.create({
+        nzTitle: 'Chế độ bản đồ',
+        nzContent: ModelMapSearchComponent,
+        nzFooter: null,
+        nzWidth: 1400,
+      });
+      if (this.modelMapRef)
+        this.modelMapRef.afterClose.subscribe(() => {
+          this.modelMapRef = null;
+          this.isViewMapSearch = false;
+        });
+    }
+   
+  }
 }

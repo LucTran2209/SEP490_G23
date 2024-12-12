@@ -23,11 +23,12 @@
   >
     <div *ngFor="let message of messages" class="mb-4">
       <div
-        class="py-2 px-3 rounded-l-lg rounded-tr-lg w-fit text-white bg-[#1890FF] break-all"
+        class="py-2 px-3 rounded-l-lg rounded-tr-lg w-fit break-all"
         [ngClass]="{
           'bg-[#E1E1E1] text-[#242426] rounded-r-lg rounded-l-none rounded-tl-lg':
             message.senderId !== currentOwnUser.uid,
-          'float-right': message.senderId === currentOwnUser.uid
+          'bg-[#1890FF] text-white float-right':
+            message.senderId === currentOwnUser.uid
         }"
       >
         {{ message.text }}
@@ -68,13 +69,14 @@
         ></span>
       </div>
       <div class="flex-1 flex items-end gap-x-2">
-        <textarea
+        <input
           type="text"
           class="bg-[#f9f9f9] rounded-sm"
           placeholder="Aa"
           [formControl]="textBoxChat"
           nz-input
-        ></textarea>
+          (keydown.enter)="sendChat()"
+        />
         <button
           nz-button
           class="bg-none border-none outline-none"
