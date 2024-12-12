@@ -127,3 +127,23 @@ body {
   background-color: #cce4ff; /* Màu nền xanh nhạt */
   color: black; /* Màu chữ đen */
 }
+
+//scroll bar
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}

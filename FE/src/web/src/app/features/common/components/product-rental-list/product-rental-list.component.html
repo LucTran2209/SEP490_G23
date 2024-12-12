@@ -56,22 +56,9 @@
             />
           </nz-input-group> -->
 
-          <div class="min-w-[20%]">
-            <nz-select
-              nzShowSearch
-              nzAllowClear
-              nzPlaceHolder="sắp xếp theo thứ tự"
-              [(ngModel)]="selectedValue"
-              class="w-full"
-            >
-              @for (item of groupOptionFilterSelect; track $index) {
-              <nz-option
-                [nzLabel]="item.label"
-                [nzKey]="$index"
-                [nzValue]="item.value"
-              ></nz-option>
-              }
-            </nz-select>
+          <div class="min-w-[20%] flex items-center gap-3">
+            <nz-switch nzSize="default" [ngModel]="isViewMapSearch" (ngModelChange)="onModelMapSearch($event)"></nz-switch>
+            <p>Xem chế độ bản đồ</p>
           </div>
         </div>
         <div class="grid grid-cols-12 gap-3 pb-3">

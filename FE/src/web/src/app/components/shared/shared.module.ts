@@ -139,9 +139,14 @@ import { RenterItemComponent } from '../renter-item/renter-item.component';
 import { StatusLabelComponent } from '../status-label/status-label.component';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { ViewMoreItemComponent } from '../view-more-item/view-more-item.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { AngularSplitModule } from 'angular-split';
+import { ModelMapSearchComponent } from '../modal/model-map-search/model-map-search.component';
+import { CardProductHorizontalComponent } from '../core/card/card-product-horizontal/card-product-horizontal.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
+  NzSwitchModule,
   NzAnchorModule,
   NzImageModule,
   NzPopconfirmModule,
@@ -199,6 +204,8 @@ const MATERIAL_MODULES = [
   MatMenuModule,
 ];
 const SHARED_MODULES = [
+  CardProductHorizontalComponent,
+  ModelMapSearchComponent,
   ChooseCreateCategoryComponent,
   BaseComponentsComponent,
   DetailVoucherAvailableComponent,
@@ -281,6 +288,7 @@ const SHARED_MODULES = [
 @NgModule({
   declarations: [...SHARED_MODULES],
   imports: [
+    AngularSplitModule,
     CodeInputModule,
     CommonModule,
     FormsModule,
@@ -291,6 +299,7 @@ const SHARED_MODULES = [
     SlickCarouselModule,
   ],
   exports: [
+    AngularSplitModule,
     CodeInputComponent,
     CommonModule,
     FormsModule,
