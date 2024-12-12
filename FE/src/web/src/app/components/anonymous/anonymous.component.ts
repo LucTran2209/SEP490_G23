@@ -12,6 +12,7 @@ import { MessageResponseService } from '../../services/message-response.service'
 import { environment } from '../../../environments/environment.development';
 declare const goongjs: any;
 declare const GoongGeocoder: any;
+
 @Component({
   selector: 'app-anonymous',
   templateUrl: './anonymous.component.html',
@@ -214,7 +215,6 @@ export class AnonymousComponent
 
   // Hàm xử lý khi nhấn nút trong popup
   handlePopupUpdate(index: number) {}
-
   showSuccess() {
     this.toastMessage.showSuccess('Thành công!');
   }
