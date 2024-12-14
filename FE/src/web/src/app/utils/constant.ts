@@ -70,6 +70,7 @@ export const REGEX = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   password: /^.{8,30}$/,
   phoneNumber: /^(03|05|07|08|09|01[2|6|8|9])\d{8}$/,
+  minLength: /^\d{10}$/,
   onlyOneNumber: /^\d{1}$/,
 };
 
