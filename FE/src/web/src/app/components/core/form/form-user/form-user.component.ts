@@ -1,15 +1,17 @@
-import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserInputDto, UserUpdateInputDto } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user.service';
 import { ageValidator } from '../../../../utils/form-validators';
+import { filter, map } from 'rxjs';
+import { OptionAddress } from '../../input-address/input-address.component';
 
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
   styleUrl: './form-user.component.scss'
 })
-export class FormUserComponent{
+export class FormUserComponent implements OnChanges, OnInit{
   dateFormat = 'dd/MM/yyyy';
   userForm: FormGroup;
   avatarPreview: string | ArrayBuffer | null = null; // Changed to match base64 string or null
@@ -64,6 +66,21 @@ export class FormUserComponent{
     }
   }
 
+ngOnInit(): void {
+  this.setValueAddressAfter();
+}
+
+setValueAddressAfter(){
+  this.userForm.get("address")?.valueChanges.pipe(
+    filter((source) => {
+      return source.placeId !== undefined;
+    }),
+    map((optionChoose: OptionAddress) => optionChoose.desc),
+  ).subscribe((res) => {
+    this.userForm.get("address")?.setValue(res);
+  });
+}
+
   populateForm(): void {
     const dateOfBirth = new Date(this.userUpdate.dateOfBirth);
     // Trích xuất phần ngày mà không ảnh hưởng múi giờ
@@ -78,7 +95,7 @@ export class FormUserComponent{
       dateOfBirth: localDateString, // Format for date
       avatarPersonal: this.userUpdate.avatarPersonal ?? null, // Ensure it's null if undefined
     });
-    console.log('FormControl Address:', this.userForm.get('address')?.value);
+    // console.log('FormControl Address:', this.userForm.get('address')?.value);
 
     // Check if avatarPersonal is a string or a File and convert it accordingly
     if (this.userUpdate.avatarPersonal) {
@@ -151,7 +168,7 @@ export class FormUserComponent{
   }
   submitForm() {
     const addressValue = this.userForm.get('address')?.value;
-    console.log('Address Value:', addressValue);
+    // console.log('Address Value:', addressValue);
     // Update dateOfBirth to ISO string format
     const dateOfBirthControl = this.userForm.get('dateOfBirth');
     if (dateOfBirthControl?.value) {

@@ -173,7 +173,7 @@ export class ShopPersonalComponent implements OnInit, OnDestroy {
       this.voucherExist = res.data;
       this.cdr.detectChanges();
       setTimeout(() => {
-        console.log("My Voucher: ", this.voucherExist);
+        // console.log("My Voucher: ", this.voucherExist);
         if (this.voucherExist && this.voucherExist.length > 0) {
           this.vouchers.forEach(voucher => {
             if (this.voucherExist.some(existingVoucher => existingVoucher.id === voucher.id)) {

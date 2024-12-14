@@ -73,12 +73,12 @@ export class ProductRentalDetailComponent implements OnDestroy{
           this.comments = res.data;
         },
         error: (err) => {
-          console.error('Lỗi khi tải bình luận:', err);
+          // console.error('Lỗi khi tải bình luận:', err);
           this.messageResponseService.handleError('Không thể tải bình luận', 500);
         },
       });
     } else {
-      console.warn('Không tìm thấy productId');
+      // console.warn('Không tìm thấy productId');
     }
    
   }

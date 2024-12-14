@@ -76,7 +76,7 @@ export class MyOrderDetailComponent implements OnInit {
       this.orderId = params.get('id') || '';
       this.loadOrder(this.orderId);
     });
-    console.log(this.orderId);
+    // console.log(this.orderId);
   }
   loadOrder(orderId: string){
     this.loadingService.setLoading();
@@ -113,7 +113,7 @@ export class MyOrderDetailComponent implements OnInit {
           message: matchedStatus ? matchedStatus.message : null,
         };
       });
-        console.log("Status List: ", this.orderStatuses);
+        // console.log("Status List: ", this.orderStatuses);
       },
       error: () => {
       }

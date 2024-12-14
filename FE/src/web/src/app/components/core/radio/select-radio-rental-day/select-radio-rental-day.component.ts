@@ -15,7 +15,7 @@ export class SelectRadioRentalDayComponent {
  onChooseDayAvaiable(val: string | number){
   let dateCurrent = new Date();
   this.renterTimerService.rangePickerTime$.pipe(map(res => {
-    console.log(res,'line 18>>>>');
+    // console.log(res,'line 18>>>>');
   })).subscribe()
  }
 

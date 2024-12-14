@@ -92,9 +92,9 @@ export const rentalOrderReducer = createReducer(
     let order = state.orders[existingOrderIndex];
 
     if (quantityRequest > Number(order.quantityAvailable)) {
-      console.warn(
-        `Requested quantity (${quantityRequest}) exceeds available stock (${order.quantityAvailable}) for product ${order.productId}`
-      );
+      // console.warn(
+      //   `Requested quantity (${quantityRequest}) exceeds available stock (${order.quantityAvailable}) for product ${order.productId}`
+      // );
       return state;
     }
     const updatedOrder = {

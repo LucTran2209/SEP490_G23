@@ -36,7 +36,7 @@ export class VerifyEmailComponent implements OnInit {
   @ViewChild('codeInput') codeInput!: CodeInputComponent;
 
   onCodeChanged(code: string) {
-    console.log('line 24', code);
+    // console.log('line 24', code);
   }
 
   onCodeCompleted(code: string) {
@@ -60,7 +60,7 @@ export class VerifyEmailComponent implements OnInit {
   ngOnInit(): void {
     this.codeGenerate = getCookie(STRING.OTPCODE);
     this.emailGenerate = getCookie(STRING.EMAIL);
-    console.log('otpcode', this.codeGenerate, this.emailGenerate);
+    // console.log('otpcode', this.codeGenerate, this.emailGenerate);
   }
 
   canDeactivate(): boolean {

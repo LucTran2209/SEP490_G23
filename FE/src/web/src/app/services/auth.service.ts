@@ -116,7 +116,6 @@ export class AuthService {
       }
       return true;
     } catch (error) {
-      console.error('Invalid token:', error);
       return true;
     }
   }
@@ -162,7 +161,6 @@ export class AuthService {
       .post<BaseResponseApi<ILoginResponse>>(AuthSlug.Login.api, data)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          console.error('Error in login service:', error);
           return throwError(() => error);
         })
       );

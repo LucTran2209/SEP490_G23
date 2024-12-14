@@ -66,12 +66,12 @@ export class ManageRegisterLessorComponent implements OnInit {
       this.loadRequests(0, this.currentPagePending);
       this.loadRequests(1, this.currentPageApproved);
       this.loadRequests(2, this.currentPageRejected);
-      console.log(this.searchText);
+      // console.log(this.searchText);
     }
   
     // Phương thức tải dữ liệu yêu cầu theo trạng thái và trang
     loadRequests(status: number, pageIndex: number, search?: string) {
-      console.log(`Loading requests for status ${status} with search: ${search}`);
+      // console.log(`Loading requests for status ${status} with search: ${search}`);
       this.isloading = true;
       this.rentalShopService.requestShopList(pageIndex, this.pageSize, search).subscribe((res) => {
         this.loadingService.setOtherLoading('loaded');
@@ -157,7 +157,7 @@ export class ManageRegisterLessorComponent implements OnInit {
       this.rentalShopService.requestShopDetail(id).subscribe(
         (res: RequestShopDetailResultService) => {
             this.requestInformation = res.data;
-            console.log('Request Details:', this.requestInformation);
+            // console.log('Request Details:', this.requestInformation);
             this.cdRef.detectChanges();
         }
       );
@@ -194,7 +194,7 @@ export class ManageRegisterLessorComponent implements OnInit {
         },
         (error) => {
           this.messageService.handleError('Bạn Đã Xét Duyệt Đơn Yêu Cầu Thất Bại!');
-          console.error('Error changing status:', error);
+          // console.error('Error changing status:', error);
         }
       );
     }

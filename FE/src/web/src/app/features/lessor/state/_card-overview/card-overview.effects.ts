@@ -28,7 +28,6 @@ export class CardOverviewEffects {
               })
             ),
             catchError((err) => {
-              console.log(err, 'err');
               return of(CardOverviewActions.getAllCardOverview_failure({message: 'Có lỗi trong quá trình lấy dữ liệu'}));
             })
           )

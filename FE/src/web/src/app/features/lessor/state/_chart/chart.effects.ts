@@ -30,7 +30,6 @@ export class ChartOverviewEffects {
               })
             ),
             catchError((err) => {
-              console.error(err, 'err');
               return of(
                 ChartTopSubCategoryActions.getDATACHARTSUBCATEGORY_failure({
                   message: 'Có lỗi trong quá trình lấy dữ liệu',
@@ -61,7 +60,6 @@ export class ChartOverviewEffects {
                   })
                 ),
                 catchError((err) => {
-                  console.error(err, 'err');
                   return of(
                     ChartRevenueActions.getDATACHARTREVENUE_failure({
                       message: 'Có lỗi trong quá trình lấy dữ liệu',
@@ -80,7 +78,6 @@ export class ChartOverviewEffects {
                   })
                 ),
                 catchError((err) => {
-                  console.error(err, 'err');
                   return of(
                     ChartRevenueActions.getDATACHARTREVENUE_failure({
                       message: 'Có lỗi trong quá trình lấy dữ liệu',
@@ -109,7 +106,6 @@ export class ChartOverviewEffects {
               })
             ),
             catchError((err) => {
-              console.error(err, 'err');
               return of(
                 ChartOrderActions.getDATACHARTORDER_failure({
                   message: 'Có lỗi trong quá trình lấy dữ liệu',

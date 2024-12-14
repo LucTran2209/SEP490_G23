@@ -140,7 +140,7 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
   }
 
   onSelectDetail(val: OrderListResponse) {
-    console.log('data', val);
+    // console.log('data', val);
     this.router.navigateByUrl(`lessor/order/${val.id}`);
   }
 
@@ -210,7 +210,7 @@ export class ManageOrderComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.loadingSerivce.setOtherLoading('error');
-          console.error('Order loading error:', err);
+          // console.error('Order loading error:', err);
         },
       });
   }

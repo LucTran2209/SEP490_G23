@@ -44,7 +44,7 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
       this.modalRef.triggerOk();
       return;
     }
-    console.log(this.selectedValue.value, 'line 85');
+    // console.log(this.selectedValue.value, 'line 85');
     if (this.orderDetail$ && this.selectedValue.valid) {
       combineLatest([
         this.orderDetail$,

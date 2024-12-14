@@ -151,7 +151,6 @@ export class OrderStatisticComponent implements OnInit, OnDestroy {
   }
 
   handleDateChange(date: Date[]): void {
-    console.log('Line152', date);
     this.getRangeDate(date);
   }
 

@@ -83,7 +83,7 @@ export class UserNavbarHeaderComponent implements OnInit {
       this.userRole = role[0] as USER_ROLE;
     } else {
       // Handle the case where role is undefined or invalid if needed
-      console.warn('Invalid or undefined user role');
+      // console.warn('Invalid or undefined user role');
     }
   }
   hasLessorRole(): boolean {

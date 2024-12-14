@@ -39,7 +39,7 @@ export class ResetPasswordComponent implements OnInit {
         token: params.token,
         newPassword: this.validateResetForm.controls.password.value
       }
-      console.log('Submit Data:', data);
+      // console.log('Submit Data:', data);
       this.store.dispatch(resetPassword({ data }));
     })
   }
@@ -54,7 +54,7 @@ export class ResetPasswordComponent implements OnInit {
         token: params.get('token') || '',
         email: params.get('email') || '',
       })),
-      tap((param) => console.log('Params:', param)) 
+      // tap((param) => console.log('Params:', param)) 
     );
   }
 

@@ -74,7 +74,7 @@ export class BreadcrumbComponent {
         ];
       }
     } else {
-      console.log('Breadcrumbs not created because it is the home page');
+      // console.log('Breadcrumbs not created because it is the home page');
     }
 
     this.cdRef.detectChanges();
@@ -84,7 +84,7 @@ export class BreadcrumbComponent {
     const children: ActivatedRoute[] = route.children;
   
     if (children.length === 0) {
-      console.log('No more children, returning breadcrumbs:', breadcrumbs);
+      // console.log('No more children, returning breadcrumbs:', breadcrumbs);
       return breadcrumbs;
     }
   
@@ -107,7 +107,7 @@ export class BreadcrumbComponent {
             url: `/common/product-list/${productListSlug}/caid/${subCategorId}`
           });
           breadcrumbLabel = `${productSlug}`; // Product name
-          console.log('Breadcrumb label for product detail updated to:', breadcrumbLabel);
+          // console.log('Breadcrumb label for product detail updated to:', breadcrumbLabel);
         } else {
           breadcrumbLabel = decodeURIComponent(child.snapshot.params['slug']);
         }

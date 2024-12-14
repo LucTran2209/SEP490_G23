@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           username: this.forminfocommongroup.get('username')?.value,
         })
       );
-      console.log(requestRegister);
+      // console.log(requestRegister);
     } else {
       this.markControlsAsDirty(this.forminfocommongroup);
     }

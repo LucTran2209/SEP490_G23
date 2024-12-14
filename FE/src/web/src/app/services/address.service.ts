@@ -10,8 +10,12 @@ export class AddressService {
   constructor(private http: AppHttpClientService) {}
 
   getAddress(input: string): Observable<any> {
-    const url = `${environment.apiUrlGoong}AutoComplete?api_key=${environment.apiKeyGoong}&input=${input}`;
-    return this.http.get(url);
+    const data = {
+      api_key: environment.apiKeyGoong,
+      input,
+    };
+    const url = `${environment.apiUrlGoong}AutoComplete`;
+    return this.http.get(url,data);
   }
   getAddressDetail(placeId: string): Observable<any> {
     const data = {

@@ -12,7 +12,6 @@ function loadStateFromStorage(): Partial<any> {
       try {
         loadedState[key] = JSON.parse(savedSlice);
       } catch (error) {
-        console.error(`Error parsing ${key} from localStorage`, error);
       }
     }
   });

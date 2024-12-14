@@ -83,7 +83,7 @@ export class ManageUserComponent implements OnInit {
       this.totalUsers = res.data.totalCount;
       this.isloading = false;
       this.loadingService.setOtherLoading('loaded');
-      console.log(res)
+      // console.log(res)
     });
   }
   onSearch() {
@@ -130,7 +130,7 @@ export class ManageUserComponent implements OnInit {
             this.handleCloseModal();
             this.showAlert = false;
           }, 5000);
-        console.error('Failed to create user');
+        // console.error('Failed to create user');
       }
     });
   }
@@ -144,15 +144,15 @@ export class ManageUserComponent implements OnInit {
       nzOnOk: () =>
       {
         this.userActive = { id: id, isActive: false };
-        console.log(this.userActive);
+        // console.log(this.userActive);
         this.userService.activeUser(this.userActive).subscribe(
           (response) => {
             this.messageService.showSuccess('Cấm tài khoản thành công!', 3000);
-            console.log(response);
+            // console.log(response);
             this.loadUsers(this.currentPage, this.pageSize);
           },
           (error) => {
-            console.error(error);
+            // console.error(error);
           }
         );
       },

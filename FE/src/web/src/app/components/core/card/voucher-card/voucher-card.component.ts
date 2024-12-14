@@ -24,7 +24,7 @@ export class VoucherCardComponent implements OnInit {
     if ('id' in this.voucher && this.voucher.id) { // Kiểm tra thuộc tính 'id'
       this.saveVoucher.emit(this.voucher.id);
     } else {
-      console.error('Voucher ID is missing or invalid');
+      // console.error('Voucher ID is missing or invalid');
     }
    }
 }

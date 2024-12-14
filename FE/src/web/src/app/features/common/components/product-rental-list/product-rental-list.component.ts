@@ -115,13 +115,13 @@ export class ProductRentalListComponent {
       next: (res: ProductDtoResponse) => {
         this.productList = res.data.products.items;
         this.shop = res.data.rentalShops[0];
-        console.log(res.data.rentalShops[0]);
+        // console.log(res.data.rentalShops[0]);
         this.totalProducts = res.data.products.totalCount;
         this.loadingService.setOtherLoading('loaded');
         this.cdRef.markForCheck();
       },
       error: (err) => {
-        console.error('Error loading products:', err);
+        // console.error('Error loading products:', err);
         this.loadingService.setOtherLoading('error');
         this.cdRef.markForCheck();
       },
@@ -142,7 +142,7 @@ export class ProductRentalListComponent {
     this.locations = locations;
     this.searchProduct.addresses = locations;
     this.resetPaginationAndReload();
-    console.log('Locations selected:', locations);
+    // console.log('Locations selected:', locations);
   }
 
   onSubCategorySelected(subcategory: string): void {
@@ -153,14 +153,14 @@ export class ProductRentalListComponent {
     this.subCategory = Array.from(subCategoriesSet).join(',');
     this.searchProduct.subCategory = Array.from(subCategoriesSet);
     this.resetPaginationAndReload();
-    console.log('Subcategories selected:', this.subCategory);
+    // console.log('Subcategories selected:', this.subCategory);
   }
 
   onPriceRangeSelected(range: number[]): void {
     this.searchProduct.minPrice = range[0];
     this.searchProduct.maxPrice = range[1];
     this.resetPaginationAndReload();
-    console.log('Price range selected:', range);
+    // console.log('Price range selected:', range);
   }
 
   goAllShopRelated(): void {

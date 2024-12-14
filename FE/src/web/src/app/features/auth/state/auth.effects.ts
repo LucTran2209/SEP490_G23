@@ -39,7 +39,7 @@ export class AuthEffect {
               });
             }),
             catchError((error) => {
-              console.log('error', error);
+              // console.log('error', error);
               const errorMessage = getErrorMessage(error);
               const statusCode = error.status || error.statusCode;
               return of(
@@ -66,7 +66,7 @@ export class AuthEffect {
               });
             }),
             catchError((error) => {
-              console.log('error', error);
+              // console.log('error', error);
               return of(AuthActions.login_external_failure({ error }));
             })
           )
@@ -114,7 +114,7 @@ export class AuthEffect {
               });
             }),
             catchError((error) => {
-              console.log('error', error);
+              // console.log('error', error);
               const errorMessage = getErrorMessage(error);
               const statusCode = error.status || error.statusCode;
 
@@ -432,7 +432,7 @@ export class AuthEffect {
           AuthActions.refreshToken_failure
         ),
         tap((action) => {
-          console.log('action', action);
+          // console.log('action', action);
           this.loadingSerivce.setOtherLoading('error');
           this.toastMT.handleError(action.error);
         })

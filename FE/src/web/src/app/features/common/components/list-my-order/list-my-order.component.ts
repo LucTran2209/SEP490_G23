@@ -77,7 +77,7 @@ export class ListMyOrderComponent implements OnInit {
     // this.loadOrders(this.currentPage, this.pageSize);
     this.route.queryParamMap.subscribe(queryParams => {
       let status = queryParams.get('status'); // Lấy tham số "status" từ URL
-      console.log('Current status from URL:', status); // Debug log
+      // console.log('Current status from URL:', status); // Debug log
   
       if (status === null) {
         // Nếu không có tham số status trong URL, gán giá trị mặc định là 0
@@ -102,11 +102,11 @@ export class ListMyOrderComponent implements OnInit {
     });
   }
   onTabChange(index: number): void {
-    console.log('Tab changed to index:', index); // Log để kiểm tra index
+    // console.log('Tab changed to index:', index); // Log để kiểm tra index
     const tab = this.orderTabs[index];          // Lấy tab dựa trên index
   
     if (tab) {
-      console.log('Tab details:', tab);         // Log thông tin tab để kiểm tra
+      // console.log('Tab details:', tab);         // Log thông tin tab để kiểm tra
       this.selectedTab = index;                // Cập nhật tab hiện tại
       this.router.navigate([], {
         queryParams: { status: tab.status },    // Cập nhật status vào query params
@@ -126,7 +126,7 @@ export class ListMyOrderComponent implements OnInit {
         this.orderListNull = !this.orderList || this.orderList.length === 0;
         this.pageSize = res.data.totalCount;
         this.ListOrdersByStatus();  // Lọc theo trạng thái
-        console.log(res.data.items);
+        // console.log(res.data.items);
         this.cdRef.markForCheck();
       },
       error: () => {
@@ -219,7 +219,7 @@ export class ListMyOrderComponent implements OnInit {
     this.orderService.getOrder(orderId).subscribe({
       next: (res: OrderDetailResultService) => {
         this.orderInformation = res.data;
-        console.log(this.orderInformation);
+        // console.log(this.orderInformation);
         this.cdRef.detectChanges();
       },
       error: () => {
@@ -250,7 +250,7 @@ export class ListMyOrderComponent implements OnInit {
   showCancelForm(orderId: string){
     this.isVisibleCancel = true;
     this.orderId = orderId;
-    console.log(this.orderId);
+    // console.log(this.orderId);
   }
   handleCloseCancelForm(){
     this.isVisibleCancel = false;
@@ -280,7 +280,7 @@ export class ListMyOrderComponent implements OnInit {
         this.loadOrders(this.currentPage, this.pageSize); // Tải lại danh sách đơn hàng
       },
       error: (err) => {
-        console.error('Hủy đơn hàng thất bại:', err); // Ghi log lỗi
+        // console.error('Hủy đơn hàng thất bại:', err); // Ghi log lỗi
         this.messageService.handleError('Hủy đơn hàng thất bại!');
       },
       complete: () => {
