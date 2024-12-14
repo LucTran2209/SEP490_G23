@@ -1,8 +1,28 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
-import { AddressService } from '../../../services/address.service';
-import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzAutocompleteOptionComponent } from 'ng-zorro-antd/auto-complete';
-
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  fromEvent,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { AddressService } from '../../../services/address.service';
+export interface OptionAddress {
+  desc: string;
+  placeId: string;
+}
 @Component({
   selector: 'app-input-address',
   templateUrl: './input-address.component.html',
@@ -16,39 +36,50 @@ import { NzAutocompleteOptionComponent } from 'ng-zorro-antd/auto-complete';
   ],
 })
 export class InputAddressComponent implements OnInit, ControlValueAccessor {
-  @Input() value: string = ''; // Giá trị hiện tại của input
-  @Output() valueChange = new EventEmitter<string>(); // Bắn sự kiện khi giá trị thay đổi
-  options: string[] = []; // Danh sách gợi ý địa chỉ
+  @Input() value?: string;
+  @Output() valueChange = new EventEmitter<OptionAddress>();
+  options: OptionAddress[] = [];
 
-  private onChange: (value: string) => void = () => {};
+  private onChange: (value: string) => void = () => {
+  };
   private onTouched: () => void = () => {};
 
   constructor(private addressService: AddressService) {}
 
   ngOnInit(): void {}
 
-  // Hàm xử lý khi người dùng nhập vào ô input
   onInput(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
     this.value = inputValue;
     this.onChange(inputValue);
-  
-    this.addressService.getAddress(inputValue).subscribe(
-      (data) => {
-        this.options = data.predictions.map((item: any) => item.description);
-        console.log('Options:', this.options); // Log để kiểm tra
-      },
-      (error) => {
-        console.error('Error:', error);
-        this.options = [];
-      }
-    );
+    fromEvent(event.target as HTMLInputElement, 'input')
+      .pipe(
+        debounceTime(300),
+        map((e: Event) => (e.target as HTMLInputElement).value),
+        distinctUntilChanged(),
+        switchMap((value) =>
+          this.addressService.getAddress(value).pipe(
+            map((data) =>
+              data.predictions.map((item: any) => ({
+                desc: item.description,
+                placeId: item.place_id,
+              }))
+            ),
+            catchError((error) => {
+              return of([]);
+            })
+          )
+        ),
+        tap((options) => console.log('Fetched options:', options)) // Ghi log kết quả
+      )
+      .subscribe((options) => {
+        this.options = options;
+      });
   }
 
-  // Xử lý khi người dùng chọn một gợi ý từ autocomplete
   onSelectionChange(option: NzAutocompleteOptionComponent): void {
-    const selectedValue = option.nzValue || ''; // Lấy giá trị từ option
-    this.value = selectedValue;
+    const selectedValue = option.nzValue;
+    this.value = selectedValue.desc;
     this.onChange(selectedValue);
     this.valueChange.emit(selectedValue);
   }
@@ -67,5 +98,4 @@ export class InputAddressComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
-
 }

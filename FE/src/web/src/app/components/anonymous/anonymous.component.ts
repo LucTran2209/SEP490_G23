@@ -3,13 +3,13 @@ import {
   AfterViewInit,
   Component,
   OnInit,
-  Renderer2,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef,
 } from '@angular/core';
-import { MessageResponseService } from '../../services/message-response.service';
 import { environment } from '../../../environments/environment.development';
+import { MessageResponseService } from '../../services/message-response.service';
+import { FormControl } from '@angular/forms';
+import { OptionAddress } from '../core/input-address/input-address.component';
+import { filter, map, switchMap } from 'rxjs';
+import { AddressService } from '../../services/address.service';
 declare const goongjs: any;
 declare const GoongGeocoder: any;
 
@@ -21,8 +21,6 @@ declare const GoongGeocoder: any;
 export class AnonymousComponent
   implements AfterViewInit, AfterViewChecked, OnInit
 {
-  @ViewChild('contentEquipment', { static: true })
-  contentEquipmentTmp!: TemplateRef<any>;
   devices = [
     { id: 1, name: 'Device A', price: 600, location: [105.854, 21.03] },
     { id: 2, name: 'Device B', price: 700, location: [105.87, 20.05] },
@@ -30,9 +28,29 @@ export class AnonymousComponent
     { id: 4, name: 'Device B', price: 900, location: [104.87, 21.0] },
   ];
 
+  address: FormControl = new FormControl<OptionAddress | null>(null);
+
+  get addressValueForm() {
+    return this.address.value;
+  }
+
+  // Hàm xử lý khi nhấn nút trong popup
+  handlePopupUpdate(index: number) {}
+  showSuccess() {
+    this.toastMessage.showSuccess('Thành công!');
+  }
+
+  showError() {
+    this.toastMessage.handleError('', 500);
+  }
+
+  showInfo() {
+    this.toastMessage.showInfo('Đây là thông báo.');
+  }
+
   ngAfterViewInit(): void {
     // Cài đặt token Goong
-    goongjs.accessToken = 'uAwYO4ZojSaI4wKUBHd1nnbg80n1sLKAhw3OjiJU';
+    goongjs.accessToken = environment.apiKeyMapGoong;
 
     const map = new goongjs.Map({
       container: 'map',
@@ -48,10 +66,10 @@ export class AnonymousComponent
     // current location
     var getLocal = new goongjs.GeolocateControl({
       positionOptions: {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         timeout: 6000,
       },
-      trackUserLocation: false,
+      trackUserLocation: true,
       showUserLocation: true,
     });
     map.addControl(getLocal, 'bottom-right');
@@ -66,6 +84,17 @@ export class AnonymousComponent
 
     // Đợi bản đồ tải xong
     map.on('load', () => {
+      // current location user
+      getLocal.trigger();
+      getLocal.on('error', (e: any) => {
+        console.error('Không thể lấy vị trí hiện tại:', e.message);
+      });
+      getLocal.on('geolocate', (e: any) => {
+        const userCoords = [e.coords.longitude, e.coords.latitude];
+        // Đặt trung tâm bản đồ tại vị trí người dùng
+        map.setCenter(userCoords);
+        console.log('>>> line 78', e);
+      });
       // Thêm nguồn GeoJSON
       map.addSource('myGeoJsonSource', {
         type: 'geojson',
@@ -213,34 +242,28 @@ export class AnonymousComponent
     });
   }
 
-  // Hàm xử lý khi nhấn nút trong popup
-  handlePopupUpdate(index: number) {}
-  showSuccess() {
-    this.toastMessage.showSuccess('Thành công!');
-  }
-
-  showError() {
-    this.toastMessage.handleError('', 500);
-  }
-
-  showInfo() {
-    this.toastMessage.showInfo('Đây là thông báo.');
-  }
-
   ngOnInit(): void {
-    console.log(
-      'contentEquipmentTmp',
-      this.contentEquipmentTmp.elementRef.nativeElement
-    );
+    this.address.valueChanges
+      .pipe(
+        filter((source) => {
+          return source.placeId !== undefined;
+        }),
+        map((optionChoose: OptionAddress) => optionChoose.placeId),
+        switchMap((placeId) => {
+          return this.addressService.getAddressDetail(placeId).pipe(
+            map((res) => {
+              console.log('place detail', res.result.geometry.location);
+            })
+          );
+        })
+      )
+      .subscribe((res) => {});
   }
 
   constructor(
     readonly toastMessage: MessageResponseService,
-    private viewContainerRef: ViewContainerRef,
-    private renderer: Renderer2
+    private addressService: AddressService
   ) {}
 
-  ngAfterViewChecked(): void {
-    const elements = document.querySelectorAll('.my-class');
-  }
+  ngAfterViewChecked(): void {}
 }
