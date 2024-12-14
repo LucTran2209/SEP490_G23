@@ -87,13 +87,13 @@ export class AnonymousComponent
       // current location user
       getLocal.trigger();
       getLocal.on('error', (e: any) => {
-        console.error('Không thể lấy vị trí hiện tại:', e.message);
+        // console.error('Không thể lấy vị trí hiện tại:', e.message);
       });
       getLocal.on('geolocate', (e: any) => {
         const userCoords = [e.coords.longitude, e.coords.latitude];
         // Đặt trung tâm bản đồ tại vị trí người dùng
         map.setCenter(userCoords);
-        console.log('>>> line 78', e);
+        // console.log('>>> line 78', e);
       });
       // Thêm nguồn GeoJSON
       map.addSource('myGeoJsonSource', {
@@ -252,7 +252,7 @@ export class AnonymousComponent
         switchMap((placeId) => {
           return this.addressService.getAddressDetail(placeId).pipe(
             map((res) => {
-              console.log('place detail', res.result.geometry.location);
+              // console.log('place detail', res.result.geometry.location);
             })
           );
         })

@@ -34,6 +34,7 @@ import { LocalStorageKey } from '../../../utils/constant';
 import { convertToLocalISOString } from '../../../utils/timer.helper';
 import { MyValidators } from '../../../utils/validators';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { OptionAddress } from '../../core/input-address/input-address.component';
 
 @Component({
   selector: 'app-confim-order-process',
@@ -56,7 +57,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
     recipientName: FormControl<string>;
     recipientPhoneNumber: FormControl<string>;
     recipientEmail: FormControl<string>;
-    recipientAddress: FormControl<string>;
+    recipientAddress: FormControl<OptionAddress | null>;
     note: FormControl<string>;
   }>;
   //form
@@ -79,14 +80,14 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
         ],
       ],
       recipientPhoneNumber: ['', [MyValidators.required, MyValidators.mobile]],
-      recipientAddress: ['', [MyValidators.required]],
+      recipientAddress: [null, [MyValidators.required]],
       recipientEmail: ['', [ MyValidators.email]],
       note: [''],
     }) as FormGroup<{
       recipientName: FormControl<string>;
       recipientPhoneNumber: FormControl<string>;
       recipientEmail: FormControl<string>;
-      recipientAddress: FormControl<string>;
+      recipientAddress: FormControl<OptionAddress | null>;
       note: FormControl<string>;
     }>);
   }
@@ -178,7 +179,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
           ] => result !== null
         ),
         catchError((error) => {
-          console.error('error create order', error.message);
+          // console.error('error create order', error.message);
           return of(null);
         })
       )
@@ -195,7 +196,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
           const orderCreateRequest: OrderCreateRequest = {
             userId: res[4].UserId || '',
             note: formValues.note,
-            recipientAddress: formValues.recipientAddress,
+            recipientAddress: formValues.recipientAddress.desc,
             recipientEmail: formValues.recipientEmail,
             recipientName: formValues.recipientName,
             recipientPhoneNumber: formValues.recipientPhoneNumber,
@@ -233,7 +234,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
   }
 
   onSelectCollateral(val: string): void {
-    console.log('Selected Collateral:', val);
+    // console.log('Selected Collateral:', val);
   }
 
   handleFileList(files: File[]): void {

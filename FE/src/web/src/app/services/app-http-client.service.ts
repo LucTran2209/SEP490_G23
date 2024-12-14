@@ -94,7 +94,6 @@ export class AppHttpClientService {
       })
       .pipe(
         catchError((err) => {
-          console.log('line 37:', err.message);
           return this.handleError(err);
         })
       );
@@ -139,7 +138,6 @@ export class AppHttpClientService {
       })
       .pipe(
         catchError((err) => {
-          console.log('line 37:', err.message);
           return this.handleError(err);
         })
       );

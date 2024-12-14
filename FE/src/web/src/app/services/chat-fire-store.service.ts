@@ -54,7 +54,6 @@ export class ChatFireStoreService {
     });
 
     if (chatExists) {
-      console.log('Chat room already exists between these users.');
       return;
     }
 
@@ -67,7 +66,6 @@ export class ChatFireStoreService {
     ]);
 
     if (currentUserSnapshot.empty || otherUserSnapshot.empty) {
-      console.log('One or both users not found.');
       return;
     }
 

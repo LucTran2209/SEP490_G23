@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
       dateOfBirth: this.user.dateOfBirth,
       avatarPersonal: avatar || null,
     }
-    console.log(this.userInformation);
+    // console.log(this.userInformation);
     this.isVisible = true;
     this.cdRef.detectChanges();
   }
@@ -76,7 +76,7 @@ export class ProfileComponent implements OnInit {
     this.isVisible = false;
   }
   updateUser(user: any) {
-    console.log(this.userInformation);
+    // console.log(this.userInformation);
     this.userService.updateProfile(user).subscribe({
       next: (response) => {
         this.messageService.showSuccess('Cập Nhật Hồ Sơ Thành Công!');
@@ -88,7 +88,7 @@ export class ProfileComponent implements OnInit {
       },
       error: (error) => {
         this.messageService.handleError('Cập Nhật Hồ Sơ Thất Bại!');
-        console.error('Failed to create user');
+        // console.error('Failed to create user');
       }
 
     });
@@ -101,7 +101,7 @@ export class ProfileComponent implements OnInit {
         this.loadingService.setOtherLoading('loaded');
         this.user = res.data;
         this.userProfileService.setAvatar(this.user.avatarPersonal);
-        console.log(this.user);
+        // console.log(this.user);
         this.userError = false; 
       },
       error: () => {

@@ -1,14 +1,13 @@
-import { HttpErrorResponse, HttpHandler, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { catchError, finalize, map, switchMap, throwError, timer } from 'rxjs';
-import { MessageResponseService } from '../services/message-response.service';
-import { AuthSlug, CategorySlug, FeedBackSlug, ProductSlug, RentalShopSlug, VoucherSlug } from '../configs/api.configs';
 import { Store } from '@ngrx/store';
-import { selectIsRefreshing } from '../features/auth/state/auth.feature';
-import { getCookie } from '../utils/cookie.helper';
-import { STRING } from '../utils/constant';
+import { catchError, switchMap, throwError } from 'rxjs';
+import { AuthSlug, CategorySlug, FeedBackSlug, ProductSlug, RentalShopSlug, VoucherSlug } from '../configs/api.configs';
 import { logout, refreshToken_init } from '../features/auth/state/auth.actions';
+import { selectIsRefreshing } from '../features/auth/state/auth.feature';
+import { AuthService } from '../services/auth.service';
+import { STRING } from '../utils/constant';
+import { getCookie } from '../utils/cookie.helper';
 
 const ignoredUrls: string[] = [
   AuthSlug.Login.api,
@@ -20,7 +19,7 @@ const ignoredUrls: string[] = [
   AuthSlug.ConfirmEmail.api,
   CategorySlug.ListCategory.api,
   CategorySlug.ListSubCategory.api,
-  'https://esgoo.net/api-tinhthanh/',
+  'https://rsapi.goong.io/Place/',
   ProductSlug.RentalShopProduct.api,
   ProductSlug.GetDetailProduct.api,
   ProductSlug.ListProduct.api,
@@ -39,8 +38,9 @@ export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.token;
   let authReq = req;
-  const messageResponse  = inject(MessageResponseService);
+  // debugger;
   const shouldIgnore = ignoredUrls.some(url => req.url.includes(url));
+  const notShouldRedirect = exceptionUrls.some(url => req.url.includes(url));
   if (!token && !shouldIgnore && authService.isTokenExpired()) {
     // messageResponse.handleError('Hết phiên token vui lòng đăng nhập lại', 401);
 
@@ -58,8 +58,7 @@ export const httpRequestInterceptor: HttpInterceptorFn = (req, next) => {
       return throwError(() => new Error());
     }));
   }
-
-  const clonedRequest = !shouldIgnore && token || exceptionUrls
+  const clonedRequest = !shouldIgnore && token || notShouldRedirect
     ? req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
@@ -88,7 +87,6 @@ function handle401Error(request: HttpRequest<any>, next: HttpHandlerFn) {
       return next(clonedRequest);
     }),
     catchError((error) => {
-      console.error('Token refresh failed:', error);
       store.dispatch(logout());
       return throwError(() => new Error('Token refresh failed'));
     })

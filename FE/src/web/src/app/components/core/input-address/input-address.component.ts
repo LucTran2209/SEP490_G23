@@ -15,6 +15,7 @@ import {
   fromEvent,
   map,
   of,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs';
@@ -43,38 +44,37 @@ export class InputAddressComponent implements OnInit, ControlValueAccessor {
   private onChange: (value: string) => void = () => {
   };
   private onTouched: () => void = () => {};
-
+  private inputSubject = new Subject<string>();
   constructor(private addressService: AddressService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Lắng nghe sự thay đổi input
+    this.inputSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((value) =>
+        this.addressService.getAddress(value).pipe(
+          map((data) =>
+            data.predictions.map((item: any) => ({
+              desc: item.description,
+              placeId: item.place_id,
+            }))
+          ),
+          catchError(() => of([]))
+        )
+      ),
+      // tap((options) => console.log('Fetched options:', options))
+    ).subscribe((options) => {
+      this.options = options;
+    });
+  }
 
   onInput(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
     this.value = inputValue;
     this.onChange(inputValue);
-    fromEvent(event.target as HTMLInputElement, 'input')
-      .pipe(
-        debounceTime(300),
-        map((e: Event) => (e.target as HTMLInputElement).value),
-        distinctUntilChanged(),
-        switchMap((value) =>
-          this.addressService.getAddress(value).pipe(
-            map((data) =>
-              data.predictions.map((item: any) => ({
-                desc: item.description,
-                placeId: item.place_id,
-              }))
-            ),
-            catchError((error) => {
-              return of([]);
-            })
-          )
-        ),
-        tap((options) => console.log('Fetched options:', options)) // Ghi log kết quả
-      )
-      .subscribe((options) => {
-        this.options = options;
-      });
+
+    this.inputSubject.next(inputValue);
   }
 
   onSelectionChange(option: NzAutocompleteOptionComponent): void {

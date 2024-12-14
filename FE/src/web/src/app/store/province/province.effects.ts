@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as ProvinceActions from './province.actions';
-import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { ProvinceVNService } from '../../services/province-vn.service';
+import * as ProvinceActions from './province.actions';
 @Injectable()
 export class ProvinceEffect {
   constructor(
@@ -102,7 +102,6 @@ export class ProvinceEffect {
         ProvinceActions.getWardOrCommume_failure
       ),
       tap((err) => {
-        console.log('error:', err);
       })
     ),
     {

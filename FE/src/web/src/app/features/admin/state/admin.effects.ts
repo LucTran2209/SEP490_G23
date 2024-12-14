@@ -36,7 +36,7 @@ export class AdminEffect {
           mergeMap(action =>
             this.userService.listUser(action.pageIndex, action.pageSize).pipe(
               map((response: UserResultService) => {
-                console.log(response);
+                // console.log(response);
                 const userList: UserOutputDto[] = response.data.items;
                 return AdminActions.load_users_success({ userList });
               }),

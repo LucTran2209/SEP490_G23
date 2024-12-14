@@ -89,7 +89,6 @@ export class httpErrorInterceptor implements HttpInterceptor {
   ) {
     const { error } = errorRes;
     let diffError = error as IErrorApi;
-    console.log('<<<<<line 93>>>>>',diffError);
     this.loadingSerivce.setOtherLoading('error');
     return throwError(() => diffError);
   }
@@ -101,9 +100,6 @@ export class httpErrorInterceptor implements HttpInterceptor {
   ) {
     const {} = error;
     this.loadingSerivce.setOtherLoading('error');
-
-    console.warn(error);
-
     return throwError(() => error);
   }
 

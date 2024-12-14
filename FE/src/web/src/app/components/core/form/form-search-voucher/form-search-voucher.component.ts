@@ -46,7 +46,7 @@ export class FormSearchVoucherComponent implements OnInit {
     ).subscribe();
   }
   onSubmit() {
-    console.log('>>>> line 53', this.filterFormVoucher.get("timeRange")?.value);
+    // console.log('>>>> line 53', this.filterFormVoucher.get("timeRange")?.value);
     this.formValueFilter.emit(this.filterFormVoucher.value);
   }
   resetForm(): void {
@@ -58,6 +58,6 @@ export class FormSearchVoucherComponent implements OnInit {
     this.resetLoad.emit();
   }
   onChange(result: Date): void {
-    console.log('onChange: ', result);
+    // console.log('onChange: ', result);
   }
 }

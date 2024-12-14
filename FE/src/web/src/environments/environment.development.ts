@@ -3,7 +3,7 @@ export const environment = {
   apiUrl: 'https://localhost:7088/',
   baseDomain: location.hostname,
   apiUrlGoong: 'https://rsapi.goong.io/Place/',
-  apiKeyGoong: 'OROWRrTPOf7LICIyp997s9Miz5iFDLSTrMX1oQ4D',
+  apiKeyGoong: '2D0WRtFcdsGoGnhhfDc2S9MI41kKY81mzhWFHDMh',
   apiKeyMapGoong:'uAwYO4ZojSaI4wKUBHd1nnbg80n1sLKAhw3OjiJU',
   googleID:
     '340351071914-5t0m80o6qnf7a8q7ad66482blh4gc0e9.apps.googleusercontent.com',

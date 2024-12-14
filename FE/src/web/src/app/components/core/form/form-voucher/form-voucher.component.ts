@@ -96,7 +96,7 @@ export class FormVoucherComponent {
         this.resetForm();
       } else {
         const formData: VoucherInputDto = this.formVoucher.value;
-        console.log('Form data:', formData);
+        // console.log('Form data:', formData);
         this.saveVoucher.emit(formData); // Tạo mới voucher nếu không có
         this.resetForm();
       }

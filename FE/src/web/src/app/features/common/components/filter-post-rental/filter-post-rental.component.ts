@@ -38,13 +38,13 @@ export class FilterProductRentalComponent implements OnInit, OnDestroy {
   }
 
   onSliderChange(value: number[]): void {
-    console.log('Selected rental price range: ', value);
+    // console.log('Selected rental price range: ', value);
     this.rentalPriceRange = value;
     this.PriceRangeSelected.emit(this.rentalPriceRange);
   }
 
   onCategory(item: IITemListNav) {
-    console.log('Location changed:', item);
+    // console.log('Location changed:', item);
   }
 
   onLoadMore(e: boolean) {}
@@ -74,7 +74,7 @@ export class FilterProductRentalComponent implements OnInit, OnDestroy {
         label: subcategory.subCategoryName,
         href: `/common/product-list/${subcategory.subCategoryName}/caid/${subcategory.id}`
       }));
-      console.log('Mapped Category Options: ', this.categoryOptions);  // Log the mapped category options
+      // console.log('Mapped Category Options: ', this.categoryOptions);  // Log the mapped category options
     });
   }
   onCheckboxChange(item: any) {

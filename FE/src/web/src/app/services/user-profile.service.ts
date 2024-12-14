@@ -25,7 +25,6 @@ export class UserProfileService {
       const userJson = this.storgageService.get(LocalStorageKey.currentUser);
       return userJson ? JSON.parse(userJson) : null; // Handle empty string or null
     } catch (error) {
-      console.error('Error parsing currentUser JSON:', error);
       return null; // Return null if JSON parsing fails
     }
   }

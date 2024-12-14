@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { UserProfileService } from '../../../../services/user-profile.service';
-import { RechargeHistoryResponse, rechargeMoney, RechargeHistoryData } from '../../../../interfaces/payment.interface';
-import { PaymentService } from '../../../../services/payment.service';
-import { UserService } from '../../../../services/user.service';
+import { RechargeHistoryData, RechargeHistoryResponse, rechargeMoney } from '../../../../interfaces/payment.interface';
 import { ProfileResultService } from '../../../../interfaces/user.interface';
+import { PaymentService } from '../../../../services/payment.service';
+import { UserProfileService } from '../../../../services/user-profile.service';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-my-wallet',
@@ -39,7 +39,7 @@ export class MyWalletComponent implements OnInit {
         this.balance = res.data.balance;
       },
       error: () => {
-        console.error('Error fetching user balance');
+        // console.error('Error fetching user balance');
       }
     });
   }
@@ -64,7 +64,7 @@ export class MyWalletComponent implements OnInit {
     this.paymentService.rechargeHistory(from, to).subscribe((res: RechargeHistoryResponse) => {
       this.data = res.data;
       this.cdRef.markForCheck();
-      console.log(this.data);
+      // console.log(this.data);
       this.dataNull = !this.data || this.data.length === 0;
     });
   }

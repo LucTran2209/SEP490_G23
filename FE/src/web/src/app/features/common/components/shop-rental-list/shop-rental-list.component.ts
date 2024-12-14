@@ -46,7 +46,7 @@ export class ShopRentalListComponent implements OnInit {
     };
     this.productService.listProduct(productRequest).subscribe((res: ProductDtoResponse) => {
       this.shopList = res.data.rentalShops;
-      console.log(this.search);
+      // console.log(this.search);
       this.loadingService.setOtherLoading('loaded');
     });
   }

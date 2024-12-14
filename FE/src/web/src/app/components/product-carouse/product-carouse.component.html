@@ -3,7 +3,7 @@
     <img
       nz-image
       class="w-full object-cover max-h-[500px] cursor-pointer min-h-[500px] shadow-sm border border-solid border-[#ededed]"
-      nzSrc="{{ selectedImage }}"
+      [nzSrc]="selectedImage || 'assets/images/6306486.jpg'"
       alt=""
     />
   </div>
@@ -22,7 +22,7 @@
       (click)="onSelectImage(slide)"
     >
       <img
-        [src]="slide"
+        [src]="slide || 'assets/images/6306486.jpg'"
         alt=""
         class="h-[100px] w-full object-cover hover:border-2 hover:border-solid hover:border-[#1890FF]"
       />

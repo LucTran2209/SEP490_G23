@@ -34,16 +34,13 @@ export class UserFireStoreService {
       const querySnapshot = await getDocs(myQuery);
       if (!querySnapshot.empty) {
         // this.messageToastSerivce.showInfo('Người dùng thực sự đã tồn tại');
-        console.warn('Người dùng thực sự đã tồn tại');
       } else {
         // this.messageToastSerivce.showSuccess(
         //   'Test: thêm người dùng vào cloud firestore'
         // );
-        console.log('thêm người dùng vào cloud firestore');
         await addDoc(ref, data);
       }
     } catch (error) {
-      console.error('Error checking/adding user: ', error);
     }
   }
 

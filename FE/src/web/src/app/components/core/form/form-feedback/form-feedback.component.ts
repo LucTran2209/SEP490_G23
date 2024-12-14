@@ -37,15 +37,15 @@ export class FormFeedbackComponent implements OnInit{
         rating: 3,             // Giá trị mặc định cho đánh giá
         comment: ''            // Chuỗi nhận xét trống ban đầu
       }));
-      console.log('Feedback initialized:', this.feedBackList); // Kiểm tra dữ liệu
+      // console.log('Feedback initialized:', this.feedBackList); // Kiểm tra dữ liệu
     } else {
-      console.error('Order details are not available');
+      // console.error('Order details are not available');
     }
   }
    // Cập nhật giá trị rating
    onRatingChange(index: number, value: number) {
     this.feedBackList[index].rating = value;
-    console.log(`Rating for product ${index} changed to:`, value);
+    // console.log(`Rating for product ${index} changed to:`, value);
   }
 
   // Cập nhật giá trị comment
@@ -63,7 +63,7 @@ export class FormFeedbackComponent implements OnInit{
   }
   onSave(){
     this.feedBackList.forEach(fb => {
-      console.log("FeedBack: ",fb);
+      // console.log("FeedBack: ",fb);
       this.saveFeedBack.emit(fb);
     });
   }

@@ -33,7 +33,7 @@ export class FormRechargeComponent implements OnInit{
   onSubmit() {
     if (this.formRecharge.valid) {
       const formValue = this.formRecharge.value;
-      console.log('Submitted Value:', formValue);
+      // console.log('Submitted Value:', formValue);
       this.saveForm.emit(formValue);
     } else {
       this.messageService.handleError('Vui lòng nhập số tiền cần nạp!');

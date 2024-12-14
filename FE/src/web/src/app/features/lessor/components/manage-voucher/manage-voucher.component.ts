@@ -154,12 +154,12 @@ export class ManageVoucherComponent {
       next: (res: VoucherDetailResultService) => {
         this.voucherInformation = res.data[0];
         this.voucherId = voucherId;
-        console.log('Voucher Information:', this.voucherInformation);
+        // console.log('Voucher Information:', this.voucherInformation);
         this.loadingSerivce.setOtherLoading('loaded');
       },
       error: (error) => {
         this.messageService.handleError('Lấy thông tin voucher thất bại!');
-        console.error('Error:', error);
+        // console.error('Error:', error);
       },
     });
   }

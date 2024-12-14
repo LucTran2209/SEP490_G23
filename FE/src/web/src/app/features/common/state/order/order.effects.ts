@@ -28,7 +28,7 @@ export class OrderProductsEffects {
         switchMap(({ formData }) =>
           this.orderService.createOrders(formData).pipe(
             map((res) => {
-              console.log(res,'>>>> line 29', res);
+              // console.log(res,'>>>> line 29', res);
               return OrderActions.createOrder_success({ message: res.message });
             }),
             catchError((err) => {

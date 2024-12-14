@@ -77,12 +77,10 @@ export class SteperRegisterComponent {
       description
     ]) => {
       if (!imageFront || !imageBack) {
-        console.error('One or more files are missing.');
         return;
       }
 
       if(!this.userCurrent){
-        console.error('Not define user current');
         return;
       }
 
@@ -105,9 +103,6 @@ export class SteperRegisterComponent {
         formData.append('businessLicenseFile', String(businessLicense));
 
       }
-
-      console.log('FormData:', typeof formData);
-
       this.store.dispatch(renterShop({ formData }));
     }
   );

@@ -58,7 +58,7 @@ export class FormOrderComponent implements OnInit {
   @Output() formValueFilter = new EventEmitter();
   @Output() resetLoad = new EventEmitter();
   onSubmit() {
-    console.log('>>>> line 53', this.filterFormOrder.get("timeRange")?.value);
+    // console.log('>>>> line 53', this.filterFormOrder.get("timeRange")?.value);
     this.formValueFilter.emit(this.filterFormOrder.value);
   }
   resetForm(): void {

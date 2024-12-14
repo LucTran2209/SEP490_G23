@@ -68,7 +68,7 @@ export class ManagerShopComponent  implements OnInit{
   async showProductModal(prodId?: string) {
     this.isVisible = true; // Show modal immediately
     this.isEditMode = !!prodId; // Set edit mode based on prodId
-    console.log(this.isEditMode);
+    // console.log(this.isEditMode);
     this.title = prodId ? 'Cập nhật Sản phẩm' : 'Tạo mới Sản phẩm';
   
     if (prodId) {
@@ -93,7 +93,7 @@ export class ManagerShopComponent  implements OnInit{
           // Trigger change detection manually to update the template
           this.cdRef.detectChanges();
         } catch (error) {
-          console.error('Error fetching images:', error);
+          // console.error('Error fetching images:', error);
         }
       }
     } 
@@ -121,7 +121,7 @@ export class ManagerShopComponent  implements OnInit{
     this.rentalShopService.getRentalShop(this.shopid).subscribe((res: RentalShopResultService) => {
       this.shop = res.data;
       this.loadProducts(this.shopid, this.currentPage, this.pageSize);  
-      console.log("shop: ", res.data);  
+      // console.log("shop: ", res.data);  
   });
   }
   
@@ -135,7 +135,7 @@ export class ManagerShopComponent  implements OnInit{
         this.total = res.data.totalCount;
       }
       this.loadingService.setOtherLoading('loaded');
-      console.log(res)
+      // console.log(res)
     });
     // this.store.dispatch(AdminActions.load_users({ pageIndex, pageSize }));
   }
@@ -157,13 +157,13 @@ export class ManagerShopComponent  implements OnInit{
         next: (response) => {
           this.messageService.showSuccess('Tạo Sản Phẩm Mới Thành Công!');
           this.handleCloseModal();
-          console.log('Product created successfully!');
+          // console.log('Product created successfully!');
           this.loadProducts(this.shopid, this.currentPage, this.pageSize);
           
         },
         error: (error) => {
           this.messageService.handleError('Lưu sản phẩm thất bại!');
-          console.error('Failed to create Product');
+          // console.error('Failed to create Product');
         }
       });
   }
@@ -271,7 +271,7 @@ export class ManagerShopComponent  implements OnInit{
       avatarShop: avatarFile || null,
       banner: bannerFile || null,
     };
-    console.log(this.shopData);
+    // console.log(this.shopData);
   
     // Xử lý avatar preview
     this.avatarUrl = avatarFile ? URL.createObjectURL(avatarFile) : null;

@@ -140,7 +140,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             );
           },
           error: (err) => {
-            console.error('Lỗi xử lý:', err);
+            // console.error('Lỗi xử lý:', err);
           },
         });
     });
@@ -149,11 +149,11 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dispatchActionNessarray();
     this.selectStateFromNgRx();
-    console.log('Oninit call');
+    // console.log('Oninit call');
   }
 
   ngOnDestroy(): void {
-    console.log('OnDestroy call');
+    // console.log('OnDestroy call');
     this.subScription?.unsubscribe();
     this.store.dispatch(resetStateOrderDetail());
   }

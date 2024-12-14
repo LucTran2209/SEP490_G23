@@ -20,15 +20,15 @@ export class LayoutDashboardComponent implements OnInit {
 
   onToggleSidebar(collapsed: boolean): void {
     this.isSidebarCollapsed = collapsed;
-    console.log(
-      'Sidebar status: ',
-      this.isSidebarCollapsed ? 'Collapsed' : 'Expanded'
-    );
+    // console.log(
+    //   'Sidebar status: ',
+    //   this.isSidebarCollapsed ? 'Collapsed' : 'Expanded'
+    // );
   }
 
   onAvatarClick(): void {
-    console.log('Avatar clicked!');
-    console.log(this.userRole);
+    // console.log('Avatar clicked!');
+    // console.log(this.userRole);
   }
 
   constructor(
@@ -50,7 +50,7 @@ export class LayoutDashboardComponent implements OnInit {
     this.userRole = role[0] as USER_ROLE;
   } else {
     // Handle the case where role is undefined or invalid if needed
-    console.warn('Invalid or undefined user role');
+    // console.warn('Invalid or undefined user role');
   }
   this.shopId = this.userProfileService.rentalshopId;
   }

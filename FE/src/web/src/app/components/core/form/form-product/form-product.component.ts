@@ -133,8 +133,8 @@ export class FormProductComponent {
   submitForm(){
     
     let formData = new FormData();
-    console.log('Form status:', this.productForm.status); // Kiểm tra trạng thái form
-    console.log('Form value:', this.productForm.value); // Kiểm tra giá trị hiện tại
+    // console.log('Form status:', this.productForm.status); // Kiểm tra trạng thái form
+    // console.log('Form value:', this.productForm.value); // Kiểm tra giá trị hiện tại
   
     if (this.productForm.invalid) {
       this.msg.error("Vui lòng điền đầy đủ thông tin trong biểu mẫu.");

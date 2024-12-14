@@ -71,7 +71,7 @@ export class FormDeactiveShopComponent {
       };
       this.saveShop.emit(formData);
 
-      console.log('Form data:', formData);
+      // console.log('Form data:', formData);
       this.resetForm();
     }else{
       this.messageService.handleError('Vui Lòng Chọn Lý Do Xóa Shop!');

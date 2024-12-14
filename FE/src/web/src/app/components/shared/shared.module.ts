@@ -320,7 +320,7 @@ const SHARED_MODULES = [
           },
         ],
         onError: (err) => {
-          console.error(err);
+          // console.error(err);
         },
       } as SocialAuthServiceConfig,
     },

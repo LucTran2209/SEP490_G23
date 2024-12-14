@@ -62,11 +62,11 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   private voucherModalRef: NzModalRef | null = null;
   // modal Ref
   handleOkOrderProcess(): void {
-    console.log('Đã xác nhận đơn hàng!');
+    // console.log('Đã xác nhận đơn hàng!');
   }
 
   handleCancelProcess(): void {
-    console.log('Đã hủy quá trình xác nhận đơn hàng!');
+    // console.log('Đã hủy quá trình xác nhận đơn hàng!');
   }
 
   // modal

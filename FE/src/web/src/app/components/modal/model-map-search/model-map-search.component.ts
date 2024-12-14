@@ -33,7 +33,6 @@ export class ModelMapSearchComponent
   ngAfterViewChecked(): void {}
 
   initMap() {
-    // Cài đặt token Goong
     goongjs.accessToken = environment.apiKeyMapGoong;
 
     this.map = new goongjs.Map({
@@ -45,10 +44,8 @@ export class ModelMapSearchComponent
 
     this.addControlMap(this.map);
 
-    // Trigger
     this.triggerCurrentLocation(this.map);
   }
-
 
   triggerCurrentLocation(map: any) {
     const getLocal = new goongjs.GeolocateControl({
@@ -59,14 +56,14 @@ export class ModelMapSearchComponent
       trackUserLocation: false,
       showUserLocation: true,
     });
-  
+
     map.addControl(getLocal, 'bottom-right');
-  
+
     // Tự động trigger lấy vị trí
     map.on('load', () => {
       getLocal.trigger();
     });
-  
+
     // Xử lý khi lấy được vị trí
     getLocal.on('geolocate', (e: any) => {
       const userCoords = [e.coords.longitude, e.coords.latitude];
@@ -75,19 +72,19 @@ export class ModelMapSearchComponent
       this.loadNearbyShops([userCoords[0], userCoords[1]]);
     });
   }
-  
+
   addControlMap(map: any) {
     const nav = new goongjs.NavigationControl();
     map.addControl(nav, 'bottom-right');
-  
+
     // Geocoder
     const geocoder = new GoongGeocoder({
       accessToken: environment.apiKeyGoong,
       goongjs: goongjs,
     });
-  
+
     map.addControl(geocoder);
-  
+
     // Xử lý khi người dùng tìm kiếm
     geocoder.on('result', (e: any) => {
       const searchCoords = e.result.result.geometry.location;
@@ -96,16 +93,16 @@ export class ModelMapSearchComponent
       this.loadNearbyShops([searchCoords.lng, searchCoords.lat]);
     });
   }
-  
+
   addCircleLayer(center: [number, number], radiusInMeters: number) {
     const circleGeoJSON = this.createCircleGeoJSON(center, radiusInMeters);
-  
+
     // Thêm nguồn GeoJSON cho vòng tròn
     this.map.addSource('circle-layer', {
       type: 'geojson',
       data: circleGeoJSON,
     });
-  
+
     // Thêm layer hiển thị vòng tròn
     this.map.addLayer({
       id: 'circle-layer',
@@ -117,17 +114,17 @@ export class ModelMapSearchComponent
       },
     });
   }
-  
+
   clearMarkersAndCircles() {
     // Xóa tất cả markers
     this.markers.forEach((marker) => marker.remove());
     this.markers = [];
-  
+
     // Xóa layer và source của vòng tròn
     if (this.map.getLayer('circle-layer')) this.map.removeLayer('circle-layer');
-    if (this.map.getSource('circle-layer')) this.map.removeSource('circle-layer');
+    if (this.map.getSource('circle-layer'))
+      this.map.removeSource('circle-layer');
   }
-  
 
   loadNearbyShops(coords: [number, number]) {
     // Dữ liệu mẫu cho các shop lân cận
@@ -138,8 +135,14 @@ export class ModelMapSearchComponent
     ];
 
     // Hiển thị các shop trên bản đồ
-    this.shops.forEach((shop) => {
-      const marker = new goongjs.Marker({ color: 'red' })
+    this.shops.forEach((shop, index) => {
+      let el = document.createElement('div');
+      el.className = `shop-icon-${index}`;
+      el.style.backgroundImage = 'url(./assets/images/shop-icon.png)';
+      el.style.width = '60px';
+      el.style.height = '60px';
+      el.style.backgroundSize = 'contain';
+      const marker = new goongjs.Marker({ element: el })
         .setLngLat(shop.coords)
         .setPopup(
           new goongjs.Popup({ offset: 25 }).setHTML(
@@ -149,7 +152,6 @@ export class ModelMapSearchComponent
         .addTo(this.map);
     });
   }
-
 
   createCircleGeoJSON(center: [number, number], radiusInMeters: number) {
     const points = 64; // Số điểm trên vòng tròn
