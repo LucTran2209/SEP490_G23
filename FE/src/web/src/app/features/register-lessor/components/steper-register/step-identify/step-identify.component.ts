@@ -16,13 +16,17 @@ import {
   selectImageFileFront,
   selectImageFront,
 } from '../../../state/register_lessor.reducer';
+import { BaseComponentsComponent } from '../../../../../components/base-components/base-components.component';
 
 @Component({
   selector: 'app-step-identify',
   templateUrl: './step-identify.component.html',
   styleUrl: './step-identify.component.scss',
 })
-export class StepIdentifyComponent implements OnInit, OnDestroy {
+export class StepIdentifyComponent
+  extends BaseComponentsComponent
+  implements OnInit, OnDestroy
+{
   frontImageFile: File | null = null;
   backImageFile: File | null = null;
   frontImagePreview: string | null = null;
@@ -41,19 +45,18 @@ export class StepIdentifyComponent implements OnInit, OnDestroy {
     const input = e.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      
+
       // Tạo URL tạm thời từ file
       const fileURL = URL.createObjectURL(file);
-  
+
       if (typeImage === 'front') {
         this.frontImageFile = file;
-        this.frontImagePreview = fileURL;  // Gán URL tạm thời cho frontImagePreview
+        this.frontImagePreview = fileURL; // Gán URL tạm thời cho frontImagePreview
       } else {
         this.backImageFile = file;
-        this.backImagePreview = fileURL;  // Gán URL tạm thời cho backImagePreview
+        this.backImagePreview = fileURL; // Gán URL tạm thời cho backImagePreview
       }
     }
-   
   }
 
   onSubmit() {
@@ -61,26 +64,38 @@ export class StepIdentifyComponent implements OnInit, OnDestroy {
       alert('Vui lòng chọn cả ảnh mặt trước và mặt sau.');
       return;
     }
-    if (this.frontImageFile && this.backImageFile && this.frontImagePreview && this.backImagePreview) {
+    if (
+      this.frontImageFile &&
+      this.backImageFile &&
+      this.frontImagePreview &&
+      this.backImagePreview
+    ) {
       this.store.dispatch(
         stepInfoCard({
           content: {
             imageFront: this.frontImagePreview,
             imageBack: this.backImagePreview,
             imageFileBack: this.backImageFile,
-            imageFileFront: this.frontImageFile
+            imageFileFront: this.frontImageFile,
           },
         })
       );
+      this.scrollToTop();
       this.nextStep.emit();
-    } 
+    }
   }
 
   goBack(): void {
+    this.scrollToTop();
     this.prevStep.emit();
   }
 
-  constructor(private store: Store<FeatureAppState>, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private store: Store<FeatureAppState>,
+    private cdRef: ChangeDetectorRef
+  ) {
+    super();
+  }
 
   ngOnDestroy(): void {}
   ngOnInit(): void {

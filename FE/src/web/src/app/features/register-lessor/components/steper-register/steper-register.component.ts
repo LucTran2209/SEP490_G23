@@ -18,13 +18,15 @@ import {
   selectShopName,
   selectTaxNumber,
 } from '../../state/register_lessor.reducer';
+import { extend } from 'dayjs';
+import { BaseComponentsComponent } from '../../../../components/base-components/base-components.component';
 
 @Component({
   selector: 'app-steper-register',
   templateUrl: './steper-register.component.html',
   styleUrl: './steper-register.component.scss',
 })
-export class SteperRegisterComponent {
+export class SteperRegisterComponent extends BaseComponentsComponent{
   current = 0;
   userCurrent: IPayLoad | null;
   shopName$: Observable<string>;
@@ -103,7 +105,8 @@ export class SteperRegisterComponent {
         formData.append('businessLicenseFile', String(businessLicense));
 
       }
-      this.store.dispatch(renterShop({ formData }));
+      this.scrollToTop();
+      // this.store.dispatch(renterShop({ formData }));
     }
   );
 }
@@ -113,6 +116,7 @@ export class SteperRegisterComponent {
     private store: Store<FeatureAppState>,
     private userprofileService: UserProfileService
   ) {
+    super();
     this.userCurrent = this.userprofileService.currentUser;
     this.shopName$ = this.store.select(selectShopName);
     this.imageFront$ = this.store.select(selectImageFileFront);

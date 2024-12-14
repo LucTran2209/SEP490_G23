@@ -21,6 +21,8 @@ import { IRequestRegisterLessor_Step3 } from '../../../../../interfaces/register
 import { GlobalState } from '../../../../../store/app.state';
 import { stepInfoTax } from '../../../state/register_lessor.actions';
 import { OptionAddress } from '../../../../../components/core/input-address/input-address.component';
+import { REGEX } from '../../../../../utils/constant';
+import { BaseComponentsComponent } from '../../../../../components/base-components/base-components.component';
 
 @Component({
   selector: 'app-step-tax',
@@ -28,7 +30,10 @@ import { OptionAddress } from '../../../../../components/core/input-address/inpu
   styleUrls: ['./step-tax.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StepTaxComponent implements OnInit, OnDestroy {
+export class StepTaxComponent
+  extends BaseComponentsComponent
+  implements OnInit, OnDestroy
+{
   private destroy$ = new Subject<void>();
 
   getListProvince$?: Observable<Province[]>;
@@ -55,6 +60,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     private store: Store<GlobalState>,
     private formBuilder: FormBuilder
   ) {
+    super();
     this.formTax = this.createForm();
   }
 
@@ -72,7 +78,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       rentalScale: ['', [Validators.required]],
       address: [null, [Validators.required]],
-      taxCode: ['', [Validators.required]],
+      taxCode: ['', [Validators.required, Validators.pattern(REGEX.minLength)]],
       description: [''],
     }) as FormGroup<{
       rentalScale: FormControl<string>;
@@ -112,6 +118,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     //   });
   }
   goBack(): void {
+    this.scrollToTop();
     this.prevStep.emit();
   }
   onSubmit(): void {
@@ -131,7 +138,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
         } as IRequestRegisterLessor_Step3,
       })
     );
-
+    this.scrollToTop();
     this.nextStep.emit();
   }
 
@@ -143,10 +150,10 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     this.uploadedFiles.splice(index, 1);
   }
 
-  get isDisableBtnFinal(){
-    if(!this.isChooseRentalScalePersonal){
+  get isDisableBtnFinal() {
+    if (!this.isChooseRentalScalePersonal) {
       return this.formTax.invalid || this.uploadedFiles.length === 0;
-    }else{
+    } else {
       return this.formTax.invalid;
     }
   }
