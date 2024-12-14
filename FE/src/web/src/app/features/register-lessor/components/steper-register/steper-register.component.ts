@@ -106,7 +106,7 @@ export class SteperRegisterComponent extends BaseComponentsComponent{
 
       }
       this.scrollToTop();
-      // this.store.dispatch(renterShop({ formData }));
+      this.store.dispatch(renterShop({ formData }));
     }
   );
 }
