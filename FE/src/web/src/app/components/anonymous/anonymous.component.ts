@@ -2,10 +2,14 @@ import {
   AfterViewChecked,
   AfterViewInit,
   Component,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { MessageResponseService } from '../../services/message-response.service';
+import { FormControl } from '@angular/forms';
+import { OptionAddress } from '../core/input-address/input-address.component';
+import { filter, map, switchMap } from 'rxjs';
+import { AddressService } from '../../services/address.service';
 declare const goongjs: any;
 declare const GoongGeocoder: any;
 
@@ -23,6 +27,26 @@ export class AnonymousComponent
     { id: 3, name: 'Device B', price: 800, location: [105.87, 21.04] },
     { id: 4, name: 'Device B', price: 900, location: [104.87, 21.0] },
   ];
+
+  address: FormControl = new FormControl<OptionAddress | null>(null);
+
+  get addressValueForm() {
+    return this.address.value;
+  }
+
+  // Hàm xử lý khi nhấn nút trong popup
+  handlePopupUpdate(index: number) {}
+  showSuccess() {
+    this.toastMessage.showSuccess('Thành công!');
+  }
+
+  showError() {
+    this.toastMessage.handleError('', 500);
+  }
+
+  showInfo() {
+    this.toastMessage.showInfo('Đây là thông báo.');
+  }
 
   ngAfterViewInit(): void {
     // Cài đặt token Goong
@@ -69,7 +93,7 @@ export class AnonymousComponent
         const userCoords = [e.coords.longitude, e.coords.latitude];
         // Đặt trung tâm bản đồ tại vị trí người dùng
         map.setCenter(userCoords);
-        console.log('>>> line 78',e);
+        console.log('>>> line 78', e);
       });
       // Thêm nguồn GeoJSON
       map.addSource('myGeoJsonSource', {
@@ -216,51 +240,30 @@ export class AnonymousComponent
         });
       });
     });
-
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       const userCoords = [
-    //         position.coords.longitude,
-    //         position.coords.latitude,
-    //       ];
-
-    //       // Đặt vị trí hiện tại lên bản đồ
-    //       map.setCenter(userCoords);
-    //       new goongjs.Marker({ color: 'blue' })
-    //         .setLngLat(userCoords)
-    //         .addTo(map);
-    //     },
-    //     (error) => {
-    //       console.error('Không thể truy cập vị trí:', error);
-    //     }
-    //   );
-    // } else {
-    //   console.error('Trình duyệt không hỗ trợ định vị.');
-    // }
-  }
-
-  // Hàm xử lý khi nhấn nút trong popup
-  handlePopupUpdate(index: number) {}
-  showSuccess() {
-    this.toastMessage.showSuccess('Thành công!');
-  }
-
-  showError() {
-    this.toastMessage.handleError('', 500);
-  }
-
-  showInfo() {
-    this.toastMessage.showInfo('Đây là thông báo.');
   }
 
   ngOnInit(): void {
+    this.address.valueChanges
+      .pipe(
+        filter((source) => {
+          return source.placeId !== undefined;
+        }),
+        map((optionChoose: OptionAddress) => optionChoose.placeId),
+        switchMap((placeId) => {
+          return this.addressService.getAddressDetail(placeId).pipe(
+            map((res) => {
+              console.log('place detail', res.result.geometry.location);
+            })
+          );
+        })
+      )
+      .subscribe((res) => {});
   }
 
   constructor(
     readonly toastMessage: MessageResponseService,
+    private addressService: AddressService
   ) {}
 
-  ngAfterViewChecked(): void {
-  }
+  ngAfterViewChecked(): void {}
 }

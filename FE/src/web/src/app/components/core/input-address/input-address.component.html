@@ -7,15 +7,12 @@
     [nzAutocomplete]="auto"
   />
   <nz-autocomplete
-    [nzDataSource]="options"
     nzBackfill
     #auto
     (selectionChange)="onSelectionChange($event)"
   >
-    <nz-option
-      *ngFor="let option of options"
-      [nzValue]="option"
-      [nzLabel]="option"
-    ></nz-option>
+    @for (option of options; track $index) {
+    <nz-auto-option [nzValue]="option">{{ option.desc }}</nz-auto-option>
+    }
   </nz-autocomplete>
 </div>

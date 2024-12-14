@@ -112,7 +112,7 @@ export class ModelMapSearchComponent
       type: 'fill',
       source: 'circle-layer',
       paint: {
-        'fill-color': '#ff0000',
+        'fill-color': '#A5A4A4',
         'fill-opacity': 0.3,
       },
     });

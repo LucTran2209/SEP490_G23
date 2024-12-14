@@ -2,7 +2,7 @@ export const environment = {
   serverUrl: 'http://localhost:7088/',
   apiUrl: 'https://localhost:7088/',
   baseDomain: location.hostname,
-  apiUrlGoong: 'https://rsapi.goong.io/Place/AutoComplete',
+  apiUrlGoong: 'https://rsapi.goong.io/Place/',
   apiKeyGoong: 'OROWRrTPOf7LICIyp997s9Miz5iFDLSTrMX1oQ4D',
   apiKeyMapGoong:'uAwYO4ZojSaI4wKUBHd1nnbg80n1sLKAhw3OjiJU',
   googleID:
