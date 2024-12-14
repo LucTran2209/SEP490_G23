@@ -20,6 +20,7 @@ import { Province } from '../../../../../interfaces/province.interface';
 import { IRequestRegisterLessor_Step3 } from '../../../../../interfaces/register-lessor.interface';
 import { GlobalState } from '../../../../../store/app.state';
 import { stepInfoTax } from '../../../state/register_lessor.actions';
+import { OptionAddress } from '../../../../../components/core/input-address/input-address.component';
 
 @Component({
   selector: 'app-step-tax',
@@ -39,7 +40,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
 
   formTax: FormGroup<{
     rentalScale: FormControl<string>;
-    address: FormControl<object | string>;
+    address: FormControl<OptionAddress | null>;
     taxCode: FormControl<string>;
     description: FormControl<string>;
   }>;
@@ -70,12 +71,12 @@ export class StepTaxComponent implements OnInit, OnDestroy {
   createForm(): FormGroup {
     return this.formBuilder.group({
       rentalScale: ['', [Validators.required]],
-      address: ['', [Validators.required]],
+      address: [null, [Validators.required]],
       taxCode: ['', [Validators.required]],
       description: [''],
     }) as FormGroup<{
       rentalScale: FormControl<string>;
-      address: FormControl<object | string>;
+      address: FormControl<OptionAddress | null>;
       taxCode: FormControl<string>;
       description: FormControl<string>;
     }>;
@@ -122,7 +123,7 @@ export class StepTaxComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       stepInfoTax({
         content: {
-          address,
+          address: address?.desc,
           businessLicense: this.uploadedFiles[0] || null,
           description,
           rentalScale,
