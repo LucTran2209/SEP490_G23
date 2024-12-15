@@ -1,4 +1,5 @@
-﻿using BE.Infrastructure.VnPaySandbox;
+﻿using BE.Infrastructure.Firebase;
+using BE.Infrastructure.VnPaySandbox;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,7 @@ namespace BE.Infrastructure.DependencyInjections
         public static IServiceCollection AddInfrastructureService(this IServiceCollection services, IConfiguration configuration)
         {        
             services.AddScoped<IVnPaySandboxService, VnPaySandboxService>();
+            services.AddScoped<IFireBaseService, FireBaseService>();
 
             return services;
         }

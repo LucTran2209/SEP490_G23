@@ -1,6 +1,7 @@
 ﻿using BE.Application.DependencyInjections;
 using BE.Application.Services.Authentication.AuthenServiceInputDto;
 using BE.Application.Services.Authentication.AuthenServiceOutputDto;
+using BE.Infrastructure.Firebase;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,7 @@ namespace BE.Application.Services.Authentication
         private readonly JwtOption jwtOption;
         private readonly SystemConfig systemConfig;
         private readonly IMailService mailService;
+        private readonly IFireBaseService _fireBaseService;
         private readonly IMapper _mapper;
 
         public AuthenService(IUnitOfWork unitOfWork,
@@ -33,6 +35,7 @@ namespace BE.Application.Services.Authentication
                              IMailService mailService,
                              IMapper mapper,
                              IMemoryCache memoryCache,
+                             IFireBaseService fireBaseService,
                              IValidator<RegisterInputDto> registerValidator,
                              IValidator<ChangePasswordInputDto> changePasswordValidator,
                              IValidator<ForgotPasswordInputDto> forgotPasswordValidator,
@@ -52,6 +55,7 @@ namespace BE.Application.Services.Authentication
             this.mailService = mailService;
             this.jwtOption = jwtOption.Value;
             this.systemConfig = systemConfig.Value;
+            _fireBaseService = fireBaseService;
             this._mapper = mapper;
         }
 
@@ -152,6 +156,10 @@ namespace BE.Application.Services.Authentication
             userRoles.Add(new UserRole() { UserId = user.Id, RoleId = Guid.Parse("dae936b7-3505-4c7e-813a-9221e658be61") });
 
             user.UserRoles = userRoles;
+
+            user.AvatarPersonal = "https://erms1.blob.core.windows.net/ermsstorage/avatar-gender-neutral-silhouette-vector-600nw-2470054311.webp";
+
+            await _fireBaseService.AddUser(user);
 
             await unitOfWork.UserRepository.AddAsync(user);
 

@@ -13,6 +13,8 @@
         public string? BusinessLicenseFile { get; set; }
         public int RentalScale { get; set; }
         public string? Address { get; set; }
+        public string? KinhDo { get; set; }
+        public string? ViDo { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public RequestShop Status { get; set; }

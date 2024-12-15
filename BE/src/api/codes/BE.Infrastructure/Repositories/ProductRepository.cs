@@ -84,8 +84,8 @@ namespace BE.Infrastructure.Repositories
                 .Include(p => p.Order)
                     .ThenInclude(o => o.OrderStatuses)
                 .Where(od => od.ProductId == productId
-                       && od.Order.OrderStatuses!.Any(a => a.Status != RequestStatus.CANCEL 
-                                                        && a.Status != RequestStatus.COMPLETE 
+                       && od.Order.OrderStatuses!.Any(a => a.Status != RequestStatus.CANCEL
+                                                        && a.Status != RequestStatus.COMPLETE
                                                         && a.Status != RequestStatus.PENDING_APPROVAL))
                 .SumAsync(od => od.Quantity);
 
