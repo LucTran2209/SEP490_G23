@@ -10,7 +10,7 @@ import { LoadingService } from '../../../services/loading.service';
 import { MessageResponseService } from '../../../services/message-response.service';
 import { StorageService } from '../../../services/storage.service';
 import { getErrorMessage } from '../../../utils/anonymous.helper';
-import { STRING } from '../../../utils/constant';
+import { ErrorMessages, STRING } from '../../../utils/constant';
 import * as AuthActions from './auth.actions';
 
 @Injectable()
@@ -42,9 +42,15 @@ export class AuthEffect {
               // console.log('error', error);
               const errorMessage = getErrorMessage(error);
               const statusCode = error.status || error.statusCode;
-              return of(
-                AuthActions.login_failure({ error: errorMessage, statusCode })
-              );
+              if(statusCode === 500){
+                return of(
+                  AuthActions.login_failure({ error: ErrorMessages[500], statusCode })
+                );
+              }else{
+                return of(
+                  AuthActions.login_failure({ error: errorMessage, statusCode })
+                );
+              }
             })
           )
         )

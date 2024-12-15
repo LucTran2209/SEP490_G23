@@ -125,13 +125,13 @@ export class AuthService {
 
     replaceCookie(STRING.ACCESS_TOKEN, accessToken, userPayLoad.exp, '/');
     replaceCookie(STRING.REFRESH_TOKEN, refreshToken, null, '/');
-    this.userFireStoreService.addUserInToFireStore({
-      displayName: userPayLoad.FullName,
-      photoURL: !userPayLoad.Avatar
-        ? 'https://sep490g23.blob.core.windows.net/g23storage/1638694680455210601_ed782c91-184c-4004-a125-1d315ad307bf.jpg'
-        : userPayLoad.Avatar,
-      uid: userPayLoad.UserId,
-    });
+    // this.userFireStoreService.addUserInToFireStore({
+    //   displayName: userPayLoad.FullName,
+    //   photoURL: !userPayLoad.Avatar
+    //     ? 'https://sep490g23.blob.core.windows.net/g23storage/1638694680455210601_ed782c91-184c-4004-a125-1d315ad307bf.jpg'
+    //     : userPayLoad.Avatar,
+    //   uid: userPayLoad.UserId,
+    // });
     this.storageService.set(
       LocalStorageKey.currentUser,
       JSON.stringify(userPayLoad)
