@@ -56,8 +56,8 @@ export class ChatFireStoreService {
       return;
     }
 
-    const currentUserQuery = query(userRef, where('uid', '==', currentUserId));
-    const otherUserQuery = query(userRef, where('uid', '==', uId));
+    const currentUserQuery = query(userRef, where('userId', '==', currentUserId));
+    const otherUserQuery = query(userRef, where('userId', '==', uId));
 
     const [currentUserSnapshot, otherUserSnapshot] = await Promise.all([
       getDocs(currentUserQuery),
@@ -77,14 +77,14 @@ export class ChatFireStoreService {
       lastMessageDate: new Date(),
       users: [
         {
-          uid: currentUserData.uid,
-          displayName: currentUserData.displayName,
-          photoURL: currentUserData.photoURL,
+          userId: currentUserData.userId,
+          displayname: currentUserData.displayname,
+          image: currentUserData.image,
         },
         {
-          uid: otherUserData.uid,
-          displayName: otherUserData.displayName,
-          photoURL: otherUserData.photoURL,
+          userId: otherUserData.userId,
+          displayname: otherUserData.displayname,
+          image: otherUserData.image,
         },
       ],
     });

@@ -13,6 +13,7 @@ import { from, map, Observable } from 'rxjs';
 import { IChatFireBase, IUserFireBase } from '../interfaces/Chat.interface';
 import { MessageResponseService } from './message-response.service';
 import { UserProfileService } from './user-profile.service';
+import { name } from '../features/common/state/shop/shop-personal.reducer';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class UserFireStoreService {
   //add document user into cloud firestore
   async addUserInToFireStore(data: IUserFireBase) {
     const ref = collection(this.firestore, 'users');
-    const myQuery = query(ref, where('uid', '==', data.uid));
+    const myQuery = query(ref, where('userId', '==', data.userId));
 
     try {
       const querySnapshot = await getDocs(myQuery);
@@ -48,7 +49,7 @@ export class UserFireStoreService {
   getUserIdInFireStore(): Observable<IUserFireBase | undefined> {
     const currentUserId = this.userProfileService.UserId;
     const usersRef = collection(this.firestore, 'users');
-    const userQuery = query(usersRef, where('uid', '==', currentUserId));
+    const userQuery = query(usersRef, where('userId', '==', currentUserId));
     return from(getDocs(userQuery)).pipe(
       map((snapshot) => {
         const users = snapshot.docs.map((doc) => doc.data() as IUserFireBase);
@@ -84,9 +85,9 @@ export class UserFireStoreService {
   ): IChatFireBase[] {
     chats.forEach((chat) => {
       const otherIndex = chat.userIds.indexOf(currentUserId) === 0 ? 1 : 0;
-      const { displayName, photoURL } = chat.users[otherIndex];
-      chat.chatName = displayName;
-      chat.chatPic = photoURL;
+      const { displayname, image } = chat.users[otherIndex];
+      chat.chatName = displayname;
+      chat.chatPic = image;
     });
 
     return chats;

@@ -77,6 +77,7 @@ setValueAddressAfter(){
     }),
     map((optionChoose: OptionAddress) => optionChoose.desc),
   ).subscribe((res) => {
+    console.log('res',res);
     this.userForm.get("address")?.setValue(res);
   });
 }
