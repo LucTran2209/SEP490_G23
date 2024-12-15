@@ -101,7 +101,7 @@ export class UserNavbarHeaderComponent implements OnInit {
   onShow() {
     const shopId = this.userProfileService.rentalshopId;
     if (shopId) {
-      this.messageService.showInfo('Yêu Cầu Đang Chờ Xét Duyệt Vui Lòng Đợi!');
+      this.messageService.showInfo('Tài khoản này đã đăng ký! Bạn không thể đăng ký nữa.');
     } else {
       this.router.navigate(['/portal/register-lessor']);
     }
