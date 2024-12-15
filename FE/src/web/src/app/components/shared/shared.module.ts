@@ -142,6 +142,7 @@ import { ViewMoreItemComponent } from '../view-more-item/view-more-item.componen
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { ModelMapSearchComponent } from '../modal/model-map-search/model-map-search.component';
 import { CardProductHorizontalComponent } from '../core/card/card-product-horizontal/card-product-horizontal.component';
+import { MegaFilterComponent } from '../mega-filter/mega-filter.component';
 registerLocaleData(localeVI);
 
 const ANTD_MODULES = [
@@ -203,6 +204,7 @@ const MATERIAL_MODULES = [
   MatMenuModule,
 ];
 const SHARED_MODULES = [
+  MegaFilterComponent,
   CardProductHorizontalComponent,
   ModelMapSearchComponent,
   ChooseCreateCategoryComponent,

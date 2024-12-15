@@ -35,7 +35,6 @@ export class ChatFireStoreService {
 
   //create chat room
   async addChatRoom(uId: string) {
-    debugger;
     const userRef = collection(this.firestore, 'users');
     const chatRef = collection(this.firestore, 'chats');
     const currentUserId = this.userProfileService.UserId;
