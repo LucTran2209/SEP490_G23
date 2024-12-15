@@ -15,9 +15,9 @@ export interface IMember {
 }
 
 export interface IUserFireBase {
-  uid: string;
-  displayName: string;
-  photoURL: string;
+  userId: string;
+  displayname: string;
+  image: string;
 }
 
 export interface IChatFireBase {

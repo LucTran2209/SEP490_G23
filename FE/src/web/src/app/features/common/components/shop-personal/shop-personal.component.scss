@@ -7,3 +7,15 @@
   -ms-overflow-style: none; 
   scrollbar-width: none; 
 }
+
+
+//select
+::ng-deep .ant-select {
+  min-width: 150px;
+}
+
+::ng-deep .ant-select-single .ant-select-selector {
+  border-radius: 6px !important;
+  height: 35px !important;
+
+}

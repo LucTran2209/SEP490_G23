@@ -25,6 +25,7 @@ export class ChatComponent implements OnInit {
   }
 
   selectUserChatRoom(val: IChatFireBase) {
+    console.log('IChatFireBase',val);
     this.currentUserChat = val;
   }
 

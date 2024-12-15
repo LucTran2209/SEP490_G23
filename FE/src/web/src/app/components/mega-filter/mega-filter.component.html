@@ -1,0 +1,49 @@
+<section class="bg-white p-3 rounde-md">
+  <div class="">
+    @for (item of sortFields; track $index) {
+    <div
+      class="flex items-center gap-3 justify-between py-3 border-b border-solid"
+    >
+      <p class="flex items-center gap-2">
+        <span
+          nz-icon
+          nzType="minus-circle"
+          class="text-[#0f6cf8] text-lg cursor-pointer"
+          nzTheme="outline"
+          (click)="removeField($index)"
+        ></span
+        >Sắp xếp theo
+      </p>
+      <div class="flex-1 flex items-center justify-end gap-2">
+        <select name="" id="" [selectedIndex]="item.selectedField">
+          @for (item of optionSelect; track $index) {
+          <option [value]="item.value">{{ item.label }}</option>
+          }
+        </select>
+        <nz-radio-group [ngModel]="item.order">
+          <label nz-radio-button [nzValue]="'asc'" class="rounded-l-md"
+            >Tăng dần</label
+          >
+          <label nz-radio-button [nzValue]="'desc'" class="rounded-r-md"
+            >Giảm dần</label
+          >
+        </nz-radio-group>
+      </div>
+    </div>
+    }
+    <p class="flex items-center gap-2 py-3">
+      <span
+        nz-icon
+        nzType="plus-circle"
+        class="text-[#0f6cf8] text-lg cursor-pointer"
+        nzTheme="outline"
+        (click)="addField()"
+      ></span
+      >Thêm trường
+    </p>
+  </div>
+  <div class="flex items-center gap-2">
+    <button nz-button nzType="primary">Lọc</button>
+    <button nz-button nzType="default">Hủy</button>
+  </div>
+</section>

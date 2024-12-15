@@ -114,7 +114,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-
 //selection
 /* Đặt màu khi bôi đen */
 ::selection {
@@ -146,4 +145,27 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
+}
+
+//select
+.ant-select-single .ant-select-selector, select{
+  border-radius: 4px !important;
+  height: 35px !important;
+}
+.ant-radio-button-wrapper{
+  height: 35px !important;
+
+}
+
+//button
+button,
+input,
+textarea,
+nz-input-group,
+nz-modal-title,
+.ant-modal-body,
+nz-input-number,
+nz-date-picker,
+nz-range-picker {
+  border-radius: 4px !important;
 }

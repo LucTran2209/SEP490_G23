@@ -26,9 +26,9 @@
         class="py-2 px-3 rounded-l-lg rounded-tr-lg w-fit break-all"
         [ngClass]="{
           'bg-[#E1E1E1] text-[#242426] rounded-r-lg rounded-l-none rounded-tl-lg':
-            message.senderId !== currentOwnUser.uid,
+            message.senderId !== currentOwnUser.userId,
           'bg-[#1890FF] text-white float-right':
-            message.senderId === currentOwnUser.uid
+            message.senderId === currentOwnUser.userId
         }"
       >
         {{ message.text }}
