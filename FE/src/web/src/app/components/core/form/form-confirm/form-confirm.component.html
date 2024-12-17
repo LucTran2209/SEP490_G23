@@ -22,6 +22,41 @@
           ></textarea>
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item *ngIf="isReturn">
+        <nz-form-label [nzSpan]="24" nzFor="fileUpload">
+          Tải ảnh sản phẩm chụp tại thời điểm
+        </nz-form-label>
+        <nz-form-control>
+          <!-- Nút button để chọn file -->
+          <button
+            nz-button
+            type="button"
+            nzType="primary"
+            (click)="fileInput.click()"
+          >
+            <i nz-icon nzType="upload"></i> Chọn hình ảnh
+          </button>
+
+          <!-- Input file ẩn -->
+          <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            style="display: none"
+          />
+
+          <!-- Preview ảnh -->
+          <div *ngIf="previewImage" class="preview-container mt-2">
+            <img
+              [src]="previewImage"
+              alt="Preview"
+              class="img-preview"
+              style="max-width: 100%; max-height: 200px; margin-top: 10px"
+            />
+          </div>
+        </nz-form-control>
+      </nz-form-item>
       <nz-form-item>
         <nz-form-control>
           <div class="flex justify-between gap-5">

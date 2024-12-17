@@ -37,6 +37,8 @@ export class MyOrderDetailComponent implements OnInit {
   orderStatuses: OrderStatus[] = [];
   orderStatusMessage: string = '';
   orderStatusClass: string = '';
+  isImageModalVisible = false;
+  selectedImageUrl: string = '';
   // Handle the step change event
   onStepChange(index: number): void {
     this.currentStep = index;
@@ -111,6 +113,7 @@ export class MyOrderDetailComponent implements OnInit {
           date: matchedStatus ? matchedStatus.createdDate : null,
           color: statuses.includes(7) ? 'red' : (matchedStatus ? 'blue' : 'gray'),
           message: matchedStatus ? matchedStatus.message : null,
+          fileAttach: matchedStatus ? matchedStatus.fileAttach : null,
         };
       });
         // console.log("Status List: ", this.orderStatuses);
@@ -198,5 +201,15 @@ export class MyOrderDetailComponent implements OnInit {
      }else{
       this.totalPrice = this.order.totalDepositPrice;
      }
+  }
+  showImageModal(imageUrl: string) {
+    this.selectedImageUrl = imageUrl;
+    this.isImageModalVisible = true;
+  }
+
+  // Function to hide the modal
+  closeImageModal() {
+    this.isImageModalVisible = false;
+    this.selectedImageUrl = '';
   }
 }
