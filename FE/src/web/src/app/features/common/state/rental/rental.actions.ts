@@ -10,6 +10,7 @@ export const setInit = createAction(
     pid: number | string;
     productName: string;
     images: string[];
+    rentalLimitDays: string | number
   }>()
 );
 
