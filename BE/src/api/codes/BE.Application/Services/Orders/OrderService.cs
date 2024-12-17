@@ -10,6 +10,7 @@ namespace BE.Application.Services.Orders
         private readonly IValidator<GetOrderDetailInputDto> _getOrderDetailInputDto;
         private readonly IMapper _mapper;
         private readonly IAzureService _azureService;
+        private readonly IMailService _mailService;
         private readonly IWalletService _walletService;
 
         public OrderService(IUnitOfWork unitOfWork, IUser user,
@@ -17,6 +18,7 @@ namespace BE.Application.Services.Orders
             IValidator<CreateOrderInputDto> createOrderValidator,
             IValidator<GetOrderDetailInputDto> getOrderDetailInputDto,
             IWalletService walletService,
+            IMailService mailService,
             IAzureService azureService) : base(unitOfWork, user)
         {
             this.createOrderValidator = createOrderValidator;
@@ -24,6 +26,7 @@ namespace BE.Application.Services.Orders
             _mapper = mapper;
             _azureService = azureService;
             _walletService = walletService;
+            _mailService = mailService;
         }
 
         public async Task<ResultService> CreateAsync(CreateOrderInputDto inputDto)
@@ -91,6 +94,11 @@ namespace BE.Application.Services.Orders
                 await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
 
                 await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);
+            }
+
+            if (inputDto.Status == RequestStatus.PENDING_PAYMENT)
+            {
+                await _mailService.SendMailAsync(null, order.User!.Email!, "Thông báo đơn hàng", $"Thanh toán Đơn hàng {order.Code}");
             }
 
             if (inputDto.Status == RequestStatus.REFUND)

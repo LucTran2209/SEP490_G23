@@ -36,7 +36,7 @@ namespace BE.Application.Abstractions.ServiceInterfaces
                 return;
 
             // Nếu today == start date - 1  -> thông báo qua mail
-            if (order.StartDate.AddDays(-1).CompareTo(DateTime.Now) <= 0)
+            if (order.StartDate.Date >= DateTime.Now.Date)
             {
                 string message = $"Đơn hàng {order.Code} ngày {order.CreatedDate.Date} chưa được thanh toán. Trong trường hợp quá ngày thanh toán sẽ hủy đơn hàng";
 

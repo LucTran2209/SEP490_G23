@@ -37,6 +37,7 @@ namespace BE.Api
             builder.Services.AddMemoryCache();
 
             builder.Services.AddHangfire(config => config.UseSqlServerStorage(builder.Configuration.GetConnectionString("SqlServerConnection")));
+            builder.Services.AddHangfireServer();
 
             // # CORS
             builder.Services.AddCors(options =>
