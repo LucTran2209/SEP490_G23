@@ -43,6 +43,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   depositPriceActual$?: Observable<string | number>;
   voucherAvaiable$?: Observable<VoucherDetailOutputDto | null>
   calcActualDiscountVoucher$?: Observable<number>;
+  shopId?: string;
   //ngRx
 
   //ngRx
@@ -183,6 +184,8 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.rentalTimerService.clearState();
       });
+    this.shopId = this.userProfileService.rentalshopId;
+    console.log(this.shopId);
   }
 
   ngOnDestroy(): void {
