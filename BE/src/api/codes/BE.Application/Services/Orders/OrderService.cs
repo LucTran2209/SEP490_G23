@@ -82,7 +82,7 @@ namespace BE.Application.Services.Orders
 
             // amount return
             var returnAmount = ApplyVoucher(order.Voucher, order.TotalRentPrice);
-           
+
             if (inputDto.Status == RequestStatus.CANCEL && currentOrderStatus!.Status == RequestStatus.PAYMENTED)
             {
                 returnAmount = returnAmount < order.TotalDepositPrice ? order.TotalDepositPrice : order.TotalDepositPrice + returnAmount;
@@ -103,7 +103,16 @@ namespace BE.Application.Services.Orders
             if (inputDto.Status == RequestStatus.COMPLETE)
             {
                 returnAmount = returnAmount < order.TotalDepositPrice ? order.TotalDepositPrice - returnAmount : order.TotalDepositPrice;
-
+                // trả trễ bị trừ tiền theo ngày
+                if (currentOrderStatus.CreatedDate <= order.EndDate)
+                {
+                    int day = (order.EndDate - currentOrderStatus.CreatedDate).Days;
+                    returnAmount -= returnAmount * day / 10;
+                }
+                if (returnAmount < 0)
+                {
+                    returnAmount = 0;
+                }
                 // Return tiền cọc còn lại sau khi đã trừ tiền thu
                 await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
 
