@@ -24,6 +24,7 @@ import { StorageService } from '../../../../services/storage.service';
 import { ListVoucherAvailableComponent } from '../../../modal/list-voucher-available/list-voucher-available.component';
 import { removeVoucher } from '../../../../features/common/state/rental/rental.actions';
 import { VoucherDetailOutputDto } from '../../../../interfaces/voucher.interface';
+import { UserProfileService } from '../../../../services/user-profile.service';
 
 @Component({
   selector: 'app-form-rental-product',
@@ -42,6 +43,7 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
   depositPriceActual$?: Observable<string | number>;
   voucherAvaiable$?: Observable<VoucherDetailOutputDto | null>
   calcActualDiscountVoucher$?: Observable<number>;
+  shopId?: string;
   //ngRx
 
   //ngRx
@@ -162,7 +164,8 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
     private store: Store<FeatureAppState>,
     private modal: NzModalService,
     private toastMS: MessageResponseService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private userProfileService: UserProfileService, 
   ) {}
 
   ngOnInit(): void {
@@ -181,6 +184,8 @@ export class FormRentalProductComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.rentalTimerService.clearState();
       });
+    this.shopId = this.userProfileService.rentalshopId;
+    console.log(this.shopId);
   }
 
   ngOnDestroy(): void {

@@ -50,15 +50,22 @@ export class FormProductComponent {
       this.productForm = new FormGroup({
         productName: new FormControl(this.product.productName, [Validators.required, Validators.maxLength(100)]),
         description: new FormControl(this.product.description, [Validators.required, Validators.maxLength(1000)]),
-        quantity: new FormControl(this.product.quantity, [Validators.required, Validators.min(1), Validators.max(50)]),
+        quantity: new FormControl(this.product.quantity, [Validators.required, Validators.min(1), Validators.max(50), Validators.pattern(/^\d+$/)]),
         subCategoryId: new FormControl(this.product.subCategoryId, [Validators.required]),
         rentalPrice: new FormControl(this.product.rentalPrice, [Validators.required, Validators.min(1)]),
         depositPrice: new FormControl(this.product.depositPrice, [Validators.min(1)]),
-        rentalLimitDays: new FormControl(this.product.rentalLimitDays, [Validators.required, Validators.min(1), Validators.max(60)]),
+        rentalLimitDays: new FormControl(this.product.rentalLimitDays, [Validators.required, Validators.min(1), Validators.max(60), Validators.pattern(/^\d+$/)]),
         evaluate: new FormControl(0), // Rating between 0-5
         images: new FormControl(this.product.images, [Validators.required])
       });
     }
+    allowOnlyNumbers(event: KeyboardEvent): void {
+      const char = String.fromCharCode(event.keyCode);
+      if (!/^\d$/.test(char)) {
+        event.preventDefault();
+      }
+    }
+    
   handleOk(): void {
     this.isVisible = false;
     this.closeModal.emit();
@@ -183,12 +190,12 @@ export class FormProductComponent {
     this.productForm.reset({
       productName: '',
       description: '',
-      quantity: 1, // Giá trị mặc định hợp lệ
+      quantity: 0, // Giá trị mặc định hợp lệ
       subCategoryId: '',
       rentalShopId: '',
-      rentalPrice: 1, // Giá trị mặc định hợp lệ
-      depositPrice: 1,
-      rentalLimitDays: 1, // Giá trị mặc định hợp lệ
+      rentalPrice: 0, // Giá trị mặc định hợp lệ
+      depositPrice: 0,
+      rentalLimitDays: 0, // Giá trị mặc định hợp lệ
       evaluate: 0,
       images: []
     });

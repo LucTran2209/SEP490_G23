@@ -156,18 +156,18 @@ export const contentCardProcessRental_renter: IItemProcessRental[] = [
 
 export const menuHowItOrder: OptionSelectWithSlug[] = [
   {
-    label: 'Hưỡng dẫn chung',
-    value: 'Hưỡng dẫn chung',
+    label: 'Hướng dẫn chung',
+    value: 'Hướng dẫn chung',
     slug: 'guide-common',
   },
   {
-    label: 'Hưỡng dẫn thuê sản phẩm',
-    value: 'Hưỡng dẫn thuê sản phẩm',
+    label: 'Hướng dẫn thuê sản phẩm',
+    value: 'Hướng dẫn thuê sản phẩm',
     slug: 'guide-rental-product',
   },
   {
-    label: 'Hưỡng dẫn thanh toán',
-    value: 'Hưỡng dẫn thanh toán',
+    label: 'Hướng dẫn thanh toán',
+    value: 'Hướng dẫn thanh toán',
     slug: 'guide-payment',
   },
   {
