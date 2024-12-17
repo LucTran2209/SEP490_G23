@@ -111,6 +111,7 @@
                     class="w-full"
                     placeholder="Giá cho thuê"
                     id="rentalPrice"
+                    [nzStep]="1000"
                     formControlName="rentalPrice"
                     [nzFormatter]="formatCurrency"
                     [nzParser]="parseCurrency"
@@ -140,6 +141,7 @@
                     class="w-full"
                     placeholder="Giá cọc"
                     id="depositPrice"
+                    [nzStep]="1000"
                     formControlName="depositPrice"
                     [nzFormatter]="formatCurrency"
                     [nzParser]="parseCurrency"
@@ -164,11 +166,15 @@
                       ? 'Giới hạn cho thuê phải ít nhất 1 ngày!'
                       : productForm.get('rentalLimitDays')?.hasError('max')
                       ? 'Giới hạn cho thuê phải ít hơn 60 ngày!'
+                      : productForm.get('rentalLimitDays')?.hasError('pattern')
+                      ? 'Vui lòng nhập số nguyên hợp lệ!'
                       : ''
                   "
                 >
                   <nz-input-number
                     class="w-full"
+                    [nzPrecision]="0"
+                    (keypress)="allowOnlyNumbers($event)"
                     placeholder="Giới hạn cho thuê"
                     id="rentalLimitDays"
                     formControlName="rentalLimitDays"
@@ -204,6 +210,8 @@
                   <nz-input-number
                     class="w-full"
                     placeholder="Số lượng thiết bị cho thuê"
+                    [nzPrecision]="0"
+                    (keypress)="allowOnlyNumbers($event)"
                     id="quantity"
                     formControlName="quantity"
                   />
@@ -235,28 +243,28 @@
 
         <div nz-col nzSpan="12">
           <nz-form-label nzRequired nzFor="description"
-          >Mô Tả Thiết Bị</nz-form-label
+            >Mô Tả Thiết Bị</nz-form-label
           >
           <nz-form-item>
-          <nz-form-control
-            nzHasFeedback
-            [nzErrorTip]="
-              productForm.get('description')?.hasError('required')
-                ? 'Mô tả thiết bị là bắt buộc!'
-                : productForm.get('description')?.hasError('maxlength')
-                ? 'Mô tả không được vượt quá 1000 ký tự!'
-                : ''
-            "
-          >
-            <nz-textarea-count [nzMaxCharacterCount]="1000">
-              <textarea
-                nz-input
-                placeholder="Thông tin thiết bị cho thuê"
-                formControlName="description"
-                [nzAutosize]="{ minRows: 6, maxRows: 12 }"
-              ></textarea>
-            </nz-textarea-count>
-          </nz-form-control>
+            <nz-form-control
+              nzHasFeedback
+              [nzErrorTip]="
+                productForm.get('description')?.hasError('required')
+                  ? 'Mô tả thiết bị là bắt buộc!'
+                  : productForm.get('description')?.hasError('maxlength')
+                  ? 'Mô tả không được vượt quá 1000 ký tự!'
+                  : ''
+              "
+            >
+              <nz-textarea-count [nzMaxCharacterCount]="1000">
+                <textarea
+                  nz-input
+                  placeholder="Thông tin thiết bị cho thuê"
+                  formControlName="description"
+                  [nzAutosize]="{ minRows: 6, maxRows: 12 }"
+                ></textarea>
+              </nz-textarea-count>
+            </nz-form-control>
           </nz-form-item>
         </div>
       </div>
