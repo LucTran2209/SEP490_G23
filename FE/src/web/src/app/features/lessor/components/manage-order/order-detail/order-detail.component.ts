@@ -15,7 +15,7 @@ import { OrderListResponse } from '../../../../../interfaces/order.interface';
 import { RentalTimerService } from '../../../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../../../store/app.state';
 import { convertButtonChangeStatusOrder, convertStatusOrder } from '../../../../../utils/anonymous.helper';
-import { ORDER_STATUS, ORDER_STATUS_MAX } from '../../../../../utils/constant';
+import { ORDER_STATUS, ORDER_STATUS_MAX, USER_ROLE } from '../../../../../utils/constant';
 
 
 import { ConfirmDeleteRequestOrderComponent } from '../../../../../components/modal/confirm-delete-request-order/confirm-delete-request-order.component';
@@ -59,7 +59,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   }
 
   convertStatus(orderStatus: ORDER_STATUS) {
-    return convertStatusOrder(orderStatus);
+    return convertStatusOrder(orderStatus, USER_ROLE.LESSOR);
   }
 
   convertTextButton(orderStatus: ORDER_STATUS){

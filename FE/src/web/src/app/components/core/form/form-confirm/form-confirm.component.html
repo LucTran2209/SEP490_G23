@@ -8,6 +8,21 @@
 >
   <ng-container *nzModalContent>
     <form nz-form [formGroup]="formConfirm" (ngSubmit)="onSubmit()">
+      <ul class="py-3 flex items-center justify-start gap-x-2">
+        <li class="">
+          <div
+            class="border border-solid border-[#ededed] rounded-md p-3 shadow-md cursor-pointer"
+          >
+            <!-- <img
+              *ngIf="filePreviews[i]"
+              [nzSrc]="filePreviews[i]"
+              alt="Preview"
+              class="preview-image w-[100px] h-[100px] object-contain"
+              nz-image
+            /> -->
+          </div>
+        </li>
+      </ul>
       <nz-form-item>
         <nz-form-label [nzSpan]="24" nzFor="message">
           Lời Nhắn (Nếu Có)

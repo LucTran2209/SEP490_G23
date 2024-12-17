@@ -21,9 +21,55 @@
     [nzAutosize]="{ minRows: 5, maxRows: 5 }"
   ></textarea>
 </div>
+<div class="mb-3">
+  @if(isNeedFileEvidence | async){
+  <app-upload-list
+    title="Tải ảnh sản phẩm chụp tại thời điểm"
+    boundTypeFile="image/*"
+    (listFiles)="onSelectedFile($event)"
+    (removeAFile)="onRemoveAFile($event)"
+    [isMultiple]="isMultiple"
+  />
+  <ul class="py-3 flex items-center justify-start gap-x-2">
+    <li *ngFor="let file of uploadedFiles; let i = index" class="">
+      <div
+        class="border border-solid border-[#ededed] rounded-md p-3 shadow-md cursor-pointer"
+      >
+        <img
+          *ngIf="filePreviews[i]"
+          [nzSrc]="filePreviews[i]"
+          alt="Preview"
+          class="preview-image w-[100px] h-[100px] object-contain"
+          nz-image
+        />
+      </div>
+    </li>
+  </ul>
+  } @if(isCanViewFileEvidence | async){
+  <label for="" class="font-medium"
+    ><span class="text-red-500">*</span>Ảnh bằng chứng</label
+  >
+  @if(getOrderStatusLatestFileAttach(orderDetail); as attachFile){
+  <img [src]="attachFile" [alt]="attachFile" nz-image />
+  } @else {
+  <p class="text-gray-300 italic ml-3">Không có ảnh bằng chứng</p>
+  } }
+</div>
 <div class="modal-footer flex items-center justify-end gap-x-3">
+  @if(!(isCanViewFileEvidence | async)){
   <button nz-button nzType="primary" (click)="confirm('approve')">
     Xét duyệt
   </button>
+  }@else {
+  <button
+    nz-popconfirm
+    nzPopconfirmTitle="Bạn vẫn muốn xét duyệt?"
+    (nzOnConfirm)="confirm('approve')"
+    nzPopconfirmPlacement="bottom"
+    nz-button
+  >
+    Xét duyệt
+  </button>
+  }
 </div>
 }

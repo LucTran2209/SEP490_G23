@@ -35,13 +35,14 @@ import { convertToLocalISOString } from '../../../utils/timer.helper';
 import { MyValidators } from '../../../utils/validators';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { OptionAddress } from '../../core/input-address/input-address.component';
+import { BaseComponentsComponent } from '../../base-components/base-components.component';
 
 @Component({
   selector: 'app-confim-order-process',
   templateUrl: './confim-order-process.component.html',
   styleUrl: './confim-order-process.component.scss',
 })
-export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
+export class ConfimOrderProcessComponent extends BaseComponentsComponent implements OnInit, OnDestroy {
   userCurrent?: IPayLoad;
   nzModalData: any = inject(NZ_MODAL_DATA);
   productRentalDetail$?: Observable<ProductItemResponse>;
@@ -106,6 +107,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
     if (this.infoOrderCommonForm.valid) {
       this.mergeAllDataReq();
       this.modalRef.triggerOk();
+      this.scrollToTop();
     } else {
       Object.values(this.infoOrderCommonForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -252,6 +254,7 @@ export class ConfimOrderProcessComponent implements OnInit, OnDestroy {
     private store: Store<FeatureAppState>,
     private messageService: NzMessageService
   ) {
+    super();
     this.infoOrderCommonForm = this.initForm();
   }
   ngOnInit(): void {
