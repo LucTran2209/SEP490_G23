@@ -22,14 +22,14 @@ export class ShopCardComponent {
   @Output() receiveOrder = new EventEmitter<string>();  
   @Output() returnOrder = new EventEmitter<string>();  
   totalQuantity: number = 0;
-
+  overdueDays: number = 0;
   constructor(
     private router: Router,
   ) {}
 
-  // ngOnInit() {
-  //   this.calculateNumberOfRentalDays();
-  // }
+  ngOnInit(): void {
+    this.checkOverdue();
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['order'] && this.order) {
       this.calculateTotalQuantity();
@@ -64,5 +64,16 @@ export class ShopCardComponent {
       (max, item) => Math.max(max, item.status),
       -Infinity
     );
+  }
+  checkOverdue(): void {
+    const currentDate = new Date(); // Lấy ngày hiện tại
+    const endDate = new Date(this.order.endDate); // Chuyển đổi orderEndDate thành đối tượng Date
+
+    if (endDate < currentDate) {
+      const timeDifference = currentDate.getTime() - endDate.getTime(); // Tính độ chênh lệch thời gian
+      this.overdueDays = Math.ceil(timeDifference / (1000 * 3600 * 24)); // Chuyển đổi độ chênh lệch thành số ngày
+    } else {
+      this.overdueDays = 0; // Nếu chưa quá hạn
+    }
   }
 }
