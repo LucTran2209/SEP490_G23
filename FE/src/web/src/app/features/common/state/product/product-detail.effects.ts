@@ -62,7 +62,8 @@ export class ProductDetailEffects {
               quantityAvailable: data.quantity,
               rentalPrice: data.rentalPrice,
               productName: data.productName,
-              images: data.images
+              images: data.images,
+              rentalLimitDays: data.rentalLimitDays
             })
           )
           // set init price

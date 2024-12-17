@@ -28,7 +28,9 @@
                 {{ productDetail.evaluate }} ({{ productDetail.numberOfVoted }})
               </p>
             </div>
-            <p class="pt-1.5 text-base font-medium">{{productDetail.rentalShop.address}}</p>
+            <p class="pt-1.5 text-base font-medium">
+              {{ productDetail.rentalShop.address }}
+            </p>
           </div>
         </div>
         <app-form-rental-product />
@@ -68,22 +70,33 @@
           <div class="">
             <h3 class="font-bold">Giá cho thuê</h3>
             <ul class="my-3 list-disc capitalize">
-             <li class=""> giá thuê:{{ productDetail.rentalPrice | currency:'VND':'VND':'1.0-0':'vi' }}</li>
-             <li>giá cọc: {{ productDetail.depositPrice | currency:'VND':'VND':'1.0-0':'vi' }}</li>
+              <li class="">
+                giá thuê:{{
+                  productDetail.rentalPrice
+                    | currency : "VND" : "VND" : "1.0-0" : "vi"
+                }}
+              </li>
+              <li>
+                giá cọc:
+                {{
+                  productDetail.depositPrice
+                    | currency : "VND" : "VND" : "1.0-0" : "vi"
+                }}
+              </li>
             </ul>
           </div>
           <div class="">
             <h3 class="font-bold">Thời gian cho thuê</h3>
-            <ul class="my-3 list-disc capitalize"><li>giới hạn ngày thuê: {{ productDetail.rentalLimitDays }}</li></ul>
+            <ul class="my-3 list-disc capitalize">
+              <li>giới hạn ngày thuê: {{ productDetail.rentalLimitDays }}</li>
+            </ul>
           </div>
         </div>
       </div>
       <div class="pb-6">
-        <h1 class="font-medium text-2xl mt-3">
-         Mô tả sản phẩm
-        </h1>
+        <h1 class="font-medium text-2xl mt-3">Mô tả sản phẩm</h1>
         <div class="p-5">
-          <p>{{productDetail.description}}</p>
+          <p>{{ productDetail.description }}</p>
         </div>
       </div>
       <!-- <div class="pb-6">
@@ -127,6 +140,7 @@
               Khi hoàn trả thiết bị, nếu thiết bị bẩn hoặc có mùi, khách hàng
               vui lòng vệ sinh thiết bị hoặc gửi phụ thu phí vệ sinh
             </li>
+            <li>Mỗi ngày thuê quá hạn trừ 10% tiền cọc</li>
           </ul>
         </div>
       </div>

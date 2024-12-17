@@ -15,6 +15,7 @@ export interface OrderState {
   quantityRequest: string | number;
   quantityAvailable: string | number;
   isBoundQuantity: boolean;
+  rentalLimitDays: string | number
 }
 export interface RentalOrderState {
   orders: OrderState[];
@@ -50,6 +51,7 @@ export const rentalOrderReducer = createReducer(
       rentalPrice,
       productName,
       images,
+      rentalLimitDays
     } = action;
     const existingOrderIndex = checkProductRentalExist(state.orders, pid);
     if (existingOrderIndex !== -1) {
@@ -80,6 +82,7 @@ export const rentalOrderReducer = createReducer(
         isBoundQuantity: true,
         productName: productName,
         images: images,
+        rentalLimitDays
       };
 
       return { ...state, orders: [...state.orders, newOrder] };

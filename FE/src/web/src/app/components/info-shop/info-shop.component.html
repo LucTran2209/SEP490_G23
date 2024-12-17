@@ -87,6 +87,7 @@
         </div>
         <div class="col-span-2 p-5">
           <div class="flex items-center justify-between">
+            @if(userCurrent?.RentalShopId !== shopInfo?.id){
             <button
               nz-button
               [nzType]="'primary'"
@@ -103,6 +104,7 @@
             >
               Thu gọn
             </button>
+            }
           </div>
         </div>
       </div>

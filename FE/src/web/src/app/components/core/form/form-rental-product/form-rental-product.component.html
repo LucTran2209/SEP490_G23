@@ -97,12 +97,12 @@
     [ngClass]="{
       'bg-[#a9a9a9] hover:border-[#e9e7e7]':
         !(quantityAvaiable$ | async) ||
-        (productRentalDetail$ | async)?.rentalShop?.id === shopId
+        (productRentalDetail$ | async)?.rentalShop?.id === userCurrent?.RentalShopId
     }"
     (click)="onChooseRental(modalTitle)"
     [disabled]="
       !(quantityAvaiable$ | async) ||
-      (productRentalDetail$ | async)?.rentalShop?.id === shopId
+      (productRentalDetail$ | async)?.rentalShop?.id === userCurrent?.RentalShopId
     "
   >
     Chọn thuê

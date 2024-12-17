@@ -25,19 +25,24 @@
     </div>
   </div>
   <div class="flex flex-col gap-2">
-    @if(quantityAvaiable$ | async){
-      <nz-input-number
+    @if(quantityAvaiable$ | async; as quantityAvaiable ){
+    <nz-input-number
       class=""
       [(ngModel)]="demoValue"
       (ngModelChange)="handleRequestQuantity($event)"
       [nzMin]="1"
       [nzStep]="1"
     ></nz-input-number>
-    <p class="text-[#B8ACAC]">{{quantityAvaiable$ | async}} Sản phẩm có sẵn</p>
+    <p class="text-[#B8ACAC]">
+      {{ getSafeQuantity(quantityAvaiable) }} Sản phẩm có sẵn
+    </p>
     } @else {
-      <img src="/assets/images/soldout.png" alt="soldout.png" class="w-10 rotate-6">
+    <img
+      src="/assets/images/soldout.png"
+      alt="soldout.png"
+      class="w-10 rotate-6"
+    />
     }
-   
   </div>
   <div
     class="cursor-pointer"
