@@ -86,7 +86,7 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
                 return this.orderService.requestOrderStatus(formData).pipe(
                   map((res) => ({
                     orderId: order.id,
-                    res
+                    res,
                   }))
                 );
               }),
@@ -96,12 +96,16 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
             )
             .subscribe({
               next: (result) => {
-                if(result.res.data === 'NotEnough'){
-                  this.messageResponseMS.showPreventAccess(result.res.message,'');
+                if (result.res.data === 'NotEnough') {
+                  this.messageResponseMS.showPreventAccess(
+                    result.res.message,
+                    ''
+                  );
+                } else {
+                  this.messageResponseMS.showSuccess(
+                    'Cập nhật trạng thái thành công'
+                  );
                 }
-                this.messageResponseMS.showSuccess(
-                  'Cập nhật trạng thái thành công'
-                );
                 this.selectedValue.reset();
               },
             });
