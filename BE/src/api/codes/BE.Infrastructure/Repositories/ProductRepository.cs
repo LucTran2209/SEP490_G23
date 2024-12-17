@@ -80,14 +80,40 @@ namespace BE.Infrastructure.Repositories
 
         public async Task<int?> GetQuantityRentingAsync(Guid productId)
         {
-            var rentingQuantity = await context.OrderDetails
-                .Include(p => p.Order)
-                    .ThenInclude(o => o.OrderStatuses)
-                .Where(od => od.ProductId == productId
-                       && od.Order.OrderStatuses!.Any(a => a.Status != RequestStatus.CANCEL
-                                                        && a.Status != RequestStatus.COMPLETE
-                                                        && a.Status != RequestStatus.PENDING_APPROVAL))
-                .SumAsync(od => od.Quantity);
+            //var rentingQuantity = await context.OrderDetails
+            //    .Include(p => p.Order)
+            //        .ThenInclude(o => o.OrderStatuses)
+            //    .Where(od => od.ProductId == productId
+            //           && od.Order.OrderStatuses!.Any(a => a.Status != RequestStatus.CANCEL
+            //                                            && a.Status != RequestStatus.COMPLETE
+            //                                            && a.Status != RequestStatus.PENDING_APPROVAL))
+            //    .SumAsync(x => x.Quantity);
+
+            var orders = await context.Orders.Include(o => o.OrderDetails).Include(o => o.OrderStatuses)
+                                            .Where(P => P.OrderDetails!.Any(x => x.ProductId == productId)).ToListAsync();
+
+            foreach (var order in orders)
+            {
+                order.OrderStatuses = order.OrderStatuses!.OrderByDescending(o => o.CreatedDate).ToList();
+            }
+
+            orders = orders.Where(o =>  o.OrderStatuses!.First().Status != RequestStatus.PENDING_APPROVAL &&
+                                        o.OrderStatuses!.First().Status != RequestStatus.COMPLETE &&
+                                        o.OrderStatuses!.First().Status != RequestStatus.CANCEL).ToList();
+
+            //orders = orders.Where(o => o.OrderDetails!.Any(od => od.ProductId == productId)).ToList();
+
+            int rentingQuantity = 0;
+            foreach (var item in orders)
+            {
+                foreach (var item1 in item.OrderDetails!)
+                {
+                    if (item1.ProductId == productId)
+                    {
+                        rentingQuantity += item1.Quantity;
+                    }
+                }
+            }
 
             return rentingQuantity;
         }
