@@ -95,7 +95,7 @@ namespace BE.Application.Services.Orders
                 returnAmount = returnAmount < order.TotalDepositPrice ? order.TotalDepositPrice : order.TotalDepositPrice + returnAmount;
 
                 // Nếu Status đang là 0, 1, 2 -> Cancel bình thường
-                await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
+                await _walletService.ChangeBalance(order.User!.Id, returnAmount, true);
 
                 await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);
             }
@@ -144,6 +144,7 @@ namespace BE.Application.Services.Orders
 
                     return new ResultService
                     {
+                        Datas = "NotEnough",
                         StatusCode = (int)HttpStatusCode.OK,
                         Message = "Hàng trong kho không đủ. Tự động cancel đơn."
                     };
@@ -171,7 +172,7 @@ namespace BE.Application.Services.Orders
                     returnAmount = 0;
                 }
                 // Return tiền cọc còn lại sau khi đã trừ tiền thu
-                await _walletService.ChangeBalance((Guid)user.Id, returnAmount, true);
+                await _walletService.ChangeBalance(order.User!.Id, returnAmount, true);
 
                 await _walletService.ChangeBalance(ownerRentalShop!.Id, returnAmount, false);
             }
