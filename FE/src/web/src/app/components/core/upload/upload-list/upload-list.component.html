@@ -11,7 +11,7 @@
     id="business_license_file"
     class="hidden"
     (change)="onFileSelected($event)"
-    multiple
+    [multiple]="isMultiple"
   />
 </label>
 <ul class="file-list">
