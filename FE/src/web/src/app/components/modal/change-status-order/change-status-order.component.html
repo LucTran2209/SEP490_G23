@@ -56,7 +56,7 @@
     } }
   </div>
   <div class="modal-footer flex items-center justify-end gap-x-3">
-    @if(!(isCanViewFileEvidence | async)){
+    @if((isCanViewFileEvidence | async)){
     <button nz-button nzType="primary" (click)="confirm('approve')">
       Xét duyệt
     </button>

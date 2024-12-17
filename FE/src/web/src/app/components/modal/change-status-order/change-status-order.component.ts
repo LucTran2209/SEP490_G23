@@ -84,8 +84,9 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
                 formData.append('Status', `${selectStatus}`);
                 formData.append('FileAttach', fileAttach);
                 return this.orderService.requestOrderStatus(formData).pipe(
-                  map(() => ({
+                  map((res) => ({
                     orderId: order.id,
+                    res
                   }))
                 );
               }),
@@ -94,7 +95,10 @@ export class ChangeStatusOrderComponent implements OnInit, OnDestroy {
               })
             )
             .subscribe({
-              next: () => {
+              next: (result) => {
+                if(result.res.data === 'NotEnough'){
+                  this.messageResponseMS.showPreventAccess(result.res.message,'');
+                }
                 this.messageResponseMS.showSuccess(
                   'Cập nhật trạng thái thành công'
                 );

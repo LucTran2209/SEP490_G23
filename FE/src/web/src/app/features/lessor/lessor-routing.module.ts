@@ -33,11 +33,11 @@ const routes: Routes = [
     component: ManageVoucherComponent,
     title: 'Quản Lý Voucher | ERMS'
   },
-  {
-    path: "notification",
-    component: ManageNotificationComponent,
-    title: 'Thông Báo | ERMS'
-  },
+  // {
+  //   path: "notification",
+  //   component: ManageNotificationComponent,
+  //   title: 'Thông Báo | ERMS'
+  // },
 ];
 
 @NgModule({
