@@ -9,12 +9,14 @@ namespace BE.Application.Services.RentalShops
         private readonly IValidator<UpdateRentalShopInputDto> updateValidator;
         private readonly IValidator<ActiveRentalShopInputDto> statusValidator;
         private readonly IValidator<ActivityRentalShopInputDto> activityValidator;
+        private readonly IMailService _mailService;
         private readonly IMapper _mapper;
         private readonly IAzureService _azureService;
 
         public RentalShopService(
             IUnitOfWork unitOfWork,
             IUser user, IMapper mapper,
+            IMailService mailService,
             IValidator<CreateRentalShopInputDto> createValidator,
             IValidator<UpdateRentalShopInputDto> updateValidator,
             IValidator<ActiveRentalShopInputDto> statusValidator,
@@ -26,6 +28,7 @@ namespace BE.Application.Services.RentalShops
             this.updateValidator = updateValidator;
             this.statusValidator = statusValidator;
             this.activityValidator = activityValidator;
+            _mailService = mailService;
             _mapper = mapper;
             _azureService = azureService;
         }
@@ -144,7 +147,7 @@ namespace BE.Application.Services.RentalShops
                 result.NumberOfVote = voted.Item1;
                 result.AvegateVote = voted.Item2;
             }
-            
+
             return new ResultService
             {
                 StatusCode = (int)HttpStatusCode.OK,
@@ -214,6 +217,10 @@ namespace BE.Application.Services.RentalShops
             {
                 await unitOfWork.UserRepository.AddRole(new UserRole { UserId = rentalShop.UserId, RoleId = Guid.Parse("61e16e2c-3899-4357-b5c6-a57a615bd8ff") });
             }
+            string subject = "Chúc mừng bạn đã đăng ký shop thành công";
+            await _mailService.SendMailAsync(null, rentalShop.User.Email, subject,
+                $"Chào mừng bạn đến với cộng đồng cho thuê tại ERMS! {Environment.NewLine}" +
+                $"Hãy vào hệ thống của chúng tôi để đăng các sản phẩm cho thuê ngay nào!");
             await unitOfWork.RentalShopRepository.UpdateAsync(rentalShop);
             await unitOfWork.SaveChangesAsync();
             return new ResultService
