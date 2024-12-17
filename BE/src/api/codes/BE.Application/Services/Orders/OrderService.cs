@@ -1,5 +1,6 @@
 ﻿using BE.Application.Services.Orders.OrderServiceInputDto;
 using BE.Application.Services.Orders.OrderServiceOutputDto;
+using BE.Application.Services.Products.ProductServiceOutputDto;
 using Newtonsoft.Json;
 
 namespace BE.Application.Services.Orders
@@ -12,6 +13,7 @@ namespace BE.Application.Services.Orders
         private readonly IAzureService _azureService;
         private readonly IMailService _mailService;
         private readonly IWalletService _walletService;
+        private readonly IProductService _productService;
 
         public OrderService(IUnitOfWork unitOfWork, IUser user,
             IMapper mapper,
@@ -19,7 +21,8 @@ namespace BE.Application.Services.Orders
             IValidator<GetOrderDetailInputDto> getOrderDetailInputDto,
             IWalletService walletService,
             IMailService mailService,
-            IAzureService azureService) : base(unitOfWork, user)
+            IProductService productService,
+        IAzureService azureService) : base(unitOfWork, user)
         {
             this.createOrderValidator = createOrderValidator;
             _getOrderDetailInputDto = getOrderDetailInputDto;
@@ -27,6 +30,7 @@ namespace BE.Application.Services.Orders
             _azureService = azureService;
             _walletService = walletService;
             _mailService = mailService;
+            _productService = productService;
         }
 
         public async Task<ResultService> CreateAsync(CreateOrderInputDto inputDto)
@@ -98,7 +102,52 @@ namespace BE.Application.Services.Orders
 
             if (inputDto.Status == RequestStatus.PENDING_PAYMENT)
             {
-                await _mailService.SendMailAsync(null, order.User!.Email!, "Thông báo đơn hàng", $"Thanh toán Đơn hàng {order.Code}");
+                var products = new List<ProductDetailOutputDto>();
+
+                foreach (var item in order.OrderDetails!)
+                {
+                    var product = await _productService.GetProductByIdAsync(item.ProductId);
+                    products.Add((ProductDetailOutputDto)product.Datas);
+                }
+
+                bool check = true;
+
+                foreach (var item in products)
+                {
+                    foreach (var item1 in order.OrderDetails)
+                    {
+                        if (item.Id == item1.ProductId && item.Quantity < item1.Quantity)
+                        {
+                            check = false; break;
+                        }
+                    }
+
+                    if (!check)
+                    {
+                        break;
+                    }
+                }
+
+                if (check)
+                {
+                    await _mailService.SendMailAsync(null, order.User!.Email!, "Thông báo đơn hàng", $"Thanh toán Đơn hàng {order.Code}");
+                }
+                else
+                {
+                    await unitOfWork.OrderStatusRepository.AddAsync(new OrderStatus()
+                    {
+                        OrderId = order.Id,
+                        Status = RequestStatus.CANCEL
+                    });
+
+                    await unitOfWork.SaveChangesAsync();
+
+                    return new ResultService
+                    {
+                        StatusCode = (int)HttpStatusCode.OK,
+                        Message = "Hàng trong kho không đủ. Tự động cancel đơn."
+                    };
+                }
             }
 
             if (inputDto.Status == RequestStatus.REFUND)

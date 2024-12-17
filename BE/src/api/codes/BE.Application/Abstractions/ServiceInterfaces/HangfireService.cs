@@ -1,8 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Components.Forms;
-
-namespace BE.Application.Abstractions.ServiceInterfaces
+﻿namespace BE.Application.Abstractions.ServiceInterfaces
 {
     public class HangfireService : BaseService, IHangfireService
     {
