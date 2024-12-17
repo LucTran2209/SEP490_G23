@@ -19,12 +19,17 @@ export class UploadListComponent {
   @Output() removeAFile = new EventEmitter<any>();
   @Input() boundTypeFile?: string;
   @Input() title?: string;
+  @Input() isMultiple: boolean = true;
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      const newFiles = Array.from(input.files); 
-    this.uploadedFiles.push(...newFiles); 
-    this.listFiles.emit(newFiles);
+      const newFiles = Array.from(input.files);
+      if(this.isMultiple){
+        this.uploadedFiles.push(...newFiles);
+      }else{
+        this.uploadedFiles = newFiles;
+      }
+      this.listFiles.emit(newFiles);
     }
     // Reset file input to allow re-upload of the same file
     if (this.fileInput) {

@@ -1,7 +1,7 @@
 import { concatMap, delay, map, Observable, of, range, takeWhile } from 'rxjs';
 import { ItimeClock } from '../interfaces/anonymous.interface';
 import { OrderStatus } from '../interfaces/order.interface';
-import { DISCOUNT_TYPE, ORDER_STATUS } from './constant';
+import { DISCOUNT_TYPE, ORDER_STATUS, USER_ROLE } from './constant';
 
 export function encodeBase64(str: string) {
   const bytes = new TextEncoder().encode(str);
@@ -115,7 +115,7 @@ export const generateCodeOrder = (): string => {
   return ordeCode;
 };
 
-export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
+export const convertStatusOrder = (orderstatus: ORDER_STATUS, isLessor: USER_ROLE.LESSOR | USER_ROLE.RENTER = USER_ROLE.RENTER) => {
   if (orderstatus === ORDER_STATUS.PENDING_APPROVAL) {
     return 'Chờ xác nhận';
   }
@@ -137,7 +137,7 @@ export const convertStatusOrder = (orderstatus: ORDER_STATUS) => {
   if (orderstatus === ORDER_STATUS.CANCEL) {
     return 'Đã hủy';
   } else {
-    return 'Đã nhận';
+    return isLessor === USER_ROLE.LESSOR ? 'Đang cho thuê' : 'Đã nhận';
   }
 };
 

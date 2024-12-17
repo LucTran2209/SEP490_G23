@@ -2,3 +2,19 @@
     cursor: text;
     width: 170px !important;
 }
+
+::ng-deep .ant-image-preview-img {
+    translate: -50% -50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
+    transform: scale3d(1, 1, 1);
+    cursor: grab;
+    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: auto;
+}
