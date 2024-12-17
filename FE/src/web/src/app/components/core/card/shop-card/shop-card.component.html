@@ -115,12 +115,23 @@
     >
       Xác Nhận Nhận Hàng
     </button>
+    <p
+      *ngIf="isShowBtn4 && overdueDays > 0 && overdueDays < 10"
+      class="text-red-500 text-lg"
+    >
+      Bạn đã quá hạn {{ overdueDays }} ngày
+    </p>
+    <p *ngIf="isShowBtn4 && overdueDays >= 10" class="text-red-500 text-lg">
+      Bạn đã quá hạn {{ overdueDays }} ngày. Vui lòng liên hệ với người cho thuê
+      để xử lý!
+    </p>
     <button
       *ngIf="isShowBtn4"
       class="px-5"
       nz-button
       nzType="primary"
       nzGhost
+      [disabled]="overdueDays >= 10"
       (click)="onClickBtn4()"
     >
       Xác Nhận Trả Hàng
