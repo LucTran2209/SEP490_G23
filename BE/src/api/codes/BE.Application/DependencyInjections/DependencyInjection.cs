@@ -23,6 +23,9 @@ namespace BE.Application.DependencyInjections
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddScoped(typeof(IHangfireService), typeof(HangfireService));
+
             services.AddTransient(typeof(IAzureService), typeof(AzureService));
 
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));

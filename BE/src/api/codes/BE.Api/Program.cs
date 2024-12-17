@@ -1,9 +1,11 @@
-using BE.Api.Extensions;
+﻿using BE.Api.Extensions;
 using BE.Api.Middlewares;
 using BE.Application.DependencyInjections;
 using BE.Persistence.DependencyInjections;
 using BE.Infrastructure.DependencyInjections;
 using BE.Persistence.Extensions;
+using Hangfire;
+using BE.Application.Abstractions.ServiceInterfaces;
 
 namespace BE.Api
 {
@@ -34,6 +36,8 @@ namespace BE.Api
 
             builder.Services.AddMemoryCache();
 
+            builder.Services.AddHangfire(config => config.UseSqlServerStorage(builder.Configuration.GetConnectionString("SqlServerConnection")));
+
             // # CORS
             builder.Services.AddCors(options =>
             {
@@ -54,6 +58,15 @@ namespace BE.Api
 
             app.UseSwagger();
             app.UseSwaggerUI();
+            
+            // Using Hangfire
+            app.UseHangfireDashboard();
+            // Đăng ký Recurring Job
+            RecurringJob.AddOrUpdate<IHangfireService>(
+                "Check Over Date Payment",
+                service => service.CheckOverDatePayment(),
+                Cron.Minutely
+            );
 
             app.MigrationDataBase();
             app.UseHttpsRedirection();
