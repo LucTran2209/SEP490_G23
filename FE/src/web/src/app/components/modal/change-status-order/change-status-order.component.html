@@ -50,7 +50,7 @@
       ><span class="text-red-500">*</span>Ảnh bằng chứng</label
     >
     @if(getOrderStatusLatestFileAttach(orderDetail); as attachFile){
-    <img [src]="attachFile" [alt]="attachFile" nz-image />
+    <img [src]="attachFile" [alt]="attachFile"/>
     } @else {
     <p class="text-gray-300 italic ml-3">Không có ảnh bằng chứng</p>
     } }

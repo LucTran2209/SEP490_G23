@@ -5,7 +5,10 @@ import { Observable, Subscription, take, tap } from 'rxjs';
 import { timePeriodSelect } from '../../../configs/timer.config';
 import { setNumberOfDays } from '../../../features/common/state/rental/rental.actions';
 import { OrderState } from '../../../features/common/state/rental/rental.reducers';
-import { selectAllProductRental } from '../../../features/common/state/rental/rental.selectors';
+import {
+  selectAllProductRental,
+  selectIsLimitRentalTime,
+} from '../../../features/common/state/rental/rental.selectors';
 import { RentalTimerService } from '../../../services/rental-timer.service';
 import { FeatureAppState } from '../../../store/app.state';
 import { StorageService } from '../../../services/storage.service';
@@ -94,26 +97,37 @@ export class PickerTimerComponent implements OnInit, OnDestroy {
       const diffInDays = this.rentalTimerService.convertRentalDays(
         this.rangeDatePicker
       );
-
-      this.pickerTimeSubscription = this.selectAllProductRental$
-        ?.pipe(take(1))
-        .subscribe((orders) => {
-          orders.forEach((order) => {
-            const productId = order.productId;
-            if (productId) {
-              this.store.dispatch(
-                setNumberOfDays({
-                  days: diffInDays,
-                  pid: productId,
-                })
-              );
-            }
-          });
+      this.store
+        .select(selectIsLimitRentalTime(diffInDays))
+        .pipe(take(1))
+        .subscribe((res) => {
+          if (!res) {
+            this.messageNZ.warning(
+              'Ngày thuê chọn vượt quá ngày thuê mặc định!'
+            );
+            return;
+          }
+          this.pickerTimeSubscription = this.selectAllProductRental$
+            ?.pipe(take(1))
+            .subscribe((orders) => {
+              orders.forEach((order) => {
+                const productId = order.productId;
+                if (productId) {
+                  this.store.dispatch(
+                    setNumberOfDays({
+                      days: diffInDays,
+                      pid: productId,
+                    })
+                  );
+                }
+              });
+            });
+          this.modalService.closeAll();
         });
+
       this.rentalTimerService.setRangePickerTime(this.rangeDatePicker);
       this.rentalTimerService.setTimeStart(this.timePickerTo);
       this.rentalTimerService.setTimeEnd(this.timePickerEnd);
-      this.modalService.closeAll();
     }
   }
 

@@ -68,6 +68,13 @@ export class RenterItemComponent implements OnInit {
       .subscribe();
   }
 
+  getSafeQuantity(value: number | string | null | undefined): number {
+    if (value == null || value === undefined || Number(value) < 0) {
+      return 0;
+    }
+    return Number(value);
+  }
+
   selectStateFromNgRx() {
     this.isInitialStateProductDetail$ = this.store.select(selectIsInitialState);
     if (this.pId) {

@@ -164,6 +164,8 @@ namespace BE.Application.Services.Wallets
             await AddHistory(userId, user.Balance, amount, RechargeStatus.Success, isAdding ? RechargeType.Recieve : RechargeType.Depoited);
 
             await unitOfWork.UserRepository.UpdateAsync(user);
+
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task<ResultService> GetListHistoryAsync(TransmitHistoryInputDto inputDto)

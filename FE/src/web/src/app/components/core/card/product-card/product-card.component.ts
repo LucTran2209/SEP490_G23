@@ -42,7 +42,8 @@ export class ProductCardComponent implements OnInit, AfterContentInit {
       productName: this.product.productName,
       quantityAvailable: this.product.quantity,
       rentalPrice: this.product.rentalPrice,
-      images: this.product.images as string[]
+      images: this.product.images as string[],
+      rentalLimitDays: this.product.rentalLimitDays
     })
    )
   }

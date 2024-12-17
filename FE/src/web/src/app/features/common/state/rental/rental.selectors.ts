@@ -60,8 +60,18 @@ export const selectQuantityRequestById = (id: string) =>
 export const selectQuantityAvailableById = (id: string) =>
   createSelector(
     selectProductRentalById(id),
-    (order) => order?.quantityAvailable
+    (order) => order?.quantityAvailable || 0
   );
+
+export const selectIsLimitRentalTime = (dayChoose: number) =>
+  createSelector(selectAllProductRental, (al) => {
+    let minAvaiableRentalTime = al
+      .map((order) => Number(order.rentalLimitDays))
+      .filter((days) => !isNaN(days) && days > 0)
+      .reduce((min, current) => (current < min ? current : min), Infinity);
+
+      return dayChoose <= minAvaiableRentalTime;
+  });
 
 export const selectRentalPriceById = (id: string) =>
   createSelector(selectProductRentalById(id), (order) => order?.rentalPrice);

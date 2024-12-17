@@ -66,7 +66,7 @@ namespace BE.Api
             RecurringJob.AddOrUpdate<IHangfireService>(
                 "Check Over Date Payment",
                 service => service.CheckOverDatePayment(),
-                Cron.Minutely
+                Cron.Daily
             );
 
             app.MigrationDataBase();

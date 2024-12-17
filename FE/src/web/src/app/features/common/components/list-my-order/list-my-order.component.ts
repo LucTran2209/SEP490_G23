@@ -336,7 +336,10 @@ export class ListMyOrderComponent implements OnInit {
     formData.append('OrderId', this.orderId);
     formData.append('Message', status.message);
     formData.append('Status', `${ORDER_STATUS.DEPOSIT_REFUND}`);
-    formData.append('FileAttach', '');
+    // formData.append('FileAttach', '');
+    if (status.fileAttach) {
+      formData.append('FileAttach', status.fileAttach);
+    }
   
     // Hiển thị trạng thái tải
     this.loadingService.setLoading();

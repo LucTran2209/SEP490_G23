@@ -32,10 +32,33 @@
                 <p *ngIf="item.message" class="text-blue-500">
                   {{ item.message }}
                 </p>
+                <img
+                  *ngIf="item.fileAttach"
+                  width="50"
+                  height="50"
+                  [src]="item.fileAttach"
+                  alt="ảnh chụp bằng chứng"
+                  (click)="showImageModal(item.fileAttach)"
+                />
               </nz-timeline-item>
             </nz-timeline>
           </div>
-
+          <nz-modal
+            [(nzVisible)]="isImageModalVisible"
+            [nzWidth]="'800px'"
+            (nzOnCancel)="closeImageModal()"
+            [nzFooter]="null"
+          >
+            <ng-container *nzModalContent>
+              <div class="flex justify-center items-center">
+                <img
+                  [src]="selectedImageUrl"
+                  alt="Enlarged Image"
+                  class="max-w-full max-h-screen rounded-lg"
+                />
+              </div>
+            </ng-container>
+          </nz-modal>
           <!-- Cột giữa: Chi tiết sản phẩm và trạng thái đơn hàng -->
           <div nz-col [nzSpan]="11" class="pl-4">
             <!-- <h4 class="font-semibold text-base">Tiến Trình Xử Lý Đơn Thuê</h4> -->
