@@ -162,7 +162,7 @@ namespace BE.Application.Services.Orders
             {
                 returnAmount = returnAmount < order.TotalDepositPrice ? order.TotalDepositPrice - returnAmount : order.TotalDepositPrice;
                 // trả trễ bị trừ tiền theo ngày
-                if (currentOrderStatus.CreatedDate <= order.EndDate)
+                if (currentOrderStatus.CreatedDate > order.EndDate)
                 {
                     int day = (order.EndDate - currentOrderStatus.CreatedDate).Days;
                     returnAmount -= returnAmount * day / 10;
